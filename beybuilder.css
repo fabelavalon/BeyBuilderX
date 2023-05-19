@@ -1,0 +1,127 @@
+/*=========================================================*
+ *BeyBuilder X v1.0 for Beyblade X                         *
+ *Author: Fabel                                            *
+ *Copyright 2023                                           *
+ *=========================================================*/
+
+/* styling for drop downs */
+.select-basic{
+    color: #000;
+    background-color: #67becf;
+    border-color: #59298c;
+    padding: 3px;
+    margin: 3px;
+}
+
+.select-basic:hover{
+    color: #fff;
+    background-color: #59298c;
+    border-color: #67becf;
+}
+
+.select-list{
+    color:#fff;
+    background-color: #59298c;
+    border-color: #59298c;
+    padding: 3px;
+    margin: 3px;
+}
+
+.select-list:hover{
+    color: #fff;
+    background-color: #59298c;
+    border-color: #67becf;
+}
+
+/* styling for delete buttons */
+.btn-danger {
+    color: #000;
+    background-color: #67becf;
+    border-color: #59298c;
+    padding: 4px;
+    margin: 3px;
+}
+
+.btn-danger:hover {
+    color: #fff;
+    background-color: #8c2930;
+    border-color: #67becf;
+}
+
+.btn-danger:focus,
+.btn-danger.focus {
+    box-shadow: 0 0 0 .2rem #8c2930;
+}
+
+/* styling for basic buttons */
+.btn-basic {
+    color: #000;
+    background-color: #67becf;
+    border-color: #59298c;
+    padding: 4px;
+    margin: 3px;
+}
+
+.btn-basic:hover {
+    color: #fff;
+    background-color: #59298c;
+    border-color: #67becf;
+}
+
+.btn-basic:focus,
+.btn-basic.focus {
+    box-shadow: 0 0 0 .2rem #67becf;
+}
+
+.btn-basic:focus-visible,
+.btn-basic.focus-visible {
+    background-color: #67becf;
+    box-shadow: 0 0 0 .2rem #59298c;
+}
+
+.btn-basic.disabled,
+.btn-basic:disabled {
+    color: #000;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.btn-basic:not(:disabled):not(.disabled):active,
+.btn-basic:not(:disabled):not(.disabled).active,
+.show>.btn-basic.dropdown-toggle {
+    color: #000;
+    background-color: #d0d0d0;
+    border-color: #c0c0c0;
+}
+
+.btn-basic:not(:disabled):not(.disabled):active:focus,
+.btn-basic:not(:disabled):not(.disabled).active:focus,
+.show>.btn-basic.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .2rem rgba(190, 190, 190, 0.5);
+}
+
+/* make sure tables and table elements have the proper borders */
+td, tr {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-color: #fff;
+}
+
+table{
+    border: 1px solid #fff;
+}
+
+/* make modal headers and footers sticky */
+.modal-header--sticky {
+    position: sticky;
+    top: 0;
+    background-color: inherit;
+    z-index: 1055;
+  }
+  
+.modal-footer--sticky {
+    position: sticky;
+    bottom: 0;
+    background-color: inherit; 
+    z-index: 1055; 
+}
