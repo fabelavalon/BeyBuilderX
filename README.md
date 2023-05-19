@@ -4,7 +4,7 @@ BeyBuilder is a Beyblade stat tracker and random build generator for Beyblade X
 
 # How to use
 
-- Open the [BeyBuilder website here](https://fabelavalon.github.io/beybuilderx/)
+- Open the [BeyBuilder website here](https://fabelavalon.github.io/BeyBuilderX/)
 - Use dropdowns to select you parts. If a part is not selected, a random part will be chosen in it's place.
 - Press "Choose Beyblade" button next to dropdowns to select the Bey
 - Once both beys have been selected, you can start tracking stats
