@@ -5,8 +5,8 @@
  *==========================================================*/
 
 //create beyblade database
-var beyBladeDBX = new PouchDB("BeyBlades");
-var recordsDBX = new PouchDB("Record");
+var beyBladeDBX = new PouchDB("BeyBladesX");
+var recordsDBX = new PouchDB("RecordX");
 
 //import the parts lists
 var allBlades = blades;
