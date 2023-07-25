@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--*============================================================*
-    *BeyBuilder X v1.0 for Beyblade X                            *
+    *BeyBuilder X v1.1 for Beyblade X                            *
     *Author: Fabel                                               *
     *Copyright 2023                                              *
     *============================================================*-->
@@ -9,7 +9,7 @@
 <html style="background-color:#20083a">
 
 <head>
-    <title>BeyBuilder X v1.0</title>
+    <title>BeyBuilder X v1.1</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="./bootstrap.css" rel="stylesheet"  />
@@ -21,7 +21,7 @@
 
     <!--Header space-->
     <div class="container-fluid border">
-        <h1>BeyBuilder X v1.0</h1>
+        <h1>BeyBuilder X v1.1</h1>
         <h3>for Beyblade X</h3>
     </div>
       
@@ -238,30 +238,34 @@
 
             <div class="modal-body">
               <div class="row">
-                <div class="col-md-9 border">
-                  <select id="blade" class="select-basic"><option value="random">Select Blade</option></select>
-                  <select id="rachet" class="select-basic"><option value="random">Select Rachet</option></select>
-                  <select id="bit" class="select-basic"><option value="random">Select Bit</option></select>
+                <div class="col-md-6 border">
+                  Pick which combination of parts youd like to check the records for. Note: You do not need to choose a full build.
+                  <p>
+                  <select id="bladeR1" class="select-basic"><option value="none">Select Blade</option></select>
                   <br>
-                  <button onclick="showPartStats('blade', blade.value)" class="btn btn-basic">Show Blade Stats</button>
-                  <button onclick="showPartStats('rachet', rachet.value)" class="btn btn-basic">Show Rachet Stats</button>
-                  <button onclick="showPartStats('bit', bit.value)" class="btn btn-basic">Show Bit Stats</button>
+                  <select id="rachetR1" class="select-basic"><option value="none">Select Rachet</option></select>
+                  <br>
+                  <select id="bitR1" class="select-basic"><option value="none">Select Bit</option></select>
+                  <br>
                 </div>
-                <div class="col-md-3 border">
-                  <span id="partIs">Part not yet selected.</span>
+                <div class="col-md-6 border">
+                  Pick which part or combination of parts to check the records against. Note: At least one part must be selected.
+                  <p>
+                  <select id="bladeR2" class="select-basic"><option value="none">Select Blade</option></select>
                   <br>
-                  <span id="partStats"></span>
+                  <select id="rachetR2" class="select-basic"><option value="none">Select Rachet</option></select>
                   <br>
-                  <span id="partKO"></span>
+                  <select id="bitR2" class="select-basic"><option value="none">Select Bit</option></select>
                   <br>
-                  <span id="partSO"></span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 border">
+                  <span id="matchupBeyUser">Parts Have Not been selected yet.</span>
                   <br>
-                  <span id="partBst"></span>
+                  <table id="matchupHistUser"></table>
                   <br>
-                  <span id="partX"></span>
-                  <br>
-                  <span id="partDraw"></span>
-                  <br>
+                  <button onclick="populateMatchHistUser(bladeR1.value, rachetR1.value, bitR1.value, bladeR2.value, rachetR2.value, bitR2.value)" class="btn btn-basic">Show Part Stats</button>
                 </div>
               </div>
             </div>
@@ -319,7 +323,6 @@
 
         Known Issues:
         editing a bey doesnt allow for multiple edits without reselecting a bey from the list
-        Error catching for GRP and Sh/Al is interacting strangely
     -->
 
 </body>

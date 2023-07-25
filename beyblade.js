@@ -1,5 +1,5 @@
 /*==========================================================*
- * BeyBuilder v1.0 for Beyblade X                           *
+ * BeyBuilder v1.1 for Beyblade X                           *
  * Author: Fabel                                            *
  * Copyright 2023                                           *
  *==========================================================*/
@@ -68,16 +68,11 @@ class BeyBlade {
     }
 
     findSpin(){
-
         this.spin = allBlades[this.blade].spin;
-
     }
 
-    //Driscs make my life hard
     findName(){
-        
         this.name = allBlades[this.blade].name + " " + allRachets[this.rachet].abbv + allBits[this.bit].abbv;
-
     }
 
 }

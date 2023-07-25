@@ -1,7 +1,7 @@
 /*==========================================================*
- * BeyBuilder v1.1 for Dynamite Battle and Burst Ultimate   *
+ * BeyBuilder v1.1 for Beyblade X                           *
  * Author: Fabel                                            *
- * Copyright 2022-23                                        *
+ * Copyright 2023                                        *
  *==========================================================*/
 
 //create beyblade database
@@ -42,9 +42,12 @@ var bey2RachetDropdown = document.getElementById("bey2Rachet");
 var bey2BitDropdown = document.getElementById("bey2Bit");
 
 //...for the parts records
-var bladeDropdown = document.getElementById("blade");
-var rachetDropdown = document.getElementById("rachet");
-var bitDropdown = document.getElementById("bit");
+var bladeDropdown1 = document.getElementById("bladeR1");
+var rachetDropdown1 = document.getElementById("rachetR1");
+var bitDropdown1 = document.getElementById("bitR1");
+var bladeDropdown2 = document.getElementById("bladeR2");
+var rachetDropdown2 = document.getElementById("rachetR2");
+var bitDropdown2 = document.getElementById("bitR2");
 
 //...for the dbList
 var selectedBey = document.getElementById("dbSelectList");
@@ -91,7 +94,9 @@ var partDraw = document.getElementById("partDraw");
 var error = document.getElementById("error");
 var winners = document.getElementById("winnerLog");
 var matchupSpace = document.getElementById("matchupSpace");
+var matchupSpaceUser = document.getElementById("matchupSpaceUser");
 var matchupBey = document.getElementById("matchupBey");
+var matchupBeyUser = document.getElementById("matchupBeyUser");
 
 //used to generate the win buttons after both beys are selected
 var wasBey1Generated = false;
@@ -112,15 +117,15 @@ function main(){
 
     bey1BladeDropdown.value="random";
     bey2BladeDropdown.value="random";
-    bladeDropdown.value="random";
+    bladeDropdown1.value="none";
 
     bey1RachetDropdown.value="random";
     bey2RachetDropdown.value="random";
-    rachetDropdown.value="random";
+    rachetDropdown1.value="none";
 
     bey1BitDropdown.value="random";
     bey2BitDropdown.value="random";
-    bitDropdown.value="random";
+    bitDropdown1.value="none";
     
     //create and populate the drop downs with the parts from the database...
     //...the Blades
@@ -128,15 +133,19 @@ function main(){
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
+        var option4 = document.createElement("option");
         options.textContent = allBlades[i].name;
         options.value = allBlades[i].id;
         option2.textContent = allBlades[i].name;
         option2.value = allBlades[i].id;
         option3.textContent = allBlades[i].name;
         option3.value = allBlades[i].id;
+        option4.textContent = allBlades[i].name;
+        option4.value = allBlades[i].id;
         bey1BladeDropdown.appendChild(options);
         bey2BladeDropdown.appendChild(option2);
-        bladeDropdown.appendChild(option3);
+        bladeDropdown1.appendChild(option3);
+        bladeDropdown2.appendChild(option4);
 
     }
 
@@ -145,15 +154,19 @@ function main(){
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
+        var option4 = document.createElement("option");
         options.textContent = allRachets[i].name;
         options.value = allRachets[i].id;
         option2.textContent = allRachets[i].name;
         option2.value = allRachets[i].id;
         option3.textContent = allRachets[i].name;
         option3.value = allRachets[i].id;
+        option4.textContent = allRachets[i].name;
+        option4.value = allRachets[i].id;
         bey1RachetDropdown.appendChild(options);
         bey2RachetDropdown.appendChild(option2);
-        rachetDropdown.appendChild(option3);
+        rachetDropdown1.appendChild(option3);
+        rachetDropdown2.appendChild(option4);
         
     }
 
@@ -162,15 +175,19 @@ function main(){
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
+        var option4 = document.createElement("option");
         options.textContent = allBits[i].name;
         options.value = allBits[i].id;
         option2.textContent = allBits[i].name;
         option2.value = allBits[i].id;
         option3.textContent = allBits[i].name;
         option3.value = allBits[i].id;
+        option4.textContent = allBits[i].name;
+        option4.value = allBits[i].id;
         bey1BitDropdown.appendChild(options);
         bey2BitDropdown.appendChild(option2);
-        bitDropdown.appendChild(option3);
+        bitDropdown1.appendChild(option3);
+        bitDropdown2.appendChild(option4);
         
     }
 
@@ -1177,6 +1194,257 @@ function populateMatchHist(bey){
        }
        
     });
+}
+
+//populates the match history popup with selected Beys matchup history
+function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
+
+    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
+
+        matchupHistUser.textContent = "";
+        //matchupBeyUser.textContent = "Matchup History for " + allBlades[blade1].name + " " + allRachets[rachet1].abbv + " " + allBits[bit1].abbv;
+
+        //header row
+        var row = matchupHistUser.insertRow(0);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+        cell1.innerHTML = "Selected Bey";
+        cell2.innerHTMl = "Vs";
+        cell3.innerHTML = "Opposing Bey";
+        cell4.innerHTML = "KO Win/Loss";
+        cell5.innerHTML = "SO Win/Loss";
+        cell6.innerHTML = "Burst Win/Loss";
+        cell7.innerHTML = "Xtreme Win/Loss";
+        cell8.innerHTML = "Draws";
+
+        if(blade1!="none"){
+            const tempWinsBl = [];
+            const tempWinsRcht = [];
+            const outputWins =[];
+            //sort database
+            for(i = 0; i < doc.total_rows; i++){
+                if(doc.rows[i].doc.defender!=undefined) {
+                            doc.rows.sort(function(a, b){
+                                return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
+                            });
+                        }
+
+                //search logic
+                if(doc.rows[i].doc.challenger!=undefined) {
+                    if(!err && blade1==doc.rows[i].doc.challenger.blade){
+                        tempWinsBl.push(doc.rows[i].doc);
+                    }
+                }
+            }
+            if(rachet1!="none"){
+                for(i =0; i < tempWinsBl.length; i++){
+                    if(tempWinsBl[i].challenger.rachet==rachet1){
+                        tempWinsRcht.push(tempWinsBl[i]);
+                    }
+                }
+                if(bit1!="none"){
+                    for(i =0; i < tempWinsRcht.length; i++){
+                        if(tempWinsRcht[i].challenger.bit==bit1){
+                            outputWins.push(tempWinsRcht[i]);
+                            
+                        }
+                    }
+                
+                    checkSecondSelection(blade2, rachet2, bit2, outputWins);
+                }
+                //blade and rachet selected
+                else{
+                    
+                    checkSecondSelection(blade2, rachet2, bit2, tempWinsRcht);
+                }
+            }
+            else if(bit1!="none"){
+                for(i =0; i < tempWinsBl.length; i++){
+                    if(tempWinsBl[i].challenger.bit==bit1){
+                        outputWins.push(tempWinsBl[i])
+                    }
+                }
+                console.log("we got to bits");
+                checkSecondSelection(blade2, rachet2, bit2, outputWins); 
+            }
+            else{ 
+                checkSecondSelection(blade2, rachet2, bit2, tempWinsBl);         
+            }           
+        }
+        else if(rachet1!="none"){
+            const tempWinsRcht = [];
+            const outputWins =[];
+            for(i = 0; i < doc.total_rows; i++){
+                if(doc.rows[i].doc.defender!=undefined) {
+                    doc.rows.sort(function(a, b){
+                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
+                    });
+                }
+
+                //search logic
+                if(doc.rows[i].doc.challenger!=undefined) {
+                    if(!err && rachet1==doc.rows[i].doc.challenger.rachet){
+                        tempWinsRcht.push(doc.rows[i].doc);
+                    }
+                }
+            }
+            if(bit1!="none"){
+                for(i =0; i < tempWinsRcht.length; i++){
+                    if(tempWinsRcht[i].challenger.bit==bit1){
+                        outputWins.push(tempWinsRcht[i]);
+                    }
+                }
+                checkSecondSelection(blade2, rachet2, bit2, outputWins);
+            }
+            
+            else{
+                checkSecondSelection(blade2, rachet2, bit2, tempWinsRcht);
+            }
+        }
+        else if(bit1!="none"){
+            const outputWins =[];
+            for(i = 0; i < doc.total_rows; i++){
+                if(doc.rows[i].doc.defender!=undefined) {
+                    doc.rows.sort(function(a, b){
+                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
+                    });
+                }
+
+                //search logic
+                if(doc.rows[i].doc.challenger!=undefined) {
+                    if(!err && bit1==doc.rows[i].doc.challenger.bit){
+                        outputWins.push(doc.rows[i].doc);
+                    }
+                }
+            }
+            checkSecondSelection(blade2, rachet2, bit2, outputWins);
+        }
+    });
+}
+
+function checkSecondSelection(blade, rachet, bit, history){
+    const tempWinsBl = [];
+    const tempWinsRcht = [];
+    const outputWins = [];
+
+    if(blade!="none"){
+
+        for(i =0; i < history.length; i++){
+            if(history[i].defender!=undefined) {
+                if(blade==history[i].defender.blade){
+                    tempWinsBl.push(history[i]);
+                }
+            }
+        }
+
+        if(rachet!="none"){
+            for(i =0; i < tempWinsBl.length; i++){
+                if(tempWinsBl[i].defender.rachet==rachet){
+                    tempWinsRcht.push(tempWinsBl[i]);
+                }
+            }
+            if(bit!="none"){
+                for(i =0; i < tempWinsRcht.length; i++){
+                    if(tempWinsRcht[i].defender.bit==bit){
+                        fillMatchupHist(tempWinsRcht[i]);
+                    }
+                }
+            }
+
+            else{
+                for(i =0; i < tempWinsRcht.length; i++){
+                    fillMatchupHist(tempWinsRcht[i]);
+                }
+            }
+        } 
+        //need else if for bits here, both functions.
+        else if(bit!="none"){
+            for(i = 0; i < tempWinsBl.length; i++){
+                if(tempWinsBl[i].defender.bit==bit){
+                    fillMatchupHist(tempWinsBl[i]);
+                }
+            }
+        }
+        else{
+            for(i =0; i < tempWinsBl.length; i++){
+                fillMatchupHist(tempWinsBl[i]);
+            }           
+        }           
+    }
+    else if(rachet!="none"){
+        //search logic
+        for(i =0; i < history.length; i++){
+            if(history[i].defender!=undefined) {
+                if(rachet==history[i].defender.rachet){
+                    console.log("we got to bey 2 rachets")
+                    tempWinsRcht.push(history[i]);
+                }
+            }
+        }
+        
+        if(bit!="none"){
+            for(i =0; i < tempWinsRcht.length; i++){
+                if(tempWinsRcht[i].defender.bit==bit){
+                    fillMatchupHist(tempWinsRcht[i]);
+                }
+            }
+        }
+        else{
+            for(i=0; i < tempWinsRcht.length; i++){
+                fillMatchupHist(tempWinsRcht[i]);
+            }
+        }
+    }
+    else if(bit!="none"){
+        
+        //search logic
+        for(i =0; i < history.length; i++){
+            if(history[i].defender!=undefined) {
+                if(bit==history[i].defender.bit){
+                    fillMatchupHist(history[i]);
+                }
+            }
+            else{
+                fillMatchupHist(history[i]);
+            }
+        }
+        
+    }
+    else{
+        for(i = 0; i < history.length; i++){
+            if(history[i].defender!=undefined) {
+                fillMatchupHist(history[i]);
+            }
+        }
+    }
+
+}
+
+function fillMatchupHist(history){
+    
+    var row = matchupHistUser.insertRow(1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    var cell7 = row.insertCell(6);
+    var cell8 = row.insertCell(7);
+    cell1.innerHTML = history.challenger.name;
+    cell2.innerHTML = " ";
+    cell3.innerHTML = history.defender.name;
+    cell4.innerHTML = history.wko + "/" + history.lko;
+    cell5.innerHTML = history.wso + "/" + history.lso;
+    cell6.innerHTML = history.wbst + "/" + history.lbst;
+    cell7.innerHTML = history.wx + "/" + history.lx;
+    cell8.innerHTML = history.draws;
 }
 
 //delete a bey from the system
