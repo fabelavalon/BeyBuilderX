@@ -13,7 +13,7 @@ var blades = [
     {"name":"HellsScythe", "spin":"right", "weight":32.94, "height":0, "abbv":"HS", "wins":0, "losses":0, "draws":0, "id":2},
     {"name":"KnightShield", "spin":"right", "weight":32.70, "height":0, "abbv":"KS", "wins":0, "losses":0, "draws":0, "id":3},
     {"name":"WizardArrow", "spin":"right", "weight":31.86, "height":0, "abbv":"WA", "wins":0, "losses":0, "draws":0, "id":4},
-    {"name":"DranzerSprial", "spin":"right", "weight":27.82, "height":0, "abbv":"DSp", "wins":0, "losses":0, "draws":0, "id":5},
+    {"name":"DranzerSprial", "spin":"right", "weight":27.82, "height":0, "abbv":"DrS", "wins":0, "losses":0, "draws":0, "id":5},
     {"name":"KnightLance", "spin":"right", "weight":0.00, "height":0, "abbv":"KL", "wins":0, "losses":0, "draws":0, "id":6},
     {"name":"SharkEdge", "spin":"right", "weight":0.00, "height":0, "abbv":"SE", "wins":0, "losses":0, "draws":0, "id":7}
     
