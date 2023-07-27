@@ -25,7 +25,6 @@ BeyBuilder is a Beyblade stat tracker and random build generator for Beyblade X
 
 - Get screenshots
 - UI cleanup
-- Add parts from earlier generations of Burst
 - Add online funcationality for global beyblade stat tracking
 
 
