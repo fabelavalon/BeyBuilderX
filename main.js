@@ -461,7 +461,7 @@ function winnerChosen(buttonID){
         case "B2WSO":
             updateWinCounts(bey2, bey1, "SO");
             updateRecords(bey2, bey1, "SO");
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Spin Finsih!";
+            winners.textContent = "The winner of this round is: " + bey2.name + " by Spin Finish!";
             break;
         case "B2WBST":
             updateWinCounts(bey2, bey1, "burst");
