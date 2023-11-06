@@ -17,9 +17,10 @@ var blades = [
     {"name":"KnightLance", "spin":"right", "weight":33.25, "height":0, "abbv":"KL", "wins":0, "losses":0, "draws":0, "id":6},
     {"name":"SharkEdge", "spin":"right", "weight":34.60, "height":0, "abbv":"SE", "wins":0, "losses":0, "draws":0, "id":7},
     {"name":"LeonClaw", "spin":"right", "weight":31.40, "height":0, "abbv":"LC", "wins":0, "losses":0, "draws":0, "id":8},
-    {"name":"ViperTail", "spin":"right", "weight":34.55, "height":0, "abbv":"VT", "wins":0, "losses":0, "draws":0, "id":9}//,
-    //{"name":"DranDagger", "spin":"right", "weight":0.00, "height":0, "abbv":"DD", "wins":0, "losses":0, "draws":0, "id":10},
-    //{"name":"HellsChain", "spin":"right", "weight":0.00, "height":0, "abbv":"HC", "wins":0, "losses":0, "draws":0, "id":11}
+    {"name":"ViperTail", "spin":"right", "weight":34.55, "height":0, "abbv":"VT", "wins":0, "losses":0, "draws":0, "id":9},
+    {"name":"DranDagger", "spin":"right", "weight":34.91, "height":0, "abbv":"DD", "wins":0, "losses":0, "draws":0, "id":10},
+    {"name":"HellsChain", "spin":"right", "weight":33.33, "height":0, "abbv":"HC", "wins":0, "losses":0, "draws":0, "id":11},
+    {"name":"RhinoHorn", "spin":"right", "weight":32.82, "height":0, "abbv":"RH", "wins":0, "losses":0, "draws":0, "id":12}
     
 ];
 
@@ -43,8 +44,9 @@ var bits = [
     {"name":"High Needle", "weight":2.17, "height":0, "abbv":"HN", "wins":0, "losses":0, "draws":0, "id":4},
     {"name":"Low Flat", "weight":2.15, "height":0, "abbv":"LF", "wins":0, "losses":0, "draws":0, "id":5},
     {"name":"Point", "weight":2.20, "height":0, "abbv":"P", "wins":0, "losses":0, "draws":0, "id":6},
-    {"name":"Orb", "weight":2.02, "height":0, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":7}//,
-    //{"name":"Rush", "weight":0.00, "height":0, "abbv":"R", "wins":0, "losses":0, "draws":0, "id":8},
-    //{"name":"High Taper", "weight":0.00, "height":0, "abbv":"HT", "wins":0, "losses":0, "draws":0, "id":9}
+    {"name":"Orb", "weight":2.02, "height":0, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":7},
+    {"name":"Rush", "weight":2.02, "height":0, "abbv":"R", "wins":0, "losses":0, "draws":0, "id":8},
+    {"name":"High Taper", "weight":2.22, "height":0, "abbv":"HT", "wins":0, "losses":0, "draws":0, "id":9},
+    {"name":"Spike", "weight":2.02, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":10}
 
 ];
