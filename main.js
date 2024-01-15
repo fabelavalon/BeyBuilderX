@@ -991,7 +991,7 @@ function showBeybladeStats(bey, whichBey) {
                     bey2KO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey2SO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey2Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
-                    bey2X.textContent = "Burst Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
+                    bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
                 }
                 // else{
