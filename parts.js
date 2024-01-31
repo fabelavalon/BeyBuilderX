@@ -23,8 +23,9 @@ var blades = [
     {"name":"RhinoHorn", "spin":"right", "weight":32.82, "height":0, "abbv":"RH", "wins":0, "losses":0, "draws":0, "id":12},
     {"name":"PheonixFeather", "spin":"right", "weight":33.33, "height":0, "abbv":"PF", "wins":0, "losses":0, "draws":0, "id":13},
     {"name":"PhoenixWing", "spin":"right", "weight":38.00, "height":0, "abbv":"PW", "wins":0, "losses":0, "draws":0, "id":14},
-    {"name":"WyvernGale", "spin":"right", "weight":32.10, "height":0, "abbv":"WG", "wins":0, "losses":0, "draws":0, "id":15}
-    
+    {"name":"WyvernGale", "spin":"right", "weight":32.10, "height":0, "abbv":"WG", "wins":0, "losses":0, "draws":0, "id":15},
+    {"name":"UnicornSting", "spin":"right", "weight":33.26, "height":0, "abbv":"US", "wins":0, "losses":0, "draws":0, "id":16}
+    //{"name":"SphinxCowl", "spin":"right", "weight":0, "height":0, "abbv":"SC", "wins":0, "losses":0, "draws":0, "id":17}
     
 ];
 
@@ -36,7 +37,8 @@ var rachets = [
     {"name":"4-80", "weight":7.00, "height":80, "abbv":"4-80", "wins":0, "losses":0, "draws":0, "id":3},
     {"name":"5-60", "weight":6.60, "height":60, "abbv":"5-60", "wins":0, "losses":0, "draws":0, "id":4},
     {"name":"5-80", "weight":7.15, "height":80, "abbv":"5-80", "wins":0, "losses":0, "draws":0, "id":5},
-    {"name":"9-60", "weight":6.19, "height":60, "abbv":"9-60", "wins":0, "losses":0, "draws":0, "id":6}
+    {"name":"9-60", "weight":6.19, "height":60, "abbv":"9-60", "wins":0, "losses":0, "draws":0, "id":6}//,
+    //{"name":"9-80", "weight":0, "height":80, "abbv":"9-80", "wins":0, "losses":0, "draws":0, "id":7}
 
 ];
 
@@ -54,6 +56,8 @@ var bits = [
     {"name":"High Taper", "weight":2.22, "height":0, "abbv":"HT", "wins":0, "losses":0, "draws":0, "id":9},
     {"name":"Spike", "weight":2.02, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":10},
     {"name":"Gear Flat", "weight":2.28, "height":0, "abbv":"GF", "wins":0, "losses":0, "draws":0, "id":11},
-    {"name":"Gear Ball", "weight":2.08, "height":0, "abbv":"GB", "wins":0, "losses":0, "draws":0, "id":12}
+    {"name":"Gear Ball", "weight":2.08, "height":0, "abbv":"GB", "wins":0, "losses":0, "draws":0, "id":12},
+    {"name":"Gear Point", "weight":2.25, "height":0, "abbv":"GP", "wins":0, "losses":0, "draws":0, "id":13},
+    //{"name":"Gear Needle", "weight":0, "height":0, "abbv":"GN", "wins":0, "losses":0, "draws":0, "id":14}
 
 ];
