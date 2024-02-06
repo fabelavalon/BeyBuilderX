@@ -24,7 +24,7 @@ var blades = [
     {"name":"PheonixFeather", "spin":"right", "weight":33.33, "height":0, "abbv":"PF", "wins":0, "losses":0, "draws":0, "id":13},
     {"name":"PhoenixWing", "spin":"right", "weight":38.00, "height":0, "abbv":"PW", "wins":0, "losses":0, "draws":0, "id":14},
     {"name":"WyvernGale", "spin":"right", "weight":32.10, "height":0, "abbv":"WG", "wins":0, "losses":0, "draws":0, "id":15},
-    {"name":"UnicornSting", "spin":"right", "weight":33.38, "height":0, "abbv":"US", "wins":0, "losses":0, "draws":0, "id":16}
+    {"name":"UnicornSting", "spin":"right", "weight":33.38, "height":0, "abbv":"US", "wins":0, "losses":0, "draws":0, "id":16}//,
     //{"name":"SphinxCowl", "spin":"right", "weight":0, "height":0, "abbv":"SC", "wins":0, "losses":0, "draws":0, "id":17}
     
 ];
@@ -57,7 +57,7 @@ var bits = [
     {"name":"Spike", "weight":2.02, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":10},
     {"name":"Gear Flat", "weight":2.28, "height":0, "abbv":"GF", "wins":0, "losses":0, "draws":0, "id":11},
     {"name":"Gear Ball", "weight":2.08, "height":0, "abbv":"GB", "wins":0, "losses":0, "draws":0, "id":12},
-    {"name":"Gear Point", "weight":2.25, "height":0, "abbv":"GP", "wins":0, "losses":0, "draws":0, "id":13},
+    {"name":"Gear Point", "weight":2.25, "height":0, "abbv":"GP", "wins":0, "losses":0, "draws":0, "id":13}//,
     //{"name":"Gear Needle", "weight":0, "height":0, "abbv":"GN", "wins":0, "losses":0, "draws":0, "id":14}
 
 ];
