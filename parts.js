@@ -24,40 +24,49 @@ var blades = [
     {"name":"PheonixFeather", "spin":"right", "weight":33.33, "height":0, "abbv":"PF", "wins":0, "losses":0, "draws":0, "id":13},
     {"name":"PhoenixWing", "spin":"right", "weight":38.00, "height":0, "abbv":"PW", "wins":0, "losses":0, "draws":0, "id":14},
     {"name":"WyvernGale", "spin":"right", "weight":32.10, "height":0, "abbv":"WG", "wins":0, "losses":0, "draws":0, "id":15},
-    {"name":"UnicornSting", "spin":"right", "weight":33.38, "height":0, "abbv":"US", "wins":0, "losses":0, "draws":0, "id":16}//,
-    //{"name":"SphinxCowl", "spin":"right", "weight":0, "height":0, "abbv":"SC", "wins":0, "losses":0, "draws":0, "id":17}
+    {"name":"UnicornSting", "spin":"right", "weight":33.38, "height":0, "abbv":"US", "wins":0, "losses":0, "draws":0, "id":16},
+    {"name":"SphinxCowl", "spin":"right", "weight":32.80, "height":0, "abbv":"SC", "wins":0, "losses":0, "draws":0, "id":17},
+    //{"name":"DranBuster", "spin":"right", "weight":0, "height":0, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":18},
+    //{"name":"HellsHammer", "spin":"right", "weight":0, "height":0, "abbv":"HH", "wins":0, "losses":0, "draws":0, "id":19},
+    //{"name":"WizardRod", "spin":"right", "weight":0, "height":0, "abbv":"WR", "wins":0, "losses":0, "draws":0, "id":20}
     
 ];
 
 var rachets = [
 
-    {"name":"3-60", "weight":6.32, "height":60, "abbv":"3-60", "wins":0, "losses":0, "draws":0, "id":0},
-    {"name":"3-80", "weight":7.10, "height":80, "abbv":"3-80", "wins":0, "losses":0, "draws":0, "id":1},
-    {"name":"4-60", "weight":6.30, "height":60, "abbv":"4-60", "wins":0, "losses":0, "draws":0, "id":2},
-    {"name":"4-80", "weight":7.00, "height":80, "abbv":"4-80", "wins":0, "losses":0, "draws":0, "id":3},
-    {"name":"5-60", "weight":6.60, "height":60, "abbv":"5-60", "wins":0, "losses":0, "draws":0, "id":4},
-    {"name":"5-80", "weight":7.15, "height":80, "abbv":"5-80", "wins":0, "losses":0, "draws":0, "id":5},
-    {"name":"9-60", "weight":6.19, "height":60, "abbv":"9-60", "wins":0, "losses":0, "draws":0, "id":6}//,
-    //{"name":"9-80", "weight":0, "height":80, "abbv":"9-80", "wins":0, "losses":0, "draws":0, "id":7}
+    {"name":"3-60", "weight":6.32, "height":6, "abbv":"3-60", "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"3-80", "weight":7.10, "height":8, "abbv":"3-80", "wins":0, "losses":0, "draws":0, "id":1},
+    {"name":"4-60", "weight":6.30, "height":6, "abbv":"4-60", "wins":0, "losses":0, "draws":0, "id":2},
+    {"name":"4-80", "weight":7.00, "height":8, "abbv":"4-80", "wins":0, "losses":0, "draws":0, "id":3},
+    {"name":"5-60", "weight":6.60, "height":6, "abbv":"5-60", "wins":0, "losses":0, "draws":0, "id":4},
+    {"name":"5-80", "weight":7.15, "height":8, "abbv":"5-80", "wins":0, "losses":0, "draws":0, "id":5},
+    {"name":"9-60", "weight":6.19, "height":6, "abbv":"9-60", "wins":0, "losses":0, "draws":0, "id":6},
+    {"name":"9-80", "weight":6.80, "height":8, "abbv":"9-80", "wins":0, "losses":0, "draws":0, "id":7},
+    //{"name":"1-60", "weight":0, "height":6, "abbv":"1-60", "wins":0, "losses":0, "draws":0, "id":8},
+    //{"name":"3-70", "weight":0, "height":7, "abbv":"3-70", "wins":0, "losses":0, "draws":0, "id":9},
+    //{"name":"5-70", "weight":0, "height":7, "abbv":"5-70", "wins":0, "losses":0, "draws":0, "id":10},
 
 ];
 
 var bits = [
 
-    {"name":"Ball", "weight":2.10, "height":0, "abbv":"B", "wins":0, "losses":0, "draws":0, "id":0},
-    {"name":"Flat", "weight":2.28, "height":0, "abbv":"F", "wins":0, "losses":0, "draws":0, "id":1},
-    {"name":"Needle", "weight":2.03, "height":0, "abbv":"N", "wins":0, "losses":0, "draws":0, "id":2},
-    {"name":"Taper", "weight":2.19, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":3},
-    {"name":"High Needle", "weight":2.17, "height":0, "abbv":"HN", "wins":0, "losses":0, "draws":0, "id":4},
-    {"name":"Low Flat", "weight":2.15, "height":0, "abbv":"LF", "wins":0, "losses":0, "draws":0, "id":5},
-    {"name":"Point", "weight":2.20, "height":0, "abbv":"P", "wins":0, "losses":0, "draws":0, "id":6},
-    {"name":"Orb", "weight":2.02, "height":0, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":7},
-    {"name":"Rush", "weight":2.02, "height":0, "abbv":"R", "wins":0, "losses":0, "draws":0, "id":8},
-    {"name":"High Taper", "weight":2.22, "height":0, "abbv":"HT", "wins":0, "losses":0, "draws":0, "id":9},
-    {"name":"Spike", "weight":2.02, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":10},
-    {"name":"Gear Flat", "weight":2.28, "height":0, "abbv":"GF", "wins":0, "losses":0, "draws":0, "id":11},
-    {"name":"Gear Ball", "weight":2.08, "height":0, "abbv":"GB", "wins":0, "losses":0, "draws":0, "id":12},
-    {"name":"Gear Point", "weight":2.25, "height":0, "abbv":"GP", "wins":0, "losses":0, "draws":0, "id":13}//,
-    //{"name":"Gear Needle", "weight":0, "height":0, "abbv":"GN", "wins":0, "losses":0, "draws":0, "id":14}
+    {"name":"Ball", "weight":2.10, "height":2, "abbv":"B", "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"Flat", "weight":2.28, "height":2, "abbv":"F", "wins":0, "losses":0, "draws":0, "id":1},
+    {"name":"Needle", "weight":2.03, "height":2, "abbv":"N", "wins":0, "losses":0, "draws":0, "id":2},
+    {"name":"Taper", "weight":2.19, "height":2, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":3},
+    {"name":"High Needle", "weight":2.17, "height":3, "abbv":"HN", "wins":0, "losses":0, "draws":0, "id":4},
+    {"name":"Low Flat", "weight":2.15, "height":1, "abbv":"LF", "wins":0, "losses":0, "draws":0, "id":5},
+    {"name":"Point", "weight":2.20, "height":2, "abbv":"P", "wins":0, "losses":0, "draws":0, "id":6},
+    {"name":"Orb", "weight":2.02, "height":2, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":7},
+    {"name":"Rush", "weight":2.02, "height":2, "abbv":"R", "wins":0, "losses":0, "draws":0, "id":8},
+    {"name":"High Taper", "weight":2.22, "height":3, "abbv":"HT", "wins":0, "losses":0, "draws":0, "id":9},
+    {"name":"Spike", "weight":2.02, "height":2, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":10},
+    {"name":"Gear Flat", "weight":2.28, "height":2, "abbv":"GF", "wins":0, "losses":0, "draws":0, "id":11},
+    {"name":"Gear Ball", "weight":2.08, "height":2, "abbv":"GB", "wins":0, "losses":0, "draws":0, "id":12},
+    {"name":"Gear Point", "weight":2.25, "height":2, "abbv":"GP", "wins":0, "losses":0, "draws":0, "id":13},
+    {"name":"Gear Needle", "weight":2.00, "height":2, "abbv":"GN", "wins":0, "losses":0, "draws":0, "id":14},
+    //{"name":"Accel", "weight":0, "height":2, "abbv":"A", "wins":0, "losses":0, "draws":0, "id":15},
+    //{"name":"Hexa", "weight":0, "height":2, "abbv":"H", "wins":0, "losses":0, "draws":0, "id":16},
+    //{"name":"Disc Ball", "weight":0, "height":0, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":17}
 
 ];
