@@ -1,7 +1,7 @@
 /*==========================================================*
  * BeyBuilder v1.1 for Beyblade X                           *
  * Author: Fabel                                            *
- * Copyright 2023                                        *
+ * Copyright 2023-2024                                      *
  *==========================================================*/
 
 //create beyblade database
@@ -23,6 +23,7 @@ var bey2WinKO = document.createElement("button");
 var bey2WinBst = document.createElement("button");
 var bey2WinX = document.createElement("button");
 var drawButton = document.createElement("button");
+var undoButton = document.createElement("button");
 var bey1Statbtn = document.createElement("button");
 var bey2Statbtn = document.createElement("button");
 var showAllBeysbtn = document.createElement("button");
@@ -109,6 +110,11 @@ var wasWinButtonGenerated = false;
 var bey1;
 var bey2;
 var dbBey;
+
+//used for undo function
+var lastRecordWinner;
+var lastRecordLoser;
+var lastRecordOutcome;
 
 //runs on launch, fills draop downs and database list
 function main(){
@@ -418,6 +424,16 @@ var buttonContainer = document.getElementById("buttonContainer");
         });
         buttonContainer.append(drawButton);
 
+        //undo button
+        undoButton.innerHTML = "Undo";
+        undoButton.value = "undo";
+        undoButton.classList.add("btn");
+        undoButton.classList.add("btn-basic");
+        undoButton.addEventListener("click", function() {
+            undoLastRecord();
+        });
+        buttonContainer.append(undoButton);
+
         //once both beys are made, make sure they have a matchup in the recordsDBX
         addRecord(bey1, bey2);
         addRecord(bey2, bey1);
@@ -436,46 +452,73 @@ function winnerChosen(buttonID){
         case "B1WKO":
             updateWinCounts(bey1, bey2, "KO");
             updateRecords(bey1, bey2, "KO");
+            lastRecordOutcome = "KO";
+            lastRecordWinner = bey1;
+            lastRecordLoser = bey2;
             winners.textContent = "The winner of this round is: " + bey1.name + " by Over Finish!";
             break;
         case "B1WSO":
             updateWinCounts(bey1, bey2, "SO");
             updateRecords(bey1, bey2, "SO");
+            lastRecordOutcome = "SO";
+            lastRecordWinner = bey1;
+            lastRecordLoser = bey2;
             winners.textContent = "The winner of this round is: " + bey1.name + " by Spin Finish!";
             break;
         case "B1WBST":
             updateWinCounts(bey1, bey2, "burst");
             updateRecords(bey1, bey2, "burst");
+            lastRecordOutcome = "burst";
+            lastRecordWinner = bey1;
+            lastRecordLoser = bey2;
             winners.textContent = "The winner of this round is: " + bey1.name + " by Burst Finish!";
             break;
         case "B1WX":
             updateWinCounts(bey1, bey2, "x");
             updateRecords(bey1, bey2, "x");
+            lastRecordOutcome = "x";
+            lastRecordWinner = bey1;
+            lastRecordLoser = bey2;
             winners.textContent = "The winner of this round is: " + bey1.name + " by Xtreme Finish!";
             break;
         case "B2WKO":
             updateWinCounts(bey2, bey1, "KO");
             updateRecords(bey2, bey1, "KO");
+            lastRecordOutcome = "KO";
+            lastRecordWinner = bey2;
+            lastRecordLoser = bey1;
             winners.textContent = "The winner of this round is: " + bey2.name + " by Over Finish!";
             break;
         case "B2WSO":
             updateWinCounts(bey2, bey1, "SO");
             updateRecords(bey2, bey1, "SO");
+            lastRecordOutcome = "SO";
+            lastRecordWinner = bey2;
+            lastRecordLoser = bey1;
             winners.textContent = "The winner of this round is: " + bey2.name + " by Spin Finish!";
             break;
         case "B2WBST":
             updateWinCounts(bey2, bey1, "burst");
             updateRecords(bey2, bey1, "burst");
+            lastRecordOutcome = "burst";
+            lastRecordWinner = bey2;
+            lastRecordLoser = bey1;
             winners.textContent = "The winner of this round is: " + bey2.name + " by Burst Finish!";
             break;
         case "B2WX":
             updateWinCounts(bey2, bey1, "x");
             updateRecords(bey2, bey1, "x");
+            lastRecordOutcome = "x";
+            lastRecordWinner = bey2;
+            lastRecordLoser = bey1;
             winners.textContent = "The winner of this round is: " + bey2.name + " by Xtreme Finish!";
             break;
         case "draw":
             updateWinCounts(bey1, bey2, "draw");
             updateRecords(bey1, bey2, "draw");
+            lastRecordOutcome = "draw";
+            lastRecordWinner = bey1;
+            lastRecordLoser = bey2;
             winners.textContent = "It ended in a Draw!";
             break;
         default:
@@ -860,6 +903,142 @@ function updateWinCounts(winner, loser, outcome){
 
     }
     
+}
+
+function undoLastRecord(){
+    var winner = lastRecordWinner;
+    var loser = lastRecordLoser;
+    var outcome = lastRecordOutcome;
+
+    switch(outcome){
+        case "KO":
+        beyBladeDBX.get(winner.id, function(err, doc) {
+            if(!err){
+                doc.build.winsKO -= 1;
+                beyBladeDBX.put(doc);
+                showBeybladeStats(bey1,1);
+            }
+            // else{
+            //     console.log(err);
+            // }
+        });
+    
+        beyBladeDBX.get(loser.id, function(err, doc) {
+            if(!err){
+                doc.build.loseKO -= 1;
+                beyBladeDBX.put(doc);
+                showBeybladeStats(bey2,2);
+            }
+            // else{
+            //     console.log(err);
+            // }
+        });
+        break;
+
+        case "SO":
+            beyBladeDBX.get(winner.id, function(err, doc) {
+                if(!err){
+                    doc.build.winsSO -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey1,1);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        
+            beyBladeDBX.get(loser.id, function(err, doc) {
+                if(!err){
+                    doc.build.loseSO -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey2,2);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        break;
+
+        case "burst":
+            beyBladeDBX.get(winner.id, function(err, doc) {
+                if(!err){
+                    doc.build.winsBst -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey1,1);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        
+            beyBladeDBX.get(loser.id, function(err, doc) {
+                if(!err){
+                    doc.build.loseBst -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey2,2);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        break;
+
+        case "x":
+            beyBladeDBX.get(winner.id, function(err, doc) {
+                if(!err){
+                    doc.build.winsX -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey1,1);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        
+            beyBladeDBX.get(loser.id, function(err, doc) {
+                if(!err){
+                    doc.build.loseX -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey2,2);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        break;
+
+        case "draw":
+            beyBladeDBX.get(winner.id, function(err, doc) {
+                if(!err){
+                    doc.build.draws -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey1,1);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        
+            beyBladeDBX.get(loser.id, function(err, doc) {
+                if(!err){
+                    doc.build.draws -= 1;
+                    beyBladeDBX.put(doc);
+                    showBeybladeStats(bey2,2);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+        break;
+
+        default:
+            console.log("Undo backstack only hold one record for now, or, something went wrong");
+
+    }
+
+    lastRecordWinner = "";
+    lastRecordLoser = "";
+    lastRecordOutcome = "";
 }
 
 //fills the bey selection menu
