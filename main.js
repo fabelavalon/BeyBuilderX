@@ -909,6 +909,8 @@ function undoLastRecord(){
     var winner = lastRecordWinner;
     var loser = lastRecordLoser;
     var outcome = lastRecordOutcome;
+    var record1Id = winner.id + " " + loser.id;
+    var record2Id = loser.id + " " + winner.id;
 
     switch(outcome){
         case "KO":
@@ -921,6 +923,7 @@ function undoLastRecord(){
             // else{
             //     console.log(err);
             // }
+            
         });
     
         beyBladeDBX.get(loser.id, function(err, doc) {
@@ -933,6 +936,28 @@ function undoLastRecord(){
             //     console.log(err);
             // }
         });
+
+        recordsDBX.get(record1Id, function(err, doc) {
+            if(!err){
+                doc.wko -= 1;
+                recordsDBX.put(doc);
+                displayRecords();
+            }
+            // else{
+            //     console.log(err);
+            // }
+        });
+        recordsDBX.get(record2Id, function(err, doc) {
+            if(!err){
+                doc.lko -= 1;
+                recordsDBX.put(doc);
+                displayRecords();
+            }
+            // else{
+            //     console.log(err);
+            // }
+        });
+        
         break;
 
         case "SO":
@@ -952,6 +977,27 @@ function undoLastRecord(){
                     doc.build.loseSO -= 1;
                     beyBladeDBX.put(doc);
                     showBeybladeStats(bey2,2);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+
+            recordsDBX.get(record1Id, function(err, doc) {
+                if(!err){
+                    doc.wso -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+            recordsDBX.get(record2Id, function(err, doc) {
+                if(!err){
+                    doc.lso -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
                 }
                 // else{
                 //     console.log(err);
@@ -981,6 +1027,27 @@ function undoLastRecord(){
                 //     console.log(err);
                 // }
             });
+
+            recordsDBX.get(record1Id, function(err, doc) {
+                if(!err){
+                    doc.wbst -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+            recordsDBX.get(record2Id, function(err, doc) {
+                if(!err){
+                    doc.lbst -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
         break;
 
         case "x":
@@ -1005,6 +1072,27 @@ function undoLastRecord(){
                 //     console.log(err);
                 // }
             });
+
+            recordsDBX.get(record1Id, function(err, doc) {
+                if(!err){
+                    doc.wx -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+            recordsDBX.get(record2Id, function(err, doc) {
+                if(!err){
+                    doc.lx -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
         break;
 
         case "draw":
@@ -1024,6 +1112,27 @@ function undoLastRecord(){
                     doc.build.draws -= 1;
                     beyBladeDBX.put(doc);
                     showBeybladeStats(bey2,2);
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+
+            recordsDBX.get(record1Id, function(err, doc) {
+                if(!err){
+                    doc.draws -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
+                }
+                // else{
+                //     console.log(err);
+                // }
+            });
+            recordsDBX.get(record2Id, function(err, doc) {
+                if(!err){
+                    doc.draws -= 1;
+                    recordsDBX.put(doc);
+                    displayRecords();
                 }
                 // else{
                 //     console.log(err);
