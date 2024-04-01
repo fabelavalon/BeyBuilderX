@@ -68,7 +68,7 @@ var bits = [
     {"name":"Gear Ball", "weight":2.08, "height":2, "abbv":"GB", "wins":0, "losses":0, "draws":0, "id":12},
     {"name":"Gear Point", "weight":2.25, "height":2, "abbv":"GP", "wins":0, "losses":0, "draws":0, "id":13},
     {"name":"Gear Needle", "weight":2.00, "height":2, "abbv":"GN", "wins":0, "losses":0, "draws":0, "id":14},
-    {"name":"Accel", "weight":2,58, "height":2, "abbv":"A", "wins":0, "losses":0, "draws":0, "id":15},
+    {"name":"Accel", "weight":2.58, "height":2, "abbv":"A", "wins":0, "losses":0, "draws":0, "id":15},
     {"name":"Hexa", "weight":2.58, "height":2, "abbv":"H", "wins":0, "losses":0, "draws":0, "id":16},
     {"name":"Disc Ball", "weight":3.23, "height":0, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":17}//,
     //{"name":"Quake?", "weight":0, "height":0, "abbv":"Q", "wins":0, "losses":0, "draws":0, "id":18}
