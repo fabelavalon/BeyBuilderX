@@ -70,7 +70,7 @@ var bits = [
     {"name":"Gear Needle", "weight":2.00, "height":2, "abbv":"GN", "wins":0, "losses":0, "draws":0, "id":14},
     {"name":"Accel", "weight":2.58, "height":2, "abbv":"A", "wins":0, "losses":0, "draws":0, "id":15},
     {"name":"Hexa", "weight":2.58, "height":2, "abbv":"H", "wins":0, "losses":0, "draws":0, "id":16},
-    {"name":"Disc Ball", "weight":3.23, "height":0, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":17}//,
+    {"name":"Disc Ball", "weight":3.23, "height":4, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":17}//,
     //{"name":"Quake?", "weight":0, "height":0, "abbv":"Q", "wins":0, "losses":0, "draws":0, "id":18}
 
 ];
