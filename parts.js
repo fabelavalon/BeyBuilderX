@@ -26,7 +26,7 @@ var blades = [
     {"name":"WyvernGale", "spin":"right", "weight":32.10, "height":0, "abbv":"WG", "wins":0, "losses":0, "draws":0, "id":15},
     {"name":"UnicornSting", "spin":"right", "weight":33.38, "height":0, "abbv":"US", "wins":0, "losses":0, "draws":0, "id":16},
     {"name":"SphinxCowl", "spin":"right", "weight":32.80, "height":0, "abbv":"SC", "wins":0, "losses":0, "draws":0, "id":17},
-    {"name":"DranBuster", "spin":"right", "weight":36.32, "height":0, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":18},
+    {"name":"DranBuster", "spin":"right", "weight":36.32, "height":0, "abbv":"DrB", "wins":0, "losses":0, "draws":0, "id":18},
     {"name":"HellsHammer", "spin":"right", "weight":33.20, "height":0, "abbv":"HH", "wins":0, "losses":0, "draws":0, "id":19},
     {"name":"WizardRod", "spin":"right", "weight":35.35, "height":0, "abbv":"WR", "wins":0, "losses":0, "draws":0, "id":20}//,
     //{"name":"DrigerSlash", "spin":"right", "weight":0, "height":0, "abbv":"DrSl", "wins":0, "losses":0, "draws":0, "id":21},
