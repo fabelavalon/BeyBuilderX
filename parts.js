@@ -30,8 +30,9 @@ var blades = [
     {"name":"HellsHammer", "spin":"right", "weight":33.20, "height":0, "abbv":"HeHa", "wins":0, "losses":0, "draws":0, "id":19},
     {"name":"WizardRod", "spin":"right", "weight":35.35, "height":0, "abbv":"WR", "wins":0, "losses":0, "draws":0, "id":20},
     {"name":"DrigerSlash", "spin":"right", "weight":28.50, "height":0, "abbv":"DrSl", "wins":0, "losses":0, "draws":0, "id":21},
-    {"name":"TyrannoBeat", "spin":"right", "weight":36.90, "height":0, "abbv":"TB", "wins":0, "losses":0, "draws":0, "id":22}//,
-    //{"name":"ShinobiShadow", "spin":"right", "weight":0, "height":0, "abbv":"SnSh", "wins":0, "losses":0, "draws":0, "id":23}
+    {"name":"TyrannoBeat", "spin":"right", "weight":36.90, "height":0, "abbv":"TB", "wins":0, "losses":0, "draws":0, "id":22},
+    {"name":"ShinobiShadow", "spin":"right", "weight":28.23, "height":0, "abbv":"ShSh", "wins":0, "losses":0, "draws":0, "id":23}//,
+    //{"name":"WeissTiger", "spin":"right", "weight":0, "height":0, "abbv":"WT", "wins":0, "losses":0, "draws":0, "id":24}
     
 ];
 
@@ -48,8 +49,8 @@ var rachets = [
     {"name":"1-60", "weight":6.06, "height":6, "abbv":"1-60", "wins":0, "losses":0, "draws":0, "id":8},
     {"name":"3-70", "weight":6.42, "height":7, "abbv":"3-70", "wins":0, "losses":0, "draws":0, "id":9},
     {"name":"5-70", "weight":6.70, "height":7, "abbv":"5-70", "wins":0, "losses":0, "draws":0, "id":10},
-    {"name":"4-70", "weight":6.50, "height":7, "abbv":"4-70", "wins":0, "losses":0, "draws":0, "id":11}//,
-    //{"name":"1-80", "weight":0, "height":8, "abbv":"1-80", "wins":0, "losses":0, "draws":0, "id":12}
+    {"name":"4-70", "weight":6.50, "height":7, "abbv":"4-70", "wins":0, "losses":0, "draws":0, "id":11},
+    {"name":"1-80", "weight":6.72, "height":8, "abbv":"1-80", "wins":0, "losses":0, "draws":0, "id":12}
 
 ];
 
@@ -73,7 +74,8 @@ var bits = [
     {"name":"Accel", "weight":2.58, "height":2, "abbv":"A", "wins":0, "losses":0, "draws":0, "id":15},
     {"name":"Hexa", "weight":2.58, "height":2, "abbv":"H", "wins":0, "losses":0, "draws":0, "id":16},
     {"name":"Disc Ball", "weight":3.23, "height":4, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":17},
-    {"name":"Quake", "weight":2.17, "height":2, "abbv":"Q", "wins":0, "losses":0, "draws":0, "id":18}//,
-    //{"name":"Metal Needle", "weight":0, "height":2, "abbv":"MN", "wins":0, "losses":0, "draws":0, "id":19}
+    {"name":"Quake", "weight":2.17, "height":2, "abbv":"Q", "wins":0, "losses":0, "draws":0, "id":18},
+    {"name":"Metal Needle", "weight":2.75, "height":2, "abbv":"MN", "wins":0, "losses":0, "draws":0, "id":19}//,
+    //{"name":"Unite", "weight":0, "height":2, "abbv":"U", "wins":0, "losses":0, "draws":0, "id":20}
 
 ];
