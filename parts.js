@@ -31,8 +31,12 @@ var blades = [
     {"name":"WizardRod", "spin":"right", "weight":35.35, "height":0, "abbv":"WR", "wins":0, "losses":0, "draws":0, "id":20},
     {"name":"DrigerSlash", "spin":"right", "weight":28.50, "height":0, "abbv":"DrSl", "wins":0, "losses":0, "draws":0, "id":21},
     {"name":"TyrannoBeat", "spin":"right", "weight":36.90, "height":0, "abbv":"TB", "wins":0, "losses":0, "draws":0, "id":22},
-    {"name":"ShinobiShadow", "spin":"right", "weight":28.23, "height":0, "abbv":"ShSh", "wins":0, "losses":0, "draws":0, "id":23}//,
-    //{"name":"WeissTiger", "spin":"right", "weight":0, "height":0, "abbv":"WT", "wins":0, "losses":0, "draws":0, "id":24}
+    {"name":"ShinobiShadow", "spin":"right", "weight":28.23, "height":0, "abbv":"ShSh", "wins":0, "losses":0, "draws":0, "id":23},
+    {"name":"Tusk Mammoth", "spin":"right", "weight":32.10, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":24},
+    {"name":"Knife Shinobi", "spin":"right", "weight":30.90, "height":0, "abbv":"KfSh", "wins":0, "losses":0, "draws":0, "id":25},
+    {"name":"Talon Ptera", "spin":"right", "weight":34.25, "height":0, "abbv":"TP", "wins":0, "losses":0, "draws":0, "id":26},
+    {"name":"Steel Samurai", "spin":"right", "weight":31.08, "height":0, "abbv":"StSa", "wins":0, "losses":0, "draws":0, "id":27},
+    //{"name":"WeissTiger", "spin":"right", "weight":0, "height":0, "abbv":"WT", "wins":0, "losses":0, "draws":0, "id":28}
     
 ];
 
