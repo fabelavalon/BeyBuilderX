@@ -36,7 +36,7 @@ var blades = [
     {"name":"Knife Shinobi", "spin":"right", "weight":30.90, "height":0, "abbv":"KfSh", "wins":0, "losses":0, "draws":0, "id":25},
     {"name":"Talon Ptera", "spin":"right", "weight":34.25, "height":0, "abbv":"TP", "wins":0, "losses":0, "draws":0, "id":26},
     {"name":"Steel Samurai", "spin":"right", "weight":31.08, "height":0, "abbv":"StSa", "wins":0, "losses":0, "draws":0, "id":27},
-    //{"name":"WeissTiger", "spin":"right", "weight":0, "height":0, "abbv":"WT", "wins":0, "losses":0, "draws":0, "id":28}
+    {"name":"WeissTiger", "spin":"right", "weight":34.83, "height":0, "abbv":"WT", "wins":0, "losses":0, "draws":0, "id":28}
     
 ];
 
@@ -79,7 +79,7 @@ var bits = [
     {"name":"Hexa", "weight":2.58, "height":2, "abbv":"H", "wins":0, "losses":0, "draws":0, "id":16},
     {"name":"Disc Ball", "weight":3.23, "height":4, "abbv":"DB", "wins":0, "losses":0, "draws":0, "id":17},
     {"name":"Quake", "weight":2.17, "height":2, "abbv":"Q", "wins":0, "losses":0, "draws":0, "id":18},
-    {"name":"Metal Needle", "weight":2.75, "height":2, "abbv":"MN", "wins":0, "losses":0, "draws":0, "id":19}//,
-    //{"name":"Unite", "weight":0, "height":2, "abbv":"U", "wins":0, "losses":0, "draws":0, "id":20}
+    {"name":"Metal Needle", "weight":2.75, "height":2, "abbv":"MN", "wins":0, "losses":0, "draws":0, "id":19},
+    {"name":"Unite", "weight":2.12, "height":2, "abbv":"U", "wins":0, "losses":0, "draws":0, "id":20}
 
 ];
