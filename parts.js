@@ -40,11 +40,19 @@ var blades = [
     {"name":"CobaltDragoon", "spin":"left", "weight":37.80, "height":0, "abbv":"CDg", "wins":0, "losses":0, "draws":0, "id":29},
     {"name":"BlackShell", "spin":"right", "weight":32.43, "height":0, "abbv":"BS", "wins":0, "losses":0, "draws":0, "id":30},
     {"name":"Optimus Prime", "spin":"right", "weight":31.75, "height":0, "abbv":"OP", "wins":0, "losses":0, "draws":0, "id":31},
-    {"name":"StarScream", "spin":"right", "weight":29.81, "height":0, "abbv":"StSc", "wins":0, "losses":0, "draws":0, "id":32},
+    {"name":"Starscream", "spin":"right", "weight":29.81, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":32},
     {"name":"Optimus Primal", "spin":"right", "weight":32.43, "height":0, "abbv":"OPl", "wins":0, "losses":0, "draws":0, "id":33},
-    {"name":"Megatron", "spin":"right", "weight":31.50, "height":0, "abbv":"MT", "wins":0, "losses":0, "draws":0, "id":34}//,
+    {"name":"Megatron", "spin":"right", "weight":31.50, "height":0, "abbv":"M", "wins":0, "losses":0, "draws":0, "id":34}//,
     //{"name":"LeonCrest", "spin":"right", "weight":0, "height":0, "abbv":"LCr", "wins":0, "losses":0, "draws":0, "id":35},
-    //{"name":"PhoenixRudder", "spin":"right", "weight":0, "height":0, "abbv":"PR", "wins":0, "losses":0, "draws":0, "id":36}
+    //{"name":"PhoenixRudder", "spin":"right", "weight":0, "height":0, "abbv":"PR", "wins":0, "losses":0, "draws":0, "id":36},
+    //{"name":"Luke Skywalker", "spin":"right", "weight":0, "height":0, "abbv":"LW", "wins":0, "losses":0, "draws":0, "id":37},
+    //{"name":"Darth Vader", "spin":"right", "weight":0, "height":0, "abbv":"DV", "wins":0, "losses":0, "draws":0, "id":38},
+    //{"name":"Moff Gideon", "spin":"right", "weight":0, "height":0, "abbv":"MG", "wins":0, "losses":0, "draws":0, "id":39},
+    //{"name":"The Mandalorian", "spin":"right", "weight":0, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":40},
+    //{"name":"Iron Man", "spin":"right", "weight":0, "height":0, "abbv":"IM", "wins":0, "losses":0, "draws":0, "id":41},
+    //{"name":"Thanos", "spin":"right", "weight":0, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":42},
+    //{"name":"Spiderman", "spin":"right", "weight":0, "height":0, "abbv":"Sp", "wins":0, "losses":0, "draws":0, "id":43},
+    //{"name":"Venom", "spin":"right", "weight":0, "height":0, "abbv":"V", "wins":0, "losses":0, "draws":0, "id":44}
     
     
 ];
