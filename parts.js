@@ -1,7 +1,7 @@
 /*==========================================================*
  * BeyBuilder v1.1 for Beyblade X                           *
  * Author: Fabel                                            *
- * Copyright 2023                                           *
+ * Copyright 2023-2024                                      *
  *==========================================================*/
 
 //0 weight means no weight data yet, same for height
@@ -42,18 +42,23 @@ var blades = [
     {"name":"Optimus Prime", "spin":"right", "weight":31.75, "height":0, "abbv":"OP", "wins":0, "losses":0, "draws":0, "id":31},
     {"name":"Starscream", "spin":"right", "weight":29.81, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":32},
     {"name":"Optimus Primal", "spin":"right", "weight":32.43, "height":0, "abbv":"OPl", "wins":0, "losses":0, "draws":0, "id":33},
-    {"name":"Megatron", "spin":"right", "weight":31.50, "height":0, "abbv":"M", "wins":0, "losses":0, "draws":0, "id":34}//,
-    //{"name":"LeonCrest", "spin":"right", "weight":0, "height":0, "abbv":"LCr", "wins":0, "losses":0, "draws":0, "id":35},
-    //{"name":"PhoenixRudder", "spin":"right", "weight":0, "height":0, "abbv":"PR", "wins":0, "losses":0, "draws":0, "id":36},
-    //{"name":"Luke Skywalker", "spin":"right", "weight":0, "height":0, "abbv":"LW", "wins":0, "losses":0, "draws":0, "id":37},
-    //{"name":"Darth Vader", "spin":"right", "weight":0, "height":0, "abbv":"DV", "wins":0, "losses":0, "draws":0, "id":38},
-    //{"name":"Moff Gideon", "spin":"right", "weight":0, "height":0, "abbv":"MG", "wins":0, "losses":0, "draws":0, "id":39},
-    //{"name":"The Mandalorian", "spin":"right", "weight":0, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":40},
-    //{"name":"Iron Man", "spin":"right", "weight":0, "height":0, "abbv":"IM", "wins":0, "losses":0, "draws":0, "id":41},
-    //{"name":"Thanos", "spin":"right", "weight":0, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":42},
-    //{"name":"Spiderman", "spin":"right", "weight":0, "height":0, "abbv":"Sp", "wins":0, "losses":0, "draws":0, "id":43},
-    //{"name":"Venom", "spin":"right", "weight":0, "height":0, "abbv":"V", "wins":0, "losses":0, "draws":0, "id":44}
-    
+    {"name":"Megatron", "spin":"right", "weight":31.50, "height":0, "abbv":"M", "wins":0, "losses":0, "draws":0, "id":34},
+    {"name":"LeonCrest", "spin":"right", "weight":34.82, "height":0, "abbv":"LCr", "wins":0, "losses":0, "draws":0, "id":35},
+    {"name":"PhoenixRudder", "spin":"right", "weight":34.68, "height":0, "abbv":"PR", "wins":0, "losses":0, "draws":0, "id":36},
+    {"name":"AeroPegasus", "spin":"right", "weight":38.00, "height":0, "abbv":"AP", "wins":0, "losses":0, "draws":0, "id":37}//,
+    //{"name":"WhaleWave", "spin":"right", "weight":0, "height":0, "abbv":"WW", "wins":0, "losses":0, "draws":0, "id":38},
+    //{"name":"L-Drago", "spin":"left", "weight":0, "height":0, "abbv":"LD", "wins":0, "losses":0, "draws":0, "id":39},
+    //{"name":"Bite Croc", "spin":"right", "weight":0, "height":0, "abbv":"BC", "wins":0, "losses":0, "draws":0, "id":40},
+    //{"name":"Yell Kong", "spin":"right", "weight":0, "height":0, "abbv":"YK", "wins":0, "losses":0, "draws":0, "id":41},
+    //{"name":"Luke Skywalker", "spin":"right", "weight":0, "height":0, "abbv":"LS", "wins":0, "losses":0, "draws":0, "id":42},
+    //{"name":"Darth Vader", "spin":"right", "weight":0, "height":0, "abbv":"DV", "wins":0, "losses":0, "draws":0, "id":43},
+    //{"name":"Moff Gideon", "spin":"right", "weight":0, "height":0, "abbv":"MG", "wins":0, "losses":0, "draws":0, "id":44},
+    //{"name":"The Mandalorian", "spin":"right", "weight":0, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":45},
+    //{"name":"Iron Man", "spin":"right", "weight":0, "height":0, "abbv":"IM", "wins":0, "losses":0, "draws":0, "id":46},
+    //{"name":"Thanos", "spin":"right", "weight":0, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":47},
+    //{"name":"Spider-man", "spin":"right", "weight":0, "height":0, "abbv":"Sp", "wins":0, "losses":0, "draws":0, "id":48},
+    //{"name":"Venom", "spin":"right", "weight":0, "height":0, "abbv":"V", "wins":0, "losses":0, "draws":0, "id":49}
+
     
 ];
 
@@ -72,10 +77,10 @@ var rachets = [
     {"name":"5-70", "weight":6.70, "height":7, "abbv":"5-70", "wins":0, "losses":0, "draws":0, "id":10},
     {"name":"4-70", "weight":6.50, "height":7, "abbv":"4-70", "wins":0, "losses":0, "draws":0, "id":11},
     {"name":"1-80", "weight":6.72, "height":8, "abbv":"1-80", "wins":0, "losses":0, "draws":0, "id":12},
-    {"name":"2-60", "weight":6.20, "height":6, "abbv":"2-60", "wins":0, "losses":0, "draws":0, "id":13}//,
-    //{"name":"2-80", "weight":0, "height":8, "abbv":"2-80", "wins":0, "losses":0, "draws":0, "id":14},
-    //{"name":"7-60", "weight":0, "height":6, "abbv":"7-60", "wins":0, "losses":0, "draws":0, "id":15},
-    //{"name":"9-70", "weight":0, "height":7, "abbv":"9-70", "wins":0, "losses":0, "draws":0, "id":16}
+    {"name":"2-60", "weight":6.20, "height":6, "abbv":"2-60", "wins":0, "losses":0, "draws":0, "id":13},
+    {"name":"2-80", "weight":6.90, "height":8, "abbv":"2-80", "wins":0, "losses":0, "draws":0, "id":14},
+    {"name":"7-60", "weight":7.12, "height":6, "abbv":"7-60", "wins":0, "losses":0, "draws":0, "id":15},
+    {"name":"9-70", "weight":6.32, "height":7, "abbv":"9-70", "wins":0, "losses":0, "draws":0, "id":16}
 
 ];
 
@@ -103,7 +108,8 @@ var bits = [
     {"name":"Metal Needle", "weight":2.75, "height":2, "abbv":"MN", "wins":0, "losses":0, "draws":0, "id":19},
     {"name":"Unite", "weight":2.12, "height":2, "abbv":"U", "wins":0, "losses":0, "draws":0, "id":20},
     {"name":"Cyclone", "weight":2.12, "height":2, "abbv":"C", "wins":0, "losses":0, "draws":0, "id":21},
-    {"name":"Dot", "weight":2.00, "height":2, "abbv":"D", "wins":0, "losses":0, "draws":0, "id":22}//,
-    //{"name":"Glide", "weight":0, "height":2, "abbv":"G", "wins":0, "losses":0, "draws":0, "id":23}
+    {"name":"Dot", "weight":2.00, "height":2, "abbv":"D", "wins":0, "losses":0, "draws":0, "id":22},
+    {"name":"Glide", "weight":2.52, "height":2, "abbv":"G", "wins":0, "losses":0, "draws":0, "id":23}//,
+    //{"name":"Elevate", "weight":0, "height":4, "abbv":"E", "wins":0, "losses":0, "draws":0, "id":24}
 
 ];
