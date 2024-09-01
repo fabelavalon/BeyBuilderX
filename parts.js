@@ -45,19 +45,19 @@ var blades = [
     {"name":"Megatron", "spin":"right", "weight":31.50, "height":0, "abbv":"M", "wins":0, "losses":0, "draws":0, "id":34},
     {"name":"AeroPegasus", "spin":"right", "weight":38.00, "height":0, "abbv":"AP", "wins":0, "losses":0, "draws":0, "id":35},
     {"name":"LeonCrest", "spin":"right", "weight":34.82, "height":0, "abbv":"LCr", "wins":0, "losses":0, "draws":0, "id":36},
-    {"name":"PhoenixRudder", "spin":"right", "weight":34.68, "height":0, "abbv":"PR", "wins":0, "losses":0, "draws":0, "id":37}//,
-    //{"name":"WhaleWave", "spin":"right", "weight":0, "height":0, "abbv":"WW", "wins":0, "losses":0, "draws":0, "id":38},
-    //{"name":"L-Drago", "spin":"left", "weight":0, "height":0, "abbv":"LD", "wins":0, "losses":0, "draws":0, "id":39},
-    //{"name":"Bite Croc", "spin":"right", "weight":0, "height":0, "abbv":"BC", "wins":0, "losses":0, "draws":0, "id":40},
-    //{"name":"Yell Kong", "spin":"right", "weight":0, "height":0, "abbv":"YK", "wins":0, "losses":0, "draws":0, "id":41},
-    //{"name":"Luke Skywalker", "spin":"right", "weight":0, "height":0, "abbv":"LS", "wins":0, "losses":0, "draws":0, "id":42},
-    //{"name":"Darth Vader", "spin":"right", "weight":0, "height":0, "abbv":"DV", "wins":0, "losses":0, "draws":0, "id":43},
-    //{"name":"Moff Gideon", "spin":"right", "weight":0, "height":0, "abbv":"MG", "wins":0, "losses":0, "draws":0, "id":44},
-    //{"name":"The Mandalorian", "spin":"right", "weight":0, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":45},
-    //{"name":"Iron Man", "spin":"right", "weight":0, "height":0, "abbv":"IM", "wins":0, "losses":0, "draws":0, "id":46},
-    //{"name":"Thanos", "spin":"right", "weight":0, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":47},
-    //{"name":"Spider-man", "spin":"right", "weight":0, "height":0, "abbv":"Sp", "wins":0, "losses":0, "draws":0, "id":48},
-    //{"name":"Venom", "spin":"right", "weight":0, "height":0, "abbv":"V", "wins":0, "losses":0, "draws":0, "id":49}
+    {"name":"PhoenixRudder", "spin":"right", "weight":34.68, "height":0, "abbv":"PR", "wins":0, "losses":0, "draws":0, "id":37},
+    {"name":"Bite Croc", "spin":"right", "weight":34.05, "height":0, "abbv":"BC", "wins":0, "losses":0, "draws":0, "id":38},
+    {"name":"Yell Kong", "spin":"right", "weight":31.24, "height":0, "abbv":"YK", "wins":0, "losses":0, "draws":0, "id":39},
+    {"name":"Iron Man", "spin":"right", "weight":32.07, "height":0, "abbv":"IM", "wins":0, "losses":0, "draws":0, "id":40},
+    {"name":"Thanos", "spin":"right", "weight":29.32, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":41},
+    {"name":"Spider-man", "spin":"right", "weight":33.06, "height":0, "abbv":"Sp", "wins":0, "losses":0, "draws":0, "id":42},
+    {"name":"Venom", "spin":"right", "weight":34.56, "height":0, "abbv":"V", "wins":0, "losses":0, "draws":0, "id":43},
+    {"name":"Luke Skywalker", "spin":"right", "weight":30.19, "height":0, "abbv":"LS", "wins":0, "losses":0, "draws":0, "id":44},
+    {"name":"Darth Vader", "spin":"right", "weight":30.40, "height":0, "abbv":"DV", "wins":0, "losses":0, "draws":0, "id":45},
+    {"name":"Moff Gideon", "spin":"right", "weight":30.59, "height":0, "abbv":"MG", "wins":0, "losses":0, "draws":0, "id":46},
+    {"name":"The Mandalorian", "spin":"right", "weight":30.88, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":47}//,
+    //{"name":"WhaleWave", "spin":"right", "weight":0, "height":0, "abbv":"WW", "wins":0, "losses":0, "draws":0, "id":48},
+    //{"name":"L-Drago", "spin":"left", "weight":0, "height":0, "abbv":"LD", "wins":0, "losses":0, "draws":0, "id":49}
 
     
 ];
