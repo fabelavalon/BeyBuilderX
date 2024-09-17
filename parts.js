@@ -55,9 +55,12 @@ var blades = [
     {"name":"Luke Skywalker", "spin":"right", "weight":30.19, "height":0, "abbv":"LS", "wins":0, "losses":0, "draws":0, "id":44},
     {"name":"Darth Vader", "spin":"right", "weight":30.40, "height":0, "abbv":"DV", "wins":0, "losses":0, "draws":0, "id":45},
     {"name":"Moff Gideon", "spin":"right", "weight":30.59, "height":0, "abbv":"MG", "wins":0, "losses":0, "draws":0, "id":46},
-    {"name":"The Mandalorian", "spin":"right", "weight":30.88, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":47}//,
-    //{"name":"WhaleWave", "spin":"right", "weight":0, "height":0, "abbv":"WW", "wins":0, "losses":0, "draws":0, "id":48},
-    //{"name":"L-Drago", "spin":"left", "weight":0, "height":0, "abbv":"LD", "wins":0, "losses":0, "draws":0, "id":49}
+    {"name":"The Mandalorian", "spin":"right", "weight":30.88, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":47},
+    {"name":"WhaleWave", "spin":"right", "weight":38.15, "height":0, "abbv":"WW", "wins":0, "losses":0, "draws":0, "id":48},
+    {"name":"L-Drago:Upper", "spin":"left", "weight":33.85, "height":0, "abbv":"LD:U", "wins":0, "losses":0, "draws":0, "id":49},
+    {"name":"L-Drago:Rapid Hit", "spin":"left", "weight":33.22, "height":0, "abbv":"LD:R", "wins":0, "losses":0, "draws":0, "id":50}//,
+    //{"name":"BearScratch", "spin":"right", "weight": 0, "height":0, "abbv":"BSc", "wins":0, "losses":0, "draws":0, "id":51},
+    //{"name":"SilverWolf", "spin":"right", "weight":0, "height":0, "abbv":"SW", "wins":0, "losses":0, "draws":0, "id":50}
 
     
 ];
@@ -109,7 +112,8 @@ var bits = [
     {"name":"Unite", "weight":2.12, "height":2, "abbv":"U", "wins":0, "losses":0, "draws":0, "id":20},
     {"name":"Cyclone", "weight":2.12, "height":2, "abbv":"C", "wins":0, "losses":0, "draws":0, "id":21},
     {"name":"Dot", "weight":2.00, "height":2, "abbv":"D", "wins":0, "losses":0, "draws":0, "id":22},
-    {"name":"Glide", "weight":2.52, "height":2, "abbv":"G", "wins":0, "losses":0, "draws":0, "id":23}//,
-    //{"name":"Elevate", "weight":0, "height":4, "abbv":"E", "wins":0, "losses":0, "draws":0, "id":24}
+    {"name":"Glide", "weight":2.52, "height":2, "abbv":"G", "wins":0, "losses":0, "draws":0, "id":23},
+    {"name":"Elevate", "weight":2.23, "height":1, "abbv":"E", "wins":0, "losses":0, "draws":0, "id":24}//,
+    //{"name":"Free Ball", "weight":0, "height":2, "abbv":"FB", "wins":0, "losses":0, "draws":0, "id":25}
 
 ];
