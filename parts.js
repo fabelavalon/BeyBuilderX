@@ -58,9 +58,14 @@ var blades = [
     {"name":"The Mandalorian", "spin":"right", "weight":30.88, "height":0, "abbv":"TM", "wins":0, "losses":0, "draws":0, "id":47},
     {"name":"WhaleWave", "spin":"right", "weight":38.15, "height":0, "abbv":"WW", "wins":0, "losses":0, "draws":0, "id":48},
     {"name":"L-Drago:Upper", "spin":"left", "weight":33.85, "height":0, "abbv":"LD:U", "wins":0, "losses":0, "draws":0, "id":49},
-    {"name":"L-Drago:Rapid Hit", "spin":"left", "weight":33.22, "height":0, "abbv":"LD:R", "wins":0, "losses":0, "draws":0, "id":50}//,
-    //{"name":"BearScratch", "spin":"right", "weight": 0, "height":0, "abbv":"BSc", "wins":0, "losses":0, "draws":0, "id":51},
-    //{"name":"SilverWolf", "spin":"right", "weight":0, "height":0, "abbv":"SW", "wins":0, "losses":0, "draws":0, "id":50}
+    {"name":"L-Drago:Rapid Hit", "spin":"left", "weight":33.22, "height":0, "abbv":"LD:R", "wins":0, "losses":0, "draws":0, "id":50},
+    {"name":"Savage Bear", "spin":"right", "weight": 29.74, "height":0, "abbv":"SB", "wins":0, "losses":0, "draws":0, "id":51},
+    {"name":"Roar Tyranno", "spin":"right", "weight":35.97, "height":0, "abbv":"RT", "wins":0, "losses":0, "draws":0, "id":52},
+    {"name":"SilverWolf", "spin":"right", "weight":36.83, "height":0, "abbv":"SW", "wins":0, "losses":0, "draws":0, "id":53},
+    //{"name":"CrimsonGaruda", "spin":"right", "weight":0, "height":0, "abbv":"CS", "wins":0, "losses":0, "draws":0, "id":54},
+    //{"name":"SamuraiSaber", "spin":"right", "weight":0, "height":0, "abbv":"SaSa", "wins":0, "losses":0, "draws":0, "id":55},
+    //{"name":"KnightMail", "spin":"right", "weight":0, "height":0, "abbv":"KM", "wins":0, "losses":0, "draws":0, "id":56}
+    
 
     
 ];
@@ -83,7 +88,9 @@ var rachets = [
     {"name":"2-60", "weight":6.20, "height":6, "abbv":"2-60", "wins":0, "losses":0, "draws":0, "id":13},
     {"name":"2-80", "weight":6.90, "height":8, "abbv":"2-80", "wins":0, "losses":0, "draws":0, "id":14},
     {"name":"7-60", "weight":7.12, "height":6, "abbv":"7-60", "wins":0, "losses":0, "draws":0, "id":15},
-    {"name":"9-70", "weight":6.32, "height":7, "abbv":"9-70", "wins":0, "losses":0, "draws":0, "id":16}
+    {"name":"9-70", "weight":6.32, "height":7, "abbv":"9-70", "wins":0, "losses":0, "draws":0, "id":16}//,
+    //{"name":"3-85", "weight":0, "height":8.5, "abbv":"3-85", "wins":0, "losses":0, "draws":0, "id":17}
+    //{"name":"7-70", "weight":0, "height":7, "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":18}
 
 ];
 
@@ -113,7 +120,11 @@ var bits = [
     {"name":"Cyclone", "weight":2.12, "height":2, "abbv":"C", "wins":0, "losses":0, "draws":0, "id":21},
     {"name":"Dot", "weight":2.00, "height":2, "abbv":"D", "wins":0, "losses":0, "draws":0, "id":22},
     {"name":"Glide", "weight":2.52, "height":2, "abbv":"G", "wins":0, "losses":0, "draws":0, "id":23},
-    {"name":"Elevate", "weight":2.23, "height":1, "abbv":"E", "wins":0, "losses":0, "draws":0, "id":24}//,
-    //{"name":"Free Ball", "weight":0, "height":2, "abbv":"FB", "wins":0, "losses":0, "draws":0, "id":25}
+    {"name":"Elevate", "weight":2.23, "height":1, "abbv":"E", "wins":0, "losses":0, "draws":0, "id":24},
+    {"name":"Free Ball", "weight":1.94, "height":2, "abbv":"FB", "wins":0, "losses":0, "draws":0, "id":25}//,
+    //{"name":"Trans Point", "weight":0, "height":1, "abbv":"TP", "wins":0, "losses":0, "draws":0, "id":26},
+    //{"name":"Level", "weight":0, "height":2, "abbv":"L", "wins":0, "losses":0, "draws":0, "id":27},
+    //{"name":"Bound Spike", "weight":0, "height":2, "abbv":"BS", "wins":0, "losses":0, "draws":0, "id":28},
+    //{"name":"Rubber Acell", "weight":0, "height":2, "abbv":"RA", "wins":0, "losses":0, "draws":0, "id":29}
 
 ];
