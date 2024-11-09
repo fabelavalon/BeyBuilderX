@@ -24,68 +24,98 @@
         <h1>BeyBuilder X v1.1</h1>
         <h3>for Beyblade X</h3>
     </div>
-      
-      <div class="container-fluid border">
-        <div class="row">
-          <!--BeyBlade 1 and 2 dropdowns and name space-->
-          <div class="col-md-8 border">
-              <select id="bey1Blade" class="select-basic"><option value="random">Random Blade</option></select>
-              <select id="bey1Rachet" class="select-basic"><option value="random">Random Rachet</option></select>
-              <select id="bey1Bit" class="select-basic"><option value="random">Random Bit</option></select>
-              <br>
-              <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
-              <br>
-              <br>
-              <select id="bey2Blade" class="select-basic"><option value="random">Random Blade</option></select>
-              <select id="bey2Rachet" class="select-basic"><option value="random">Random Rachet</option></select>
-              <select id="bey2Bit" class="select-basic"><option value="random">Random Bit</option></select>
-              <br>
-              <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
-              <br>
-              <br>
-              <p style="color:white"id="buttonContainer"></p>
-              <p style="color:white" id="winnerLog"></p>
-              <p style="color:white" id="error"></p>
-          </div>
-          <div class="col-sm-12 col-md-4 border">
-              <div class="row">
-                <!--BeyBlade 1 stat space-->
-                <div class="col-sm-6 col-md-12 border">
-                      <span id="bey1Is">Beyblade 1 has not been selected.</span>
-                      <br>
-                      <span id="bey1Stats"></span>
-                      <br>
-                      <span id="bey1KO"></span>
-                      <br>
-                      <span id="bey1SO"></span>
-                      <br>
-                      <span id="bey1Bst"></span>
-                      <br>
-                      <span id="bey1X"></span>
-                      <br>
-                      <span id="bey1Draw"></span>
-                </div>
-                <!--BeyBlade 2 stat space-->
-                <div class="col-sm-6 col-md-12 border">
-                    <span id="bey2Is">Beyblade 2 has not been selected.</span>
-                    <br>
-                    <span id="bey2Stats"></span>
-                    <br>
-                    <span id="bey2KO"></span>
-                    <br>
-                    <span id="bey2SO"></span>
-                    <br>
-                    <span id="bey2Bst"></span>
-                    <br>
-                    <span id="bey2X"></span>
-                    <br>
-                    <span id="bey2Draw"></span>
-                </div>
-              </div>
-        </div>
-      </div>
+
+    <div class="container-fluid border">
         
-        <!--not sure why this is here, but the layout breaks if I remove this div-->
+        <div class="row"> <!-- blade 1 selector and stats -->
+            <div class="col-md-9"> <!-- selectors -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="bey1Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey1Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey1Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                    </div>
+                </div>
+                <br> <!-- TODO: replace BR with vertical padding -->
+                <div class="d-grid gap-2 col-md-6 mx-auto">
+                    <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
+                </div>
+            </div>
+
+            
+            <div class="col-md-3"> <!-- stat block -->
+                <div class="row">
+                    <!--BeyBlade 1 stat space-->
+                    <div class="col border">
+                          <span id="bey1Is">Beyblade 1 has not been selected.</span>
+                          <br>
+                          <span id="bey1Stats"></span>
+                          <br>
+                          <span id="bey1KO"></span>
+                          <br>
+                          <span id="bey1SO"></span>
+                          <br>
+                          <span id="bey1Bst"></span>
+                          <br>
+                          <span id="bey1X"></span>
+                          <br>
+                          <span id="bey1Draw"></span>
+                    </div>
+                </div>
+            </div>
+        </div><!--end blade 1-->
+
+        
+        <div class="row"> <!-- blade 2 selector and stats -->
+            <div class="col-md-9"> <!-- selectors -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="bey2Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey2Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey2Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                    </div>
+                </div>
+                <br> <!-- TODO: replace BR with vertical padding -->
+                <div class="d-grid gap-2 col-md-6 mx-auto">
+                    <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
+                </div>
+            </div>
+
+            
+            <div class="col-md-3"> <!-- stat block -->
+                <div class="row">
+                    <!--BeyBlade 2 stat space-->
+                    <div class="col border">
+                        <span id="bey2Is">Beyblade 2 has not been selected.</span>
+                        <br>
+                        <span id="bey2Stats"></span>
+                        <br>
+                        <span id="bey2KO"></span>
+                        <br>
+                        <span id="bey2SO"></span>
+                        <br>
+                        <span id="bey2Bst"></span>
+                        <br>
+                        <span id="bey2X"></span>
+                        <br>
+                        <span id="bey2Draw"></span>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end blade 2 -->
+
+    </div>
+      
+    <div class="container-fluid border">
+        
         <div class="row">
           <div class="col">
               <h5>All Beyblades in the system:</h5>
