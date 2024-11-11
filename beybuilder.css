@@ -4,6 +4,13 @@
  *Copyright 2023                                           *
  *=========================================================*/
 
+/* win buttons */
+.win-button-title{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+
 /* styling for drop downs */
 .select-basic{
     color: #000;

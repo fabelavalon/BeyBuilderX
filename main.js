@@ -14,16 +14,6 @@ var allRachets = rachets;
 var allBitss = bits;
 
 //create the elements for the buttons that will get generated via this script
-var bey1WinSO = document.createElement("button");
-var bey1WinKO = document.createElement("button");
-var bey1WinBst = document.createElement("button");
-var bey1WinX = document.createElement("button");
-var bey2WinSO = document.createElement("button");
-var bey2WinKO = document.createElement("button");
-var bey2WinBst = document.createElement("button");
-var bey2WinX = document.createElement("button");
-var drawButton = document.createElement("button");
-var undoButton = document.createElement("button");
 var bey1Statbtn = document.createElement("button");
 var bey2Statbtn = document.createElement("button");
 var showAllBeysbtn = document.createElement("button");
@@ -49,6 +39,10 @@ var bitDropdown1 = document.getElementById("bitR1");
 var bladeDropdown2 = document.getElementById("bladeR2");
 var rachetDropdown2 = document.getElementById("rachetR2");
 var bitDropdown2 = document.getElementById("bitR2");
+
+// ... for the titles above win/lose buttons
+var bey1WinTitle = document.getElementById("bey1-button-title");
+var bey2WinTitle = document.getElementById("bey2-button-title");
 
 //...for the dbList
 var selectedBey = document.getElementById("dbSelectList");
@@ -330,7 +324,7 @@ function isBeyRandom(bladeState, rachetState, bitState){
 //populates win buttons on screen
 function createWinButtons(){
 
-var buttonContainer = document.getElementById("buttonContainer");
+    var buttonContainer = document.getElementById("buttonContainer");
 
     if(wasBey1Generated&&wasBey2Generated&&!wasWinButtonGenerated){
         buttonContainer.style.visibility="visible";
@@ -341,6 +335,10 @@ var buttonContainer = document.getElementById("buttonContainer");
         updateRecords(bey1, bey2, "update");
         updateRecords(bey2, bey1, "update");
         displayRecords();
+
+        // titles above win buttons
+        bey1WinTitle.textContent = bey1.name;
+        bey2WinTitle.textContent = bey2.name;
 
     }
 

@@ -115,26 +115,98 @@
     </div><!-- end selectors and stat blocks -->
     
     <div class="container-fluid border">
-      <p class="" id="buttonContainer">
-        <!-- Bey 1 Win Buttons -->
-        <button class="btn btn-basic" value="B1WKO" onclick="choseWinner(1, 'KO')">Bey 1 OF Win</button>
-        <button class="btn btn-basic" value="B1WSO" onclick="choseWinner(1, 'SO')">Bey 1 SF Win</button>
-        <button class="btn btn-basic" value="B1WBST" onclick="choseWinner(1, 'burst')">Bey 1 Burst Win</button>
-        <button class="btn btn-basic" value="B1WX" onclick="choseWinner(1, 'x')">Bey 1 Xtreme Win</button>
 
-        <!-- Bey 2 Win Buttons -->
-        <button class="btn btn-basic" value="B2WKO" onclick="choseWinner(2, 'KO')">Bey 2 OF Win</button>
-        <button class="btn btn-basic" value="B2WSO" onclick="choseWinner(2, 'SO')">Bey 2 SF Win</button>
-        <button class="btn btn-basic" value="B2WBST" onclick="choseWinner(2, 'burst')">Bey 2 Burst Win</button>
-        <button class="btn btn-basic" value="B2WX" onclick="choseWinner(2, 'x')">Bey 2 Xtreme Win</button>
+      
+      <div class="row"> <!-- win buttons on left, stat container on right -->
 
-        <!-- Draw and Undo Buttons -->
-        <button class="btn btn-basic" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
-        <button class="btn btn-basic" value="undo" onclick="undoLastRecord()">Undo</button>
-      </p>
+        <div class="col-md-6" id="buttonContainer">
+          <!-- Bey 1 Win Buttons -->
+          <div class="row">
+            <div class="col-6"> <!-- on small size, place bey1 left and bey2 right -->
+              <p class="row win-button-title" id="bey1-button-title">
+                Bey 1:
+              </p>
+              <div class="row">
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
+              </div>
+            </div>
+            
+            <div class="col-6">
+              <p class="row win-button-title" id="bey2-button-title">
+                Bey 2:
+              </p>
+              <div class="row">
+                <!-- Bey 2 Win Buttons -->
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Draw and Undo Buttons -->
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <button class="btn btn-basic" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+              <button class="btn btn-basic" value="undo" onclick="undoLastRecord()">Undo</button>
+            </div>
+          </div>
 
-      <p style="color:white" id="winnerLog"></p>
-      <p style="color:white" id="error"></p>
+          <p style="color:white" id="winnerLog"></p>
+          <p style="color:white" id="error"></p>
+  
+        </div><!--end buttonContainer-->
+
+        <!--Records table for selected beys-->
+        <div class="col-md-6" id="recordsSpace">
+  
+          <table style="width:100%">
+            <tr>
+              <td class="text-end"></td>
+              <th class="text-end" id="record1">bey1</th>
+              <td class="text-center">vs</td>
+              <th id="record2">bey2</th>
+            </tr>
+            <tr>
+              <td class="text-end">OFs:</td>
+              <td class="text-end" id="ko1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="ko2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end">SFs:</td>
+              <td class="text-end" id="so1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="so2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end">Bursts:</td>
+              <td class="text-end" id="bst1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="bst2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end">Xtreme KOs:</td>
+              <td class="text-end" id="x1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="x2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end">Draws:</td>
+              <td></td>
+              <td class="text-center" id="draws">0</td>
+            </tr>
+          </table>
+  
+        </div><!--end recordSpace-->
+      </div>
+       
     </div>
 
     <div class="container-fluid border">
@@ -170,50 +242,6 @@
               <br>
               <span id="dbBeyDraw"></span>
               <br>
-          </div>
-          <div class="col-sm-1 col-xl-1" id="recordsSpace">
-          </div>
-          <!--Records table for selected beys-->
-          <div class="col-xs-0 col-sm-0 col-xl-5" id="recordsSpace">
-
-            <table style="width:100%">
-              <tr>
-                <td class="text-end"></td>
-                <th class="text-end" id="record1">bey1</th>
-                <td class="text-center">vs</td>
-                <th id="record2">bey2</th>
-              </tr>
-              <tr>
-                <td class="text-end">OFs:</td>
-                <td class="text-end" id="ko1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="ko2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">SFs:</td>
-                <td class="text-end" id="so1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="so2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">Bursts:</td>
-                <td class="text-end" id="bst1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="bst2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">Xtreme KOs:</td>
-                <td class="text-end" id="x1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="x2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">Draws:</td>
-                <td></td>
-                <td class="text-center" id="draws">0</td>
-              </tr>
-            </table>
-
           </div>
         </div>
       </div>
