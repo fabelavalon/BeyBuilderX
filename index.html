@@ -117,19 +117,19 @@
     <div class="container-fluid border">
       <p class="" id="buttonContainer">
         <!-- Bey 1 Win Buttons -->
-        <button class="btn btn-basic" value="B1WKO" onclick="winnerChosen(this.value)">Bey 1 OF Win</button>
-        <button class="btn btn-basic" value="B1WSO" onclick="winnerChosen(this.value)">Bey 1 SF Win</button>
-        <button class="btn btn-basic" value="B1WBST" onclick="winnerChosen(this.value)">Bey 1 Burst Win</button>
-        <button class="btn btn-basic" value="B1WX" onclick="winnerChosen(this.value)">Bey 1 Xtreme Win</button>
+        <button class="btn btn-basic" value="B1WKO" onclick="choseWinner(1, 'KO')">Bey 1 OF Win</button>
+        <button class="btn btn-basic" value="B1WSO" onclick="choseWinner(1, 'SO')">Bey 1 SF Win</button>
+        <button class="btn btn-basic" value="B1WBST" onclick="choseWinner(1, 'burst')">Bey 1 Burst Win</button>
+        <button class="btn btn-basic" value="B1WX" onclick="choseWinner(1, 'x')">Bey 1 Xtreme Win</button>
 
         <!-- Bey 2 Win Buttons -->
-        <button class="btn btn-basic" value="B2WKO" onclick="winnerChosen(this.value)">Bey 2 OF Win</button>
-        <button class="btn btn-basic" value="B2WSO" onclick="winnerChosen(this.value)">Bey 2 SF Win</button>
-        <button class="btn btn-basic" value="B2WBST" onclick="winnerChosen(this.value)">Bey 2 Burst Win</button>
-        <button class="btn btn-basic" value="B2WX" onclick="winnerChosen(this.value)">Bey 2 Xtreme Win</button>
+        <button class="btn btn-basic" value="B2WKO" onclick="choseWinner(2, 'KO')">Bey 2 OF Win</button>
+        <button class="btn btn-basic" value="B2WSO" onclick="choseWinner(2, 'SO')">Bey 2 SF Win</button>
+        <button class="btn btn-basic" value="B2WBST" onclick="choseWinner(2, 'burst')">Bey 2 Burst Win</button>
+        <button class="btn btn-basic" value="B2WX" onclick="choseWinner(2, 'x')">Bey 2 Xtreme Win</button>
 
         <!-- Draw and Undo Buttons -->
-        <button class="btn btn-basic" value="draw" onclick="winnerChosen(this.value)">Draw</button>
+        <button class="btn btn-basic" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
         <button class="btn btn-basic" value="undo" onclick="undoLastRecord()">Undo</button>
       </p>
 

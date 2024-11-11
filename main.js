@@ -346,87 +346,53 @@ var buttonContainer = document.getElementById("buttonContainer");
 
 }
 
-//onclick for the win buttons
-function winnerChosen(buttonID){
+/**
+ * set winner when user presses button
+ * @param {int} beyNumber 
+ * @param {string} winType : 'ko', 'so', 'x', 'burst', 'draw'
+ */
+function choseWinner(beyNumber, winType) {
+    console.log("Winner: " + beyNumber + " by: " + winType);
+    var winnerBey = ( beyNumber==1 ) ? bey1 : bey2; // if beyNumber==1, choose bey1, else choose bey2
+    var loserBey = ( beyNumber==1 ) ? bey2 : bey1;
 
-    switch(buttonID){
-        case "B1WKO":
-            updateWinCounts(bey1, bey2, "KO");
-            updateRecords(bey1, bey2, "KO");
-            lastRecordOutcome = "KO";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Over Finish!";
+    // set winner (or draw)
+    updateWinCounts(winnerBey, loserBey, winType);
+    updateRecords(winnerBey, loserBey, winType);
+    lastRecordOutcome = winType;
+    lastRecordWinner = winnerBey;
+    lastRecordLoser = loserBey;
+
+    // convert short text to text description
+    var winText = "";
+    switch(winType) {
+        case "KO":
+            winText="Over Finish";
             break;
-        case "B1WSO":
-            updateWinCounts(bey1, bey2, "SO");
-            updateRecords(bey1, bey2, "SO");
-            lastRecordOutcome = "SO";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Spin Finish!";
+        case "SO":
+            winText="Spin Finish";
             break;
-        case "B1WBST":
-            updateWinCounts(bey1, bey2, "burst");
-            updateRecords(bey1, bey2, "burst");
-            lastRecordOutcome = "burst";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Burst Finish!";
+        case "burst":
+            winText="Burst Finish";
             break;
-        case "B1WX":
-            updateWinCounts(bey1, bey2, "x");
-            updateRecords(bey1, bey2, "x");
-            lastRecordOutcome = "x";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Xtreme Finish!";
-            break;
-        case "B2WKO":
-            updateWinCounts(bey2, bey1, "KO");
-            updateRecords(bey2, bey1, "KO");
-            lastRecordOutcome = "KO";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Over Finish!";
-            break;
-        case "B2WSO":
-            updateWinCounts(bey2, bey1, "SO");
-            updateRecords(bey2, bey1, "SO");
-            lastRecordOutcome = "SO";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Spin Finish!";
-            break;
-        case "B2WBST":
-            updateWinCounts(bey2, bey1, "burst");
-            updateRecords(bey2, bey1, "burst");
-            lastRecordOutcome = "burst";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Burst Finish!";
-            break;
-        case "B2WX":
-            updateWinCounts(bey2, bey1, "x");
-            updateRecords(bey2, bey1, "x");
-            lastRecordOutcome = "x";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Xtreme Finish!";
+        case "x":
+            winText="Xtreme Finish";
             break;
         case "draw":
-            updateWinCounts(bey1, bey2, "draw");
-            updateRecords(bey1, bey2, "draw");
-            lastRecordOutcome = "draw";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "It ended in a Draw!";
+            winText="Draw";
             break;
         default:
-            winners.textContent = "Something went wrong, results not logged.";
+            winText="OOPS"
+    }
+
+    if(winType=="draw" || beyNumber==0) {
+        winners.textContent = "It ended in a Draw!";
+    } else {
+        winners.textContent = "The winner of this round is: " + winnerBey.name + " by "+ winText +"!";
     }
 
 }
+
 
 //add a new, not before generated beyblade to the database
 function addBeyblade(bey) {
