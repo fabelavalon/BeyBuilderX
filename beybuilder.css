@@ -33,6 +33,11 @@
     border-color: #67becf;
 }
 
+#buttonContainer {
+    color: white;
+    visibility: hidden;
+}
+
 /* styling for delete buttons */
 .btn-danger {
     color: #000;
