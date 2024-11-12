@@ -11,6 +11,14 @@
     justify-content: center;
 }
 
+/* record table */
+/* label on the left */
+.record-table-label{
+    width: 1%;
+    white-space: nowrap;
+    padding-left: 0.5em;
+}
+
 /* styling for drop downs */
 .select-basic{
     color: #000;
