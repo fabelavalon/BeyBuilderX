@@ -1178,12 +1178,16 @@ function showBeybladeStats(bey, whichBey) {
 function displayRecords(){
 
     var record1 = document.getElementById("record1");
+    var wins1 = document.getElementById("wins1");
+    var points1 = document.getElementById("points1");
     var ko1 = document.getElementById("ko1");
     var so1 = document.getElementById("so1");
     var bst1 = document.getElementById("bst1");
     var x1 = document.getElementById("x1");
-
+    
     var record2 = document.getElementById("record2");
+    var wins2 = document.getElementById("wins2");
+    var points2 = document.getElementById("points2");
     var ko2 = document.getElementById("ko2");
     var so2 = document.getElementById("so2");
     var bst2 = document.getElementById("bst2");
@@ -1199,12 +1203,16 @@ function displayRecords(){
         so1.textContent = doc.wso;
         bst1.textContent = doc.wbst;
         x1.textContent = doc.wx;
+        wins1.textContent = doc.wx + doc.wbst + doc.wko + doc.wso;
+        points1.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
         record2.textContent = bey2.name;
         ko2.textContent = doc.lko;
         so2.textContent = doc.lso;
         bst2.textContent =  doc.lbst;
         x2.textContent =  doc.lx;
+        wins2.textContent = doc.lx + doc.lbst + doc.lko + doc.lso;
+        points2.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
         
         draws.textContent = doc.draws;
     });
