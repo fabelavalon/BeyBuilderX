@@ -19,6 +19,21 @@
     padding-left: 0.5em;
 }
 
+#bey1StatsTable > tbody > tr:nth-child(1) > th { 
+    width: 100%
+}
+/* TODO: no border on this table */
+#bey1StatsTable{
+    border: none;
+    width: 100%;
+}
+/* child selector + override is not working as intended */
+#bey1StatsTable > tbody > tr { 
+    border: none;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
 /* styling for drop downs */
 .select-basic{
     color: #000;
@@ -48,9 +63,10 @@
     border-color: #67becf;
 }
 
-#buttonContainer {
+#vsContainer {
     color: white;
     visibility: hidden;
+    display: none;
 }
 
 /* styling for delete buttons */

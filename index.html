@@ -50,7 +50,7 @@
             <div class="col-md-3"> <!-- stat block -->
                 <div class="row">
                     <!--BeyBlade 1 stat space-->
-                    <div class="col border">
+                    <div class="col border text-center">
                           <span id="bey1Is">Beyblade 1 has not been selected.</span>
                           <br>
                           <span id="bey1Stats"></span>
@@ -66,6 +66,43 @@
                           <span id="bey1Draw"></span>
                     </div>
                 </div>
+
+                <!-- hiding until complete -->
+                <!-- TODO: styling, copy to bey2 -->
+                <div class="row" style="display:none"> 
+                  <div class="col">
+                    <table id="bey1StatsTable">
+                      <tr>
+                        <th class="text-center" colspan="2" id="bey1title"></th>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Weight:</td>
+                        <td class="text-center" id="bey1weight"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Spin Win/Loss:</td>
+                        <td class="text-center" id="bey1spin"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Burst Win/Loss:</td>
+                        <td class="text-center" id="bey1burst"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Over Win/Loss:</td>
+                        <td class="text-center" id="bey1over"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Xtreme Win/Loss:</td>
+                        <td class="text-center" id="bey1xtreme"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Draws:</td>
+                        <td class="text-center" id="bey1draws"></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                
             </div>
         </div><!--end blade 1-->
 
@@ -93,7 +130,7 @@
             <div class="col-md-3"> <!-- stat block -->
                 <div class="row">
                     <!--BeyBlade 2 stat space-->
-                    <div class="col border">
+                    <div class="col border text-center">
                         <span id="bey2Is">Beyblade 2 has not been selected.</span>
                         <br>
                         <span id="bey2Stats"></span>
@@ -114,7 +151,7 @@
 
     </div><!-- end selectors and stat blocks -->
     
-    <div class="container-fluid border">
+    <div class="container-fluid border" id="vsContainer">
 
       
       <div class="row"> <!-- win buttons on left, stat container on right -->

@@ -66,6 +66,14 @@ var bey1SO = document.getElementById("bey1SO");
 var bey1Bst = document.getElementById("bey1Bst");
 var bey1X = document.getElementById("bey1X");
 var bey1Draw = document.getElementById("bey1Draw");
+//
+var bey1title = document.getElementById("bey1title");
+var bey1draws = document.getElementById("bey1weight");
+var bey1weight = document.getElementById("bey1draws");
+var bey1spin = document.getElementById("bey1spin");
+var bey1over = document.getElementById("bey1over");
+var bey1burst = document.getElementById("bey1burst");
+var bey1xtreme = document.getElementById("bey1xtreme");
 
 //bey2 stats
 var bey2Is = document.getElementById("bey2Is");
@@ -324,10 +332,11 @@ function isBeyRandom(bladeState, rachetState, bitState){
 //populates win buttons on screen
 function createWinButtons(){
 
-    var buttonContainer = document.getElementById("buttonContainer");
+    var vsContainer = document.getElementById("vsContainer");
 
     if(wasBey1Generated&&wasBey2Generated&&!wasWinButtonGenerated){
-        buttonContainer.style.visibility="visible";
+        vsContainer.style.visibility="visible";
+        vsContainer.style.display="inherit";
 
         //once both beys are made, make sure they have a matchup in the recordsDBX
         addRecord(bey1, bey2);
@@ -1130,6 +1139,15 @@ function showBeybladeStats(bey, whichBey) {
                     bey1Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
+                }
+                if(!err){
+                    bey1title.textContent = "BeyBlade 1 is: " + doc.build.name;
+                    bey1weight.textContent = round(doc.build.weight,2) + " grams";
+                    bey1spin.textContent = doc.build.winsSO + " / " + doc.build.loseSO;
+                    bey1over.textContent = doc.build.winsKO + " / " + doc.build.loseKO;
+                    bey1burst.textContent = doc.build.winsBst + " / " + doc.build.loseBst;
+                    bey1xtreme.textContent = doc.build.winsX + " / " + doc.build.loseX;
+                    bey1draws.textContent = ""+ doc.build.draws;
                 }
                 // else{
                 //     console.log(err);
