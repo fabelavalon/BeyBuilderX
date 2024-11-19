@@ -41,8 +41,10 @@
                     </div>
                 </div>
                 <br> <!-- TODO: replace BR with vertical padding -->
-                <div class="d-grid gap-2 col-md-6 mx-auto">
-                    <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
+                <div class="row">
+                  <div class="d-grid gap-2 col-md-4 mx-auto">
+                      <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
+                  </div>
                 </div>
             </div>
 
@@ -121,11 +123,12 @@
                     </div>
                 </div>
                 <br> <!-- TODO: replace BR with vertical padding -->
-                <div class="d-grid gap-2 col-md-6 mx-auto">
-                    <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
+                <div class="row">
+                  <div class="d-grid gap-2 col-md-4 mx-auto">
+                      <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
+                  </div>
                 </div>
             </div>
-
             
             <div class="col-md-3"> <!-- stat block -->
                 <div class="row">
@@ -164,10 +167,10 @@
                 Bey 1:
               </p>
               <div class="row">
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
 
@@ -177,10 +180,10 @@
               </p>
               <div class="row">
                 <!-- Bey 2 Win Buttons -->
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
           </div>
@@ -188,10 +191,10 @@
           <!-- Draw and Undo Buttons -->
           <div class="row">
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-basic" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
+              <button class="btn btn-basic btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
             </div>
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-basic" value="undo" onclick="undoLastRecord()">Undo</button>
+              <button class="btn btn-basic btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
             </div>
           </div>
 
@@ -268,14 +271,14 @@
 
         <!--beyblade selector from database of beys-->
         <div class="row">
-          <div class="col-sm-4 col-xl-3">
-              <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()" multiple></select>
+          <div class="col-sm-6 col-xl-3">
+              <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()"></select>
               <br>
               <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-basic">Check Parts Records</button>
               <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
           </div>
           <!--dbBey display area-->
-          <div class="col-sm-4 col-xl-3" id="dbBeySpace">
+          <div class="col-sm-6 col-xl-3" id="dbBeySpace">
               <br>
               <span id="dbBeyIs"></span>
               <br>

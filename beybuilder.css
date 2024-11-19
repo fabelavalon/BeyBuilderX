@@ -6,7 +6,7 @@
 
 /* win buttons */
 .win-button-title{
-    width:100%;
+    width:auto;
     display: flex;
     justify-content: center;
 }
@@ -134,6 +134,14 @@
 .btn-basic:not(:disabled):not(.disabled).active:focus,
 .show>.btn-basic.dropdown-toggle:focus {
     box-shadow: 0 0 0 .2rem rgba(190, 190, 190, 0.5);
+}
+
+/* vs win buttons */
+.btn-win {
+    width: 120px;
+}
+.btn-nowin {
+    width: 80px;
 }
 
 /* make sure tables and table elements have the proper borders */
