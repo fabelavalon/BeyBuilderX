@@ -271,10 +271,12 @@
 
         <!--beyblade selector from database of beys-->
         <div class="row">
-          <div class="col-sm-6 col-xl-3">
+          <div class="col-sm-6 col-xl-3 d-grid">
               <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()"></select>
               <br>
+              <!-- TODO: use separate rows for buttons -->
               <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-basic">Check Parts Records</button>
+              <br>
               <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
           </div>
           <!--dbBey display area-->

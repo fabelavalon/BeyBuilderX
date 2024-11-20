@@ -1331,14 +1331,18 @@ function populateMatchHist(bey){
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
-        cell1.innerHTML = "Opposing Bey Name";
-        cell2.innerHTML = "OF Win/Loss";
-        cell3.innerHTML = "SF Win/Loss";
-        cell4.innerHTML = "Burst Win/Loss";
-        cell5.innerHTML = "Xtreme Win/Loss";
-        cell6.innerHTML = "Draws";
-
-        
+        cell1.classList.add('text-center');
+        cell2.classList.add('text-center');
+        cell3.classList.add('text-center');
+        cell4.classList.add('text-center');
+        cell5.classList.add('text-center');
+        cell6.classList.add('text-center');
+        cell1.innerHTML = "Spin";
+        cell2.innerHTML = "Burst";
+        cell3.innerHTML = "Over";
+        cell4.innerHTML = "Xtreme";
+        cell5.innerHTML = "Draws";
+        cell6.innerHTML = "Points";
         
         for(i = 0; i < doc.total_rows; i++){
             if(doc.rows[i].doc.denfender!==undefined) {
@@ -1348,19 +1352,33 @@ function populateMatchHist(bey){
                     }
             if(doc.rows[i].doc.challenger!==undefined) {
                 if(!err && bey.id==doc.rows[i].doc.challenger.id){
-                    var row = matchupSpace.insertRow(1);
+                    //title row
+                    var titleRow = matchupSpace.insertRow(1);
+                    var titleCell = titleRow.insertCell(0);
+                    titleCell.colSpan=6;
+                    titleCell.classList.add('text-center');
+                    titleCell.innerHTML = doc.rows[i].doc.defender.name;
+                    titleCell.style = 'padding-top: 6px; border-top: 3px solid;';
+                    //score
+                    var row = matchupSpace.insertRow(2);
                     var cell1 = row.insertCell(0);
                     var cell2 = row.insertCell(1);
                     var cell3 = row.insertCell(2);
                     var cell4 = row.insertCell(3);
                     var cell5 = row.insertCell(4);
                     var cell6 = row.insertCell(5);
-                    cell1.innerHTML = doc.rows[i].doc.defender.name;
-                    cell2.innerHTML = doc.rows[i].doc.wko + "/" + doc.rows[i].doc.lko;
-                    cell3.innerHTML = doc.rows[i].doc.wso + "/" + doc.rows[i].doc.lso;
-                    cell4.innerHTML = doc.rows[i].doc.wbst + "/" + doc.rows[i].doc.lbst;
-                    cell5.innerHTML = doc.rows[i].doc.wx + "/" + doc.rows[i].doc.lx;
-                    cell6.innerHTML = doc.rows[i].doc.draws;
+                    cell1.classList.add('text-center');
+                    cell2.classList.add('text-center');
+                    cell3.classList.add('text-center');
+                    cell4.classList.add('text-center');
+                    cell5.classList.add('text-center');
+                    cell6.classList.add('text-center');
+                    cell1.innerHTML = doc.rows[i].doc.wko + "/" + doc.rows[i].doc.lko;
+                    cell2.innerHTML = doc.rows[i].doc.wso + "/" + doc.rows[i].doc.lso;
+                    cell3.innerHTML = doc.rows[i].doc.wbst + "/" + doc.rows[i].doc.lbst;
+                    cell4.innerHTML = doc.rows[i].doc.wx + "/" + doc.rows[i].doc.lx;
+                    cell5.innerHTML = doc.rows[i].doc.draws;
+                    cell6.innerHTML = (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + "/" + (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso);
                 }
             }
             // else if(bey.id!=doc.rows[i].doc.challenger.id) {
