@@ -122,7 +122,7 @@ var lastRecordOutcome;
 //runs on launch, fills draop downs and database list
 function main(){
 
-    console.log("Welcome to BeyBuilder X Version 1.0");
+    console.log("Welcome to BeyBuilder X Version 1.2");
 
     bey1BladeDropdown.value="random";
     bey2BladeDropdown.value="random";
@@ -1355,7 +1355,9 @@ function populateMatchHist(bey){
                         });
                     }
             if(doc.rows[i].doc.challenger!==undefined) {
-                if(!err && bey.id==doc.rows[i].doc.challenger.id){
+                // don't display if there are 0 matches
+                var totalMatches = doc.rows[i].doc.wx + doc.rows[i].doc.wbst + doc.rows[i].doc.wko + doc.rows[i].doc.wso + doc.rows[i].doc.lx + doc.rows[i].doc.lbst + doc.rows[i].doc.lko + doc.rows[i].doc.lso +  doc.rows[i].doc.draws;
+                if(!err && bey.id==doc.rows[i].doc.challenger.id && totalMatches>0){
                     //title row
                     var titleRow = matchupSpace.insertRow(1);
                     var titleCell = titleRow.insertCell(0);
