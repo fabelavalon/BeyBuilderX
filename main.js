@@ -490,8 +490,8 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
             showBeyblades();
             dbBeyName.textContent = doc.build.name;
             dbBeyStats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
-            dbBeyKO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-            dbBeySO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+            dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+            dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
@@ -1064,8 +1064,8 @@ function setDbBey(){
             dbBeyName.textContent = doc.build.name;
             dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
             dbBeyStats.textContent = " Spin: " + doc.build.spin;
-            dbBeyKO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-            dbBeySO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+            dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+            dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
@@ -1094,8 +1094,6 @@ function setDbBey(){
                 createWinButtons()
             });
             dbBeySpace.append(bey2Statbtn);
-
-            dbBeySpace.append( document.createElement("br") );
             
             //edit bey stats in database
             editBeybtn.innerHTML = "Edit Stats";
@@ -1115,8 +1113,6 @@ function setDbBey(){
                 populateMatchHist(dbBey);
             });
             dbBeySpace.append(showMatchupbtn);
-
-            dbBeySpace.append( document.createElement("br") );
 
             //delete bey from database button
             removeBeybtn.innerHTML = "Delete Bey";
@@ -1142,8 +1138,8 @@ function showBeybladeStats(bey, whichBey) {
                 if(!err){
                     bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
                     bey1Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
-                    bey1KO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-                    bey1SO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+                    bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+                    bey1SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey1Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
@@ -1167,8 +1163,8 @@ function showBeybladeStats(bey, whichBey) {
                 if(!err){
                     bey2Is.textContent = "BeyBlade 2 is: " + doc.build.name;
                     bey2Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
-                    bey2KO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-                    bey2SO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+                    bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+                    bey2SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey2Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
                     bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
@@ -1293,8 +1289,8 @@ function showPartStats(partType, partID){
             case "blade":
                 partIs.textContent = allBlades[partID].name;
                 partStats.textContent = "Weight: " + round(allBlades[partID].weight,2) + " grams";
-                partKO.textContent = "OF Win/Loss: " + partWko + " / " + partLko;
-                partSO.textContent = "SF Win/Loss: " + partWso + " / " + partLso;
+                partKO.textContent = "Over Win/Loss: " + partWko + " / " + partLko;
+                partSO.textContent = "Spin Win/Loss: " + partWso + " / " + partLso;
                 partBst.textContent = "Burst Win/Loss: " + partWbst + " / " + partLbst;
                 partX.textContent = "Xtreme Win/Loss: " + partWx + " / " + partLx;
                 partDraw.textContent = "Draws: " + partDraw;
@@ -1302,8 +1298,8 @@ function showPartStats(partType, partID){
             case "rachet":
                 partIs.textContent = allRachets[partID].name;
                 partStats.textContent = "Weight: " + round(allRachets[partID].weight,2) + " grams";
-                partKO.textContent = "OF Win/Loss: " + partWko + " / " + partLko;
-                partSO.textContent = "SF Win/Loss: " + partWso + " / " + partLso;
+                partKO.textContent = "Over Win/Loss: " + partWko + " / " + partLko;
+                partSO.textContent = "Spin Win/Loss: " + partWso + " / " + partLso;
                 partBst.textContent = "Burst Win/Loss: " + partWbst + " / " + partLbst;
                 partX.textContent = "Xtreme Win/Loss: " + partWx + " / " + partLx;
                 partDraw.textContent = "Draws: " + partDraw;
@@ -1311,8 +1307,8 @@ function showPartStats(partType, partID){
             case "bit":
                 partIs.textContent = allBits[partID].name;
                 partStats.textContent = "Weight: " + round(allBits[partID].weight,2) + " grams";
-                partKO.textContent = "OF Win/Loss: " + partWko + " / " + partLko;
-                partSO.textContent = "SF Win/Loss: " + partWso + " / " + partLso;
+                partKO.textContent = "Over Win/Loss: " + partWko + " / " + partLko;
+                partSO.textContent = "Spin Win/Loss: " + partWso + " / " + partLso;
                 partBst.textContent = "Burst Win/Loss: " + partWbst + " / " + partLbst;
                 partX.textContent = "Xtreme Win/Loss: " + partWx + " / " + partLx;
                 partDraw.textContent = "Draws: " + partDraw;
@@ -1422,8 +1418,8 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
         cell1.innerHTML = "Selected Bey";
         cell2.innerHTMl = "Vs";
         cell3.innerHTML = "Opposing Bey";
-        cell4.innerHTML = "OF Win/Loss";
-        cell5.innerHTML = "SF Win/Loss";
+        cell4.innerHTML = "Over Win/Loss";
+        cell5.innerHTML = "Spin Win/Loss";
         cell6.innerHTML = "Burst Win/Loss";
         cell7.innerHTML = "Xtreme Win/Loss";
         cell8.innerHTML = "Draws";
