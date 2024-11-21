@@ -1714,5 +1714,13 @@ function round(num, places) {
     return Math.round(num * multiplier) / multiplier;
 }
 
+// quick spin animation
+function spinMe(me){
+    me.classList.add('spinme');
+    me.addEventListener('animationend', function () {
+        me.classList.remove('spinme');
+    }, { once: true });
+}
+
 //run main on startup
 main();

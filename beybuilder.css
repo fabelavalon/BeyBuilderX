@@ -169,3 +169,20 @@ table{
     background-color: inherit; 
     z-index: 1055; 
 }
+
+/* page footer */
+
+footer {
+    padding-left: 4px;
+    padding-right: 2px;
+}
+
+/* spin animation */
+.spinme {
+    animation: bigspin 1s 1;
+}
+@keyframes bigspin {
+    100% { 
+        transform: rotate(1440deg);
+    }
+}
