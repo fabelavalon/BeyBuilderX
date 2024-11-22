@@ -390,7 +390,7 @@ function choseWinner(beyNumber, winType) {
             winText="Draw";
             break;
         default:
-            winText="OOPS"
+            winText="Something went wrong, results not logged"
     }
 
     if(winType=="draw" || beyNumber==0) {
