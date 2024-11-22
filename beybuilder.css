@@ -4,6 +4,36 @@
  *Copyright 2023                                           *
  *=========================================================*/
 
+/* win buttons */
+.win-button-title{
+    width:auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* record table */
+/* label on the left */
+.record-table-label{
+    width: 1%;
+    white-space: nowrap;
+    padding-left: 0.5em;
+}
+
+#bey1StatsTable > tbody > tr:nth-child(1) > th { 
+    width: 100%
+}
+/* TODO: no border on this table */
+#bey1StatsTable{
+    border: none;
+    width: 100%;
+}
+/* child selector + override is not working as intended */
+#bey1StatsTable > tbody > tr { 
+    border: none;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
 /* styling for drop downs */
 .select-basic{
     color: #000;
@@ -31,6 +61,12 @@
     color: #fff;
     background-color: #59298c;
     border-color: #67becf;
+}
+
+#vsContainer {
+    color: white;
+    visibility: hidden;
+    display: none;
 }
 
 /* styling for delete buttons */
@@ -100,6 +136,14 @@
     box-shadow: 0 0 0 .2rem rgba(190, 190, 190, 0.5);
 }
 
+/* vs win buttons */
+.btn-win {
+    width: 120px;
+}
+.btn-nowin {
+    width: 80px;
+}
+
 /* make sure tables and table elements have the proper borders */
 td, tr {
     border-bottom: 1px solid black;
@@ -124,4 +168,21 @@ table{
     bottom: 0;
     background-color: inherit; 
     z-index: 1055; 
+}
+
+/* page footer */
+
+footer {
+    padding-left: 4px;
+    padding-right: 2px;
+}
+
+/* spin animation */
+.spinme {
+    animation: bigspin 1s 1;
+}
+@keyframes bigspin {
+    100% { 
+        transform: rotate(1440deg);
+    }
 }

@@ -14,16 +14,6 @@ var allRachets = rachets;
 var allBitss = bits;
 
 //create the elements for the buttons that will get generated via this script
-var bey1WinSO = document.createElement("button");
-var bey1WinKO = document.createElement("button");
-var bey1WinBst = document.createElement("button");
-var bey1WinX = document.createElement("button");
-var bey2WinSO = document.createElement("button");
-var bey2WinKO = document.createElement("button");
-var bey2WinBst = document.createElement("button");
-var bey2WinX = document.createElement("button");
-var drawButton = document.createElement("button");
-var undoButton = document.createElement("button");
 var bey1Statbtn = document.createElement("button");
 var bey2Statbtn = document.createElement("button");
 var showAllBeysbtn = document.createElement("button");
@@ -50,12 +40,17 @@ var bladeDropdown2 = document.getElementById("bladeR2");
 var rachetDropdown2 = document.getElementById("rachetR2");
 var bitDropdown2 = document.getElementById("bitR2");
 
+// ... for the titles above win/lose buttons
+var bey1WinTitle = document.getElementById("bey1-button-title");
+var bey2WinTitle = document.getElementById("bey2-button-title");
+
 //...for the dbList
 var selectedBey = document.getElementById("dbSelectList");
 
 //import elements for the logging...
 //..dbBey stats
 var dbBeyName = document.getElementById("dbBeyIs");
+var dbBeyWeight = document.getElementById("dbBeyWeight");
 var dbBeyStats = document.getElementById("dbBeyStats");
 var dbBeyKO = document.getElementById("dbBeyKO");
 var dbBeySO = document.getElementById("dbBeySO");
@@ -72,6 +67,14 @@ var bey1SO = document.getElementById("bey1SO");
 var bey1Bst = document.getElementById("bey1Bst");
 var bey1X = document.getElementById("bey1X");
 var bey1Draw = document.getElementById("bey1Draw");
+//
+var bey1title = document.getElementById("bey1title");
+var bey1draws = document.getElementById("bey1weight");
+var bey1weight = document.getElementById("bey1draws");
+var bey1spin = document.getElementById("bey1spin");
+var bey1over = document.getElementById("bey1over");
+var bey1burst = document.getElementById("bey1burst");
+var bey1xtreme = document.getElementById("bey1xtreme");
 
 //bey2 stats
 var bey2Is = document.getElementById("bey2Is");
@@ -119,7 +122,7 @@ var lastRecordOutcome;
 //runs on launch, fills draop downs and database list
 function main(){
 
-    console.log("Welcome to BeyBuilder X Version 1.0");
+    console.log("Welcome to BeyBuilder X Version 1.2");
 
     bey1BladeDropdown.value="random";
     bey2BladeDropdown.value="random";
@@ -330,109 +333,11 @@ function isBeyRandom(bladeState, rachetState, bitState){
 //populates win buttons on screen
 function createWinButtons(){
 
-var buttonContainer = document.getElementById("buttonContainer");
+    var vsContainer = document.getElementById("vsContainer");
 
     if(wasBey1Generated&&wasBey2Generated&&!wasWinButtonGenerated){
-        
-        //bey1 win by ko
-        bey1WinKO.innerHTML = "Bey 1 OF Win";
-        bey1WinKO.value = "B1WKO";
-        bey1WinKO.classList.add("btn");
-        bey1WinKO.classList.add("btn-basic");
-        bey1WinKO.addEventListener("click", function() {
-            winnerChosen(bey1WinKO.value);
-        });
-        buttonContainer.append(bey1WinKO);
-        
-        //bey1 win by so
-        bey1WinSO.innerHTML = "Bey 1 SF Win";
-        bey1WinSO.value = "B1WSO";
-        bey1WinSO.classList.add("btn");
-        bey1WinSO.classList.add("btn-basic");
-        bey1WinSO.addEventListener("click", function() {
-            winnerChosen(bey1WinSO.value);
-        });
-        buttonContainer.append(bey1WinSO);
-
-        //bey 1 win by burst out
-        bey1WinBst.innerHTML = "Bey 1 Burst Win";
-        bey1WinBst.value = "B1WBST";
-        bey1WinBst.classList.add("btn");
-        bey1WinBst.classList.add("btn-basic");
-        bey1WinBst.addEventListener("click", function() {
-            winnerChosen(bey1WinBst.value);
-        });
-        buttonContainer.append(bey1WinBst);
-
-        //bey 1 win by xtreme out
-        bey1WinX.innerHTML = "Bey 1 Xtreme Win";
-        bey1WinX.value = "B1WX";
-        bey1WinX.classList.add("btn");
-        bey1WinX.classList.add("btn-basic");
-        bey1WinX.addEventListener("click", function() {
-            winnerChosen(bey1WinX.value);
-        });
-        buttonContainer.append(bey1WinX);
-
-        //bey 2 win by ko
-        bey2WinKO.innerHTML = "Bey 2 OF Win";
-        bey2WinKO.value = "B2WKO";
-        bey2WinKO.classList.add("btn");
-        bey2WinKO.classList.add("btn-basic");
-        bey2WinKO.addEventListener("click", function() {
-            winnerChosen(bey2WinKO.value);
-        });
-        buttonContainer.append(bey2WinKO);
-        
-        //bey 2 win by so
-        bey2WinSO.innerHTML = "Bey 2 SF Win";
-        bey2WinSO.value = "B2WSO";
-        bey2WinSO.classList.add("btn");
-        bey2WinSO.classList.add("btn-basic");
-        bey2WinSO.addEventListener("click", function() {
-            winnerChosen(bey2WinSO.value);
-        });;
-        buttonContainer.append(bey2WinSO);
-
-        //bey 2 win by burst out
-        bey2WinBst.innerHTML = "Bey 2 Burst Win";
-        bey2WinBst.value = "B2WBST";
-        bey2WinBst.classList.add("btn");
-        bey2WinBst.classList.add("btn-basic");
-        bey2WinBst.addEventListener("click", function() {
-            winnerChosen(bey2WinBst.value);
-        });
-        buttonContainer.append(bey2WinBst);
-
-        //bey 2 win by xtreme out
-        bey2WinX.innerHTML = "Bey 2 Xtreme Win";
-        bey2WinX.value = "B2WX";
-        bey2WinX.classList.add("btn");
-        bey2WinX.classList.add("btn-basic");
-        bey2WinX.addEventListener("click", function() {
-            winnerChosen(bey2WinX.value);
-        });
-        buttonContainer.append(bey2WinX);
-
-        //draw button
-        drawButton.innerHTML = "Draw";
-        drawButton.value = "draw";
-        drawButton.classList.add("btn");
-        drawButton.classList.add("btn-basic");
-        drawButton.addEventListener("click", function() {
-            winnerChosen(drawButton.value);
-        });
-        buttonContainer.append(drawButton);
-
-        //undo button
-        undoButton.innerHTML = "Undo";
-        undoButton.value = "undo";
-        undoButton.classList.add("btn");
-        undoButton.classList.add("btn-basic");
-        undoButton.addEventListener("click", function() {
-            undoLastRecord();
-        });
-        buttonContainer.append(undoButton);
+        vsContainer.style.visibility="visible";
+        vsContainer.style.display="inherit";
 
         //once both beys are made, make sure they have a matchup in the recordsDBX
         addRecord(bey1, bey2);
@@ -441,91 +346,61 @@ var buttonContainer = document.getElementById("buttonContainer");
         updateRecords(bey2, bey1, "update");
         displayRecords();
 
+        // titles above win buttons
+        bey1WinTitle.textContent = bey1.name;
+        bey2WinTitle.textContent = bey2.name;
+
     }
 
 }
 
-//onclick for the win buttons
-function winnerChosen(buttonID){
+/**
+ * set winner when user presses button
+ * @param {int} beyNumber 
+ * @param {string} winType : 'ko', 'so', 'x', 'burst', 'draw'
+ */
+function choseWinner(beyNumber, winType) {
+    console.log("Winner: " + beyNumber + " by: " + winType);
+    var winnerBey = ( beyNumber==1 ) ? bey1 : bey2; // if beyNumber==1, choose bey1, else choose bey2
+    var loserBey = ( beyNumber==1 ) ? bey2 : bey1;
 
-    switch(buttonID){
-        case "B1WKO":
-            updateWinCounts(bey1, bey2, "KO");
-            updateRecords(bey1, bey2, "KO");
-            lastRecordOutcome = "KO";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Over Finish!";
+    // set winner (or draw)
+    updateWinCounts(winnerBey, loserBey, winType);
+    updateRecords(winnerBey, loserBey, winType);
+    lastRecordOutcome = winType;
+    lastRecordWinner = winnerBey;
+    lastRecordLoser = loserBey;
+
+    // convert short text to text description
+    var winText = "";
+    switch(winType) {
+        case "KO":
+            winText="Over Finish";
             break;
-        case "B1WSO":
-            updateWinCounts(bey1, bey2, "SO");
-            updateRecords(bey1, bey2, "SO");
-            lastRecordOutcome = "SO";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Spin Finish!";
+        case "SO":
+            winText="Spin Finish";
             break;
-        case "B1WBST":
-            updateWinCounts(bey1, bey2, "burst");
-            updateRecords(bey1, bey2, "burst");
-            lastRecordOutcome = "burst";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Burst Finish!";
+        case "burst":
+            winText="Burst Finish";
             break;
-        case "B1WX":
-            updateWinCounts(bey1, bey2, "x");
-            updateRecords(bey1, bey2, "x");
-            lastRecordOutcome = "x";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "The winner of this round is: " + bey1.name + " by Xtreme Finish!";
-            break;
-        case "B2WKO":
-            updateWinCounts(bey2, bey1, "KO");
-            updateRecords(bey2, bey1, "KO");
-            lastRecordOutcome = "KO";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Over Finish!";
-            break;
-        case "B2WSO":
-            updateWinCounts(bey2, bey1, "SO");
-            updateRecords(bey2, bey1, "SO");
-            lastRecordOutcome = "SO";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Spin Finish!";
-            break;
-        case "B2WBST":
-            updateWinCounts(bey2, bey1, "burst");
-            updateRecords(bey2, bey1, "burst");
-            lastRecordOutcome = "burst";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Burst Finish!";
-            break;
-        case "B2WX":
-            updateWinCounts(bey2, bey1, "x");
-            updateRecords(bey2, bey1, "x");
-            lastRecordOutcome = "x";
-            lastRecordWinner = bey2;
-            lastRecordLoser = bey1;
-            winners.textContent = "The winner of this round is: " + bey2.name + " by Xtreme Finish!";
+        case "x":
+            winText="Xtreme Finish";
             break;
         case "draw":
-            updateWinCounts(bey1, bey2, "draw");
-            updateRecords(bey1, bey2, "draw");
-            lastRecordOutcome = "draw";
-            lastRecordWinner = bey1;
-            lastRecordLoser = bey2;
-            winners.textContent = "It ended in a Draw!";
+            winText="Draw";
             break;
         default:
-            winners.textContent = "Something went wrong, results not logged.";
+            winText="Something went wrong, results not logged"
+    }
+
+    if(winType=="draw" || beyNumber==0) {
+        winners.textContent = "It ended in a Draw!";
+    } else {
+        winners.textContent = "The winner of this round is: " + winnerBey.name + " by "+ winText +"!";
     }
 
 }
+
 
 //add a new, not before generated beyblade to the database
 function addBeyblade(bey) {
@@ -614,9 +489,9 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
             statEditor.reset();
             showBeyblades();
             dbBeyName.textContent = doc.build.name;
-            dbBeyStats.textContent = "Weight: " + round(doc.build.weight,2) + " grams.";
-            dbBeyKO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-            dbBeySO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+            dbBeyStats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
+            dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+            dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
@@ -1184,10 +1059,13 @@ function setDbBey(){
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
+            //TODO: move text and buttons to HTML, to make styling/layout easier
+
             dbBeyName.textContent = doc.build.name;
-            dbBeyStats.textContent = "Weight: " + round(doc.build.weight,2) + " grams. Spin: " + doc.build.spin;
-            dbBeyKO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-            dbBeySO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+            dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
+            dbBeyStats.textContent = " Spin: " + doc.build.spin;
+            dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+            dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
@@ -1216,9 +1094,9 @@ function setDbBey(){
                 createWinButtons()
             });
             dbBeySpace.append(bey2Statbtn);
-
+            
             //edit bey stats in database
-            editBeybtn.innerHTML = "Edit Bey Stats";
+            editBeybtn.innerHTML = "Edit Stats";
             editBeybtn.classList.add("btn");
             editBeybtn.classList.add("btn-basic");
             editBeybtn.setAttribute("data-bs-toggle", "modal");
@@ -1226,7 +1104,7 @@ function setDbBey(){
             dbBeySpace.append(editBeybtn);
 
             //show matchup history button
-            showMatchupbtn.innerHTML = "Show Matchup History";
+            showMatchupbtn.innerHTML = "Matchup History";
             showMatchupbtn.classList.add("btn");
             showMatchupbtn.classList.add("btn-basic");
             showMatchupbtn.setAttribute("data-bs-toggle", "modal");
@@ -1259,12 +1137,21 @@ function showBeybladeStats(bey, whichBey) {
             beyBladeDBX.get(bey.id, function(err, doc) {
                 if(!err){
                     bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
-                    bey1Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams.";
-                    bey1KO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-                    bey1SO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+                    bey1Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
+                    bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+                    bey1SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey1Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
+                }
+                if(!err){
+                    bey1title.textContent = "BeyBlade 1 is: " + doc.build.name;
+                    bey1weight.textContent = round(doc.build.weight,2) + " grams";
+                    bey1spin.textContent = doc.build.winsSO + " / " + doc.build.loseSO;
+                    bey1over.textContent = doc.build.winsKO + " / " + doc.build.loseKO;
+                    bey1burst.textContent = doc.build.winsBst + " / " + doc.build.loseBst;
+                    bey1xtreme.textContent = doc.build.winsX + " / " + doc.build.loseX;
+                    bey1draws.textContent = ""+ doc.build.draws;
                 }
                 // else{
                 //     console.log(err);
@@ -1275,9 +1162,9 @@ function showBeybladeStats(bey, whichBey) {
             beyBladeDBX.get(bey.id, function(err, doc) {
                 if(!err){
                     bey2Is.textContent = "BeyBlade 2 is: " + doc.build.name;
-                    bey2Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams.";
-                    bey2KO.textContent = "OF Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-                    bey2SO.textContent = "SF Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
+                    bey2Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
+                    bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
+                    bey2SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey2Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
                     bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
@@ -1295,12 +1182,16 @@ function showBeybladeStats(bey, whichBey) {
 function displayRecords(){
 
     var record1 = document.getElementById("record1");
+    var wins1 = document.getElementById("wins1");
+    var points1 = document.getElementById("points1");
     var ko1 = document.getElementById("ko1");
     var so1 = document.getElementById("so1");
     var bst1 = document.getElementById("bst1");
     var x1 = document.getElementById("x1");
-
+    
     var record2 = document.getElementById("record2");
+    var wins2 = document.getElementById("wins2");
+    var points2 = document.getElementById("points2");
     var ko2 = document.getElementById("ko2");
     var so2 = document.getElementById("so2");
     var bst2 = document.getElementById("bst2");
@@ -1316,12 +1207,16 @@ function displayRecords(){
         so1.textContent = doc.wso;
         bst1.textContent = doc.wbst;
         x1.textContent = doc.wx;
+        wins1.textContent = doc.wx + doc.wbst + doc.wko + doc.wso;
+        points1.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
         record2.textContent = bey2.name;
         ko2.textContent = doc.lko;
         so2.textContent = doc.lso;
         bst2.textContent =  doc.lbst;
         x2.textContent =  doc.lx;
+        wins2.textContent = doc.lx + doc.lbst + doc.lko + doc.lso;
+        points2.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
         
         draws.textContent = doc.draws;
     });
@@ -1393,27 +1288,27 @@ function showPartStats(partType, partID){
        switch(partType){
             case "blade":
                 partIs.textContent = allBlades[partID].name;
-                partStats.textContent = "Weight: " + round(allBlades[partID].weight,2) + " grams.";
-                partKO.textContent = "OF Win/Loss: " + partWko + " / " + partLko;
-                partSO.textContent = "SF Win/Loss: " + partWso + " / " + partLso;
+                partStats.textContent = "Weight: " + round(allBlades[partID].weight,2) + " grams";
+                partKO.textContent = "Over Win/Loss: " + partWko + " / " + partLko;
+                partSO.textContent = "Spin Win/Loss: " + partWso + " / " + partLso;
                 partBst.textContent = "Burst Win/Loss: " + partWbst + " / " + partLbst;
                 partX.textContent = "Xtreme Win/Loss: " + partWx + " / " + partLx;
                 partDraw.textContent = "Draws: " + partDraw;
             break;
             case "rachet":
                 partIs.textContent = allRachets[partID].name;
-                partStats.textContent = "Weight: " + round(allRachets[partID].weight,2) + " grams.";
-                partKO.textContent = "OF Win/Loss: " + partWko + " / " + partLko;
-                partSO.textContent = "SF Win/Loss: " + partWso + " / " + partLso;
+                partStats.textContent = "Weight: " + round(allRachets[partID].weight,2) + " grams";
+                partKO.textContent = "Over Win/Loss: " + partWko + " / " + partLko;
+                partSO.textContent = "Spin Win/Loss: " + partWso + " / " + partLso;
                 partBst.textContent = "Burst Win/Loss: " + partWbst + " / " + partLbst;
                 partX.textContent = "Xtreme Win/Loss: " + partWx + " / " + partLx;
                 partDraw.textContent = "Draws: " + partDraw;
             break;
             case "bit":
                 partIs.textContent = allBits[partID].name;
-                partStats.textContent = "Weight: " + round(allBits[partID].weight,2) + " grams.";
-                partKO.textContent = "OF Win/Loss: " + partWko + " / " + partLko;
-                partSO.textContent = "SF Win/Loss: " + partWso + " / " + partLso;
+                partStats.textContent = "Weight: " + round(allBits[partID].weight,2) + " grams";
+                partKO.textContent = "Over Win/Loss: " + partWko + " / " + partLko;
+                partSO.textContent = "Spin Win/Loss: " + partWso + " / " + partLso;
                 partBst.textContent = "Burst Win/Loss: " + partWbst + " / " + partLbst;
                 partX.textContent = "Xtreme Win/Loss: " + partWx + " / " + partLx;
                 partDraw.textContent = "Draws: " + partDraw;
@@ -1440,14 +1335,18 @@ function populateMatchHist(bey){
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
-        cell1.innerHTML = "Opposing Bey Name";
-        cell2.innerHTML = "OF Win/Loss";
-        cell3.innerHTML = "SF Win/Loss";
-        cell4.innerHTML = "Burst Win/Loss";
-        cell5.innerHTML = "Xtreme Win/Loss";
-        cell6.innerHTML = "Draws";
-
-        
+        cell1.classList.add('text-center');
+        cell2.classList.add('text-center');
+        cell3.classList.add('text-center');
+        cell4.classList.add('text-center');
+        cell5.classList.add('text-center');
+        cell6.classList.add('text-center');
+        cell1.innerHTML = "Spin";
+        cell2.innerHTML = "Burst";
+        cell3.innerHTML = "Over";
+        cell4.innerHTML = "Xtreme";
+        cell5.innerHTML = "Draws";
+        cell6.innerHTML = "Points";
         
         for(i = 0; i < doc.total_rows; i++){
             if(doc.rows[i].doc.denfender!==undefined) {
@@ -1456,20 +1355,36 @@ function populateMatchHist(bey){
                         });
                     }
             if(doc.rows[i].doc.challenger!==undefined) {
-                if(!err && bey.id==doc.rows[i].doc.challenger.id){
-                    var row = matchupSpace.insertRow(1);
+                // don't display if there are 0 matches
+                var totalMatches = doc.rows[i].doc.wx + doc.rows[i].doc.wbst + doc.rows[i].doc.wko + doc.rows[i].doc.wso + doc.rows[i].doc.lx + doc.rows[i].doc.lbst + doc.rows[i].doc.lko + doc.rows[i].doc.lso +  doc.rows[i].doc.draws;
+                if(!err && bey.id==doc.rows[i].doc.challenger.id && totalMatches>0){
+                    //title row
+                    var titleRow = matchupSpace.insertRow(1);
+                    var titleCell = titleRow.insertCell(0);
+                    titleCell.colSpan=6;
+                    titleCell.classList.add('text-center');
+                    titleCell.innerHTML = doc.rows[i].doc.defender.name;
+                    titleCell.style = 'padding-top: 6px; border-top: 3px solid;';
+                    //score
+                    var row = matchupSpace.insertRow(2);
                     var cell1 = row.insertCell(0);
                     var cell2 = row.insertCell(1);
                     var cell3 = row.insertCell(2);
                     var cell4 = row.insertCell(3);
                     var cell5 = row.insertCell(4);
                     var cell6 = row.insertCell(5);
-                    cell1.innerHTML = doc.rows[i].doc.defender.name;
-                    cell2.innerHTML = doc.rows[i].doc.wko + "/" + doc.rows[i].doc.lko;
-                    cell3.innerHTML = doc.rows[i].doc.wso + "/" + doc.rows[i].doc.lso;
-                    cell4.innerHTML = doc.rows[i].doc.wbst + "/" + doc.rows[i].doc.lbst;
-                    cell5.innerHTML = doc.rows[i].doc.wx + "/" + doc.rows[i].doc.lx;
-                    cell6.innerHTML = doc.rows[i].doc.draws;
+                    cell1.classList.add('text-center');
+                    cell2.classList.add('text-center');
+                    cell3.classList.add('text-center');
+                    cell4.classList.add('text-center');
+                    cell5.classList.add('text-center');
+                    cell6.classList.add('text-center');
+                    cell1.innerHTML = doc.rows[i].doc.wko + "/" + doc.rows[i].doc.lko;
+                    cell2.innerHTML = doc.rows[i].doc.wso + "/" + doc.rows[i].doc.lso;
+                    cell3.innerHTML = doc.rows[i].doc.wbst + "/" + doc.rows[i].doc.lbst;
+                    cell4.innerHTML = doc.rows[i].doc.wx + "/" + doc.rows[i].doc.lx;
+                    cell5.innerHTML = doc.rows[i].doc.draws;
+                    cell6.innerHTML = (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + "/" + (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso);
                 }
             }
             // else if(bey.id!=doc.rows[i].doc.challenger.id) {
@@ -1505,8 +1420,8 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
         cell1.innerHTML = "Selected Bey";
         cell2.innerHTMl = "Vs";
         cell3.innerHTML = "Opposing Bey";
-        cell4.innerHTML = "OF Win/Loss";
-        cell5.innerHTML = "SF Win/Loss";
+        cell4.innerHTML = "Over Win/Loss";
+        cell5.innerHTML = "Spin Win/Loss";
         cell6.innerHTML = "Burst Win/Loss";
         cell7.innerHTML = "Xtreme Win/Loss";
         cell8.innerHTML = "Draws";
@@ -1795,6 +1710,14 @@ function getRandomInt(max) {
 function round(num, places) {
     var multiplier = Math.pow(10, places);
     return Math.round(num * multiplier) / multiplier;
+}
+
+// quick spin animation
+function spinMe(me){
+    me.classList.add('spinme');
+    me.addEventListener('animationend', function () {
+        me.classList.remove('spinme');
+    }, { once: true });
 }
 
 //run main on startup

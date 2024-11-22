@@ -9,7 +9,7 @@
 <html style="background-color:#20083a">
 
 <head>
-    <title>BeyBuilder X v1.1</title>
+    <title>BeyBuilder X v1.2</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="./bootstrap.css" rel="stylesheet"  />
@@ -20,72 +20,249 @@
 <body style="color:#fff; background-color:#20083a">
 
     <!--Header space-->
-    <div class="container-fluid border">
-        <h1>BeyBuilder X v1.1</h1>
+    <div class="container-fluid border text-md-start text-center">
+        <h1>BeyBuilder X v1.2</h1>
         <h3>for Beyblade X</h3>
     </div>
-      
-      <div class="container-fluid border">
-        <div class="row">
-          <!--BeyBlade 1 and 2 dropdowns and name space-->
-          <div class="col-md-8 border">
-              <select id="bey1Blade" class="select-basic"><option value="random">Random Blade</option></select>
-              <select id="bey1Rachet" class="select-basic"><option value="random">Random Rachet</option></select>
-              <select id="bey1Bit" class="select-basic"><option value="random">Random Bit</option></select>
-              <br>
-              <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
-              <br>
-              <br>
-              <select id="bey2Blade" class="select-basic"><option value="random">Random Blade</option></select>
-              <select id="bey2Rachet" class="select-basic"><option value="random">Random Rachet</option></select>
-              <select id="bey2Bit" class="select-basic"><option value="random">Random Bit</option></select>
-              <br>
-              <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
-              <br>
-              <br>
-              <p style="color:white"id="buttonContainer"></p>
-              <p style="color:white" id="winnerLog"></p>
-              <p style="color:white" id="error"></p>
-          </div>
-          <div class="col-sm-12 col-md-4 border">
-              <div class="row">
-                <!--BeyBlade 1 stat space-->
-                <div class="col-sm-6 col-md-12 border">
-                      <span id="bey1Is">Beyblade 1 has not been selected.</span>
-                      <br>
-                      <span id="bey1Stats"></span>
-                      <br>
-                      <span id="bey1KO"></span>
-                      <br>
-                      <span id="bey1SO"></span>
-                      <br>
-                      <span id="bey1Bst"></span>
-                      <br>
-                      <span id="bey1X"></span>
-                      <br>
-                      <span id="bey1Draw"></span>
-                </div>
-                <!--BeyBlade 2 stat space-->
-                <div class="col-sm-6 col-md-12 border">
-                    <span id="bey2Is">Beyblade 2 has not been selected.</span>
-                    <br>
-                    <span id="bey2Stats"></span>
-                    <br>
-                    <span id="bey2KO"></span>
-                    <br>
-                    <span id="bey2SO"></span>
-                    <br>
-                    <span id="bey2Bst"></span>
-                    <br>
-                    <span id="bey2X"></span>
-                    <br>
-                    <span id="bey2Draw"></span>
-                </div>
-              </div>
-        </div>
-      </div>
+
+    <div class="container-fluid border">
         
-        <!--not sure why this is here, but the layout breaks if I remove this div-->
+        <div class="row"> <!-- blade 1 selector and stats -->
+            <div class="col-md-9"> <!-- selectors -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="bey1Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey1Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey1Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                    </div>
+                </div>
+                <br> <!-- TODO: replace BR with vertical padding -->
+                <div class="row">
+                  <div class="d-grid gap-2 col-md-4 mx-auto">
+                      <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
+                  </div>
+                </div>
+            </div>
+
+            
+            <div class="col-md-3"> <!-- stat block -->
+                <div class="row">
+                    <!--BeyBlade 1 stat space-->
+                    <div class="col border text-center">
+                          <span id="bey1Is">Beyblade 1 has not been selected.</span>
+                          <br>
+                          <span id="bey1Stats"></span>
+                          <br>
+                          <span id="bey1KO"></span>
+                          <br>
+                          <span id="bey1SO"></span>
+                          <br>
+                          <span id="bey1Bst"></span>
+                          <br>
+                          <span id="bey1X"></span>
+                          <br>
+                          <span id="bey1Draw"></span>
+                    </div>
+                </div>
+
+                <!-- hiding until complete -->
+                <!-- TODO: styling, copy to bey2 -->
+                <div class="row" style="display:none"> 
+                  <div class="col">
+                    <table id="bey1StatsTable">
+                      <tr>
+                        <th class="text-center" colspan="2" id="bey1title"></th>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Weight:</td>
+                        <td class="text-center" id="bey1weight"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Spin Win/Loss:</td>
+                        <td class="text-center" id="bey1spin"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Burst Win/Loss:</td>
+                        <td class="text-center" id="bey1burst"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Over Win/Loss:</td>
+                        <td class="text-center" id="bey1over"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Xtreme Win/Loss:</td>
+                        <td class="text-center" id="bey1xtreme"></td>
+                      </tr>
+                      <tr>
+                        <td class="text-center record-table-label">Draws:</td>
+                        <td class="text-center" id="bey1draws"></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                
+            </div>
+        </div><!--end blade 1-->
+
+        
+        <div class="row"> <!-- blade 2 selector and stats -->
+            <div class="col-md-9"> <!-- selectors -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select id="bey2Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey2Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
+                    </div>
+                    <div class="col-sm-4">
+                        <select id="bey2Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                    </div>
+                </div>
+                <br> <!-- TODO: replace BR with vertical padding -->
+                <div class="row">
+                  <div class="d-grid gap-2 col-md-4 mx-auto">
+                      <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
+                  </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3"> <!-- stat block -->
+                <div class="row">
+                    <!--BeyBlade 2 stat space-->
+                    <div class="col border text-center">
+                        <span id="bey2Is">Beyblade 2 has not been selected.</span>
+                        <br>
+                        <span id="bey2Stats"></span>
+                        <br>
+                        <span id="bey2KO"></span>
+                        <br>
+                        <span id="bey2SO"></span>
+                        <br>
+                        <span id="bey2Bst"></span>
+                        <br>
+                        <span id="bey2X"></span>
+                        <br>
+                        <span id="bey2Draw"></span>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end blade 2 -->
+
+    </div><!-- end selectors and stat blocks -->
+    
+    <div class="container-fluid border" id="vsContainer">
+
+      
+      <div class="row"> <!-- win buttons on left, stat container on right -->
+
+        <div class="col-md-6" id="buttonContainer">
+          <!-- Bey 1 Win Buttons -->
+          <div class="row">
+            <div class="col-6"> <!-- on small size, place bey1 left and bey2 right -->
+              <p class="row win-button-title" id="bey1-button-title">
+                Bey 1:
+              </p>
+              <div class="row">
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <p class="row win-button-title" id="bey2-button-title">
+                Bey 2:
+              </p>
+              <div class="row">
+                <!-- Bey 2 Win Buttons -->
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Draw and Undo Buttons -->
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <button class="btn btn-basic btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+              <button class="btn btn-basic btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
+            </div>
+          </div>
+
+          <p style="color:white" id="winnerLog"></p>
+          <p style="color:white" id="error"></p>
+  
+        </div><!--end buttonContainer-->
+
+        <!--Records table for selected beys-->
+        <div class="col-md-6" id="recordsSpace">
+  
+          <table style="width:100%">
+            <tr>
+              <td class="text-end"></td>
+              <th class="text-end" id="record1">bey1</th>
+              <td class="text-center">vs</td>
+              <th id="record2">bey2</th>
+            </tr>
+            <tr>
+              <td class="text-end record-table-label">Wins:</td>
+              <td class="text-end" id="wins1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="wins2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end record-table-label">Points:</td>
+              <td class="text-end" id="points1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="points2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end record-table-label">Spin:</td>
+              <td class="text-end" id="so1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="so2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end record-table-label">Burst:</td>
+              <td class="text-end" id="bst1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="bst2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end record-table-label">Over:</td>
+              <td class="text-end" id="ko1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="ko2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end record-table-label">Xtreme:</td>
+              <td class="text-end" id="x1">0</td>
+              <td class="text-center">/</td>
+              <td class="text-start" id="x2">0</td>
+            </tr>
+            <tr>
+              <td class="text-end record-table-label">Draws:</td>
+              <td></td>
+              <td class="text-center" id="draws">0</td>
+            </tr>
+          </table>
+  
+        </div><!--end recordSpace-->
+      </div>
+       
+    </div>
+
+    <div class="container-fluid border">
+        
         <div class="row">
           <div class="col">
               <h5>All Beyblades in the system:</h5>
@@ -94,16 +271,20 @@
 
         <!--beyblade selector from database of beys-->
         <div class="row">
-          <div class="col-sm-4 col-xl-3">
-              <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()" multiple></select>
+          <div class="col-sm-6 col-xl-3 d-grid">
+              <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()"></select>
               <br>
+              <!-- TODO: use separate rows for buttons -->
               <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-basic">Check Parts Records</button>
+              <br>
               <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
           </div>
           <!--dbBey display area-->
-          <div class="col-sm-4 col-xl-3" id="dbBeySpace">
+          <div class="col-sm-6 col-xl-3 text-center" id="dbBeySpace">
               <br>
               <span id="dbBeyIs"></span>
+              <br>
+              <span id="dbBeyWeight"></span>
               <br>
               <span id="dbBeyStats"></span>
               <br>
@@ -117,50 +298,6 @@
               <br>
               <span id="dbBeyDraw"></span>
               <br>
-          </div>
-          <div class="col-sm-1 col-xl-1" id="recordsSpace">
-          </div>
-          <!--Records table for selected beys-->
-          <div class="col-xs-0 col-sm-0 col-xl-5" id="recordsSpace">
-
-            <table style="width:100%">
-              <tr>
-                <td class="text-end"></td>
-                <th class="text-end" id="record1">bey1</th>
-                <td class="text-center">vs</td>
-                <th id="record2">bey2</th>
-              </tr>
-              <tr>
-                <td class="text-end">OFs:</td>
-                <td class="text-end" id="ko1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="ko2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">SFs:</td>
-                <td class="text-end" id="so1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="so2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">Bursts:</td>
-                <td class="text-end" id="bst1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="bst2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">Xtreme KOs:</td>
-                <td class="text-end" id="x1">0</td>
-                <td class="text-center">/</td>
-                <td class="text-start" id="x2">0</td>
-              </tr>
-              <tr>
-                <td class="text-end">Draws:</td>
-                <td></td>
-                <td class="text-center" id="draws">0</td>
-              </tr>
-            </table>
-
           </div>
         </div>
       </div>
@@ -326,5 +463,14 @@
     -->
 
 </body>
+
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+  <p class="col-md-4 mb-0 px-2">© Fabel'd Beyblades</p>
+
+  <ul class="nav col-md-4 justify-content-end overflow-hidden">
+    <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX"  target="_blank" rel="noopener" class="nav-link px-3 link-light">Source code</a></li>
+    <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3 link-light">About</a></li>
+  </ul>
+</footer>
 
 </html>
