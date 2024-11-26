@@ -1341,9 +1341,9 @@ function populateMatchHist(bey){
         cell4.classList.add('text-center');
         cell5.classList.add('text-center');
         cell6.classList.add('text-center');
-        cell1.innerHTML = "Spin";
-        cell2.innerHTML = "Burst";
-        cell3.innerHTML = "Over";
+        cell1.innerHTML = "Over";
+        cell2.innerHTML = "Spin";
+        cell3.innerHTML = "Burst";
         cell4.innerHTML = "Xtreme";
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
