@@ -11,12 +11,30 @@
     justify-content: center;
 }
 
-/* record table */
+/* VS record table */
 /* label on the left */
 .record-table-label{
     width: 1%;
     white-space: nowrap;
     padding-left: 0.5em;
+}
+/* a flexbox to hold spans aligned left and aligned right */
+#wins2Container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+/* border is doubling-up when I put spans or divs inside td */
+#wins2Col {
+    border-top: none;
+    border-bottom: none;
+}
+/* thick line under 1st and 3rd rows */
+#recordsSpace > table > tbody > tr:nth-child(1) {
+    border-bottom: 3px solid;
+}
+#recordsSpace > table > tbody > tr:nth-child(3) {
+    border-bottom: 3px solid;
 }
 
 #bey1StatsTable > tbody > tr:nth-child(1) > th { 

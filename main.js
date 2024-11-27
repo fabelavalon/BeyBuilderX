@@ -1198,6 +1198,7 @@ function displayRecords(){
     var x2 = document.getElementById("x2");
 
     var draws = document.getElementById("draws");
+    var totalRounds = document.getElementById("vsTotalRounds");
 
     var recordID = bey1.id + " " + bey2.id;
 
@@ -1216,6 +1217,7 @@ function displayRecords(){
         bst2.textContent =  doc.lbst;
         x2.textContent =  doc.lx;
         wins2.textContent = doc.lx + doc.lbst + doc.lko + doc.lso;
+        totalRounds.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws);
         points2.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
         
         draws.textContent = doc.draws;
@@ -1341,9 +1343,9 @@ function populateMatchHist(bey){
         cell4.classList.add('text-center');
         cell5.classList.add('text-center');
         cell6.classList.add('text-center');
-        cell1.innerHTML = "Spin";
-        cell2.innerHTML = "Burst";
-        cell3.innerHTML = "Over";
+        cell1.innerHTML = "Over";
+        cell2.innerHTML = "Spin";
+        cell3.innerHTML = "Burst";
         cell4.innerHTML = "Xtreme";
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
