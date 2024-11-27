@@ -1343,9 +1343,9 @@ function populateMatchHist(bey){
         cell4.classList.add('text-center');
         cell5.classList.add('text-center');
         cell6.classList.add('text-center');
-        cell1.innerHTML = "Over";
-        cell2.innerHTML = "Spin";
-        cell3.innerHTML = "Burst";
+        cell1.innerHTML = "Spin";
+        cell2.innerHTML = "Burst";
+        cell3.innerHTML = "Over";
         cell4.innerHTML = "Xtreme";
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
@@ -1381,9 +1381,9 @@ function populateMatchHist(bey){
                     cell4.classList.add('text-center');
                     cell5.classList.add('text-center');
                     cell6.classList.add('text-center');
-                    cell1.innerHTML = doc.rows[i].doc.wko + "/" + doc.rows[i].doc.lko;
-                    cell2.innerHTML = doc.rows[i].doc.wso + "/" + doc.rows[i].doc.lso;
-                    cell3.innerHTML = doc.rows[i].doc.wbst + "/" + doc.rows[i].doc.lbst;
+                    cell1.innerHTML = doc.rows[i].doc.wso + "/" + doc.rows[i].doc.lso;
+                    cell2.innerHTML = doc.rows[i].doc.wbst + "/" + doc.rows[i].doc.lbst;
+                    cell3.innerHTML = doc.rows[i].doc.wko + "/" + doc.rows[i].doc.lko;
                     cell4.innerHTML = doc.rows[i].doc.wx + "/" + doc.rows[i].doc.lx;
                     cell5.innerHTML = doc.rows[i].doc.draws;
                     cell6.innerHTML = (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + "/" + (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso);
