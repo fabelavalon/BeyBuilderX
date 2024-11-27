@@ -1203,7 +1203,7 @@ function displayRecords(){
     var recordID = bey1.id + " " + bey2.id;
 
     recordsDBX.get(recordID, function(err, doc){
-        record1.textContent = bey1.name;
+        record1.innerHTML = noBreakRatchetText(bey1.name);
         ko1.textContent = doc.wko;
         so1.textContent = doc.wso;
         bst1.textContent = doc.wbst;
@@ -1211,7 +1211,7 @@ function displayRecords(){
         wins1.textContent = doc.wx + doc.wbst + doc.wko + doc.wso;
         points1.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
-        record2.textContent = bey2.name;
+        record2.innerHTML = noBreakRatchetText(bey2.name);
         ko2.textContent = doc.lko;
         so2.textContent = doc.lso;
         bst2.textContent =  doc.lbst;
@@ -1223,6 +1223,23 @@ function displayRecords(){
         draws.textContent = doc.draws;
     });
 
+}
+
+/**
+ * Disable text-wrapping on the ratchet
+ * @param {String} beyName 
+ * @returns 
+ */
+function noBreakRatchetText(beyName) {
+    // split bey name into parts
+    var newBeyName = beyName;
+    var beynameArray = newBeyName.split(" ");
+    var beynameEnd = beynameArray[beynameArray.length-1];
+    console.log("end: " + beynameEnd);
+    var beynameEndNoBr = "<nobr>" + beynameEnd + "</nobr>";
+    newBeyName = newBeyName.replace(beynameEnd, beynameEndNoBr);
+    
+    return newBeyName;
 }
 
 //displays part win/loss records when a user chooses to see them
