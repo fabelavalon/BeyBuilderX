@@ -64,7 +64,10 @@ var blades = [
     {"name":"SilverWolf", "spin":"right", "weight":36.83, "height":0, "abbv":"SW", "wins":0, "losses":0, "draws":0, "id":53},
     {"name":"CrimsonGaruda", "spin":"right", "weight":34.9, "height":0, "abbv":"CG", "wins":0, "losses":0, "draws":0, "id":54},
     {"name":"SamuraiSaber", "spin":"right", "weight":36.41, "height":0, "abbv":"SaSa", "wins":0, "losses":0, "draws":0, "id":55},
-    {"name":"KnightMail", "spin":"right", "weight":36.61, "height":0, "abbv":"KM", "wins":0, "losses":0, "draws":0, "id":56}
+    {"name":"KnightMail", "spin":"right", "weight":36.61, "height":0, "abbv":"KM", "wins":0, "losses":0, "draws":0, "id":56},
+    {"name":"DracielShield", "spin":"right", "weight":28.15, "height":0, "abbv":"DcS", "wins":0, "losses":0, "draws":0, "id":57},
+    {"name":"ImpactDrake", "spin":"right", "weight":38.85, "height":0, "abbv":"ID", "wins":0, "losses":0, "draws":0, "id":58},
+    {"name":"GhostCircle", "spin":"right", "weight":26.71, "height":0, "abbv":"GC", "wins":0, "losses":0, "draws":0, "id":59}
     
 
     
@@ -91,7 +94,8 @@ var rachets = [
     {"name":"9-70", "weight":6.32, "height":7, "abbv":"9-70", "wins":0, "losses":0, "draws":0, "id":16},
     {"name":"2-70", "weight":6.34, "height":7, "abbv":"2-70", "wins":0, "losses":0, "draws":0, "id":17},
     {"name":"3-85", "weight":4.79, "height":8.5, "abbv":"3-85", "wins":0, "losses":0, "draws":0, "id":18},
-    {"name":"7-70", "weight":7.24, "height":7, "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":19}
+    {"name":"7-70", "weight":7.24, "height":7, "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":19},
+    {"name":"0-80", "weight":7.53, "height":8, "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":20}
 
 ];
 
@@ -126,6 +130,7 @@ var bits = [
     {"name":"Trans Point", "weight":2.21, "height":1, "abbv":"TP", "wins":0, "losses":0, "draws":0, "id":26},
     {"name":"Level", "weight":2.65, "height":2, "abbv":"L", "wins":0, "losses":0, "draws":0, "id":27},
     {"name":"Bound Spike", "weight":2, "height":2, "abbv":"BS", "wins":0, "losses":0, "draws":0, "id":28},
-    {"name":"Rubber Acell", "weight":3.1, "height":2, "abbv":"RA", "wins":0, "losses":0, "draws":0, "id":29}
+    {"name":"Rubber Acell", "weight":3.1, "height":2, "abbv":"RA", "wins":0, "losses":0, "draws":0, "id":29},
+    {"name":"Low Rush", "weight":1.93, "height":1, "abbv":"LR", "wins":0, "losses":0, "draws":0, "id":30}
 
 ];
