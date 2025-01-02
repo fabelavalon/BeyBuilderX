@@ -95,7 +95,7 @@ var rachets = [
     {"name":"2-70", "weight":6.34, "height":7, "abbv":"2-70", "wins":0, "losses":0, "draws":0, "id":17},
     {"name":"3-85", "weight":4.79, "height":8.5, "abbv":"3-85", "wins":0, "losses":0, "draws":0, "id":18},
     {"name":"7-70", "weight":7.24, "height":7, "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":19},
-    {"name":"0-80", "weight":7.53, "height":8, "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":20}
+    {"name":"0-80", "weight":7.53, "height":8, "abbv":"0-80", "wins":0, "losses":0, "draws":0, "id":20}
 
 ];
 
