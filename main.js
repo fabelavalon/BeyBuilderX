@@ -94,6 +94,10 @@ var partBst = document.getElementById("partBst");
 var partX = document.getElementById("partX");
 var partDraw = document.getElementById("partDraw");
 
+//theme switcher
+var themeSelect = document.getElementById("themeSelect");
+var theme = document.getElementById("theme");
+
 //everything else
 var error = document.getElementById("error");
 var winners = document.getElementById("winnerLog");
@@ -101,6 +105,7 @@ var matchupSpace = document.getElementById("matchupSpace");
 var matchupSpaceUser = document.getElementById("matchupSpaceUser");
 var matchupBey = document.getElementById("matchupBey");
 var matchupBeyUser = document.getElementById("matchupBeyUser");
+
 
 //used to generate the win buttons after both beys are selected
 var wasBey1Generated = false;
@@ -203,6 +208,7 @@ function main(){
     //fill the dbList
     showBeyblades();
     
+    themeSwitch();
 };
 
 //generate a beyblade based on the selections for the first set of drop downs
@@ -1737,6 +1743,12 @@ function spinMe(me){
     me.addEventListener('animationend', function () {
         me.classList.remove('spinme');
     }, { once: true });
+}
+
+function themeSwitch(){
+    themeSelect.addEventListener('change', function() {
+        theme.href="./theme-"+themeSelect.value+".css";
+    });
 }
 
 //run main on startup

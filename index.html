@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="./bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
-    <link href="./theme-default.css" rel="stylesheet"  />
+    <link href="./theme-default.css" rel="stylesheet" id="theme"  />
     <script src="./bootstrap.bundle.js"></script>
 </head>
 
@@ -451,7 +451,24 @@
         </div>
       </div>
 
-      
+      <!-- delete database popup -->
+      <div class="modal fade" id="themeSwitcher" tabindex="-1" aria-labelledby="themeSwitcher-body" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title" id="themeSwitcher-body">Select a theme</h5>
+                <select id="themeSelect">
+                  <option value="default">Default</option>
+                  <option value="grey">grey</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     <!--import scripts-->
     <script src="./pouchdb-7.3.1.js"></script>
@@ -475,6 +492,7 @@
 
   <ul class="nav col-md-4 justify-content-end overflow-hidden">
     <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX"  target="_blank" rel="noopener" class="nav-link px-3 link-light">Source code</a></li>
+    <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#themeSwitcher" class="nav-link px-3 link-light">Theme</a></li>
     <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3 link-light">About</a></li>
   </ul>
 </footer>
