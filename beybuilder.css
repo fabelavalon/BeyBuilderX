@@ -29,6 +29,9 @@
     border-top: none;
     border-bottom: none;
 }
+#recordsSpace > table {
+    width:100%;
+}
 /* thick line under 1st and 3rd rows */
 #recordsSpace > table > tbody > tr:nth-child(1) {
     border-bottom: 3px solid;
@@ -87,6 +90,14 @@
 }
 .btn-nowin {
     width: 80px;
+}
+
+/* Matchup History table */
+#matchupSpace {
+    width: 100%;
+}
+#matchupHistUser {
+    width: 100%;
 }
 
 /* make modal headers and footers sticky */

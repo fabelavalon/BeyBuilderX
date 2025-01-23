@@ -4,6 +4,18 @@
  *Copyright 2023                                           *
  *=========================================================*/
 
+/* backgrounds and text color */
+html {
+    background-color: #20083a;
+}
+body {
+    background-color: #20083a;
+    color: #fff;
+}
+.modal-content {
+    background-color: #20083a;
+}
+
 
 /* styling for drop downs */
 .select-basic{

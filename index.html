@@ -6,7 +6,7 @@
     *Copyright 2023                                              *
     *============================================================*-->
 
-<html style="background-color:#20083a">
+<html>
 
 <head>
     <title>BeyBuilder X v1.2</title>
@@ -18,7 +18,7 @@
     <script src="./bootstrap.bundle.js"></script>
 </head>
 
-<body style="color:#fff; background-color:#20083a">
+<body>
 
     <!--Header space-->
     <div class="container-fluid border text-md-start text-center">
@@ -199,15 +199,15 @@
             </div>
           </div>
 
-          <p style="color:white" id="winnerLog"></p>
-          <p style="color:white" id="error"></p>
+          <p id="winnerLog"></p>
+          <p id="error"></p>
   
         </div><!--end buttonContainer-->
 
         <!--Records table for selected beys-->
         <div class="col-md-6" id="recordsSpace">
   
-          <table style="width:100%">
+          <table>
             <tr>
               <td class="text-end"></td>
               <th class="text-end" id="record1">bey1</th>
@@ -311,13 +311,13 @@
       <!-- matchup history popup -->
       <div class="modal fade, modal-lg" id="matchupHist" tabindex="-1" aria-labelledby="matchupBey" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-header modal-header--sticky">
               <h5 class="modal-title" id="matchupBey"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table style="width:100%" id="matchupSpace"></table>
+                <table id="matchupSpace"></table>
             </div>
             <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
               <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
@@ -329,7 +329,7 @@
       <!-- edit beyblade popup -->
       <div class="modal fade" id="editBeyPopup" tabindex="-1" aria-labelledby="beyPopupLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="beyPopupLabel">Edit Bey Stats</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -372,7 +372,7 @@
       <!-- part records popup -->
       <div class="modal fade, modal-xl" id="partsRecords" tabindex="-1" aria-labelledby="partsSelection" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
 
             <div class="modal-header modal-header--sticky">
               <h5 class="modal-title" id="partsSelction">Parts Records</h5>
@@ -424,9 +424,9 @@
       <!-- delete beyblade popup -->
       <div class="modal fade" id="areYouSure" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="exampleModalLabel" style="text-align: center">Are You Sure?</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel">Are You Sure?</h5>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
@@ -439,9 +439,9 @@
       <!-- delete database popup -->
       <div class="modal fade" id="areYouSure2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="exampleModalLabel2" style="text-align: center">Are You Sure?</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel2">Are You Sure?</h5>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
