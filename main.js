@@ -1747,7 +1747,7 @@ function spinMe(me){
 
 function themeSwitch(){
     themeSelect.addEventListener('change', function() {
-        theme.href="./theme-"+themeSelect.value+".css";
+        theme.href="./theme-"+themeSelect.value.toLowerCase()+".css";
     });
 }
 
