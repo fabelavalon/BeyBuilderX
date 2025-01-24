@@ -4,43 +4,44 @@
  *Copyright 2023                                           *
  *=========================================================*/
 
+:root{
+    --bg-color:#434343;
+    --alt-color:#7fa5ba;
+    --text-color:#e6e6e6;
+    --border-color:#dadada;
+}
+
 /* backgrounds and text color */
-html {
-    background-color: #414141;
-}
-body {
-    background-color: #414141;
-    color: #fff;
-}
-.modal-content {
-    background-color: #414141;
+head, body, footer, .modal-content {
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 
 /* styling for drop downs */
 .select-basic{
-    color: #000;
-    background-color: #67becf;
-    border-color: #59298c;
+    color: var(--text-color);
+    background-color: #7b7b7b;
+    border-color: var(--border-color);
 }
 
-.select-basic:hover{
+/* .select-basic:hover{
     color: #fff;
-    background-color: #59298c;
-    border-color: #67becf;
-}
+    background-color: #dadada;
+    border-color: #7b7b7b;
+} */
 
 .select-list{
     color:#fff;
-    background-color: #59298c;
-    border-color: #59298c;
+    background-color: #7b7b7b;
+    border-color: #dadada;
 }
 
-.select-list:hover{
+/* .select-list:hover{
     color: #fff;
-    background-color: #59298c;
-    border-color: #67becf;
-}
+    background-color: #7b7b7b;
+    border-color: #dadada;
+} */
 
 #vsContainer {
     color: white;
