@@ -44,7 +44,7 @@
                 <br> <!-- TODO: replace BR with vertical padding -->
                 <div class="row">
                   <div class="d-grid gap-2 col-md-4 mx-auto">
-                      <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
+                      <button onclick="generateBey1()" class="btn btn-primary">Choose Beyblade 1</button>
                   </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                 <br> <!-- TODO: replace BR with vertical padding -->
                 <div class="row">
                   <div class="d-grid gap-2 col-md-4 mx-auto">
-                      <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
+                      <button onclick="generateBey2()" class="btn btn-primary">Choose Beyblade 2</button>
                   </div>
                 </div>
             </div>
@@ -168,10 +168,10 @@
                 Bey 1:
               </p>
               <div class="row">
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
 
@@ -181,10 +181,10 @@
               </p>
               <div class="row">
                 <!-- Bey 2 Win Buttons -->
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
           </div>
@@ -192,10 +192,10 @@
           <!-- Draw and Undo Buttons -->
           <div class="row">
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-basic btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
+              <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
             </div>
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-basic btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
+              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
             </div>
           </div>
 
@@ -281,7 +281,7 @@
               <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()"></select>
               <br>
               <!-- TODO: use separate rows for buttons -->
-              <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-basic">Check Parts Records</button>
+              <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-primary">Check Parts Records</button>
               <br>
               <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
           </div>
@@ -320,7 +320,7 @@
                 <table id="matchupSpace"></table>
             </div>
             <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -362,7 +362,7 @@
             </div>
             <div class="modal-footer">
                 Note. You MUST reselect a beyblade from the list if you wish to change the same bey more than once.
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal" onclick="statEditor.reset()">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="statEditor.reset()">Close</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="editBey(wko.value, lko.value, wso.value, lso.value, wbst.value, lbst.value, wx.value, lx.value, dr.value)">Edit Bey Stats</button>
             </div>
           </div>
@@ -408,13 +408,13 @@
                   <br>
                   <table id="matchupHistUser"></table>
                   <br>
-                  <button onclick="populateMatchHistUser(bladeR1.value, rachetR1.value, bitR1.value, bladeR2.value, rachetR2.value, bitR2.value)" class="btn btn-basic">Show Part Stats</button>
+                  <button onclick="populateMatchHistUser(bladeR1.value, rachetR1.value, bitR1.value, bladeR2.value, rachetR2.value, bitR2.value)" class="btn btn-primary">Show Part Stats</button>
                 </div>
               </div>
             </div>
 
             <div class="modal-footer modal-footer--sticky">
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
 
           </div>
@@ -429,7 +429,7 @@
                 <h5 class="modal-title text-center" id="exampleModalLabel">Are You Sure?</h5>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteBey()">Yes, Delete this BeyBlade</button>
             </div>
           </div>
@@ -444,7 +444,7 @@
                 <h5 class="modal-title text-center" id="exampleModalLabel2">Are You Sure?</h5>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteAllBeys()">Yes, Clear the ENTIRE databeyse</button>
             </div>
           </div>
@@ -464,7 +464,7 @@
                 </select>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>

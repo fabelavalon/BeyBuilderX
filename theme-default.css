@@ -67,47 +67,47 @@ body {
 }
 
 /* styling for basic buttons */
-.btn-basic {
+.btn-primary {
     color: #000;
     background-color: #67becf;
     border-color: #59298c;
 }
 
-.btn-basic:hover {
+.btn-primary:hover {
     color: #fff;
     background-color: #59298c;
     border-color: #67becf;
 }
 
-.btn-basic:focus,
-.btn-basic.focus {
+.btn-primary:focus,
+.btn-primary.focus {
     box-shadow: 0 0 0 .2rem #67becf;
 }
 
-.btn-basic:focus-visible,
-.btn-basic.focus-visible {
+.btn-primary:focus-visible,
+.btn-primary.focus-visible {
     background-color: #67becf;
     box-shadow: 0 0 0 .2rem #59298c;
 }
 
-.btn-basic.disabled,
-.btn-basic:disabled {
+.btn-primary.disabled,
+.btn-primary:disabled {
     color: #000;
     background-color: #f8f9fa;
     border-color: #f8f9fa;
 }
 
-.btn-basic:not(:disabled):not(.disabled):active,
-.btn-basic:not(:disabled):not(.disabled).active,
-.show>.btn-basic.dropdown-toggle {
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show>.btn-primary.dropdown-toggle {
     color: #000;
     background-color: #d0d0d0;
     border-color: #c0c0c0;
 }
 
-.btn-basic:not(:disabled):not(.disabled):active:focus,
-.btn-basic:not(:disabled):not(.disabled).active:focus,
-.show>.btn-basic.dropdown-toggle:focus {
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show>.btn-primary.dropdown-toggle:focus {
     box-shadow: 0 0 0 .2rem rgba(190, 190, 190, 0.5);
 }
 

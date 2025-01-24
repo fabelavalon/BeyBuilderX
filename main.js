@@ -1080,7 +1080,7 @@ function setDbBey(){
             //set as bey1 button
             bey1Statbtn.innerHTML = "Set as Bey 1";
             bey1Statbtn.classList.add("btn");
-            bey1Statbtn.classList.add("btn-basic");
+            bey1Statbtn.classList.add("btn-primary");
             bey1Statbtn.addEventListener("click", function() {
                 bey1=dbBey;
                 wasBey1Generated = true;
@@ -1092,7 +1092,7 @@ function setDbBey(){
             //set as bey2 button
             bey2Statbtn.innerHTML = "Set as Bey 2";
             bey2Statbtn.classList.add("btn");
-            bey2Statbtn.classList.add("btn-basic");
+            bey2Statbtn.classList.add("btn-primary");
             bey2Statbtn.addEventListener("click", function() {
                 bey2=dbBey;
                 wasBey2Generated = true;
@@ -1104,7 +1104,7 @@ function setDbBey(){
             //edit bey stats in database
             editBeybtn.innerHTML = "Edit Stats";
             editBeybtn.classList.add("btn");
-            editBeybtn.classList.add("btn-basic");
+            editBeybtn.classList.add("btn-primary");
             editBeybtn.setAttribute("data-bs-toggle", "modal");
             editBeybtn.setAttribute("data-bs-target", "#editBeyPopup");
             dbBeySpace.append(editBeybtn);
@@ -1112,7 +1112,7 @@ function setDbBey(){
             //show matchup history button
             showMatchupbtn.innerHTML = "Matchup History";
             showMatchupbtn.classList.add("btn");
-            showMatchupbtn.classList.add("btn-basic");
+            showMatchupbtn.classList.add("btn-primary");
             showMatchupbtn.setAttribute("data-bs-toggle", "modal");
             showMatchupbtn.setAttribute("data-bs-target", "#matchupHist");
             showMatchupbtn.addEventListener("click", function() {
