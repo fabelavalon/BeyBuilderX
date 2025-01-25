@@ -6,9 +6,12 @@
 
 :root{
     --bg-color:#434343;
-    --alt-color:#7fa5ba;
+    --primary-color:#7b7b7b;
+    --secondary-color:#7fa5ba;
     --text-color:#e6e6e6;
     --border-color:#dadada;
+    --danger-color: #8c2930;
+    --disable-color: #000;
 }
 
 /* backgrounds and text color */
@@ -17,11 +20,14 @@ head, body, footer, .modal-content {
     color: var(--text-color);
 }
 
+.nav-link {
+    color: var(--text-color);
+}
 
 /* styling for drop downs */
 .select-basic{
     color: var(--text-color);
-    background-color: #7b7b7b;
+    background-color: var(--primary-color);
     border-color: var(--border-color);
 }
 
@@ -32,9 +38,9 @@ head, body, footer, .modal-content {
 } */
 
 .select-list{
-    color:#fff;
-    background-color: #7b7b7b;
-    border-color: #dadada;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
 }
 
 /* .select-list:hover{
@@ -49,67 +55,75 @@ head, body, footer, .modal-content {
     display: none;
 }
 
+/* close button color not working because bootstrap uses a background image of an X */
+.btn-close {
+    color: var(--text-color);
+}
+.btn-close:hover {
+    color: var(--danger-color);
+}
+
 /* styling for delete buttons */
 .btn-danger {
-    color: #000;
-    background-color: #67becf;
-    border-color: #59298c;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
 }
 
 .btn-danger:hover {
-    color: #fff;
-    background-color: #8c2930;
-    border-color: #67becf;
+    color: var(--text-color);
+    background-color: var(--danger-color);
+    border-color: var(--border-color);
 }
 
 .btn-danger:focus,
 .btn-danger.focus {
-    box-shadow: 0 0 0 .2rem #8c2930;
+    box-shadow: 0 0 0 .2rem var(--danger-color);
 }
 
 /* styling for basic buttons */
 .btn-primary {
-    color: #000;
-    background-color: #67becf;
-    border-color: #59298c;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
 }
 
 .btn-primary:hover {
-    color: #fff;
-    background-color: #59298c;
-    border-color: #67becf;
+    color: var(--text-color);
+    background-color: var(--border-color);
+    border-color: var(--primary-color);
 }
 
 .btn-primary:focus,
 .btn-primary.focus {
-    box-shadow: 0 0 0 .2rem #67becf;
+    box-shadow: 0 0 0 .2rem var(--secondary-color);
 }
 
 .btn-primary:focus-visible,
 .btn-primary.focus-visible {
-    background-color: #67becf;
-    box-shadow: 0 0 0 .2rem #59298c;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 0 .2rem var(--primary-color);
 }
 
 .btn-primary.disabled,
 .btn-primary:disabled {
-    color: #000;
-    background-color: #f8f9fa;
-    border-color: #f8f9fa;
+    color: var(--disable-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
 }
 
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
 .show>.btn-primary.dropdown-toggle {
-    color: #000;
-    background-color: #d0d0d0;
-    border-color: #c0c0c0;
+    color: var(--disable-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
 }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-primary.dropdown-toggle:focus {
-    box-shadow: 0 0 0 .2rem rgba(190, 190, 190, 0.5);
+    box-shadow: 0 0 0 .2rem var(--bg-color);
 }
 
 
@@ -117,11 +131,11 @@ head, body, footer, .modal-content {
 td, tr {
     border-bottom: 1px solid black;
     border-top: 1px solid black;
-    border-color: #fff;
+    border-color: var(--border-color);
 }
 
 table{
-    border: 1px solid #fff;
+    border: 1px solid var(--border-color);
 }
 
 /* make modal headers and footers sticky */

@@ -15,6 +15,9 @@ body {
 .modal-content {
     background-color: #20083a;
 }
+.nav-link {
+    color: #fff;
+}
 
 
 /* styling for drop downs */
