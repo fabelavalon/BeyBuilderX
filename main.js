@@ -1786,12 +1786,13 @@ function loadTheme(){
             console.log('Loaded saved theme');
             console.log(JSON.stringify(result));
             theme.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
+            themeSelect.value=selectedTheme.name;
         }
         else{
             console.log(err);
             if(err.status=404) {
                 console.log("No existing theme. Using default");
-                loadTheme();
+                saveTheme();
             }
         }
     });
