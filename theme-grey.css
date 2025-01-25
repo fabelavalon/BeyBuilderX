@@ -52,7 +52,7 @@ head, body, footer, .modal-content {
 }
 
 #vsContainer {
-    color: white;
+    color: var(--text-color);
     visibility: hidden;
     display: none;
 }
@@ -132,8 +132,8 @@ head, body, footer, .modal-content {
 
 /* make sure tables and table elements have the proper borders */
 td, tr {
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
     border-color: var(--border-color);
 }
 
