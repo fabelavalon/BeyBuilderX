@@ -7,6 +7,7 @@
 //create beyblade database
 var beyBladeDBX = new PouchDB("BeyBladesX");
 var recordsDBX = new PouchDB("RecordX");
+var settings = new PouchDB("settings");
 
 //import the parts lists
 var allBlades = blades;
@@ -208,7 +209,8 @@ function main(){
     //fill the dbList
     showBeyblades();
     
-    themeSwitch();
+    loadTheme();
+    themeSwitchListener();
 };
 
 //generate a beyblade based on the selections for the first set of drop downs
@@ -1745,9 +1747,53 @@ function spinMe(me){
     }, { once: true });
 }
 
-function themeSwitch(){
+//theme object, will be a pouchDB object
+var selectedTheme;
+function themeSwitchListener(){
     themeSelect.addEventListener('change', function() {
-        theme.href="./theme-"+themeSelect.value.toLowerCase()+".css";
+        saveTheme(themeSelect.value);
+    });
+}
+
+function saveTheme(themeName) {
+    console.log('Current DB theme:');
+    console.log(JSON.stringify(selectedTheme));
+    if(selectedTheme==null) {
+        selectedTheme = {
+            _id: "selectedTheme",
+            name: "default"
+        };
+    }
+    if (themeName!=null && themeName.trim().length > 0) {
+        selectedTheme.name= themeSelect.value;
+    }
+    settings.put(selectedTheme, function callback(err, result) {
+        if (!err) {
+            console.log('Saved theme selection');
+            // load theme to set CSS and update selectedTheme._rev
+            loadTheme();
+        }
+        else{
+            console.log(err);
+        }
+    });
+}
+
+function loadTheme(){
+    settings.get("selectedTheme", function callback(err, result) {
+        if (!err) {
+            selectedTheme=result;
+            console.log('Loaded saved theme');
+            console.log(JSON.stringify(result));
+            theme.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
+        }
+        else{
+            console.log(err);
+            if(err.status=404) {
+                console.log("No existing theme. Using default");
+                loadTheme();
+            }
+        }
     });
 }
 
