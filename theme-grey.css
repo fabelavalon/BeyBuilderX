@@ -9,6 +9,7 @@
     --primary-color:#7b7b7b;
     --secondary-color:#7fa5ba;
     --text-color:#e6e6e6;
+    --text-secondary-color: #000;
     --border-color:#dadada;
     --danger-color: #8c2930;
     --disable-color: #000;
@@ -31,11 +32,11 @@ head, body, footer, .modal-content {
     border-color: var(--border-color);
 }
 
-/* .select-basic:hover{
-    color: #fff;
-    background-color: #dadada;
-    border-color: #7b7b7b;
-} */
+.select-basic:hover, .select-basic:focus-within, .select-basic:active{
+    color: var(--text-secondary-color);
+    background-color: var(--secondary-color);
+    border-color: var(--border-color);
+}
 
 .select-list{
     color: var(--text-color);
@@ -43,11 +44,11 @@ head, body, footer, .modal-content {
     border-color: var(--border-color);
 }
 
-/* .select-list:hover{
-    color: #fff;
-    background-color: #7b7b7b;
-    border-color: #dadada;
-} */
+.select-list:hover{
+    color: var(--text-secondary-color);
+    background-color: var(--secondary-color);
+    border-color: var(--border-color);
+}
 
 #vsContainer {
     color: white;
@@ -89,8 +90,8 @@ head, body, footer, .modal-content {
 }
 
 .btn-primary:hover {
-    color: var(--text-color);
-    background-color: var(--border-color);
+    color: var(--disable-color);
+    background-color: var(--secondary-color);
     border-color: var(--primary-color);
 }
 
