@@ -9,6 +9,7 @@
     --primary-color:#7b7b7b;
     --secondary-color:#7fa5ba;
     --text-color:#e6e6e6;
+    --text-color-hashless:e6e6e6;
     --text-secondary-color: #000;
     --border-color:#dadada;
     --danger-color: #8c2930;
@@ -56,12 +57,13 @@ head, body, footer, .modal-content {
     display: none;
 }
 
-/* close button color not working because bootstrap uses a background image of an X */
+/* bootstrap btn-close uses a background, so we have to completely replace it to color it, can't use vars */
 .btn-close {
-    color: var(--text-color);
+    /* replace the FFFFFF within fill='%23FFFFFF' to change color */
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
 }
 .btn-close:hover {
-    color: var(--danger-color);
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238c2930'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
 }
 
 /* styling for delete buttons */
