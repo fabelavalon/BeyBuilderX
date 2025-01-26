@@ -12,7 +12,7 @@ var settings = new PouchDB("settings");
 //import the parts lists
 var allBlades = blades;
 var allRachets = rachets;
-var allBitss = bits;
+var allBits = bits;
 
 //create the elements for the buttons that will get generated via this script
 var bey1Statbtn = document.createElement("button");
@@ -143,20 +143,24 @@ function main(){
     bitDropdown1.value="none";
     
     //create and populate the drop downs with the parts from the database...
+    
+    //sort for display purposes, leave original array the same so we can get by ID
+    allBladesSorted = structuredClone(allBlades); // JS deep copy crap
+    allBladesSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Blades
-    for (var i = 0; i < allBlades.length; i++) {
+    for (var i = 0; i < allBladesSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
         var option4 = document.createElement("option");
-        options.textContent = allBlades[i].name;
-        options.value = allBlades[i].id;
-        option2.textContent = allBlades[i].name;
-        option2.value = allBlades[i].id;
-        option3.textContent = allBlades[i].name;
-        option3.value = allBlades[i].id;
-        option4.textContent = allBlades[i].name;
-        option4.value = allBlades[i].id;
+        options.textContent = allBladesSorted[i].name;
+        options.value = allBladesSorted[i].id;
+        option2.textContent = allBladesSorted[i].name;
+        option2.value = allBladesSorted[i].id;
+        option3.textContent = allBladesSorted[i].name;
+        option3.value = allBladesSorted[i].id;
+        option4.textContent = allBladesSorted[i].name;
+        option4.value = allBladesSorted[i].id;
         bey1BladeDropdown.appendChild(options);
         bey2BladeDropdown.appendChild(option2);
         bladeDropdown1.appendChild(option3);
@@ -164,20 +168,23 @@ function main(){
 
     }
 
+    //sort for display purposes, leave original array the same so we can get by ID
+    allRachetsSorted = structuredClone(allRachets);
+    allRachetsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the rachets
-    for (var i = 0; i < allRachets.length; i++) {
+    for (var i = 0; i < allRachetsSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
         var option4 = document.createElement("option");
-        options.textContent = allRachets[i].name;
-        options.value = allRachets[i].id;
-        option2.textContent = allRachets[i].name;
-        option2.value = allRachets[i].id;
-        option3.textContent = allRachets[i].name;
-        option3.value = allRachets[i].id;
-        option4.textContent = allRachets[i].name;
-        option4.value = allRachets[i].id;
+        options.textContent = allRachetsSorted[i].name;
+        options.value = allRachetsSorted[i].id;
+        option2.textContent = allRachetsSorted[i].name;
+        option2.value = allRachetsSorted[i].id;
+        option3.textContent = allRachetsSorted[i].name;
+        option3.value = allRachetsSorted[i].id;
+        option4.textContent = allRachetsSorted[i].name;
+        option4.value = allRachetsSorted[i].id;
         bey1RachetDropdown.appendChild(options);
         bey2RachetDropdown.appendChild(option2);
         rachetDropdown1.appendChild(option3);
@@ -185,20 +192,23 @@ function main(){
         
     }
 
+    //sort for display purposes, leave original array the same so we can get by ID
+    allBitsSorted = structuredClone(allBits);
+    allBitsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the bits  
-    for (var i = 0; i < allBits.length; i++) {
+    for (var i = 0; i < allBitsSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
         var option4 = document.createElement("option");
-        options.textContent = allBits[i].name;
-        options.value = allBits[i].id;
-        option2.textContent = allBits[i].name;
-        option2.value = allBits[i].id;
-        option3.textContent = allBits[i].name;
-        option3.value = allBits[i].id;
-        option4.textContent = allBits[i].name;
-        option4.value = allBits[i].id;
+        options.textContent = allBitsSorted[i].name;
+        options.value = allBitsSorted[i].id;
+        option2.textContent = allBitsSorted[i].name;
+        option2.value = allBitsSorted[i].id;
+        option3.textContent = allBitsSorted[i].name;
+        option3.value = allBitsSorted[i].id;
+        option4.textContent = allBitsSorted[i].name;
+        option4.value = allBitsSorted[i].id;
         bey1BitDropdown.appendChild(options);
         bey2BitDropdown.appendChild(option2);
         bitDropdown1.appendChild(option3);
@@ -215,6 +225,10 @@ function main(){
 
 //generate a beyblade based on the selections for the first set of drop downs
 function generateBey1(){
+
+    console.log("blade #: "+ bey1BladeDropdown.value);
+    console.log("rachet #: "+ bey1RachetDropdown.value);
+    console.log("bit #: "+ bey1BitDropdown.value);
 
     //uses the id's of all parts for easy call
     var blade = -1;
@@ -234,6 +248,9 @@ function generateBey1(){
         bladeChosen = false;
     }
     else{
+        bladeObj = allBlades[parseInt(bey1BladeDropdown.value)];
+        console.log(JSON.stringify(bladeObj));
+
         blade = allBlades[parseInt(bey1BladeDropdown.value)].id;
         bladeChosen = true;
     }
@@ -257,6 +274,8 @@ function generateBey1(){
         bit = allBits[parseInt(bey1BitDropdown.value)].id;
         bitChosen = true;
     } 
+
+    console.log(JSON.stringify(blade));
 
     //put it togther and...
     bey1 = new BeyBlade(blade, rachet, bit);
