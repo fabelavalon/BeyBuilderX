@@ -1,0 +1,115 @@
+/* just bootstrap */
+
+:root{
+    --bg-color:#fcfcfc;
+    --primary-color:#ffffff;
+    --secondary-color:#e6f4fb;
+    --tertiary-color: #FFA200;
+    --text-color:#555;
+    --text-color-secondary: #0D91D2;
+    --text-color-light: #FFFFFF;
+    --text-secondary-color: #000;
+    --border-color:#d6d6d6;
+    --danger-color: #8c2930;
+    --disable-color: #000;
+}
+
+/* backgrounds and text color */
+head, body, footer, .modal-content {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.nav-link {
+    color: var(--text-color);
+}
+
+/* default table border, sans color */
+td, tr {
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+}
+table{
+    border: 1px solid var(--border-color);
+}
+
+#vsContainer {
+    color: var(--text-color);
+    visibility: hidden;
+    display: none;
+}
+
+/* bootstrap btn-close uses a background, so we have to completely replace it to color it, can't use vars */
+/* replace the FFFFFF within fill='%23FFFFFF' to change color */
+/*
+.btn-close {
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+*/
+.btn-close:hover {
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238c2930'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+
+
+/* styling for delete buttons */
+.btn-danger {
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.btn-danger:hover {
+    color: var(--text-color-light);
+    background-color: var(--danger-color);
+    border-color: var(--border-color);
+}
+
+.btn-danger:focus,
+.btn-danger.focus {
+    box-shadow: 0 0 0 .2rem var(--danger-color);
+}
+
+/* styling for basic buttons */
+.btn-primary {
+    color: var(--text-color-secondary);
+    background-color: var(--primary-color);
+    border-color: var(--text-color-secondary);
+}
+
+.btn-primary:hover {
+    color: var(--tertiary-color);
+    background-color: var(--secondary-color);
+    border-color: var(--tertiary-color);
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+    box-shadow: 0 0 0 .2rem var(--tertiary-color);
+}
+
+.btn-primary:focus-visible,
+.btn-primary.focus-visible {
+    background-color: var(--tertiary-color);
+    box-shadow: 0 0 0 .2rem var(--primary-color);
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: var(--disable-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show>.btn-primary.dropdown-toggle {
+    color: var(--disable-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .2rem var(--bg-color);
+}
