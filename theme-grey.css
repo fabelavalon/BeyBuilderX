@@ -1,0 +1,150 @@
+/*=========================================================*
+ *BeyBuilder X v1.0 for Beyblade X                         *
+ *Author: Fabel                                            *
+ *Copyright 2023                                           *
+ *=========================================================*/
+
+:root{
+    --bg-color:#434343;
+    --primary-color:#7b7b7b;
+    --secondary-color:#7fa5ba;
+    --text-color:#ffffff;
+    --text-secondary-color: #000;
+    --border-color:#dadada;
+    --danger-color: #8c2930;
+    --disable-color: #000;
+}
+
+/* backgrounds and text color */
+head, body, footer, .modal-content {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.nav-link {
+    color: var(--text-color);
+}
+
+/* styling for drop downs */
+.select-basic{
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.select-basic:hover, .select-basic:focus-within, .select-basic:active{
+    color: var(--text-secondary-color);
+    background-color: var(--secondary-color);
+    border-color: var(--border-color);
+}
+
+.select-list{
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.select-list:hover{
+    color: var(--text-secondary-color);
+    background-color: var(--secondary-color);
+    border-color: var(--border-color);
+}
+
+#vsContainer {
+    color: var(--text-color);
+    visibility: hidden;
+    display: none;
+}
+
+/* bootstrap btn-close uses a background, so we have to completely replace it to color it, can't use vars */
+.btn-close {
+    /* replace the FFFFFF within fill='%23FFFFFF' to change color */
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+.btn-close:hover {
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238c2930'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+
+/* styling for delete buttons */
+.btn-danger {
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.btn-danger:hover {
+    color: var(--text-color);
+    background-color: var(--danger-color);
+    border-color: var(--border-color);
+}
+
+.btn-danger:focus,
+.btn-danger.focus {
+    box-shadow: 0 0 0 .2rem var(--danger-color);
+}
+
+/* styling for basic buttons */
+.btn-primary {
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.btn-primary:hover {
+    color: var(--disable-color);
+    background-color: var(--secondary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+    box-shadow: 0 0 0 .2rem var(--secondary-color);
+}
+
+.btn-primary:focus-visible,
+.btn-primary.focus-visible {
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 0 .2rem var(--primary-color);
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: var(--disable-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show>.btn-primary.dropdown-toggle {
+    color: var(--disable-color);
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .2rem var(--bg-color);
+}
+
+
+/* make sure tables and table elements have the proper borders */
+td, tr {
+    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    border-color: var(--border-color);
+}
+
+table{
+    border: 1px solid var(--border-color);
+}
+
+/* make modal headers and footers sticky */
+.modal-header--sticky {
+    background-color: inherit;
+  }
+  
+.modal-footer--sticky {
+    background-color: inherit;
+}

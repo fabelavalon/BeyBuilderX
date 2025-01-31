@@ -7,11 +7,12 @@
 //create beyblade database
 var beyBladeDBX = new PouchDB("BeyBladesX");
 var recordsDBX = new PouchDB("RecordX");
+var settings = new PouchDB("settings");
 
 //import the parts lists
 var allBlades = blades;
 var allRachets = rachets;
-var allBitss = bits;
+var allBits = bits;
 
 //create the elements for the buttons that will get generated via this script
 var bey1Statbtn = document.createElement("button");
@@ -98,6 +99,10 @@ var partBst = document.getElementById("partBst");
 var partX = document.getElementById("partX");
 var partDraw = document.getElementById("partDraw");
 
+//theme switcher
+var themeSelect = document.getElementById("themeSelect");
+var theme = document.getElementById("theme");
+
 //everything else
 var error = document.getElementById("error");
 var winners = document.getElementById("winnerLog");
@@ -105,6 +110,7 @@ var matchupSpace = document.getElementById("matchupSpace");
 var matchupSpaceUser = document.getElementById("matchupSpaceUser");
 var matchupBey = document.getElementById("matchupBey");
 var matchupBeyUser = document.getElementById("matchupBeyUser");
+
 
 //used to generate the win buttons after both beys are selected
 var wasBey1Generated = false;
@@ -141,20 +147,24 @@ function main(){
     bitDropdown1.value="none";
     
     //create and populate the drop downs with the parts from the database...
+    
+    //sort for display purposes, leave original array the same so we can get by ID
+    allBladesSorted = structuredClone(allBlades); // JS deep copy crap
+    allBladesSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Blades
-    for (var i = 0; i < allBlades.length; i++) {
+    for (var i = 0; i < allBladesSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
         var option4 = document.createElement("option");
-        options.textContent = allBlades[i].name;
-        options.value = allBlades[i].id;
-        option2.textContent = allBlades[i].name;
-        option2.value = allBlades[i].id;
-        option3.textContent = allBlades[i].name;
-        option3.value = allBlades[i].id;
-        option4.textContent = allBlades[i].name;
-        option4.value = allBlades[i].id;
+        options.textContent = allBladesSorted[i].name;
+        options.value = allBladesSorted[i].id;
+        option2.textContent = allBladesSorted[i].name;
+        option2.value = allBladesSorted[i].id;
+        option3.textContent = allBladesSorted[i].name;
+        option3.value = allBladesSorted[i].id;
+        option4.textContent = allBladesSorted[i].name;
+        option4.value = allBladesSorted[i].id;
         bey1BladeDropdown.appendChild(options);
         bey2BladeDropdown.appendChild(option2);
         bladeDropdown1.appendChild(option3);
@@ -162,20 +172,23 @@ function main(){
 
     }
 
+    //sort for display purposes, leave original array the same so we can get by ID
+    allRachetsSorted = structuredClone(allRachets);
+    allRachetsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the rachets
-    for (var i = 0; i < allRachets.length; i++) {
+    for (var i = 0; i < allRachetsSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
         var option4 = document.createElement("option");
-        options.textContent = allRachets[i].name;
-        options.value = allRachets[i].id;
-        option2.textContent = allRachets[i].name;
-        option2.value = allRachets[i].id;
-        option3.textContent = allRachets[i].name;
-        option3.value = allRachets[i].id;
-        option4.textContent = allRachets[i].name;
-        option4.value = allRachets[i].id;
+        options.textContent = allRachetsSorted[i].name;
+        options.value = allRachetsSorted[i].id;
+        option2.textContent = allRachetsSorted[i].name;
+        option2.value = allRachetsSorted[i].id;
+        option3.textContent = allRachetsSorted[i].name;
+        option3.value = allRachetsSorted[i].id;
+        option4.textContent = allRachetsSorted[i].name;
+        option4.value = allRachetsSorted[i].id;
         bey1RachetDropdown.appendChild(options);
         bey2RachetDropdown.appendChild(option2);
         rachetDropdown1.appendChild(option3);
@@ -183,20 +196,23 @@ function main(){
         
     }
 
+    //sort for display purposes, leave original array the same so we can get by ID
+    allBitsSorted = structuredClone(allBits);
+    allBitsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the bits  
-    for (var i = 0; i < allBits.length; i++) {
+    for (var i = 0; i < allBitsSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
         var option4 = document.createElement("option");
-        options.textContent = allBits[i].name;
-        options.value = allBits[i].id;
-        option2.textContent = allBits[i].name;
-        option2.value = allBits[i].id;
-        option3.textContent = allBits[i].name;
-        option3.value = allBits[i].id;
-        option4.textContent = allBits[i].name;
-        option4.value = allBits[i].id;
+        options.textContent = allBitsSorted[i].name;
+        options.value = allBitsSorted[i].id;
+        option2.textContent = allBitsSorted[i].name;
+        option2.value = allBitsSorted[i].id;
+        option3.textContent = allBitsSorted[i].name;
+        option3.value = allBitsSorted[i].id;
+        option4.textContent = allBitsSorted[i].name;
+        option4.value = allBitsSorted[i].id;
         bey1BitDropdown.appendChild(options);
         bey2BitDropdown.appendChild(option2);
         bitDropdown1.appendChild(option3);
@@ -207,6 +223,8 @@ function main(){
     //fill the dbList
     showBeyblades();
     
+    loadTheme();
+    themeSwitchListener();
 };
 
 //generate a beyblade based on the selections for the first set of drop downs
@@ -253,6 +271,8 @@ function generateBey1(){
         bit = allBits[parseInt(bey1BitDropdown.value)].id;
         bitChosen = true;
     } 
+
+    console.log(JSON.stringify(blade));
 
     //put it togther and...
     bey1 = new BeyBlade(blade, rachet, bit);
@@ -1095,7 +1115,7 @@ function setDbBey(){
             dbWinPercent.textContent = "Average win%: " + avgWinPercent + "%";
             dbPPW.textContent = "Average Points per Win: " + avgPPW;
             dbPPL.textContent = "Average Points per Loss: " + avgPPL;
-            dbPointDif.textContent = "Avg Points per Round: " + round(avgPointChangePerRound,2); 
+            dbPointDif.textContent = "Average Points per Round: " + round(avgPointChangePerRound,2); 
             dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
             dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
@@ -1106,7 +1126,7 @@ function setDbBey(){
             //set as bey1 button
             bey1Statbtn.innerHTML = "Set as Bey 1";
             bey1Statbtn.classList.add("btn");
-            bey1Statbtn.classList.add("btn-basic");
+            bey1Statbtn.classList.add("btn-primary");
             bey1Statbtn.addEventListener("click", function() {
                 bey1=dbBey;
                 wasBey1Generated = true;
@@ -1118,7 +1138,7 @@ function setDbBey(){
             //set as bey2 button
             bey2Statbtn.innerHTML = "Set as Bey 2";
             bey2Statbtn.classList.add("btn");
-            bey2Statbtn.classList.add("btn-basic");
+            bey2Statbtn.classList.add("btn-primary");
             bey2Statbtn.addEventListener("click", function() {
                 bey2=dbBey;
                 wasBey2Generated = true;
@@ -1130,7 +1150,7 @@ function setDbBey(){
             //edit bey stats in database
             editBeybtn.innerHTML = "Edit Stats";
             editBeybtn.classList.add("btn");
-            editBeybtn.classList.add("btn-basic");
+            editBeybtn.classList.add("btn-primary");
             editBeybtn.setAttribute("data-bs-toggle", "modal");
             editBeybtn.setAttribute("data-bs-target", "#editBeyPopup");
             dbBeySpace.append(editBeybtn);
@@ -1138,7 +1158,7 @@ function setDbBey(){
             //show matchup history button
             showMatchupbtn.innerHTML = "Matchup History";
             showMatchupbtn.classList.add("btn");
-            showMatchupbtn.classList.add("btn-basic");
+            showMatchupbtn.classList.add("btn-primary");
             showMatchupbtn.setAttribute("data-bs-toggle", "modal");
             showMatchupbtn.setAttribute("data-bs-target", "#matchupHist");
             showMatchupbtn.addEventListener("click", function() {
@@ -1418,7 +1438,7 @@ function populateMatchHist(bey){
         cellT1.innerHTML = "Overall Win%";
         cellT2.innerHTML = "Average Points Earned Per Win";
         cellT3.innerHTML = "Average Points Lost Per Loss";
-        cellT4.innerHTML = "Average Per Round";
+        cellT4.innerHTML = "Average Points Per Round";
         // cellT5.innerHTML = "Draws";
         // cellT6.innerHTML = "Points";
         var rowT2 = totalsSpace.insertRow(1);
@@ -1826,6 +1846,57 @@ function spinMe(me){
     me.addEventListener('animationend', function () {
         me.classList.remove('spinme');
     }, { once: true });
+}
+
+//theme object, will be a pouchDB object
+var selectedTheme;
+function themeSwitchListener(){
+    themeSelect.addEventListener('change', function() {
+        saveTheme(themeSelect.value);
+    });
+}
+
+function saveTheme(themeName) {
+    console.log('Current DB theme:');
+    console.log(JSON.stringify(selectedTheme));
+    if(selectedTheme==null) {
+        selectedTheme = {
+            _id: "selectedTheme",
+            name: "default"
+        };
+    }
+    if (themeName!=null && themeName.trim().length > 0) {
+        selectedTheme.name= themeSelect.value;
+    }
+    settings.put(selectedTheme, function callback(err, result) {
+        if (!err) {
+            console.log('Saved theme selection');
+            // load theme to set CSS and update selectedTheme._rev
+            loadTheme();
+        }
+        else{
+            console.log(err);
+        }
+    });
+}
+
+function loadTheme(){
+    settings.get("selectedTheme", function callback(err, result) {
+        if (!err) {
+            selectedTheme=result;
+            console.log('Loaded saved theme');
+            console.log(JSON.stringify(result));
+            theme.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
+            themeSelect.value=selectedTheme.name;
+        }
+        else{
+            console.log(err);
+            if(err.status=404) {
+                console.log("No existing theme. Using default");
+                saveTheme();
+            }
+        }
+    });
 }
 
 //run main on startup

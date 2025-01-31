@@ -6,22 +6,23 @@
     *Copyright 2023-2025                                         *
     *============================================================*-->
 
-<html style="background-color:#20083a">
+<html>
 
 <head>
-    <title>BeyBuilder X v1.2</title>
+    <title>BeyBuilder X v1.3</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="./bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
+    <link href="./theme-default.css" rel="stylesheet" id="theme"  />
     <script src="./bootstrap.bundle.js"></script>
 </head>
 
-<body style="color:#fff; background-color:#20083a">
+<body>
 
     <!--Header space-->
     <div class="container-fluid border text-md-start text-center">
-        <h1>BeyBuilder X v1.2</h1>
+        <h1>BeyBuilder X v1.3</h1>
         <h3>for Beyblade X</h3>
     </div>
 
@@ -43,7 +44,7 @@
                 <br> <!-- TODO: replace BR with vertical padding -->
                 <div class="row">
                   <div class="d-grid gap-2 col-md-4 mx-auto">
-                      <button onclick="generateBey1()" class="btn btn-basic">Choose Beyblade 1</button>
+                      <button onclick="generateBey1()" class="btn btn-primary">Choose Beyblade 1</button>
                   </div>
                 </div>
             </div>
@@ -125,7 +126,7 @@
                 <br> <!-- TODO: replace BR with vertical padding -->
                 <div class="row">
                   <div class="d-grid gap-2 col-md-4 mx-auto">
-                      <button onclick="generateBey2()" class="btn btn-basic">Choose Beyblade 2</button>
+                      <button onclick="generateBey2()" class="btn btn-primary">Choose Beyblade 2</button>
                   </div>
                 </div>
             </div>
@@ -167,10 +168,10 @@
                 Bey 1:
               </p>
               <div class="row">
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
 
@@ -180,10 +181,10 @@
               </p>
               <div class="row">
                 <!-- Bey 2 Win Buttons -->
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-basic btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
           </div>
@@ -191,22 +192,22 @@
           <!-- Draw and Undo Buttons -->
           <div class="row">
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-basic btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
+              <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
             </div>
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-basic btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
+              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
             </div>
           </div>
 
-          <p style="color:white" id="winnerLog"></p>
-          <p style="color:white" id="error"></p>
+          <p id="winnerLog"></p>
+          <p id="error"></p>
   
         </div><!--end buttonContainer-->
 
         <!--Records table for selected beys-->
         <div class="col-md-6" id="recordsSpace">
   
-          <table style="width:100%">
+          <table>
             <tr>
               <td class="text-end"></td>
               <th class="text-end" id="record1">bey1</th>
@@ -280,7 +281,7 @@
               <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()"></select>
               <br>
               <!-- TODO: use separate rows for buttons -->
-              <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-basic">Check Parts Records</button>
+              <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-primary">Check Parts Records</button>
               <br>
               <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
           </div>
@@ -318,7 +319,7 @@
       <!-- matchup history popup -->
       <div class="modal fade, modal-lg" id="matchupHist" tabindex="-1" aria-labelledby="matchupBey" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-header modal-header--sticky">
               <h5 class="modal-title" id="matchupBey"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -329,7 +330,7 @@
                 <table style="width:100%" id="matchupSpace"></table>
             </div>
             <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -338,7 +339,7 @@
       <!-- edit beyblade popup -->
       <div class="modal fade" id="editBeyPopup" tabindex="-1" aria-labelledby="beyPopupLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="beyPopupLabel">Edit Bey Stats</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -371,7 +372,7 @@
             </div>
             <div class="modal-footer">
                 Note. You MUST reselect a beyblade from the list if you wish to change the same bey more than once.
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal" onclick="statEditor.reset()">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="statEditor.reset()">Close</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="editBey(wko.value, lko.value, wso.value, lso.value, wbst.value, lbst.value, wx.value, lx.value, dr.value)">Edit Bey Stats</button>
             </div>
           </div>
@@ -381,7 +382,7 @@
       <!-- part records popup -->
       <div class="modal fade, modal-xl" id="partsRecords" tabindex="-1" aria-labelledby="partsSelection" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
 
             <div class="modal-header modal-header--sticky">
               <h5 class="modal-title" id="partsSelction">Parts Records</h5>
@@ -417,13 +418,13 @@
                   <br>
                   <table id="matchupHistUser"></table>
                   <br>
-                  <button onclick="populateMatchHistUser(bladeR1.value, rachetR1.value, bitR1.value, bladeR2.value, rachetR2.value, bitR2.value)" class="btn btn-basic">Show Part Stats</button>
+                  <button onclick="populateMatchHistUser(bladeR1.value, rachetR1.value, bitR1.value, bladeR2.value, rachetR2.value, bitR2.value)" class="btn btn-primary">Show Part Stats</button>
                 </div>
               </div>
             </div>
 
             <div class="modal-footer modal-footer--sticky">
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
 
           </div>
@@ -433,12 +434,12 @@
       <!-- delete beyblade popup -->
       <div class="modal fade" id="areYouSure" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="exampleModalLabel" style="text-align: center">Are You Sure?</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel">Are You Sure?</h5>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteBey()">Yes, Delete this BeyBlade</button>
             </div>
           </div>
@@ -448,26 +449,44 @@
       <!-- delete database popup -->
       <div class="modal fade" id="areYouSure2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="background-color:#20083a">
+          <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="exampleModalLabel2" style="text-align: center">Are You Sure?</h5>
+                <h5 class="modal-title text-center" id="exampleModalLabel2">Are You Sure?</h5>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-basic" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteAllBeys()">Yes, Clear the ENTIRE databeyse</button>
             </div>
           </div>
         </div>
       </div>
 
-      
+      <!-- pick theme, swap css file -->
+      <div class="modal fade" id="themeSwitcher" tabindex="-1" aria-labelledby="themeSwitcher-body" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title" id="themeSwitcher-body">Select a theme</h5>
+                <select id="themeSelect" class="select-basic form-select">
+                  <option value="default">Default</option>
+                  <option value="grey">Grey</option>
+                  <!-- <option value="wbo">World Beyblade Organization</option> -->
+                  <option value="none">None</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     <!--import scripts-->
     <script src="./pouchdb-7.3.1.js"></script>
     <script src="./parts.js"></script>
     <script src="./beyblade.js"></script>
     <script src="./main.js?v1"></script>
-
     <!--
         TODO:
         ui cleanup
@@ -483,8 +502,9 @@
   <p class="col-md-4 mb-0 px-2">© Fabel'd Beyblades</p>
 
   <ul class="nav col-md-4 justify-content-end overflow-hidden">
-    <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX"  target="_blank" rel="noopener" class="nav-link px-3 link-light">Source code</a></li>
-    <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3 link-light">About</a></li>
+    <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX"  target="_blank" rel="noopener" class="nav-link px-3">Source code</a></li>
+    <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#themeSwitcher" class="nav-link px-3">Theme</a></li>
+    <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3">About</a></li>
   </ul>
 </footer>
 

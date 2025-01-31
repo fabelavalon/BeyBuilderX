@@ -1,0 +1,15 @@
+/* just bootstrap */
+
+.nav-link {
+    color: #000000;
+}
+
+
+/* default table border, sans color */
+td, tr {
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+table{
+    border: 1px solid;
+}
