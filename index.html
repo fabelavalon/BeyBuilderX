@@ -3,7 +3,7 @@
 <!--*============================================================*
     *BeyBuilder X v1.1 for Beyblade X                            *
     *Author: Fabel                                               *
-    *Copyright 2023                                              *
+    *Copyright 2023-2025                                         *
     *============================================================*-->
 
 <html>
@@ -294,6 +294,14 @@
               <br>
               <span id="dbBeyStats"></span>
               <br>
+              <span id="dbWinPercent"></span> <!-- new rows start -->
+              <br>
+              <span id="dbPPW"></span>
+              <br>
+              <span id="dbPPL"></span>
+              <br>
+              <span id="dbPointDif"></span> <!-- new rows end -->
+              <br>
               <span id="dbBeyKO"></span>
               <br>
               <span id="dbBeySO"></span>
@@ -317,7 +325,9 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table id="matchupSpace"></table>
+                <table style="width:100%" id="totalsSpace"></table>
+                <br>
+                <table style="width:100%" id="matchupSpace"></table>
             </div>
             <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -476,8 +486,7 @@
     <script src="./pouchdb-7.3.1.js"></script>
     <script src="./parts.js"></script>
     <script src="./beyblade.js"></script>
-    <script src="./main.js"></script>
-    
+    <script src="./main.js?v1"></script>
     <!--
         TODO:
         ui cleanup
