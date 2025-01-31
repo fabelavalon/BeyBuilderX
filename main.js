@@ -1115,7 +1115,7 @@ function setDbBey(){
             dbWinPercent.textContent = "Average win%: " + avgWinPercent + "%";
             dbPPW.textContent = "Average Points per Win: " + avgPPW;
             dbPPL.textContent = "Average Points per Loss: " + avgPPL;
-            dbPointDif.textContent = "Avg Points per Round: " + round(avgPointChangePerRound,2); 
+            dbPointDif.textContent = "Average Points per Round: " + round(avgPointChangePerRound,2); 
             dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
             dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
@@ -1438,7 +1438,7 @@ function populateMatchHist(bey){
         cellT1.innerHTML = "Overall Win%";
         cellT2.innerHTML = "Average Points Earned Per Win";
         cellT3.innerHTML = "Average Points Lost Per Loss";
-        cellT4.innerHTML = "Average Per Round";
+        cellT4.innerHTML = "Average Points Per Round";
         // cellT5.innerHTML = "Draws";
         // cellT6.innerHTML = "Points";
         var rowT2 = totalsSpace.insertRow(1);
