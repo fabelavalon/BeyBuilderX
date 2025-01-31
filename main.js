@@ -226,10 +226,6 @@ function main(){
 //generate a beyblade based on the selections for the first set of drop downs
 function generateBey1(){
 
-    console.log("blade #: "+ bey1BladeDropdown.value);
-    console.log("rachet #: "+ bey1RachetDropdown.value);
-    console.log("bit #: "+ bey1BitDropdown.value);
-
     //uses the id's of all parts for easy call
     var blade = -1;
     var rachet = -1;
@@ -248,9 +244,6 @@ function generateBey1(){
         bladeChosen = false;
     }
     else{
-        bladeObj = allBlades[parseInt(bey1BladeDropdown.value)];
-        console.log(JSON.stringify(bladeObj));
-
         blade = allBlades[parseInt(bey1BladeDropdown.value)].id;
         bladeChosen = true;
     }
