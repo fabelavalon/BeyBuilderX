@@ -1,7 +1,7 @@
 /*==========================================================*
  * BeyBuilder v1.1 for Beyblade X                           *
  * Author: Fabel                                            *
- * Copyright 2023-2024                                      *
+ * Copyright 2023-2025                                      *
  *==========================================================*/
 
 //create beyblade database
@@ -52,6 +52,10 @@ var selectedBey = document.getElementById("dbSelectList");
 var dbBeyName = document.getElementById("dbBeyIs");
 var dbBeyWeight = document.getElementById("dbBeyWeight");
 var dbBeyStats = document.getElementById("dbBeyStats");
+var dbWinPercent = document.getElementById("dbWinPercent");
+var dbPPW = document.getElementById("dbPPW");
+var dbPPL = document.getElementById("dbPPL");
+var dbPointDif = document.getElementById("dbPointDif");
 var dbBeyKO = document.getElementById("dbBeyKO");
 var dbBeySO = document.getElementById("dbBeySO");
 var dbBeyBst = document.getElementById("dbBeyBst");
@@ -67,7 +71,7 @@ var bey1SO = document.getElementById("bey1SO");
 var bey1Bst = document.getElementById("bey1Bst");
 var bey1X = document.getElementById("bey1X");
 var bey1Draw = document.getElementById("bey1Draw");
-//
+//unfinished maave block
 var bey1title = document.getElementById("bey1title");
 var bey1draws = document.getElementById("bey1weight");
 var bey1weight = document.getElementById("bey1draws");
@@ -780,6 +784,7 @@ function updateWinCounts(winner, loser, outcome){
     
 }
 
+// undos last entered result
 function undoLastRecord(){
     var winner = lastRecordWinner;
     var loser = lastRecordLoser;
@@ -1061,9 +1066,36 @@ function setDbBey(){
         if(!err){
             //TODO: move text and buttons to HTML, to make styling/layout easier
 
+            // build a new BeyBlade object using parts, then overlay win/loss data from database
+            var castDoc = Object.assign( new BeyBlade(doc.build.blade, doc.build.rachet, doc.build.bit), doc.build );
+
+            //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
+            var winHolder = castDoc.getTotalWin();
+            var winPointHolder = (doc.build.winsBst*2) + (doc.build.winsKO*2) + doc.build.winsSO + (doc.build.winsX*3);
+            // var lossHolder = doc.build.loseBst + doc.build.loseKO + doc.build.loseSO + doc.build.loseX;
+            var lossHolder = castDoc.getTotalLoss();
+            var lossPointHolder = (doc.build.loseBst*2) + (doc.build.loseKO*2) + doc.build.loseSO + (doc.build.loseX*3);
+            //var totalHolder = winHolder + lossHolder + doc.build.draws;
+            var totalHolder = castDoc.getTotalMatch();
+            var avgPPW = round((winPointHolder/winHolder),2);
+            var avgPPL = round((lossPointHolder/lossHolder),2);
+            var totalPointChange = (doc.build.winsKO-doc.build.loseKO)*2 +(doc.build.winsSO-doc.build.loseSO) +(doc.build.winsBst-doc.build.loseBst)*2 +(doc.build.winsX-doc.build.loseX)*3;
+            var totalMatches = doc.build.winsKO +doc.build.loseKO +doc.build.winsSO +doc.build.loseSO +doc.build.winsBst +doc.build.loseBst +doc.build.winsX+doc.build.loseX + doc.build.draws;
+            var avgPointChangePerRound = totalPointChange / totalMatches;
+            var avgWinPercent = round((winHolder/totalHolder)*100,2);
+
+            if (isNaN(avgPPW)){ avgPPW=0; }
+            if (isNaN(avgWinPercent)){ avgWinPercent=0; }
+            if (isNaN(avgPPL)){ avgPPL=0; }
+            if (isNaN(avgPointChangePerRound)){ avgPointChangePerRound=0; }
+
             dbBeyName.textContent = doc.build.name;
             dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
             dbBeyStats.textContent = " Spin: " + doc.build.spin;
+            dbWinPercent.textContent = "Average win%: " + avgWinPercent + "%";
+            dbPPW.textContent = "Average Points per Win: " + avgPPW;
+            dbPPL.textContent = "Average Points per Loss: " + avgPPL;
+            dbPointDif.textContent = "Avg Points per Round: " + round(avgPointChangePerRound,2); 
             dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
             dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
@@ -1344,7 +1376,64 @@ function populateMatchHist(bey){
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
 
         matchupSpace.textContent = "";
+        totalsSpace.textContent = "";
         matchupBey.textContent = "Matchup History for " + bey.name;
+
+        // build a new BeyBlade object using parts, then overlay win/loss data from database
+        var castDoc = Object.assign( new BeyBlade(bey.blade, bey.rachet, bey.bit), bey);
+
+        //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
+        var winHolder = castDoc.getTotalWin();
+        var winPointHolder = (bey.winsBst*2) + (bey.winsKO*2) + bey.winsSO + (bey.winsX*3);
+        // var lossHolder = doc.build.loseBst + doc.build.loseKO + doc.build.loseSO + doc.build.loseX;
+        var lossHolder = castDoc.getTotalLoss();
+        var lossPointHolder = (bey.loseBst*2) + (bey.loseKO*2) + bey.loseSO + (bey.loseX*3);
+        //var totalHolder = winHolder + lossHolder + doc.build.draws;
+        var totalHolder = castDoc.getTotalMatch();
+        var avgPPW = round((winPointHolder/winHolder),2);
+        var avgPPL = round((lossPointHolder/lossHolder),2);
+        var totalPointChange = (bey.winsKO-bey.loseKO)*2 +(bey.winsSO-bey.loseSO) +(bey.winsBst-bey.loseBst)*2 +(bey.winsX-bey.loseX)*3;
+        var totalMatches = bey.winsKO + bey.loseKO + bey.winsSO + bey.loseSO + bey.winsBst + bey.loseBst + bey.winsX+ bey.loseX + bey.draws;
+        var avgPointChangePerRound = totalPointChange / totalMatches;
+        var avgWinPercent = round((winHolder/totalHolder)*100,2);
+
+        if (isNaN(avgPPW)){ avgPPW=0; }
+        if (isNaN(avgWinPercent)){ avgWinPercent=0; }
+        if (isNaN(avgPPL)){ avgPPL=0; }
+        if (isNaN(avgPointChangePerRound)){ avgPointChangePerRound=0; }
+
+        var rowT = totalsSpace.insertRow(0);
+        var cellT1 = rowT.insertCell(0);
+        var cellT2 = rowT.insertCell(1);
+        var cellT3 = rowT.insertCell(2);
+        var cellT4 = rowT.insertCell(3);
+        // var cellT5 = row.insertCell(4);
+        // var cellT6 = row.insertCell(5);
+        cellT1.classList.add('text-center');
+        cellT2.classList.add('text-center');
+        cellT3.classList.add('text-center');
+        cellT4.classList.add('text-center');
+        // cellT5.classList.add('text-center');
+        // cellT6.classList.add('text-center');
+        cellT1.innerHTML = "Overall Win%";
+        cellT2.innerHTML = "Average Points Earned Per Win";
+        cellT3.innerHTML = "Average Points Lost Per Loss";
+        cellT4.innerHTML = "Average Per Round";
+        // cellT5.innerHTML = "Draws";
+        // cellT6.innerHTML = "Points";
+        var rowT2 = totalsSpace.insertRow(1);
+        var cellT7 = rowT2.insertCell(0);
+        var cellT8 = rowT2.insertCell(1);
+        var cellT9 = rowT2.insertCell(2);
+        var cellT10 = rowT2.insertCell(3);
+        cellT7.classList.add('text-center');
+        cellT8.classList.add('text-center');
+        cellT9.classList.add('text-center');
+        cellT10.classList.add('text-center');
+        cellT7.innerHTML = avgWinPercent + "%";
+        cellT8.innerHTML = avgPPW;
+        cellT9.innerHTML = avgPPL;
+        cellT10.innerHTML = round(avgPointChangePerRound,2);
 
         //header row
         var row = matchupSpace.insertRow(0);
