@@ -93,7 +93,7 @@
 }
 
 /* Matchup History table */
-#matchupSpace {
+#matchupSpace, #totalsSpace {
     width: 100%;
 }
 #matchupHistUser {
