@@ -10,7 +10,9 @@ var allBits = bits;
 
 class BeyBlade {
 
+    bitChip = -1; //new
     blade = -1;
+    assist = -1; //new
     rachet = -1;
     bit = -1;
     id = "";
@@ -18,6 +20,7 @@ class BeyBlade {
     weight = 0;
     height = 0;
     spin = "invalid";
+    system = "invalid"; //new
     totalWins = 0;
     winsKO = 0;
     winsSO = 0;
@@ -31,14 +34,25 @@ class BeyBlade {
     draws = 0;
     totalMatches = 0;
 
-    constructor(blade, rachet, bit){
+    constructor(bitChip, blade, assist, rachet, bit){
         // console.log("building bey");
+        this.bitChip = bitChip; //new
         this.blade = blade;
+        this.assist = assist; //new
         this.rachet = rachet;
         this.bit = bit;
-        this.weight = allBlades[this.blade].weight + allRachets[this.rachet].weight + allBits[this.bit].weight;
-        this.id = allBlades[this.blade].id + " " + allRachets[this.rachet].id + " " + allBits[this.bit].id;
-        
+        this.system = allBlades[this.blade].system; //new
+
+        if((this.system == "BX") || (this.system == "UX")){
+            this.bitChip = -1;
+            this.assist = -1;
+            this.weight = allBlades[this.blade].weight + allRachets[this.rachet].weight + allBits[this.bit].weight;
+            this.id = allBlades[this.blade].id + " " + allRachets[this.rachet].id + " " + allBits[this.bit].id;
+        }
+        else if(this.system == "CX"){
+            this.weight = allBitChips[this.bitChip].weight + allBlades[this.blade].weight + allAssists[this.assist].weight + allRachets[this.rachet].weight + allBits[this.bit].weight;
+            this.id = allBitChips[this.bitChip].id + " " + allBlades[this.blade].id + " " + allAssists[this.assist].id + " " + allRachets[this.rachet].id + " " + allBits[this.bit].id;
+        }
         this.findName();
         this.findSpin();
     }
@@ -86,7 +100,12 @@ class BeyBlade {
     }
 
     findName(){
-        this.name = allBlades[this.blade].name + " " + allRachets[this.rachet].abbv + allBits[this.bit].abbv;
+        if((this.system == "BX") || (this.system == "UX")){
+            this.name = allBlades[this.blade].name + " " + allRachets[this.rachet].name + " " + allBits[this.bit].name;
+        }
+        else if(this.system == "CX"){
+            this.name = allBitChips[this.bitChip].name + " " + allBlades[this.blade].name + " " + allAssists[this.assist].name + " " + allRachets[this.rachet].name + " " + allBits[this.bit].name;
+        }
     }
 
 }

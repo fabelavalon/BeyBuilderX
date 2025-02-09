@@ -31,9 +31,15 @@
         <div class="row"> <!-- blade 1 selector and stats -->
             <div class="col-md-9"> <!-- selectors -->
                 <div class="row">
+                  <div class="col-sm-4">
+                    <select id="bey1BitChip" class="select-basic form-select"><option value="random">Random Bit Chip</option></select>
+                  </div>
                     <div class="col-sm-4">
-                        <select id="bey1Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                        <select id="bey1Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 1)"><option value="random">Random Blade</option></select>
                     </div>
+                    <div class="col-sm-4">
+                      <select id="bey1AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
+                   </div>
                     <div class="col-sm-4">
                         <select id="bey1Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
                     </div>
@@ -113,9 +119,15 @@
         <div class="row"> <!-- blade 2 selector and stats -->
             <div class="col-md-9"> <!-- selectors -->
                 <div class="row">
+                  <div class="col-sm-4">
+                    <select id="bey2BitChip" class="select-basic form-select"><option value="random">Random Bit Chip</option></select>
+                   </div>
                     <div class="col-sm-4">
-                        <select id="bey2Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                        <select id="bey2Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 2)"><option value="random" >Random Blade</option></select>
                     </div>
+                    <div class="col-sm-4">
+                      <select id="bey2AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
+                  </div>
                     <div class="col-sm-4">
                         <select id="bey2Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
                     </div>
@@ -394,7 +406,11 @@
                 <div class="col-md-6 border">
                   Pick which combination of parts youd like to check the records for. Note: You do not need to choose a full build.
                   <p>
-                  <select id="bladeR1" class="select-basic"><option value="none">Select Blade</option></select>
+                  <select id="bitChipR1" class="select-basic"><option value="none">Select Bit Chip</option></select>
+                  <br>
+                  <select id="bladeR1" class="select-basic" onchange="disableDropdowns(this.value, 3)"><option value="none">Select Blade</option></select>
+                  <br>
+                  <select id="assistR1" class="select-basic"><option value="none">Select Assist Blade</option></select>
                   <br>
                   <select id="rachetR1" class="select-basic"><option value="none">Select Rachet</option></select>
                   <br>
@@ -404,7 +420,11 @@
                 <div class="col-md-6 border">
                   Pick which part or combination of parts to check the records against. Note: At least one part must be selected.
                   <p>
-                  <select id="bladeR2" class="select-basic"><option value="none">Select Blade</option></select>
+                  <select id="bitChipR2" class="select-basic"><option value="none">Select Bit Chip</option></select>
+                  <br>
+                  <select id="bladeR2" class="select-basic" onchange="disableDropdowns(this.value, 4)"><option value="none">Select Blade</option></select>
+                  <br>
+                  <select id="assistR2" class="select-basic"><option value="none">Select Assist Blade</option></select>
                   <br>
                   <select id="rachetR2" class="select-basic"><option value="none">Select Rachet</option></select>
                   <br>

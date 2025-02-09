@@ -10,7 +10,9 @@ var recordsDBX = new PouchDB("RecordX");
 var settings = new PouchDB("settings");
 
 //import the parts lists
+var allBitChips = bitChips;
 var allBlades = blades;
+var allAssists = assistBlades;
 var allRachets = rachets;
 var allBits = bits;
 
@@ -24,20 +26,28 @@ var showMatchupbtn = document.createElement("button");
 
 //import the elements for the dropdowns...
 //...for bey1
+var bey1BitChipDropdown = document.getElementById("bey1BitChip"); //new
 var bey1BladeDropdown = document.getElementById("bey1Blade");
+var bey1AssistBladeDropdown = document.getElementById("bey1AssistBlade"); //new
 var bey1RachetDropdown = document.getElementById("bey1Rachet");
 var bey1BitDropdown = document.getElementById("bey1Bit");
 
 //...for bey2
+var bey2BitChipDropdown = document.getElementById("bey2BitChip"); //new
 var bey2BladeDropdown = document.getElementById("bey2Blade");
 var bey2RachetDropdown = document.getElementById("bey2Rachet");
+var bey2AssistBladeDropdown = document.getElementById("bey2AssistBlade"); //new
 var bey2BitDropdown = document.getElementById("bey2Bit");
 
 //...for the parts records
+var bitChipDropdown1 = document.getElementById("bitChipR1"); //new
 var bladeDropdown1 = document.getElementById("bladeR1");
+var assistBladeDropdown1 = document.getElementById("assistR1"); //new
 var rachetDropdown1 = document.getElementById("rachetR1");
 var bitDropdown1 = document.getElementById("bitR1");
+var bitChipDropdown2 = document.getElementById("bitChipR2"); //new
 var bladeDropdown2 = document.getElementById("bladeR2");
+var assistBladeDropdown2 = document.getElementById("assistR2"); //new
 var rachetDropdown2 = document.getElementById("rachetR2");
 var bitDropdown2 = document.getElementById("bitR2");
 
@@ -129,14 +139,24 @@ var lastRecordWinner;
 var lastRecordLoser;
 var lastRecordOutcome;
 
-//runs on launch, fills draop downs and database list
+//runs on launch, fills dropdowns and database list
 function main(){
 
-    console.log("Welcome to BeyBuilder X Version 1.2");
+    console.log("Welcome to BeyBuilder X Version 1.3");
+
+    //new
+    bey1BitChipDropdown.value="random";
+    bey2BitChipDropdown.value="random";
+    bitChipDropdown1.value="none";
 
     bey1BladeDropdown.value="random";
     bey2BladeDropdown.value="random";
     bladeDropdown1.value="none";
+
+    //new
+    bey1AssistBladeDropdown.value="random";
+    bey2AssistBladeDropdown.value="random";
+    assistBladeDropdown1.value="none";
 
     bey1RachetDropdown.value="random";
     bey2RachetDropdown.value="random";
@@ -147,6 +167,31 @@ function main(){
     bitDropdown1.value="none";
     
     //create and populate the drop downs with the parts from the database...
+    
+    //new
+    //sort for display purposes, leave original array the same so we can get by ID
+    allBitChipsSorted = structuredClone(allBitChips); // JS deep copy crap
+    allBitChipsSorted.sort((a, b) => a.name.localeCompare(b.name));
+    //...the Bit Chips
+    for (var i = 0; i < allBitChipsSorted.length; i++) {
+        var options = document.createElement("option");
+        var option2 = document.createElement("option");
+        var option3 = document.createElement("option");
+        var option4 = document.createElement("option");
+        options.textContent = allBitChipsSorted[i].name;
+        options.value = allBitChipsSorted[i].id;
+        option2.textContent = allBitChipsSorted[i].name;
+        option2.value = allBitChipsSorted[i].id;
+        option3.textContent = allBitChipsSorted[i].name;
+        option3.value = allBitChipsSorted[i].id;
+        option4.textContent = allBitChipsSorted[i].name;
+        option4.value = allBitChipsSorted[i].id;
+        bey1BitChipDropdown.appendChild(options);
+        bey2BitChipDropdown.appendChild(option2);
+        bitChipDropdown1.appendChild(option3);
+        bitChipDropdown2.appendChild(option4);
+
+    }
     
     //sort for display purposes, leave original array the same so we can get by ID
     allBladesSorted = structuredClone(allBlades); // JS deep copy crap
@@ -169,6 +214,31 @@ function main(){
         bey2BladeDropdown.appendChild(option2);
         bladeDropdown1.appendChild(option3);
         bladeDropdown2.appendChild(option4);
+
+    }
+
+    //new
+    //sort for display purposes, leave original array the same so we can get by ID
+    allAssistsSorted = structuredClone(allAssists); // JS deep copy crap
+    allAssistsSorted.sort((a, b) => a.name.localeCompare(b.name));
+    //...the Assit Blades
+    for (var i = 0; i < allAssistsSorted.length; i++) {
+        var options = document.createElement("option");
+        var option2 = document.createElement("option");
+        var option3 = document.createElement("option");
+        var option4 = document.createElement("option");
+        options.textContent = allAssistsSorted[i].name;
+        options.value = allAssistsSorted[i].id;
+        option2.textContent = allAssistsSorted[i].name;
+        option2.value = allAssistsSorted[i].id;
+        option3.textContent = allAssistsSorted[i].name;
+        option3.value = allAssistsSorted[i].id;
+        option4.textContent = allAssistsSorted[i].name;
+        option4.value = allAssistsSorted[i].id;
+        bey1AssistBladeDropdown.appendChild(options);
+        bey2AssistBladeDropdown.appendChild(option2);
+        assistBladeDropdown1.appendChild(option3);
+        assistBladeDropdown2.appendChild(option4);
 
     }
 
@@ -231,16 +301,31 @@ function main(){
 function generateBey1(){
 
     //uses the id's of all parts for easy call
+    var bitChip = -1; //new
     var blade = -1;
+    var assist = -1; //new
     var rachet = -1;
     var bit = -1;
 
     //boolean values to check if the beyblade is random or not
+    var bitChipChosen = false; //new
     var bladeChosen = false;
+    var assistChosen = false; //new
     var rachetChosen = false;
     var bitChosen = false;
 
     //random or chosen...
+    //new
+    //...bit chip?
+    if(bey1BitChipDropdown.value=="random"){
+        var randBitChip = getRandomInt(allBitChips.length);
+        bitChip = allBitChips[randBitChip].id;
+        bitChipChosen = false;
+    }
+    else{
+        bitChip = allBitChips[parseInt(bey1BitChipDropdown.value)].id;
+        bitChipChosen = true;
+    }
     //...blade?
     if(bey1BladeDropdown.value=="random"){
         var randBlade = getRandomInt(allBlades.length);
@@ -250,6 +335,17 @@ function generateBey1(){
     else{
         blade = allBlades[parseInt(bey1BladeDropdown.value)].id;
         bladeChosen = true;
+    }
+    //new
+    //...assist blade?
+    if(bey1AssistBladeDropdown.value=="random"){
+        var randAssistBlade = getRandomInt(allAssists.length);
+        assist = allAssists[randAssistBlade].id;
+        assistChosen = false;
+    }
+    else{
+        assist = allAssists[parseInt(bey1AssistBladeDropdown.value)].id;
+        assistChosen = true;
     }
     //...rachet?
     if(bey1RachetDropdown.value=="random"){
@@ -274,8 +370,13 @@ function generateBey1(){
 
     console.log(JSON.stringify(blade));
 
-    //put it togther and...
-    bey1 = new BeyBlade(blade, rachet, bit);
+    //check if its a CX blade and put it togther...
+    if((allBlades[blade].system == "BX") || (allBlades[blade].system == "UX")){
+        bey1 = new BeyBlade(-1, blade, -1, rachet, bit);
+    }
+    else if(allBlades[blade].system == "CX"){
+        bey1 = new BeyBlade(bitChip, blade, assist, rachet, bit);
+    }
 
     wasBey1Generated = true;
     addBeyblade(bey1);
@@ -290,16 +391,31 @@ function generateBey1(){
 function generateBey2(){
 
     //uses the id's of all parts for easy call
+    var bitChip = -1; //new
     var blade = -1;
+    var assist = -1; //new
     var rachet = -1;
     var bit = -1;
 
     //boolean values to check if the beyblade is random or not
+    var bitChipChosen = false; //new
     var bladeChosen = false;
+    var assistChosen = false; //new
     var rachetChosen = false;
     var bitChosen = false;
 
     //random or chosen...
+    //new
+    //...bit chip?
+    if(bey2BitChipDropdown.value=="random"){
+        var randBitChip = getRandomInt(allBitChips.length);
+        bitChip = allBitChips[randBitChip].id;
+        bitChipChosen = false;
+    }
+    else{
+        bitChip = allBitChips[parseInt(bey2BitChipDropdown.value)].id;
+        bitChipChosen = true;
+    }
     //...blade?
     if(bey2BladeDropdown.value=="random"){
         randBlade = getRandomInt(allBlades.length);
@@ -309,6 +425,17 @@ function generateBey2(){
     else{
         blade = allBlades[parseInt(bey2BladeDropdown.value)].id;
         bladeChosen = true;
+    }
+    //new
+    //...assist blade?
+    if(bey2AssistBladeDropdown.value=="random"){
+        var randAssistBlade = getRandomInt(allAssists.length);
+        assist = allAssists[randAssistBlade].id;
+        assistChosen = false;
+    }
+    else{
+        assist = allAssists[parseInt(bey2AssistBladeDropdown.value)].id;
+        assistChosen = true;
     }
     //...rachet?
     if(bey2RachetDropdown.value=="random"){
@@ -331,8 +458,13 @@ function generateBey2(){
         bitChosen = true;
     }
 
-    //put it together and...
-    bey2 = new BeyBlade(blade, rachet, bit);
+    //check if its a CX blade and put it togther...
+    if((allBlades[blade].system == "BX") || (allBlades[blade].system == "UX")){
+        bey2 = new BeyBlade(-1, blade, -1, rachet, bit);
+    }
+    else if(allBlades[blade].system == "CX"){
+        bey2 = new BeyBlade(bitChip, blade, assist, rachet, bit);
+    }
 
     wasBey2Generated = true;
     addBeyblade(bey2);
@@ -428,12 +560,20 @@ function choseWinner(beyNumber, winType) {
 
 //add a new, not before generated beyblade to the database
 function addBeyblade(bey) {
-
-    var beyblade = {
-        _id: allBlades[bey.blade].id + " " + allRachets[bey.rachet].id + " " + allBits[bey.bit].id,
-        title: bey.name,
-        build: bey
-    };
+    if((allBlades[bey.blade].system == "BX") || ((allBlades[bey.blade].system == "UX"))){
+        var beyblade = {
+            _id: allBlades[bey.blade].id + " " + allRachets[bey.rachet].id + " " + allBits[bey.bit].id,
+            title: bey.name,
+            build: bey
+        };
+    }
+    if(allBlades[bey.blade].system == "CX"){
+        var beyblade = {
+            _id: allBitChips[bey.bitChip].id + " " + allBlades[bey.blade].id + " " + allAssists[bey.assist].id + " " + allRachets[bey.rachet].id + " " + allBits[bey.bit].id,
+            title: bey.name,
+            build: bey
+        };
+    }
     beyBladeDBX.put(beyblade, function callback(err, result) {
         if (!err) {
             showBeyblades();
@@ -1087,7 +1227,12 @@ function setDbBey(){
             //TODO: move text and buttons to HTML, to make styling/layout easier
 
             // build a new BeyBlade object using parts, then overlay win/loss data from database
-            var castDoc = Object.assign( new BeyBlade(doc.build.blade, doc.build.rachet, doc.build.bit), doc.build );
+            if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
+                var castDoc = Object.assign( new BeyBlade(-1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
+            }
+            else if(allBlades[doc.build.blade].system == "CX"){
+                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip , doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
+            }
 
             //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
             var winHolder = castDoc.getTotalWin();
@@ -1132,6 +1277,7 @@ function setDbBey(){
                 wasBey1Generated = true;
                 showBeybladeStats(bey1, 1);
                 createWinButtons()
+                console.log(bey1.winsSO)
             });
             dbBeySpace.append(bey1Statbtn);
 
@@ -1196,7 +1342,7 @@ function showBeybladeStats(bey, whichBey) {
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
                 }
-                if(!err){
+                /*if(!err){
                     bey1title.textContent = "BeyBlade 1 is: " + doc.build.name;
                     bey1weight.textContent = round(doc.build.weight,2) + " grams";
                     bey1spin.textContent = doc.build.winsSO + " / " + doc.build.loseSO;
@@ -1204,7 +1350,7 @@ function showBeybladeStats(bey, whichBey) {
                     bey1burst.textContent = doc.build.winsBst + " / " + doc.build.loseBst;
                     bey1xtreme.textContent = doc.build.winsX + " / " + doc.build.loseX;
                     bey1draws.textContent = ""+ doc.build.draws;
-                }
+                }*/
                 // else{
                 //     console.log(err);
                 // }
@@ -1400,7 +1546,15 @@ function populateMatchHist(bey){
         matchupBey.textContent = "Matchup History for " + bey.name;
 
         // build a new BeyBlade object using parts, then overlay win/loss data from database
-        var castDoc = Object.assign( new BeyBlade(bey.blade, bey.rachet, bey.bit), bey);
+        if(((allBlades[bey.blade].system == "BX") || (allBlades[bey.blade].system == "UX"))){
+            var castDoc = Object.assign( new BeyBlade(-1, bey.blade, -1, bey.rachet, bey.bit), bey);
+            console.log("its a BX/UX Blade");
+        }
+        else if(allBlades[bey.blade].system == "CX"){
+            var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+            console.log("its a CX blade");
+        }
+        else{ console.log("get fucked") }
 
         //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
         var winHolder = castDoc.getTotalWin();
@@ -1417,6 +1571,7 @@ function populateMatchHist(bey){
         var avgPointChangePerRound = totalPointChange / totalMatches;
         var avgWinPercent = round((winHolder/totalHolder)*100,2);
 
+        //set value to 0 if it comes back NaN
         if (isNaN(avgPPW)){ avgPPW=0; }
         if (isNaN(avgWinPercent)){ avgWinPercent=0; }
         if (isNaN(avgPPL)){ avgPPL=0; }
@@ -1838,6 +1993,63 @@ function getRandomInt(max) {
 function round(num, places) {
     var multiplier = Math.pow(10, places);
     return Math.round(num * multiplier) / multiplier;
+}
+
+//used to enable and disable the bitchip and assist blade drops downs if the user chooses a non-CX blade
+function disableDropdowns(selection, whichBey){
+
+    if(whichBey == 1){
+        if(allBlades[selection].system == "CX"){
+            //console.log("bey1 is a CX blade!");
+            document.getElementById("bey1BitChip").disabled = false;
+            document.getElementById("bey1AssistBlade").disabled = false;
+        }
+        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
+            //console.log("bey1 is a BX/UX blade!");
+            document.getElementById("bey1BitChip").disabled = true;
+            document.getElementById("bey1AssistBlade").disabled = true;
+        }
+    }
+
+    if(whichBey == 2){
+        if(allBlades[selection].system == "CX"){
+            //console.log("bey2 is a CX blade!");
+            document.getElementById("bey2BitChip").disabled = false;
+            document.getElementById("bey2AssistBlade").disabled = false;
+        }
+        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
+            //console.log("bey2 is a BX/UX blade!");
+            document.getElementById("bey2BitChip").disabled = true;
+            document.getElementById("bey2AssistBlade").disabled = true;
+        }
+    }
+
+    if(whichBey == 3){
+        if(allBlades[selection].system == "CX"){
+            //console.log("bey2 is a CX blade!");
+            document.getElementById("bitChipR1").disabled = false;
+            document.getElementById("assistR1").disabled = false;
+        }
+        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
+            //console.log("bey2 is a BX/UX blade!");
+            document.getElementById("bitChipR1").disabled = true;
+            document.getElementById("assistR1").disabled = true;
+        }
+    }
+
+    if(whichBey == 4){
+        if(allBlades[selection].system == "CX"){
+            //console.log("bey2 is a CX blade!");
+            document.getElementById("bitChipR2").disabled = false;
+            document.getElementById("assistR2").disabled = false;
+        }
+        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
+            //console.log("bey2 is a BX/UX blade!");
+            document.getElementById("bitChipR2").disabled = true;
+            document.getElementById("assistR2").disabled = true;
+        }
+    }
+
 }
 
 // quick spin animation
