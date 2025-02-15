@@ -1,5 +1,5 @@
 /*==========================================================*
- * BeyBuilder v1.1 for Beyblade X                           *
+ * BeyBuilder v1.3 for Beyblade X                           *
  * Author: Fabel                                            *
  * Copyright 2023-2025                                      *
  *==========================================================*/
@@ -10,9 +10,9 @@ var allBits = bits;
 
 class BeyBlade {
 
-    bitChip = -1; //new
+    bitChip = -1; 
     blade = -1;
-    assist = -1; //new
+    assist = -1; 
     rachet = -1;
     bit = -1;
     id = "";
@@ -20,7 +20,7 @@ class BeyBlade {
     weight = 0;
     height = 0;
     spin = "invalid";
-    system = "invalid"; //new
+    system = "invalid"; 
     totalWins = 0;
     winsKO = 0;
     winsSO = 0;
@@ -36,12 +36,12 @@ class BeyBlade {
 
     constructor(bitChip, blade, assist, rachet, bit){
         // console.log("building bey");
-        this.bitChip = bitChip; //new
+        this.bitChip = bitChip; 
         this.blade = blade;
-        this.assist = assist; //new
+        this.assist = assist; 
         this.rachet = rachet;
         this.bit = bit;
-        this.system = allBlades[this.blade].system; //new
+        this.system = allBlades[this.blade].system; 
 
         if((this.system == "BX") || (this.system == "UX")){
             this.bitChip = -1;
@@ -104,7 +104,7 @@ class BeyBlade {
             this.name = allBlades[this.blade].name + " " + allRachets[this.rachet].name + " " + allBits[this.bit].name;
         }
         else if(this.system == "CX"){
-            this.name = allBitChips[this.bitChip].name + " " + allBlades[this.blade].name + " " + allAssists[this.assist].name + " " + allRachets[this.rachet].name + " " + allBits[this.bit].name;
+            this.name = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name + " " + allRachets[this.rachet].name + " " + allBits[this.bit].name;
         }
     }
 

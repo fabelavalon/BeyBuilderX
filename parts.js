@@ -1,5 +1,5 @@
 /*==========================================================*
- * BeyBuilder v1.1 for Beyblade X                           *
+ * BeyBuilder v1.3 for Beyblade X                           *
  * Author: Fabel                                            *
  * Copyright 2023-2025                                      *
  *==========================================================*/
@@ -8,13 +8,15 @@
 
 var bitChips = [ 
 
-    {"name":"TestChip",      "spin":"right", "system":"CX", "weight":0, "height":0, "abbv":"TsCh", "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"Dran",    "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Dr", "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"Wizard",  "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Wz", "wins":0, "losses":0, "draws":0, "id":2},
+    {"name":"Perseus", "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Pr", "wins":0, "losses":0, "draws":0, "id":3}
 
 ];
 
 var blades = [
 
-    {"name":"ColbaltDrake",      "spin":"right", "system":"BX", "weight":36.80, "height":0, "abbv":"CbDr", "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"CobaltDrake",       "spin":"right", "system":"BX", "weight":36.80, "height":0, "abbv":"CbDr", "wins":0, "losses":0, "draws":0, "id":0},
     {"name":"DranSword",         "spin":"right", "system":"BX", "weight":34.97, "height":0, "abbv":"DrSw", "wins":0, "losses":0, "draws":0, "id":1},
     {"name":"HellsScythe",       "spin":"right", "system":"BX", "weight":32.94, "height":0, "abbv":"HlSc", "wins":0, "losses":0, "draws":0, "id":2},
     {"name":"KnightShield",      "spin":"right", "system":"BX", "weight":32.70, "height":0, "abbv":"KnSh", "wins":0, "losses":0, "draws":0, "id":3},
@@ -75,14 +77,18 @@ var blades = [
     {"name":"ImpactDrake",       "spin":"right", "system":"UX", "weight":38.85, "height":0, "abbv":"ImDr", "wins":0, "losses":0, "draws":0, "id":58},
     {"name":"GhostCircle",       "spin":"right", "system":"UX", "weight":26.71, "height":0, "abbv":"GhCr", "wins":0, "losses":0, "draws":0, "id":59},
     {"name":"GolemRock",         "spin":"right", "system":"UX", "weight":34.00, "height":0, "abbv":"GlRc", "wins":0, "losses":0, "draws":0, "id":60},
-    {"name":"CXTestBlade",       "spin":"right", "system":"CX", "weight":10.00, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":61}
-    //{"name":"ShelterDrake",      "spin":"right", "system":"BX", "weight":0, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":61}
-    
+    {"name":"ShelterDrake",      "spin":"right", "system":"BX", "weight":32.65, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":61},
+    {"name":"Brave",             "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Br",   "wins":0, "losses":0, "draws":0, "id":62},
+    {"name":"Arc",               "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Ar",   "wins":0, "losses":0, "draws":0, "id":63},
+    {"name":"Dark",              "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Dr",   "wins":0, "losses":0, "draws":0, "id":64}
+
 ];
 
 var assistBlades = [
 
-    {"name":"TestAssist",      "spin":"right", "system":"CX", "weight":0, "height":0, "abbv":"TsAs", "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"Slash",  "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"Round",  "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"R", "wins":0, "losses":0, "draws":0, "id":1},
+    {"name":"Bumper", "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"B", "wins":0, "losses":0, "draws":0, "id":2}
     
  ];
 
@@ -108,8 +114,11 @@ var rachets = [
     {"name":"2-70", "weight":6.34, "height":7,   "abbv":"2-70", "wins":0, "losses":0, "draws":0, "id":17},
     {"name":"3-85", "weight":4.79, "height":8.5, "abbv":"3-85", "wins":0, "losses":0, "draws":0, "id":18},
     {"name":"7-70", "weight":7.24, "height":7,   "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":19},
-    {"name":"0-80", "weight":7.53, "height":8,   "abbv":"0-80", "wins":0, "losses":0, "draws":0, "id":20}//,
-    //{"name":"7-80", "weight":0.00, "height":8,   "abbv":"7-80", "wins":0, "losses":0, "draws":0, "id":21}
+    {"name":"0-80", "weight":7.53, "height":8,   "abbv":"0-80", "wins":0, "losses":0, "draws":0, "id":20},
+    {"name":"7-80", "weight":0.00, "height":8,   "abbv":"7-80", "wins":0, "losses":0, "draws":0, "id":21},
+    {"name":"6-60", "weight":0.00, "height":6,   "abbv":"6-60", "wins":0, "losses":0, "draws":0, "id":22},
+    {"name":"6-80", "weight":0.00, "height":8,   "abbv":"6-80", "wins":0, "losses":0, "draws":0, "id":23},
+    {"name":"4-55", "weight":0.00, "height":5.5, "abbv":"4-55", "wins":0, "losses":0, "draws":0, "id":24}
 
 ];
 
@@ -146,6 +155,9 @@ var bits = [
     {"name":"Bound Spike",  "weight":2.00, "height":2, "abbv":"BS", "wins":0, "losses":0, "draws":0, "id":28},
     {"name":"Rubber Acell", "weight":3.10, "height":2, "abbv":"RA", "wins":0, "losses":0, "draws":0, "id":29},
     {"name":"Low Rush",     "weight":1.93, "height":1, "abbv":"LR", "wins":0, "losses":0, "draws":0, "id":30},
-    {"name":"Under Needle", "weight":1.88, "height":0, "abbv":"UN", "wins":0, "losses":0, "draws":0, "id":31}
+    {"name":"Under Needle", "weight":1.88, "height":0, "abbv":"UN", "wins":0, "losses":0, "draws":0, "id":31},
+    {"name":"Vortex",       "weight":1.88, "height":0, "abbv":"V",  "wins":0, "losses":0, "draws":0, "id":32},
+    {"name":"Low Orb",      "weight":1.88, "height":0, "abbv":"LO", "wins":0, "losses":0, "draws":0, "id":33},
+    {"name":"Wedge",        "weight":1.88, "height":0, "abbv":"W",  "wins":0, "losses":0, "draws":0, "id":34}
 
 ];

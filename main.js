@@ -1,5 +1,5 @@
 /*==========================================================*
- * BeyBuilder v1.1 for Beyblade X                           *
+ * BeyBuilder v1.3 for Beyblade X                           *
  * Author: Fabel                                            *
  * Copyright 2023-2025                                      *
  *==========================================================*/
@@ -26,28 +26,28 @@ var showMatchupbtn = document.createElement("button");
 
 //import the elements for the dropdowns...
 //...for bey1
-var bey1BitChipDropdown = document.getElementById("bey1BitChip"); //new
+var bey1BitChipDropdown = document.getElementById("bey1BitChip"); 
 var bey1BladeDropdown = document.getElementById("bey1Blade");
-var bey1AssistBladeDropdown = document.getElementById("bey1AssistBlade"); //new
+var bey1AssistBladeDropdown = document.getElementById("bey1AssistBlade"); 
 var bey1RachetDropdown = document.getElementById("bey1Rachet");
 var bey1BitDropdown = document.getElementById("bey1Bit");
 
 //...for bey2
-var bey2BitChipDropdown = document.getElementById("bey2BitChip"); //new
+var bey2BitChipDropdown = document.getElementById("bey2BitChip"); 
 var bey2BladeDropdown = document.getElementById("bey2Blade");
 var bey2RachetDropdown = document.getElementById("bey2Rachet");
-var bey2AssistBladeDropdown = document.getElementById("bey2AssistBlade"); //new
+var bey2AssistBladeDropdown = document.getElementById("bey2AssistBlade"); 
 var bey2BitDropdown = document.getElementById("bey2Bit");
 
 //...for the parts records
-var bitChipDropdown1 = document.getElementById("bitChipR1"); //new
+var bitChipDropdown1 = document.getElementById("bitChipR1"); 
 var bladeDropdown1 = document.getElementById("bladeR1");
-var assistBladeDropdown1 = document.getElementById("assistR1"); //new
+var assistBladeDropdown1 = document.getElementById("assistR1"); 
 var rachetDropdown1 = document.getElementById("rachetR1");
 var bitDropdown1 = document.getElementById("bitR1");
-var bitChipDropdown2 = document.getElementById("bitChipR2"); //new
+var bitChipDropdown2 = document.getElementById("bitChipR2"); 
 var bladeDropdown2 = document.getElementById("bladeR2");
-var assistBladeDropdown2 = document.getElementById("assistR2"); //new
+var assistBladeDropdown2 = document.getElementById("assistR2"); 
 var rachetDropdown2 = document.getElementById("rachetR2");
 var bitDropdown2 = document.getElementById("bitR2");
 
@@ -144,7 +144,6 @@ function main(){
 
     console.log("Welcome to BeyBuilder X Version 1.3");
 
-    //new
     bey1BitChipDropdown.value="random";
     bey2BitChipDropdown.value="random";
     bitChipDropdown1.value="none";
@@ -153,7 +152,6 @@ function main(){
     bey2BladeDropdown.value="random";
     bladeDropdown1.value="none";
 
-    //new
     bey1AssistBladeDropdown.value="random";
     bey2AssistBladeDropdown.value="random";
     assistBladeDropdown1.value="none";
@@ -168,7 +166,6 @@ function main(){
     
     //create and populate the drop downs with the parts from the database...
     
-    //new
     //sort for display purposes, leave original array the same so we can get by ID
     allBitChipsSorted = structuredClone(allBitChips); // JS deep copy crap
     allBitChipsSorted.sort((a, b) => a.name.localeCompare(b.name));
@@ -217,7 +214,6 @@ function main(){
 
     }
 
-    //new
     //sort for display purposes, leave original array the same so we can get by ID
     allAssistsSorted = structuredClone(allAssists); // JS deep copy crap
     allAssistsSorted.sort((a, b) => a.name.localeCompare(b.name));
@@ -301,21 +297,20 @@ function main(){
 function generateBey1(){
 
     //uses the id's of all parts for easy call
-    var bitChip = -1; //new
+    var bitChip = -1;
     var blade = -1;
-    var assist = -1; //new
+    var assist = -1;
     var rachet = -1;
     var bit = -1;
 
     //boolean values to check if the beyblade is random or not
-    var bitChipChosen = false; //new
+    var bitChipChosen = false;
     var bladeChosen = false;
-    var assistChosen = false; //new
+    var assistChosen = false;
     var rachetChosen = false;
     var bitChosen = false;
 
     //random or chosen...
-    //new
     //...bit chip?
     if(bey1BitChipDropdown.value=="random"){
         var randBitChip = getRandomInt(allBitChips.length);
@@ -336,7 +331,6 @@ function generateBey1(){
         blade = allBlades[parseInt(bey1BladeDropdown.value)].id;
         bladeChosen = true;
     }
-    //new
     //...assist blade?
     if(bey1AssistBladeDropdown.value=="random"){
         var randAssistBlade = getRandomInt(allAssists.length);
@@ -391,21 +385,20 @@ function generateBey1(){
 function generateBey2(){
 
     //uses the id's of all parts for easy call
-    var bitChip = -1; //new
+    var bitChip = -1;
     var blade = -1;
-    var assist = -1; //new
+    var assist = -1;
     var rachet = -1;
     var bit = -1;
 
     //boolean values to check if the beyblade is random or not
-    var bitChipChosen = false; //new
+    var bitChipChosen = false;
     var bladeChosen = false;
-    var assistChosen = false; //new
+    var assistChosen = false;
     var rachetChosen = false;
     var bitChosen = false;
 
     //random or chosen...
-    //new
     //...bit chip?
     if(bey2BitChipDropdown.value=="random"){
         var randBitChip = getRandomInt(allBitChips.length);
@@ -426,7 +419,7 @@ function generateBey2(){
         blade = allBlades[parseInt(bey2BladeDropdown.value)].id;
         bladeChosen = true;
     }
-    //new
+    
     //...assist blade?
     if(bey2AssistBladeDropdown.value=="random"){
         var randAssistBlade = getRandomInt(allAssists.length);
@@ -1335,7 +1328,7 @@ function showBeybladeStats(bey, whichBey) {
             beyBladeDBX.get(bey.id, function(err, doc) {
                 if(!err){
                     bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
-                    bey1Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
+                    bey1Stats.textContent = "Weight: " + round(doc.build.weight, 2) + " grams";
                     bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey1SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey1Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
