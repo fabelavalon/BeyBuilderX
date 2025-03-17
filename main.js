@@ -1682,6 +1682,74 @@ function populateMatchHist(bey){
     });
 }
 
+function populateMatchHistUser2(blade1, rachet1, bit1, blade2, rachet2, bit2){
+    console.log("new matchup history");
+    //doesn't return promise because not async
+    /*
+    var matchesHolder = recordsDBX.allDocs({include_docs: true, descending: true});
+    console.log(matches);
+    var matches = matchesHolder.rows;
+    */
+
+    primeMatchipHist(); //html
+
+    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, matches) {
+        console.log(matches);
+        matches = matches.rows;
+        console.log("matchups: " + matches.length);
+        if(blade1!="none") {
+            console.log("filtering blades");
+            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && blade1==match.doc.challenger.blade ) });
+            console.log("matchups: " + matches.length);
+        }
+        if(rachet1!="none") {
+            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && rachet1==match.doc.challenger.rachet ) });
+        }
+        if(bit1!="none") {
+            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bit1==match.doc.challenger.bit ) });
+        }
+        if(blade2!="none") {
+            console.log("filtering bey2 blade");
+            matches = matches.filter(match => { return ( match.doc.defender!=undefined && blade2==match.doc.defender.blade ) });
+        }
+        if(rachet2!="none") {
+            matches = matches.filter(match => { return ( match.doc.defender!=undefined && rachet2==match.doc.defender.rachet ) });
+        }
+        if(rachet2!="none") {
+            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && rachet2==match.doc.challenger.rachet ) });
+        }
+
+        matches.forEach(match => {
+            console.log("matchup: " + JSON.stringify(match));
+            fillMatchupHist(match.doc);
+        });
+
+    });
+
+}
+
+function primeMatchipHist(){
+    matchupHistUser.textContent = "";
+    //header row
+    var row = matchupHistUser.insertRow(0);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    var cell7 = row.insertCell(6);
+    var cell8 = row.insertCell(7);
+    cell1.innerHTML = "Selected Bey";
+    cell2.innerHTMl = "Vs";
+    cell3.innerHTML = "Opposing Bey";
+    cell4.innerHTML = "Over Win/Loss";
+    cell5.innerHTML = "Spin Win/Loss";
+    cell6.innerHTML = "Burst Win/Loss";
+    cell7.innerHTML = "Xtreme Win/Loss";
+    cell8.innerHTML = "Draws";
+}
+
 //populates the match history popup with selected Beys matchup history
 function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
 
