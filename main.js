@@ -1709,19 +1709,22 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
         cell7.innerHTML = "Xtreme Win/Loss";
         cell8.innerHTML = "Draws";
 
+        //sort database
+        for(i = 0; i < doc.total_rows; i++){
+            if(doc.rows[i].doc.defender!=undefined) {
+                doc.rows.sort(function(a, b){
+                    return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
+                });
+            }
+        }
+        // find records that contain our select parts
+        // push records to temporary table for further filtering
         if(blade1!="none"){
-            const tempWinsBl = [];
-            const tempWinsRcht = [];
-            const outputWins =[];
-            //sort database
+            const tempWinsBl = []; // filter for blade
+            const tempWinsRcht = []; // filter for blade and ratchet
+            const outputWins =[]; // filter for blade, ratchet, and bit
             for(i = 0; i < doc.total_rows; i++){
-                if(doc.rows[i].doc.defender!=undefined) {
-                            doc.rows.sort(function(a, b){
-                                return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                            });
-                        }
-
-                //search logic
+                //get blade records
                 if(doc.rows[i].doc.challenger!=undefined) {
                     if(!err && blade1==doc.rows[i].doc.challenger.blade){
                         tempWinsBl.push(doc.rows[i].doc);
@@ -1729,24 +1732,25 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
                 }
             }
             if(rachet1!="none"){
+                // get ratchet data
                 for(i =0; i < tempWinsBl.length; i++){
                     if(tempWinsBl[i].challenger.rachet==rachet1){
                         tempWinsRcht.push(tempWinsBl[i]);
                     }
                 }
+                // get bit data
                 if(bit1!="none"){
                     for(i =0; i < tempWinsRcht.length; i++){
                         if(tempWinsRcht[i].challenger.bit==bit1){
                             outputWins.push(tempWinsRcht[i]);
-                            
                         }
                     }
-                
+                    // pass records to Bey2 filtering
                     checkSecondSelection(blade2, rachet2, bit2, outputWins);
                 }
-                //blade and rachet selected
+                //only blade and rachet selected
                 else{
-                    
+                    // pass records to Bey2 filtering
                     checkSecondSelection(blade2, rachet2, bit2, tempWinsRcht);
                 }
             }
@@ -1767,12 +1771,6 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
             const tempWinsRcht = [];
             const outputWins =[];
             for(i = 0; i < doc.total_rows; i++){
-                if(doc.rows[i].doc.defender!=undefined) {
-                    doc.rows.sort(function(a, b){
-                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                    });
-                }
-
                 //search logic
                 if(doc.rows[i].doc.challenger!=undefined) {
                     if(!err && rachet1==doc.rows[i].doc.challenger.rachet){
@@ -1796,12 +1794,6 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
         else if(bit1!="none"){
             const outputWins =[];
             for(i = 0; i < doc.total_rows; i++){
-                if(doc.rows[i].doc.defender!=undefined) {
-                    doc.rows.sort(function(a, b){
-                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                    });
-                }
-
                 //search logic
                 if(doc.rows[i].doc.challenger!=undefined) {
                     if(!err && bit1==doc.rows[i].doc.challenger.bit){
