@@ -69,9 +69,10 @@ var blades = [
     {"name":"ImpactDrake", "spin":"right", "weight":38.85, "height":0, "abbv":"ID", "wins":0, "losses":0, "draws":0, "id":58},
     {"name":"GhostCircle", "spin":"right", "weight":26.71, "height":0, "abbv":"GC", "wins":0, "losses":0, "draws":0, "id":59},
     {"name":"GolemRock", "spin":"right", "weight":34.00, "height":0, "abbv":"GR", "wins":0, "losses":0, "draws":0, "id":60},
-    {"name":"ShelterDrake", "spin":"right", "weight":32.62, "height":0, "abbv":"SD", "wins":0, "losses":0, "draws":0, "id":61}
-    
-
+    {"name":"ShelterDrake", "spin":"right", "weight":32.62, "height":0, "abbv":"SD", "wins":0, "losses":0, "draws":0, "id":61},
+    {"name":"DragoonStorm", "spin":"left", "weight":0, "height":0, "abbv":"DrSt", "wins":0, "losses":0, "draws":0, "id":62},
+    {"name":"StormPegasus", "spin":"right", "weight":0, "height":0, "abbv":"StPg", "wins":0, "losses":0, "draws":0, "id":63},
+    {"name":"VictoryValkerie", "spin":"right", "weight":0, "height":0, "abbv":"VcVl", "wins":0, "losses":0, "draws":0, "id":64}
     
 ];
 
