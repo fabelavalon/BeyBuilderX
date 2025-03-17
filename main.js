@@ -280,7 +280,7 @@ function generateBey1(){
     wasBey1Generated = true;
     addBeyblade(bey1);
     error.textContent = "";
-    bey1Is.textContent = "BeyBlade 1 is: " + bey1.name;
+    bey1Is.textContent = "" + bey1.name;
     showBeybladeStats(bey1, 1);
     createWinButtons();
 
@@ -337,7 +337,7 @@ function generateBey2(){
     wasBey2Generated = true;
     addBeyblade(bey2);
     error.textContent = "";
-    bey2Is.textContent = "BeyBlade 2 is: " + bey2.name;
+    bey2Is.textContent = "" + bey2.name;
     showBeybladeStats(bey2, 2);
     createWinButtons();
     
@@ -1188,7 +1188,7 @@ function showBeybladeStats(bey, whichBey) {
         case 1:
             beyBladeDBX.get(bey.id, function(err, doc) {
                 if(!err){
-                    bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
+                    bey1Is.textContent = "" + doc.build.name;
                     bey1Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
                     bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey1SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
@@ -1213,7 +1213,7 @@ function showBeybladeStats(bey, whichBey) {
         case 2:
             beyBladeDBX.get(bey.id, function(err, doc) {
                 if(!err){
-                    bey2Is.textContent = "BeyBlade 2 is: " + doc.build.name;
+                    bey2Is.textContent = "" + doc.build.name;
                     bey2Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
                     bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey2SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;

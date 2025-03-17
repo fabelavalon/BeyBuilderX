@@ -7,9 +7,12 @@
     --tertiary-color: #FFA200;
     --text-color:#555;
     --text-color-secondary: #0d91d3;
+    --text-color-tertiary: #31708f;
     --text-color-light: #FFFFFF;
     --text-secondary-color: #000;
-    --border-color:#d6d6d6;
+    /* --border-color:#d6d6d6; */
+    --border-color:rgb(214, 214, 214, 0);
+    --bs-border-color:rgb(214, 214, 214, 0);
     --danger-color: #8c2930;
     --disable-color: #000;
 }
@@ -52,7 +55,19 @@ select, .select-basic{
     border-color: transparent;
 }
 
-
+.header{
+    color: var(--text-color-tertiary);
+    border-bottom: var(--text-color-tertiary) 1px solid;
+    margin-bottom: 4px;
+}
+#beyIsHeader {
+    display: block;
+}
+#beyIsHeader, .win-button-title {
+    background: var(--text-color-tertiary);
+    width: 100%;
+    color: var(--text-color-light);
+}
 
 /* default table border, sans color */
 td, tr {
