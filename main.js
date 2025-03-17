@@ -1684,25 +1684,30 @@ function populateMatchHist(bey){
 
 function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChip2, blade2, assist2, rachet2, bit2){
     primeMatchupHistTable(); //table html
+    // if all parts are "none", return
+    if(blade1=="none" && rachet1=="none" && bit1=="none" && blade2=="none" && rachet2=="none" && bit2=="none" && bitChip1=="none" && assist1=="none" && bitChip2=="none" && assist2=="none"){
+        return;
+    }
 
+    // get all docs
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, matches) {
         console.log(matches);
-        matches = matches.rows;
+        matches = matches.rows; //grab just the array of matches
         console.log("matchups: " + matches.length);
+        // filter the matches array based on selected parts
         if(blade1!="none") {
-            console.log("filtering blades");
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && blade1==match.doc.challenger.blade ) });
-            console.log("matchups: " + matches.length);
+            console.log("filtered blade1. Matchups: " + matches.length);
         }
         if(rachet1!="none") {
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && rachet1==match.doc.challenger.rachet ) });
-            console.log("matchups: " + matches.length);
+            console.log("filtered rachet1. Matchups: " + matches.length);
         }
         if(bit1!="none") {
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bit1==match.doc.challenger.bit ) });
-            console.log("matchups: " + matches.length);
+            console.log("failtered bit1. Matchups: " + matches.length);
         }
-        // if a blade is selected and it's CX, filter the other CX parts
+        // only filter for CX parts if the blade is CX or no blade is selected
         if(blade1=="none" || allBlades[blade1].system == "CX"){
             // CX blade parts, bit chip and assist blade
             if(bitChip1!="none"){
@@ -1716,17 +1721,16 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
         }
 
         if(blade2!="none") {
-            console.log("filtering bey2 blade");
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && blade2==match.doc.defender.blade ) });
-            console.log("matchups: " + matches.length);
+            console.log("filtered blade2. Matchups: " + matches.length);
         }
         if(rachet2!="none") {
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && rachet2==match.doc.defender.rachet ) });
-            console.log("matchups: " + matches.length);
+            console.log("filtered rachet2. Matchups: " + matches.length);
         }
         if(bit2!="none") {
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && bit2==match.doc.defender.bit ) });
-            console.log("matchups: " + matches.length);
+            console.log("filtered bit2. Matchups: " + matches.length);
         }
         if(blade2=="none" || allBlades[blade2].system == "CX") {
             // CX blade parts, bit chip and assist blade
@@ -1741,7 +1745,6 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
         }
 
         matches.forEach(match => {
-            //console.log("matchup: " + JSON.stringify(match));
             fillMatchupHist(match.doc);
         });
 
