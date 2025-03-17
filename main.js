@@ -1683,15 +1683,7 @@ function populateMatchHist(bey){
 }
 
 function populateMatchHistUser2(blade1, rachet1, bit1, blade2, rachet2, bit2){
-    console.log("new matchup history");
-    //doesn't return promise because not async
-    /*
-    var matchesHolder = recordsDBX.allDocs({include_docs: true, descending: true});
-    console.log(matches);
-    var matches = matchesHolder.rows;
-    */
-
-    primeMatchipHist(); //html
+    primeMatchupHistTable(); //table html
 
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, matches) {
         console.log(matches);
@@ -1733,7 +1725,10 @@ function populateMatchHistUser2(blade1, rachet1, bit1, blade2, rachet2, bit2){
 
 }
 
-function primeMatchipHist(){
+/**
+ * wipes and recreates table for matchup history
+ */
+function primeMatchupHistTable(){
     matchupHistUser.textContent = "";
     //header row
     var row = matchupHistUser.insertRow(0);
