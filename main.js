@@ -1704,23 +1704,28 @@ function populateMatchHistUser2(blade1, rachet1, bit1, blade2, rachet2, bit2){
         }
         if(rachet1!="none") {
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && rachet1==match.doc.challenger.rachet ) });
+            console.log("matchups: " + matches.length);
         }
         if(bit1!="none") {
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bit1==match.doc.challenger.bit ) });
+            console.log("matchups: " + matches.length);
         }
         if(blade2!="none") {
             console.log("filtering bey2 blade");
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && blade2==match.doc.defender.blade ) });
+            console.log("matchups: " + matches.length);
         }
         if(rachet2!="none") {
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && rachet2==match.doc.defender.rachet ) });
+            console.log("matchups: " + matches.length);
         }
-        if(rachet2!="none") {
-            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && rachet2==match.doc.challenger.rachet ) });
+        if(bit2!="none") {
+            matches = matches.filter(match => { return ( match.doc.defender!=undefined && bit2==match.doc.defender.bit ) });
+            console.log("matchups: " + matches.length);
         }
 
         matches.forEach(match => {
-            console.log("matchup: " + JSON.stringify(match));
+            //console.log("matchup: " + JSON.stringify(match));
             fillMatchupHist(match.doc);
         });
 
