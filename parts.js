@@ -78,9 +78,12 @@ var blades = [
     {"name":"GhostCircle",       "spin":"right", "system":"UX", "weight":26.71, "height":0, "abbv":"GhCr", "wins":0, "losses":0, "draws":0, "id":59},
     {"name":"GolemRock",         "spin":"right", "system":"UX", "weight":34.00, "height":0, "abbv":"GlRc", "wins":0, "losses":0, "draws":0, "id":60},
     {"name":"ShelterDrake",      "spin":"right", "system":"BX", "weight":32.65, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":61},
-    {"name":"Brave",             "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Br",   "wins":0, "losses":0, "draws":0, "id":62},
-    {"name":"Arc",               "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Ar",   "wins":0, "losses":0, "draws":0, "id":63},
-    {"name":"Dark",              "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Dr",   "wins":0, "losses":0, "draws":0, "id":64}
+    {"name":"DragoonStorm",      "spin":"left",  "system":"BX", "weight":0, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":62},
+    {"name":"StormPegasus",      "spin":"right", "system":"BX", "weight":0, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":63},
+    {"name":"VictoryValkyerie",  "spin":"right", "system":"BX", "weight":0, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":64},
+    {"name":"Brave",             "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Br",   "wins":0, "losses":0, "draws":0, "id":65},
+    {"name":"Arc",               "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Ar",   "wins":0, "losses":0, "draws":0, "id":66},
+    {"name":"Dark",              "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Dr",   "wins":0, "losses":0, "draws":0, "id":67}
 
 ];
 
