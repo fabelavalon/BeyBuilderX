@@ -9,8 +9,10 @@
 var bitChips = [ 
 
     {"name":"Dran",    "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Dr", "wins":0, "losses":0, "draws":0, "id":0},
-    {"name":"Wizard",  "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Wz", "wins":0, "losses":0, "draws":0, "id":2},
-    {"name":"Perseus", "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Pr", "wins":0, "losses":0, "draws":0, "id":3}
+    {"name":"Wizard",  "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Wz", "wins":0, "losses":0, "draws":0, "id":1},
+    {"name":"Perseus", "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Pr", "wins":0, "losses":0, "draws":0, "id":2}//,
+    //{"name":"Hells",   "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Hl", "wins":0, "losses":0, "draws":0, "id":3},
+    //{"name":"Rhino",   "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Rh", "wins":0, "losses":0, "draws":0, "id":4}
 
 ];
 
@@ -83,7 +85,9 @@ var blades = [
     {"name":"VictoryValkyerie",  "spin":"right", "system":"BX", "weight":0, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":64},
     {"name":"Brave",             "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Br",   "wins":0, "losses":0, "draws":0, "id":65},
     {"name":"Arc",               "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Ar",   "wins":0, "losses":0, "draws":0, "id":66},
-    {"name":"Dark",              "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Dr",   "wins":0, "losses":0, "draws":0, "id":67}
+    {"name":"Dark",              "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Dr",   "wins":0, "losses":0, "draws":0, "id":67}//,
+    //{"name":"Reaper",            "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"Rp",   "wins":0, "losses":0, "draws":0, "id":68},
+    
 
 ];
 
@@ -91,7 +95,8 @@ var assistBlades = [
 
     {"name":"Slash",  "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"S", "wins":0, "losses":0, "draws":0, "id":0},
     {"name":"Round",  "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"R", "wins":0, "losses":0, "draws":0, "id":1},
-    {"name":"Bumper", "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"B", "wins":0, "losses":0, "draws":0, "id":2}
+    {"name":"Bumper", "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"B", "wins":0, "losses":0, "draws":0, "id":2}//,
+    //{"name":"Charge", "spin":"right", "system":"CX", "weight":10, "height":0, "abbv":"C", "wins":0, "losses":0, "draws":0, "id":3}
     
  ];
 
@@ -161,6 +166,7 @@ var bits = [
     {"name":"Under Needle", "weight":1.88, "height":0, "abbv":"UN", "wins":0, "losses":0, "draws":0, "id":31},
     {"name":"Vortex",       "weight":1.88, "height":0, "abbv":"V",  "wins":0, "losses":0, "draws":0, "id":32},
     {"name":"Low Orb",      "weight":1.88, "height":0, "abbv":"LO", "wins":0, "losses":0, "draws":0, "id":33},
-    {"name":"Wedge",        "weight":1.88, "height":0, "abbv":"W",  "wins":0, "losses":0, "draws":0, "id":34}
+    {"name":"Wedge",        "weight":1.88, "height":0, "abbv":"W",  "wins":0, "losses":0, "draws":0, "id":34}//,
+    //{"name":"Kick",         "weight":1.88, "height":0, "abbv":"K",  "wins":0, "losses":0, "draws":0, "id":35}
 
 ];
