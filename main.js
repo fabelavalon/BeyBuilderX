@@ -1675,6 +1675,101 @@ function populateMatchHist(bey){
     });
 }
 
+function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChip2, blade2, assist2, rachet2, bit2){
+    primeMatchupHistTable(); //table html
+    // if all parts are "none", return
+    if(blade1=="none" && rachet1=="none" && bit1=="none" && blade2=="none" && rachet2=="none" && bit2=="none" && bitChip1=="none" && assist1=="none" && bitChip2=="none" && assist2=="none"){
+        return;
+    }
+
+    // get all docs
+    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, matches) {
+        console.log(matches);
+        matches = matches.rows; //grab just the array of matches
+        console.log("matchups: " + matches.length);
+        // filter the matches array based on selected parts
+        if(blade1!="none") {
+            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && blade1==match.doc.challenger.blade ) });
+            console.log("filtered blade1. Matchups: " + matches.length);
+        }
+        if(rachet1!="none") {
+            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && rachet1==match.doc.challenger.rachet ) });
+            console.log("filtered rachet1. Matchups: " + matches.length);
+        }
+        if(bit1!="none") {
+            matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bit1==match.doc.challenger.bit ) });
+            console.log("failtered bit1. Matchups: " + matches.length);
+        }
+        // only filter for CX parts if the blade is CX or no blade is selected
+        if(blade1=="none" || allBlades[blade1].system == "CX"){
+            // CX blade parts, bit chip and assist blade
+            if(bitChip1!="none"){
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bitChip1==match.doc.challenger.bitChip ) });
+                console.log("filtered bitChip1. Matchups: " + matches.length);
+            }
+            if(assist1!="none") {
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && assist1==match.doc.challenger.assist ) });
+                console.log("filtered assist1. Matchups: " + matches.length);
+            }
+        }
+
+        if(blade2!="none") {
+            matches = matches.filter(match => { return ( match.doc.defender!=undefined && blade2==match.doc.defender.blade ) });
+            console.log("filtered blade2. Matchups: " + matches.length);
+        }
+        if(rachet2!="none") {
+            matches = matches.filter(match => { return ( match.doc.defender!=undefined && rachet2==match.doc.defender.rachet ) });
+            console.log("filtered rachet2. Matchups: " + matches.length);
+        }
+        if(bit2!="none") {
+            matches = matches.filter(match => { return ( match.doc.defender!=undefined && bit2==match.doc.defender.bit ) });
+            console.log("filtered bit2. Matchups: " + matches.length);
+        }
+        if(blade2=="none" || allBlades[blade2].system == "CX") {
+            // CX blade parts, bit chip and assist blade
+            if(bitChip2!="none") {
+                matches = matches.filter(match => { return ( match.doc.defender!=undefined && bitChip2==match.doc.defender.bitChip ) });
+                console.log("filtered bitChip2. Matchups: " + matches.length);
+            }
+            if(assist2!="none") {
+                matches = matches.filter(match => { return ( match.doc.defender!=undefined && assist2==match.doc.defender.assist ) });
+                console.log("filtered assist2. Matchups: " + matches.length);
+            }
+        }
+
+        matches.forEach(match => {
+            fillMatchupHist(match.doc);
+        });
+
+    });
+
+}
+
+/**
+ * wipes and recreates table for matchup history
+ */
+function primeMatchupHistTable(){
+    matchupHistUser.textContent = "";
+    //header row
+    var row = matchupHistUser.insertRow(0);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    var cell7 = row.insertCell(6);
+    var cell8 = row.insertCell(7);
+    cell1.innerHTML = "Selected Bey";
+    cell2.innerHTMl = "Vs";
+    cell3.innerHTML = "Opposing Bey";
+    cell4.innerHTML = "Over Win/Loss";
+    cell5.innerHTML = "Spin Win/Loss";
+    cell6.innerHTML = "Burst Win/Loss";
+    cell7.innerHTML = "Xtreme Win/Loss";
+    cell8.innerHTML = "Draws";
+}
+
 //populates the match history popup with selected Beys matchup history
 function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
 
@@ -1702,19 +1797,22 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
         cell7.innerHTML = "Xtreme Win/Loss";
         cell8.innerHTML = "Draws";
 
+        //sort database
+        for(i = 0; i < doc.total_rows; i++){
+            if(doc.rows[i].doc.defender!=undefined) {
+                doc.rows.sort(function(a, b){
+                    return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
+                });
+            }
+        }
+        // find records that contain our select parts
+        // push records to temporary table for further filtering
         if(blade1!="none"){
-            const tempWinsBl = [];
-            const tempWinsRcht = [];
-            const outputWins =[];
-            //sort database
+            const tempWinsBl = []; // filter for blade
+            const tempWinsRcht = []; // filter for blade and ratchet
+            const outputWins =[]; // filter for blade, ratchet, and bit
             for(i = 0; i < doc.total_rows; i++){
-                if(doc.rows[i].doc.defender!=undefined) {
-                            doc.rows.sort(function(a, b){
-                                return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                            });
-                        }
-
-                //search logic
+                //get blade records
                 if(doc.rows[i].doc.challenger!=undefined) {
                     if(!err && blade1==doc.rows[i].doc.challenger.blade){
                         tempWinsBl.push(doc.rows[i].doc);
@@ -1722,24 +1820,25 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
                 }
             }
             if(rachet1!="none"){
+                // get ratchet data
                 for(i =0; i < tempWinsBl.length; i++){
                     if(tempWinsBl[i].challenger.rachet==rachet1){
                         tempWinsRcht.push(tempWinsBl[i]);
                     }
                 }
+                // get bit data
                 if(bit1!="none"){
                     for(i =0; i < tempWinsRcht.length; i++){
                         if(tempWinsRcht[i].challenger.bit==bit1){
                             outputWins.push(tempWinsRcht[i]);
-                            
                         }
                     }
-                
+                    // pass records to Bey2 filtering
                     checkSecondSelection(blade2, rachet2, bit2, outputWins);
                 }
-                //blade and rachet selected
+                //only blade and rachet selected
                 else{
-                    
+                    // pass records to Bey2 filtering
                     checkSecondSelection(blade2, rachet2, bit2, tempWinsRcht);
                 }
             }
@@ -1760,12 +1859,6 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
             const tempWinsRcht = [];
             const outputWins =[];
             for(i = 0; i < doc.total_rows; i++){
-                if(doc.rows[i].doc.defender!=undefined) {
-                    doc.rows.sort(function(a, b){
-                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                    });
-                }
-
                 //search logic
                 if(doc.rows[i].doc.challenger!=undefined) {
                     if(!err && rachet1==doc.rows[i].doc.challenger.rachet){
@@ -1789,12 +1882,6 @@ function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
         else if(bit1!="none"){
             const outputWins =[];
             for(i = 0; i < doc.total_rows; i++){
-                if(doc.rows[i].doc.defender!=undefined) {
-                    doc.rows.sort(function(a, b){
-                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                    });
-                }
-
                 //search logic
                 if(doc.rows[i].doc.challenger!=undefined) {
                     if(!err && bit1==doc.rows[i].doc.challenger.bit){
