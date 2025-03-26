@@ -21,16 +21,20 @@ body {
 
 
 /* styling for drop downs */
-.select-basic{
+.select-basic {
     color: #000;
     background-color: #67becf;
     border-color: #59298c;
 }
 
-.select-basic:hover{
+.select-basic:not([disabled]):hover{
     color: #fff;
     background-color: #59298c;
     border-color: #67becf;
+}
+
+select:disabled {
+    opacity: 0.5;
 }
 
 .select-list{
