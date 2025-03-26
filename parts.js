@@ -101,7 +101,7 @@ var assistBlades = [
     
  ];
 
-var rachets = [
+var ratchets = [
 
     {"name":"3-60", "weight":6.32, "height":6,   "abbv":"3-60", "wins":0, "losses":0, "draws":0, "id":0},
     {"name":"3-80", "weight":7.10, "height":8,   "abbv":"3-80", "wins":0, "losses":0, "draws":0, "id":1},
@@ -124,7 +124,7 @@ var rachets = [
     {"name":"3-85", "weight":4.79, "height":8.5, "abbv":"3-85", "wins":0, "losses":0, "draws":0, "id":18},
     {"name":"7-70", "weight":7.24, "height":7,   "abbv":"7-70", "wins":0, "losses":0, "draws":0, "id":19},
     {"name":"0-80", "weight":7.53, "height":8,   "abbv":"0-80", "wins":0, "losses":0, "draws":0, "id":20},
-    {"name":"7-80", "weight":0.00, "height":8,   "abbv":"7-80", "wins":0, "losses":0, "draws":0, "id":21},
+    {"name":"7-80", "weight":7.82, "height":8,   "abbv":"7-80", "wins":0, "losses":0, "draws":0, "id":21},
     {"name":"6-60", "weight":0.00, "height":6,   "abbv":"6-60", "wins":0, "losses":0, "draws":0, "id":22},
     {"name":"6-80", "weight":0.00, "height":8,   "abbv":"6-80", "wins":0, "losses":0, "draws":0, "id":23},
     {"name":"4-55", "weight":0.00, "height":5.5, "abbv":"4-55", "wins":0, "losses":0, "draws":0, "id":24}
