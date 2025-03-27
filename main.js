@@ -1749,8 +1749,11 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
  * wipes and recreates table for matchup history
  */
 function primeMatchupHistTable(){
+    // hide "parts not selected" text
+    matchupBeyUser.style.visibility = "hidden";
+    // wipe table
     matchupHistUser.textContent = "";
-    //header row
+    // header row
     var row = matchupHistUser.insertRow(0);
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
