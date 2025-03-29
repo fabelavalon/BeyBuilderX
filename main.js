@@ -1699,35 +1699,29 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
 
     // get all docs
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, matches) {
-        console.log(matches);
         // grab just the array of matches
         matches = matches.rows;
-        console.log("matchups: " + matches.length);
         // filter the matches array based on selected parts
         if(blade1!="none") {
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && blade1==match.doc.challenger.blade ) });
-            console.log("filtered blade1. Matchups: " + matches.length);
         }
         if(rachet1!="none") {
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && rachet1==match.doc.challenger.rachet ) });
-            console.log("filtered rachet1. Matchups: " + matches.length);
         }
         if(bit1!="none") {
             matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bit1==match.doc.challenger.bit ) });
-            console.log("failtered bit1. Matchups: " + matches.length);
         }
         // only filter for CX parts if the blade is CX or no blade is selected
         if(blade1=="none" || allBlades[blade1].system == "CX"){
             // CX blade parts, bit chip and assist blade
             if(bitChip1!="none"){
                 matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bitChip1==match.doc.challenger.bitChip ) });
-                console.log("filtered bitChip1. Matchups: " + matches.length);
             }
             if(assist1!="none") {
                 matches = matches.filter(match => { return ( match.doc.challenger!=undefined && assist1==match.doc.challenger.assist ) });
-                console.log("filtered assist1. Matchups: " + matches.length);
             }
         }
+
         // now that we've filtered bey1 parts, calculate stats
         var winHolder = 0;
         var winPointHolder = 0;
@@ -1756,7 +1750,7 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
         if (isNaN(avgWinPercent)){ avgWinPercent=0; }
         if (isNaN(avgPPL)){ avgPPL=0; }
         if (isNaN(avgPointChangePerRound)){ avgPointChangePerRound=0; }
-        // set table elements
+        // set stats table
         matchupStatsOverall.textContent = avgWinPercent;
         matchupStatsPerWin.textContent = avgPPW;
         matchupStatsPerLoss.textContent = avgPPL;
@@ -1764,30 +1758,32 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
 
         if(blade2!="none") {
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && blade2==match.doc.defender.blade ) });
-            console.log("filtered blade2. Matchups: " + matches.length);
         }
         if(rachet2!="none") {
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && rachet2==match.doc.defender.rachet ) });
-            console.log("filtered rachet2. Matchups: " + matches.length);
         }
         if(bit2!="none") {
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && bit2==match.doc.defender.bit ) });
-            console.log("filtered bit2. Matchups: " + matches.length);
         }
         if(blade2=="none" || allBlades[blade2].system == "CX") {
             // CX blade parts, bit chip and assist blade
             if(bitChip2!="none") {
                 matches = matches.filter(match => { return ( match.doc.defender!=undefined && bitChip2==match.doc.defender.bitChip ) });
-                console.log("filtered bitChip2. Matchups: " + matches.length);
             }
             if(assist2!="none") {
                 matches = matches.filter(match => { return ( match.doc.defender!=undefined && assist2==match.doc.defender.assist ) });
-                console.log("filtered assist2. Matchups: " + matches.length);
             }
         }
 
+        // for each matchup, write in table
         matches.forEach(match => {
-            fillMatchupHist(match.doc);
+            winHolder = match.doc.wko + match.doc.wso + match.doc.wbst + match.doc.wx;
+            lossHolder = match.doc.lko + match.doc.lso + match.doc.lbst + match.doc.lx;
+            draws = match.doc.draws;
+            totalMatches = winHolder + lossHolder + draws;
+            if(totalMatches>0) {
+                fillMatchupHist(match.doc);
+            }
         });
 
     });
@@ -2056,6 +2052,7 @@ function checkSecondSelection(blade, rachet, bit, history){
 
 }
 
+// add one line to parts history table
 function fillMatchupHist(history){
     
     var row = matchupHistUser.insertRow(1);
