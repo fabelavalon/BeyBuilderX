@@ -120,6 +120,9 @@ var matchupSpace = document.getElementById("matchupSpace");
 var matchupSpaceUser = document.getElementById("matchupSpaceUser");
 var matchupBey = document.getElementById("matchupBey");
 var matchupBeyUser = document.getElementById("matchupBeyUser");
+var matchupHistUser = document.getElementById("matchupHistUser");
+var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
+var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
 
 
 //used to generate the win buttons after both beys are selected
@@ -1676,6 +1679,18 @@ function populateMatchHist(bey){
 }
 
 function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChip2, blade2, assist2, rachet2, bit2){
+
+    // overall stats
+    primeMatchupHistStatsTable(); // wipe overall stats
+    // add parts to title
+    var statBeyName = ""
+    statBeyName += (bitChip1!="none" ? allBitChips[bitChip1].name : ""); // no space on Bit Chip, it combines with blade name
+    statBeyName += (blade1!="none" ? allBlades[blade1].name + " " : "");
+    statBeyName += (assist1!="none" ? allAssists[assist1].name + " " : "");
+    statBeyName += (rachet1!="none" ? allRachets[rachet1].name + " " : "");
+    statBeyName += (bit1!="none" ? allBits[bit1].name + " " : "");
+    matchupStatsBeyTitle.textContent = statBeyName;
+
     primeMatchupHistTable(); //table html
     // if all parts are "none", return
     if(blade1=="none" && rachet1=="none" && bit1=="none" && blade2=="none" && rachet2=="none" && bit2=="none" && bitChip1=="none" && assist1=="none" && bitChip2=="none" && assist2=="none"){
@@ -1685,7 +1700,8 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
     // get all docs
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, matches) {
         console.log(matches);
-        matches = matches.rows; //grab just the array of matches
+        // grab just the array of matches
+        matches = matches.rows;
         console.log("matchups: " + matches.length);
         // filter the matches array based on selected parts
         if(blade1!="none") {
@@ -1712,6 +1728,39 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
                 console.log("filtered assist1. Matchups: " + matches.length);
             }
         }
+        // now that we've filtered bey1 parts, calculate stats
+        var winHolder = 0;
+        var winPointHolder = 0;
+        var lossHolder = 0;
+        var lossPointHolder = 0;
+        var totalMatches = 0;
+        var draws = 0;
+        // TODO: move points calc to another function
+        matches.forEach(match => {
+            // count wins/losses and points
+            winHolder += match.doc.wko + match.doc.wso + match.doc.wbst + match.doc.wx;
+            winPointHolder += (match.doc.wko*2) + match.doc.wso + (match.doc.wbst*2) + (match.doc.wx*3);
+            lossHolder += match.doc.lko + match.doc.lso + match.doc.lbst + match.doc.lx;
+            lossPointHolder += (match.doc.lko*2) + match.doc.lso + (match.doc.lbst*2) + (match.doc.lx*3);
+            draws += match.doc.draws;
+        });
+        // calculate averages
+        totalMatches = winHolder + lossHolder + draws;
+        var totalPointChange = winPointHolder - lossPointHolder;
+        var avgPPW = round((winPointHolder/winHolder),2);
+        var avgPPL = round((lossPointHolder/lossHolder),2);
+        var avgPointChangePerRound = round( (totalPointChange / totalMatches), 2);
+        var avgWinPercent = round((winHolder/totalMatches)*100,2);
+        // fix NaN
+        if (isNaN(avgPPW)){ avgPPW=0; }
+        if (isNaN(avgWinPercent)){ avgWinPercent=0; }
+        if (isNaN(avgPPL)){ avgPPL=0; }
+        if (isNaN(avgPointChangePerRound)){ avgPointChangePerRound=0; }
+        // set table elements
+        matchupStatsOverall.textContent = avgWinPercent;
+        matchupStatsPerWin.textContent = avgPPW;
+        matchupStatsPerLoss.textContent = avgPPL;
+        matchupStatsAvgPoints.textContent = avgPointChangePerRound;
 
         if(blade2!="none") {
             matches = matches.filter(match => { return ( match.doc.defender!=undefined && blade2==match.doc.defender.blade ) });
@@ -1745,12 +1794,27 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
 
 }
 
+function primeMatchupHistStatsTable(){
+    matchupStatsBeyTitle.textContent = "";
+    
+    // stats table
+    matchupHistStatsTable.style.display = "revert"; // revert to default for element type
+    matchupStatsOverall.textContent = "";
+    matchupStatsPerWin.textContent = "";  
+    matchupStatsPerLoss.textContent = "";
+    matchupStatsAvgPoints.textContent = "";
+}
+
 /**
  * wipes and recreates table for matchup history
  */
 function primeMatchupHistTable(){
+    // hide "parts not selected" text
+    matchupBeyUser.style.visibility = "hidden";
+    // wipe table
     matchupHistUser.textContent = "";
-    //header row
+
+    // header row
     var row = matchupHistUser.insertRow(0);
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);

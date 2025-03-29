@@ -99,6 +99,15 @@
 #matchupHistUser {
     width: 100%;
 }
+#matchupHolder {
+    padding-top: 10px;
+}
+#matchupHistStatsTable {
+    width: 100%;
+}
+.wide {
+    width: 100%
+}
 
 /* make modal headers and footers sticky */
 .modal-header--sticky {

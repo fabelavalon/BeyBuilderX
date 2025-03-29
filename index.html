@@ -337,9 +337,9 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table style="width:100%" id="totalsSpace"></table>
+                <table class="wide" id="totalsSpace"></table>
                 <br>
-                <table style="width:100%" id="matchupSpace"></table>
+                <table class="wide" id="matchupSpace"></table>
             </div>
             <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -433,12 +433,31 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12 border">
-                  <span id="matchupBeyUser">Parts Have Not been selected yet.</span>
-                  <br>
-                  <table id="matchupHistUser"></table>
-                  <br>
+                <div class="col-md-12 border" id="matchupHolder">
                   <button onclick="populateMatchHistUser2(bitChipR1.value, bladeR1.value, assistR1.value, rachetR1.value, bitR1.value, bitChipR2.value, bladeR2.value, assistR2.value, rachetR2.value, bitR2.value)" class="btn btn-primary">Show Part Stats</button>
+                  <br>
+                  <span id="matchupBeyUser">Parts have not been selected yet.</span>
+                  <br>
+                  <table class="wide" id="matchupHistStatsTable" style="display:none">
+                    <tr>
+                      <th class="text-center" colspan="12" id="matchupStatsBeyTitle"></th>
+                    </tr>
+                    <tr>
+                      <th class="text-center" colspan="3">Win %</th>
+                      <th class="text-center" colspan="3">Points Per Win</th>
+                      <th class="text-center" colspan="3">Points Per Loss</th>
+                      <th class="text-center" colspan="3">Avg Points Per Round</th>
+                    </tr>
+                    <tr>
+                      <td class="text-center" colspan="3" id="matchupStatsOverall"   ></td>
+                      <td class="text-center" colspan="3" id="matchupStatsPerWin"    ></td>
+                      <td class="text-center" colspan="3" id="matchupStatsPerLoss"   ></td>
+                      <td class="text-center" colspan="3" id="matchupStatsAvgPoints" ></td>
+                    </tr>
+
+                  </table>
+                  <br>
+                  <table class="wide" id="matchupHistUser"></table>
                 </div>
               </div>
             </div>
