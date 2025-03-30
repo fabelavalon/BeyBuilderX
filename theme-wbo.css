@@ -94,9 +94,9 @@ table{
     visibility: hidden;
     display: none;
 }
-#matchupHistUser {
+#matchupHistUser, #matchupHistStatsTable {
     border-color: var(--border-color-secondary);
-    & td {
+    & td, tr {
         border-color: var(--border-color-secondary);
     }
 }
