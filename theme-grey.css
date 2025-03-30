@@ -26,16 +26,20 @@ head, body, footer, .modal-content {
 }
 
 /* styling for drop downs */
-.select-basic{
+.select-basic {
     color: var(--text-color);
     background-color: var(--primary-color);
     border-color: var(--border-color);
 }
 
-.select-basic:hover, .select-basic:focus-within, .select-basic:active{
+.select-basic:not([disabled]):hover, .select-basic:focus-within, .select-basic:not([disabled]):active {
     color: var(--text-secondary-color);
     background-color: var(--secondary-color);
     border-color: var(--border-color);
+}
+
+select:disabled {
+    opacity: 0.5;
 }
 
 .select-list{

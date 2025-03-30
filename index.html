@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--*============================================================*
-    *BeyBuilder X v1.1 for Beyblade X                            *
+    *BeyBuilder X v1.3 for Beyblade X                            *
     *Author: Fabel                                               *
     *Copyright 2023-2025                                         *
     *============================================================*-->
@@ -31,15 +31,25 @@
         <div class="row"> <!-- blade 1 selector and stats -->
             <div class="col-md-9"> <!-- selectors -->
                 <div class="row">
+                  <div class="col-sm-4">
+                    <select id="bey1BitChip" class="select-basic form-select"><option value="random">Random Bit Chip</option></select>
+                  </div>
                     <div class="col-sm-4">
-                        <select id="bey1Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                        <select id="bey1Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 1)"><option value="random">Random Blade</option></select>
                     </div>
                     <div class="col-sm-4">
-                        <select id="bey1Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
+                      <select id="bey1AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
                     </div>
+                   
+                    <div class="col-1"></div><!-- spacer -->
                     <div class="col-sm-4">
-                        <select id="bey1Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                      <select id="bey1Rachet" class="select-basic form-select"><option value="random">Random Ratchet</option></select>
                     </div>
+                    <div class="col-2"></div><!-- spacer -->
+                    <div class="col-sm-4">
+                      <select id="bey1Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                    </div>
+                    <div class="col-1"></div><!-- spacer -->
                 </div>
                 <br> <!-- TODO: replace BR with vertical padding -->
                 <div class="row">
@@ -114,15 +124,25 @@
         <div class="row"> <!-- blade 2 selector and stats -->
             <div class="col-md-9"> <!-- selectors -->
                 <div class="row">
+                  <div class="col-sm-4">
+                    <select id="bey2BitChip" class="select-basic form-select"><option value="random">Random Bit Chip</option></select>
+                   </div>
                     <div class="col-sm-4">
-                        <select id="bey2Blade" class="select-basic form-select"><option value="random">Random Blade</option></select>
+                        <select id="bey2Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 2)"><option value="random" >Random Blade</option></select>
                     </div>
                     <div class="col-sm-4">
-                        <select id="bey2Rachet" class="select-basic form-select"><option value="random">Random Rachet</option></select>
-                    </div>
-                    <div class="col-sm-4">
-                        <select id="bey2Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
-                    </div>
+                      <select id="bey2AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
+                  </div>
+
+                  <div class="col-1"></div><!-- spacer -->
+                  <div class="col-sm-4">
+                      <select id="bey2Rachet" class="select-basic form-select"><option value="random">Random Ratchet</option></select>
+                  </div>
+                  <div class="col-2"></div><!-- spacer -->
+                  <div class="col-sm-4">
+                      <select id="bey2Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                  </div>
+                  <div class="col-1"></div><!-- spacer -->
                 </div>
                 <br> <!-- TODO: replace BR with vertical padding -->
                 <div class="row">
@@ -327,9 +347,9 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table style="width:100%" id="totalsSpace"></table>
+                <table class="wide" id="totalsSpace"></table>
                 <br>
-                <table style="width:100%" id="matchupSpace"></table>
+                <table class="wide" id="matchupSpace"></table>
             </div>
             <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -396,9 +416,13 @@
                 <div class="col-md-6 border">
                   Pick which combination of parts youd like to check the records for. Note: You do not need to choose a full build.
                   <p>
-                  <select id="bladeR1" class="select-basic"><option value="none">Select Blade</option></select>
+                  <select id="bitChipR1" class="select-basic"><option value="none">Select Bit Chip</option></select>
                   <br>
-                  <select id="rachetR1" class="select-basic"><option value="none">Select Rachet</option></select>
+                  <select id="bladeR1" class="select-basic" onchange="disableDropdowns(this.value, 3)"><option value="none">Select Blade</option></select>
+                  <br>
+                  <select id="assistR1" class="select-basic"><option value="none">Select Assist Blade</option></select>
+                  <br>
+                  <select id="rachetR1" class="select-basic"><option value="none">Select Ratchet</option></select>
                   <br>
                   <select id="bitR1" class="select-basic"><option value="none">Select Bit</option></select>
                   <br>
@@ -406,21 +430,61 @@
                 <div class="col-md-6 border">
                   Pick which part or combination of parts to check the records against. Note: At least one part must be selected.
                   <p>
-                  <select id="bladeR2" class="select-basic"><option value="none">Select Blade</option></select>
+                  <select id="bitChipR2" class="select-basic"><option value="none">Select Bit Chip</option></select>
                   <br>
-                  <select id="rachetR2" class="select-basic"><option value="none">Select Rachet</option></select>
+                  <select id="bladeR2" class="select-basic" onchange="disableDropdowns(this.value, 4)"><option value="none">Select Blade</option></select>
+                  <br>
+                  <select id="assistR2" class="select-basic"><option value="none">Select Assist Blade</option></select>
+                  <br>
+                  <select id="rachetR2" class="select-basic"><option value="none">Select Ratchet</option></select>
                   <br>
                   <select id="bitR2" class="select-basic"><option value="none">Select Bit</option></select>
                   <br>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12 border">
-                  <span id="matchupBeyUser">Parts Have Not been selected yet.</span>
+                <div class="col-md-12 border" id="matchupHolder">
+                  <button onclick="populateMatchHistUser2(bitChipR1.value, bladeR1.value, assistR1.value, rachetR1.value, bitR1.value, bitChipR2.value, bladeR2.value, assistR2.value, rachetR2.value, bitR2.value)" class="btn btn-primary">Show Part Stats</button>
                   <br>
-                  <table id="matchupHistUser"></table>
+                  <span id="matchupBeyUser">Parts have not been selected yet.</span>
                   <br>
-                  <button onclick="populateMatchHistUser(bladeR1.value, rachetR1.value, bitR1.value, bladeR2.value, rachetR2.value, bitR2.value)" class="btn btn-primary">Show Part Stats</button>
+                  <table class="wide" id="matchupHistStatsTable" style="display:none">
+                    <tr>
+                      <th class="text-center" colspan="12" id="matchupStatsBeyTitle"></th>
+                    </tr>
+                    <tr>
+                      <th class="text-center" colspan="3">Win %</th>
+                      <th class="text-center" colspan="3">Points Per Win</th>
+                      <th class="text-center" colspan="3">Points Per Loss</th>
+                      <th class="text-center" colspan="3">Avg Points Per Round</th>
+                    </tr>
+                    <tr>
+                      <td class="text-center" colspan="3" id="matchupStatsOverall"   ></td>
+                      <td class="text-center" colspan="3" id="matchupStatsPerWin"    ></td>
+                      <td class="text-center" colspan="3" id="matchupStatsPerLoss"   ></td>
+                      <td class="text-center" colspan="3" id="matchupStatsAvgPoints" ></td>
+                    </tr>
+
+                  </table>
+                  <br>
+                  <table class="wide text-center" id="matchupHistUser"></table>
+                  <!-- hidden template for copying in JS-->
+                  <table style="display:none">
+                    <tr id="matchupHistUserHeader" style="display:none">
+                      <td class="d-table-cell d-lg-none part-history-vs"></td>
+                      <td class="d-none d-lg-table-cell">Selected Bey</td>
+                      <td class="d-none d-lg-table-cell">Opposing Bey</td>
+                      <td class="d-table-cell d-lg-none">Over</td>
+                      <td class="d-table-cell d-lg-none">Spin</td>
+                      <td class="d-table-cell d-lg-none">Burst</td>
+                      <td class="d-table-cell d-lg-none">Extreme</td>
+                      <td class="d-none d-lg-table-cell">Over Win/Loss</td>
+                      <td class="d-none d-lg-table-cell">Spin Win/Loss</td>
+                      <td class="d-none d-lg-table-cell">Burst Win/Loss</td>
+                      <td class="d-none d-lg-table-cell">Extreme Win/Loss</td>
+                      <td class="d-table-cell">Draw</td>
+                    </tr>
+                  </table>
                 </div>
               </div>
             </div>
@@ -488,7 +552,7 @@
     <script src="./pouchdb-7.3.1.js"></script>
     <script src="./parts.js"></script>
     <script src="./beyblade.js"></script>
-    <script src="./main.js?v1"></script>
+    <script src="./main.js?v2"></script>
     <!--
         TODO:
         ui cleanup
