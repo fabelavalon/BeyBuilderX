@@ -19,10 +19,40 @@ head, body, footer, .modal-content {
     background-color: var(--bg-color);
     color: var(--text-color);
 }
-
 .nav-link {
     color: var(--text-color);
 }
+
+/* sharp edges */
+/* * {
+    -webkit-border-radius: 0 !important;
+       -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
+  } */
+:root {
+  --bs-border-radius: 0;
+  --bs-border-radius-sm: 0;
+  --bs-border-radius-lg: 0;
+  --bs-border-radius-xl: 0;
+  --bs-border-radius-2xl: 0;
+  --bs-border-radius-pill: 0;
+}
+.btn{
+    --bs-btn-border-radius: 0;
+}
+.modal-content{
+    --bs-modal-border-radius: 0;
+}
+.model{
+    --bs-modal-border-radius: 0;
+    --bs-modal-border-width: 0;
+}
+select, .select-basic{
+    border-radius: 1px;
+    border-color: transparent;
+}
+
+
 
 /* default table border, sans color */
 td, tr {

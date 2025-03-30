@@ -17,7 +17,7 @@ var bitChips = [
 ];
 
 var blades = [
-
+  
     {"name":"CobaltDrake",       "spin":"right", "system":"BX", "weight":36.80, "height":0, "abbv":"CbDr", "wins":0, "losses":0, "draws":0, "id":0},
     {"name":"DranSword",         "spin":"right", "system":"BX", "weight":34.97, "height":0, "abbv":"DrSw", "wins":0, "losses":0, "draws":0, "id":1},
     {"name":"HellsScythe",       "spin":"right", "system":"BX", "weight":32.94, "height":0, "abbv":"HlSc", "wins":0, "losses":0, "draws":0, "id":2},
@@ -89,7 +89,6 @@ var blades = [
     {"name":"Dark",              "spin":"right", "system":"CX", "weight":30.50, "height":0, "abbv":"Dr",   "wins":0, "losses":0, "draws":0, "id":68}//,
     //{"name":"Reaper",            "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Rp",   "wins":0, "losses":0, "draws":0, "id":69},
     
-
 ];
 
 var assistBlades = [
@@ -129,7 +128,6 @@ var rachets = [
     {"name":"6-60", "weight":6.13, "height":6,   "abbv":"6-60", "wins":0, "losses":0, "draws":0, "id":22},
     {"name":"6-80", "weight":6.91, "height":8,   "abbv":"6-80", "wins":0, "losses":0, "draws":0, "id":23},
     {"name":"4-55", "weight":4.78, "height":5.5, "abbv":"4-55", "wins":0, "losses":0, "draws":0, "id":24}
-
 ];
 
 var bits = [
