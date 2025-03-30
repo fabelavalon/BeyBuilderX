@@ -1,7 +1,7 @@
 /*=========================================================*
  *BeyBuilder X v1.0 for Beyblade X                         *
  *Author: Fabel                                            *
- *Copyright 2023                                           *
+ *Copyright 2023-2025                                      *
  *=========================================================*/
 
 /* win buttons */
@@ -98,6 +98,18 @@
 }
 #matchupHistUser {
     width: 100%;
+}
+#matchupHolder {
+    padding-top: 10px;
+}
+#matchupHistStatsTable {
+    width: 100%;
+}
+.part-history-vs {
+    width: 45%;
+}
+.wide {
+    width: 100%
 }
 
 /* make modal headers and footers sticky */
