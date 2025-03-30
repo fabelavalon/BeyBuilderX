@@ -63,11 +63,13 @@ select, .select-basic{
 #beyIsHeader {
     display: block;
 }
+/*
 #beyIsHeader, .win-button-title {
     background: var(--text-color-tertiary);
     width: 100%;
     color: var(--text-color-light);
 }
+*/
 
 /* default table border, sans color */
 td, tr {
