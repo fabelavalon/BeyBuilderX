@@ -2,6 +2,7 @@
 
 :root{
     --bg-color:#fcfcfc;
+    --bg-color-secondary: #d9edf7;
     --primary-color:#ffffff;
     --secondary-color:#e6f4fb;
     --tertiary-color: #FFA200;
@@ -54,11 +55,18 @@ select, .select-basic{
     border-radius: 1px;
     border-color: transparent;
 }
+select:hover, .select-basic:hover{
+    background-color: var(--secondary-color);
+}
 
 .header{
     color: var(--text-color-tertiary);
-    border-bottom: var(--text-color-tertiary) 1px solid;
+    /* border-bottom: var(--text-color-tertiary) 1px solid; */
+    /* padding-left: 22px; */
     margin-bottom: 4px;
+    background-color: var(--bg-color-secondary);
+    padding-bottom: 4px;
+    padding-top: 4px;
 }
 #beyIsHeader {
     display: block;
