@@ -1825,22 +1825,8 @@ function primeMatchupHistTable(){
 
     // header row
     var row = matchupHistUser.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
-    var cell5 = row.insertCell(4);
-    var cell6 = row.insertCell(5);
-    var cell7 = row.insertCell(6);
-    var cell8 = row.insertCell(7);
-    cell1.innerHTML = "Selected Bey";
-    cell2.innerHTMl = "Vs";
-    cell3.innerHTML = "Opposing Bey";
-    cell4.innerHTML = "Over Win/Loss";
-    cell5.innerHTML = "Spin Win/Loss";
-    cell6.innerHTML = "Burst Win/Loss";
-    cell7.innerHTML = "Xtreme Win/Loss";
-    cell8.innerHTML = "Draws";
+    row.innerHTML = document.getElementById("matchupHistUserHeader").innerHTML;
+    //matchupHistUserHeader
 }
 
 //populates the match history popup with selected Beys matchup history
@@ -2069,16 +2055,19 @@ function checkSecondSelection(blade, rachet, bit, history){
 function fillMatchupHist(history){
     
     var row = matchupHistUser.insertRow(1);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
-    var cell5 = row.insertCell(4);
-    var cell6 = row.insertCell(5);
-    var cell7 = row.insertCell(6);
-    var cell8 = row.insertCell(7);
+    var cellVS = row.insertCell(); 
+    cellVS.classList.add("d-table-cell", "d-lg-none"); // visible on xs, sm, md
+    var cell1 = row.insertCell(); 
+    cell1.classList.add("d-none", "d-lg-table-cell");
+    var cell3 = row.insertCell();
+    cell3.classList.add("d-none", "d-lg-table-cell"); // visible lg and above
+    var cell4 = row.insertCell();
+    var cell5 = row.insertCell();
+    var cell6 = row.insertCell();
+    var cell7 = row.insertCell();
+    var cell8 = row.insertCell();
+    cellVS.innerHTML = history.challenger.name+"<br>vs<br>"+history.defender.name;
     cell1.innerHTML = history.challenger.name;
-    cell2.innerHTML = " ";
     cell3.innerHTML = history.defender.name;
     cell4.innerHTML = history.wko + "/" + history.lko;
     cell5.innerHTML = history.wso + "/" + history.lso;

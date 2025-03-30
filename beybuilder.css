@@ -105,6 +105,9 @@
 #matchupHistStatsTable {
     width: 100%;
 }
+.part-history-vs {
+    width: 45%;
+}
 .wide {
     width: 100%
 }
