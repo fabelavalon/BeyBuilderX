@@ -13,6 +13,7 @@
     --text-secondary-color: #000;
     /* --border-color:#d6d6d6; */
     --border-color:rgb(214, 214, 214, 0);
+    --border-color-secondary:#b3b3b3;
     --bs-border-color:rgb(214, 214, 214, 0);
     --danger-color: #8c2930;
     --disable-color: #000;
@@ -92,6 +93,12 @@ table{
     color: var(--text-color);
     visibility: hidden;
     display: none;
+}
+#matchupHistUser {
+    border-color: var(--border-color-secondary);
+    & td {
+        border-color: var(--border-color-secondary);
+    }
 }
 
 /* bootstrap btn-close uses a background, so we have to completely replace it to color it, can't use vars */
