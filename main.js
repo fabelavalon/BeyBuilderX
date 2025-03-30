@@ -378,7 +378,7 @@ function generateBey1(){
     wasBey1Generated = true;
     addBeyblade(bey1);
     error.textContent = "";
-    bey1Is.textContent = "BeyBlade 1 is: " + bey1.name;
+    bey1Is.textContent = "" + bey1.name;
     showBeybladeStats(bey1, 1);
     createWinButtons();
 
@@ -465,7 +465,7 @@ function generateBey2(){
     wasBey2Generated = true;
     addBeyblade(bey2);
     error.textContent = "";
-    bey2Is.textContent = "BeyBlade 2 is: " + bey2.name;
+    bey2Is.textContent = "" + bey2.name;
     showBeybladeStats(bey2, 2);
     createWinButtons();
     
