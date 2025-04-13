@@ -124,7 +124,7 @@ var matchupBeyUser = document.getElementById("matchupBeyUser");
 var matchupHistUser = document.getElementById("matchupHistUser");
 var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
-var mathcupHistCopyButton = document.getElementById("copyHistToClip");
+var matchupHistCopyButton = document.getElementById("copyHistToClip");
 
 
 //used to generate the win buttons after both beys are selected
@@ -482,22 +482,6 @@ function generateBey2(){
     createWinButtons();
     
 }
-
-/*
-//checks if ANY part is random
-//DEPRICATED?
-function isBeyRandom(bladeState, rachetState, bitState){
-
-    console.log("called isBeyRandom(" + bladeState + ", " + rachetState + ", " + bitState + ")");
-
-    if(!bladeState || !rachetState || !bitState){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-*/
 
 //populates win buttons on screen
 function createWinButtons(){
@@ -1245,9 +1229,9 @@ function showBeyblades() {
                 options.value = doc.rows[i].doc._id;
                 dbSelectList.appendChild(options);
             }
-            // else{
-            //     console.log(err);
-            // }
+            else{
+                //console.log(err);
+            }
        }
     });
 
@@ -1270,13 +1254,11 @@ function setDbBey(){
                 var castDoc = Object.assign( new BeyBlade(doc.build.bitChip , doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
             }
 
-            //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
+            //TODO: move some calculation into Beyblade class, like getWinPoints, getLosePoints, etc
             var winHolder = castDoc.getTotalWin();
             var winPointHolder = (doc.build.winsBst*2) + (doc.build.winsKO*2) + doc.build.winsSO + (doc.build.winsX*3);
-            // var lossHolder = doc.build.loseBst + doc.build.loseKO + doc.build.loseSO + doc.build.loseX;
             var lossHolder = castDoc.getTotalLoss();
             var lossPointHolder = (doc.build.loseBst*2) + (doc.build.loseKO*2) + doc.build.loseSO + (doc.build.loseX*3);
-            //var totalHolder = winHolder + lossHolder + doc.build.draws;
             var totalHolder = castDoc.getTotalMatch();
             var avgPPW = round((winPointHolder/winHolder),2);
             var avgPPL = round((lossPointHolder/lossHolder),2);
@@ -1411,18 +1393,9 @@ function showBeybladeStats(bey, whichBey) {
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
                 }
-                /*if(!err){
-                    bey1title.textContent = "BeyBlade 1 is: " + doc.build.name;
-                    bey1weight.textContent = round(doc.build.weight,2) + " grams";
-                    bey1spin.textContent = doc.build.winsSO + " / " + doc.build.loseSO;
-                    bey1over.textContent = doc.build.winsKO + " / " + doc.build.loseKO;
-                    bey1burst.textContent = doc.build.winsBst + " / " + doc.build.loseBst;
-                    bey1xtreme.textContent = doc.build.winsX + " / " + doc.build.loseX;
-                    bey1draws.textContent = ""+ doc.build.draws;
-                }*/
-                // else{
-                //     console.log(err);
-                // }
+                else {
+                    //console.log(err);
+                }
             });
         break;
         case 2:
@@ -1436,9 +1409,9 @@ function showBeybladeStats(bey, whichBey) {
                     bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
                 }
-                // else{
-                //     console.log(err);
-                // }
+                else{
+                    //console.log(err);
+                }
             });
         break;
     }
@@ -1695,6 +1668,7 @@ function populateMatchHist(bey){
         }
         else{ console.log("get fucked") }
 
+        // prepare string version that can be copied to clipboard
         var clipboardHolder = "Results for " + bey.name + ":";
 
         //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
@@ -1828,7 +1802,7 @@ function populateMatchHist(bey){
 
        clipboardHolder += "\nCopied from https://fabelavalon.github.io/BeyBuilderX/";
        if(!wasCopyFullHistToClipGenerated){
-            mathcupHistCopyButton.addEventListener("click", function(){
+            matchupHistCopyButton.addEventListener("click", function(){
                 console.log("button pressed");
                 navigator.clipboard.writeText(clipboardHolder);
                 wasCopyFullHistToClipGenerated = true;
@@ -1997,237 +1971,6 @@ function primeMatchupHistTable(){
     //matchupHistUserHeader
 }
 
-//populates the match history popup with selected Beys matchup history
-//DEPRECTAED?
-/*
-function populateMatchHistUser(blade1, rachet1, bit1, blade2, rachet2, bit2){
-
-    console.log("called populateMatchHistUser(" + blade1 + ", " + rachet1 + ", " + bit1 + ", " + blade2 + ", " + rachet2 + ", " + bit2 + ")");
-
-    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
-
-        matchupHistUser.textContent = "";
-        //matchupBeyUser.textContent = "Matchup History for " + allBlades[blade1].name + " " + allRachets[rachet1].abbv + " " + allBits[bit1].abbv;
-
-        //header row
-        var row = matchupHistUser.insertRow(0);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        var cell6 = row.insertCell(5);
-        var cell7 = row.insertCell(6);
-        var cell8 = row.insertCell(7);
-        cell1.innerHTML = "Selected Bey";
-        cell2.innerHTMl = "Vs";
-        cell3.innerHTML = "Opposing Bey";
-        cell4.innerHTML = "Over Win/Loss";
-        cell5.innerHTML = "Spin Win/Loss";
-        cell6.innerHTML = "Burst Win/Loss";
-        cell7.innerHTML = "Xtreme Win/Loss";
-        cell8.innerHTML = "Draws";
-
-        //sort database
-        for(i = 0; i < doc.total_rows; i++){
-            if(doc.rows[i].doc.defender!=undefined) {
-                doc.rows.sort(function(a, b){
-                    return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                });
-            }
-        }
-        // find records that contain our select parts
-        // push records to temporary table for further filtering
-        if(blade1!="none"){
-            const tempWinsBl = []; // filter for blade
-            const tempWinsRcht = []; // filter for blade and ratchet
-            const outputWins =[]; // filter for blade, ratchet, and bit
-            for(i = 0; i < doc.total_rows; i++){
-                //get blade records
-                if(doc.rows[i].doc.challenger!=undefined) {
-                    if(!err && blade1==doc.rows[i].doc.challenger.blade){
-                        tempWinsBl.push(doc.rows[i].doc);
-                    }
-                }
-            }
-            if(rachet1!="none"){
-                // get ratchet data
-                for(i =0; i < tempWinsBl.length; i++){
-                    if(tempWinsBl[i].challenger.rachet==rachet1){
-                        tempWinsRcht.push(tempWinsBl[i]);
-                    }
-                }
-                // get bit data
-                if(bit1!="none"){
-                    for(i =0; i < tempWinsRcht.length; i++){
-                        if(tempWinsRcht[i].challenger.bit==bit1){
-                            outputWins.push(tempWinsRcht[i]);
-                        }
-                    }
-                    // pass records to Bey2 filtering
-                    checkSecondSelection(blade2, rachet2, bit2, outputWins);
-                }
-                //only blade and rachet selected
-                else{
-                    // pass records to Bey2 filtering
-                    checkSecondSelection(blade2, rachet2, bit2, tempWinsRcht);
-                }
-            }
-            else if(bit1!="none"){
-                for(i =0; i < tempWinsBl.length; i++){
-                    if(tempWinsBl[i].challenger.bit==bit1){
-                        outputWins.push(tempWinsBl[i])
-                    }
-                }
-                console.log("we got to bits");
-                checkSecondSelection(blade2, rachet2, bit2, outputWins); 
-            }
-            else{ 
-                checkSecondSelection(blade2, rachet2, bit2, tempWinsBl);         
-            }           
-        }
-        else if(rachet1!="none"){
-            const tempWinsRcht = [];
-            const outputWins =[];
-            for(i = 0; i < doc.total_rows; i++){
-                //search logic
-                if(doc.rows[i].doc.challenger!=undefined) {
-                    if(!err && rachet1==doc.rows[i].doc.challenger.rachet){
-                        tempWinsRcht.push(doc.rows[i].doc);
-                    }
-                }
-            }
-            if(bit1!="none"){
-                for(i =0; i < tempWinsRcht.length; i++){
-                    if(tempWinsRcht[i].challenger.bit==bit1){
-                        outputWins.push(tempWinsRcht[i]);
-                    }
-                }
-                checkSecondSelection(blade2, rachet2, bit2, outputWins);
-            }
-            
-            else{
-                checkSecondSelection(blade2, rachet2, bit2, tempWinsRcht);
-            }
-        }
-        else if(bit1!="none"){
-            const outputWins =[];
-            for(i = 0; i < doc.total_rows; i++){
-                //search logic
-                if(doc.rows[i].doc.challenger!=undefined) {
-                    if(!err && bit1==doc.rows[i].doc.challenger.bit){
-                        outputWins.push(doc.rows[i].doc);
-                    }
-                }
-            }
-            checkSecondSelection(blade2, rachet2, bit2, outputWins);
-        }
-    });
-}
-
-//DEPRECATED?
-function checkSecondSelection(blade, rachet, bit, history){
-
-    console.log("called checkSecondSelection(" + blade + ", " + rachet + ", " + bit + ", " + history.length + ")");
-
-    const tempWinsBl = [];
-    const tempWinsRcht = [];
-    const outputWins = [];
-
-    if(blade!="none"){
-
-        for(i =0; i < history.length; i++){
-            if(history[i].defender!=undefined) {
-                if(blade==history[i].defender.blade){
-                    tempWinsBl.push(history[i]);
-                }
-            }
-        }
-
-        if(rachet!="none"){
-            for(i =0; i < tempWinsBl.length; i++){
-                if(tempWinsBl[i].defender.rachet==rachet){
-                    tempWinsRcht.push(tempWinsBl[i]);
-                }
-            }
-            if(bit!="none"){
-                for(i =0; i < tempWinsRcht.length; i++){
-                    if(tempWinsRcht[i].defender.bit==bit){
-                        fillMatchupHist(tempWinsRcht[i]);
-                    }
-                }
-            }
-
-            else{
-                for(i =0; i < tempWinsRcht.length; i++){
-                    fillMatchupHist(tempWinsRcht[i]);
-                }
-            }
-        } 
-        //need else if for bits here, both functions.
-        else if(bit!="none"){
-            for(i = 0; i < tempWinsBl.length; i++){
-                if(tempWinsBl[i].defender.bit==bit){
-                    fillMatchupHist(tempWinsBl[i]);
-                }
-            }
-        }
-        else{
-            for(i =0; i < tempWinsBl.length; i++){
-                fillMatchupHist(tempWinsBl[i]);
-            }           
-        }           
-    }
-    else if(rachet!="none"){
-        //search logic
-        for(i =0; i < history.length; i++){
-            if(history[i].defender!=undefined) {
-                if(rachet==history[i].defender.rachet){
-                    console.log("we got to bey 2 rachets")
-                    tempWinsRcht.push(history[i]);
-                }
-            }
-        }
-        
-        if(bit!="none"){
-            for(i =0; i < tempWinsRcht.length; i++){
-                if(tempWinsRcht[i].defender.bit==bit){
-                    fillMatchupHist(tempWinsRcht[i]);
-                }
-            }
-        }
-        else{
-            for(i=0; i < tempWinsRcht.length; i++){
-                fillMatchupHist(tempWinsRcht[i]);
-            }
-        }
-    }
-    else if(bit!="none"){
-        
-        //search logic
-        for(i =0; i < history.length; i++){
-            if(history[i].defender!=undefined) {
-                if(bit==history[i].defender.bit){
-                    fillMatchupHist(history[i]);
-                }
-            }
-            else{
-                fillMatchupHist(history[i]);
-            }
-        }
-        
-    }
-    else{
-        for(i = 0; i < history.length; i++){
-            if(history[i].defender!=undefined) {
-                fillMatchupHist(history[i]);
-            }
-        }
-    }
-
-}
-*/
-
 // add one line to parts history table
 function fillMatchupHist(history){
 
@@ -2300,9 +2043,9 @@ function deleteAllBeys() {
                     }
                 });
             }
-            // else{
-            //     console.log(err);
-            // }
+            else{
+                //console.log(err);
+            }
        }
     });
 
@@ -2314,7 +2057,6 @@ function getRandomInt(max) {
     console.log("called getRandomInt(" + max + ")");
 
     return Math.floor(Math.random() * max);
-
 };
 
 //JS math functions suck
@@ -2410,6 +2152,7 @@ function themeSwitchListener(){
 function saveTheme(themeName) {
     console.log('Current DB theme:');
     console.log(JSON.stringify(selectedTheme));
+    // init selectedTheme object for DB insertion
     if(selectedTheme==null) {
         selectedTheme = {
             _id: "selectedTheme",
@@ -2419,10 +2162,11 @@ function saveTheme(themeName) {
     if (themeName!=null && themeName.trim().length > 0) {
         selectedTheme.name= themeSelect.value;
     }
+    // save selected theme
     settings.put(selectedTheme, function callback(err, result) {
         if (!err) {
             console.log('Saved theme selection');
-            // load theme to set CSS and update selectedTheme._rev
+            // load theme. This will set the CSS and update selectedTheme._rev
             loadTheme();
         }
         else{
@@ -2447,6 +2191,7 @@ function loadTheme(){
             console.log(err);
             if(err.status=404) {
                 console.log("No existing theme. Using default");
+                // calling saveTheme with no params will select the default theme and properly init the DB theme object
                 saveTheme();
             }
         }
