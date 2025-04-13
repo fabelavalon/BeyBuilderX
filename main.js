@@ -1275,7 +1275,7 @@ function setDbBey(){
             dbBeyName.textContent = doc.build.name;
             dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
             dbBeyStats.textContent = " Spin: " + doc.build.spin;
-            dbWinPercent.textContent = "Average win%: " + avgWinPercent + "%";
+            dbWinPercent.textContent = "Average Win%: " + avgWinPercent + "%";
             dbPPW.textContent = "Average Points per Win: " + avgPPW;
             dbPPL.textContent = "Average Points per Loss: " + avgPPL;
             dbPointDif.textContent = "Average Points per Round: " + round(avgPointChangePerRound,2); 
