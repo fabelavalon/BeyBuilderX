@@ -1467,6 +1467,7 @@ function displayRecords(){
     var draw = 0;
     var totalRound = 0;
 
+    var copiedStats = "";
 
     recordsDBX.get(recordID, function(err, doc){
         record1.innerHTML = noBreakRatchetText(bey1.name);
@@ -1502,6 +1503,17 @@ function displayRecords(){
 
         totalRounds.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws);
         totalRound = doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws;
+
+        copiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
+                        "# of rounds: " + totalRound + "\n" +
+                        "Spin Finishes: " + bey1SO + " / " + bey2SO + "\n" +
+                        "Burst Finishes: " + bey1Bst + " / " + bey2Bst + "\n" +
+                        "Over Finishes: " + bey1KO + " / " + bey2KO + "\n" +
+                        "Xtreme Finishes: " + bey1X + " / " + bey2X + "\n" +
+                        "Draws: " + draw + "\n" +
+                        "Total Wins: " + bey1Total + " / " + bey2Total + "\n" +
+                        "Points: " + bey1Points + " / " + bey2Points + "\n" +
+                        "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
         
     });
 
@@ -1512,22 +1524,12 @@ function displayRecords(){
         recordsCopybtn.classList.add("btn");
         recordsCopybtn.classList.add("btn-primary");
         recordsCopybtn.addEventListener("click", function(){
-            console.log("button pressed");
-            var copiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
-                                "# of rounds: " + totalRound + "\n" +
-                                "Spin Finishes: " + bey1SO + " / " + bey2SO + "\n" +
-                                "Burst Finishes: " + bey1Bst + " / " + bey2Bst + "\n" +
-                                "Over Finishes: " + bey1KO + " / " + bey2KO + "\n" +
-                                "Xtreme Finishes: " + bey1X + " / " + bey2X + "\n" +
-                                "Draws: " + draw + "\n" +
-                                "Total Wins: " + bey1Total + " / " + bey2Total + "\n" +
-                                "Points: " + bey1Points + " / " + bey2Points + "\n" +
-                                "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
+            console.log("results table button button pressed");
             navigator.clipboard.writeText(copiedStats);
         });
-        if(document.getElementById("recordsCopybtn") == null){
+        //if(document.getElementById("recordsCopybtn") == null){
             recordsSpace.append(recordsCopybtn);
-        }
+        //}
         wasCopyMatchupToClipGenerated = true;
         }
     //end NEW
@@ -1750,17 +1752,22 @@ function populateMatchHist(bey){
         cell4.innerHTML = "Xtreme";
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
+
+        clipboardHolder = "Results for " + bey.name + ":"
         
         for(i = 0; i < doc.total_rows; i++){
             if(doc.rows[i].doc.denfender!==undefined) {
-                        doc.rows.sort(function(a, b){
-                            return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                        });
-                    }
+                    doc.rows.sort(function(a, b){
+                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
+                    });
+            }
             if(doc.rows[i].doc.challenger!==undefined) {
                 // don't display if there are 0 matches
                 var totalMatches = doc.rows[i].doc.wx + doc.rows[i].doc.wbst + doc.rows[i].doc.wko + doc.rows[i].doc.wso + doc.rows[i].doc.lx + doc.rows[i].doc.lbst + doc.rows[i].doc.lko + doc.rows[i].doc.lso +  doc.rows[i].doc.draws;
                 if(!err && bey.id==doc.rows[i].doc.challenger.id && totalMatches>0){
+
+                    console.log(clipboardHolder);
+
                     //title row
                     var titleRow = matchupSpace.insertRow(1);
                     var titleCell = titleRow.insertCell(0);
@@ -1794,6 +1801,8 @@ function populateMatchHist(bey){
                                         (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + " points earned " + 
                                         (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso) + " points lost";
 
+                    console.log(clipboardHolder);
+
                 }
             }
             // else if(bey.id!=doc.rows[i].doc.challenger.id) {
@@ -1806,13 +1815,15 @@ function populateMatchHist(bey){
        }
 
        clipboardHolder += "\nCopied from https://fabelavalon.github.io/BeyBuilderX/";
+
        if(!wasCopyFullHistToClipGenerated){
             matchupHistCopyButton.addEventListener("click", function(){
-                console.log("button pressed");
+                console.log("matchup hist copy button pressed");
+                console.log(clipboardHolder);
                 navigator.clipboard.writeText(clipboardHolder);
                 wasCopyFullHistToClipGenerated = true;
-            })
-       }
+            });
+       };
        
     });
 }
