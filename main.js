@@ -1237,6 +1237,9 @@ function showBeyblades() {
 
 }
 
+// DB stats to copy to clipboard. This must be global so the button listener function gets updated text
+var dbCopiedStats = "";
+
 //shows selected bey's stats and allows for the user to set the selected bey to bey 1 or 2
 function setDbBey(){
 
@@ -1286,7 +1289,7 @@ function setDbBey(){
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
             dbBey = doc.build;
             
-            var copiedStats =   "Overall Results for " + doc.build.name + "\n" +
+            dbCopiedStats =   "Overall Results for " + doc.build.name + "\n" +
                                 "Average Win%: " + avgWinPercent + "% \n" +
                                 "Average Points Per Win: " + avgPPW + "\n" +
                                 "Average Points Per Loss: " + avgPPL + "\n" +
@@ -1298,23 +1301,20 @@ function setDbBey(){
                                 "Draws: " + doc.build.draws + "\n" +
                                 "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
             
-            //function for clipboard listener
-            function copyStatFunc() {
-                console.log("copy listener");
-                console.log(copiedStats);
-                navigator.clipboard.writeText(copiedStats);
+            //set copy to history button
+            if(!wasCopyHistToClipGenerated) {
+                console.log("adding listener");
+                copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
+                copyStatsbtn.classList.add("btn");
+                copyStatsbtn.classList.add("btn-primary");
+                copyStatsbtn.addEventListener("click", function() {
+                    console.log("copy to clipboard");
+                    //console.log(dbCopiedStats);
+                    navigator.clipboard.writeText(dbCopiedStats);
+                });
+                dbBeySpace.append(copyStatsbtn);
+                wasCopyHistToClipGenerated = true;
             }
-            //copy to clipboard button
-            if(wasCopyHistToClipGenerated){
-                copyStatsbtn.removeEventListener("click", copyStatFunc);
-            }
-            console.log("adding listener");
-            copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
-            copyStatsbtn.classList.add("btn");
-            copyStatsbtn.classList.add("btn-primary");
-            copyStatsbtn.addEventListener("click", copyStatFunc);
-            dbBeySpace.append(copyStatsbtn);
-            wasCopyHistToClipGenerated = true;
 
             //set as bey1 button
             if(!wasSetBey1Generated){
@@ -1423,6 +1423,9 @@ function showBeybladeStats(bey, whichBey) {
 
 }
 
+// copy-to-clipboard text. Must be global so the onclick listener can access
+var displayCopiedStats = "";
+
 //fill matchup table on main screen when both beys are chosen
 function displayRecords(){
 
@@ -1467,8 +1470,6 @@ function displayRecords(){
     var draw = 0;
     var totalRound = 0;
 
-    var copiedStats = "";
-
     recordsDBX.get(recordID, function(err, doc){
         record1.innerHTML = noBreakRatchetText(bey1.name);
         ko1.textContent = doc.wko;
@@ -1504,7 +1505,7 @@ function displayRecords(){
         totalRounds.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws);
         totalRound = doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws;
 
-        copiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
+        displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
                         "# of rounds: " + totalRound + "\n" +
                         "Spin Finishes: " + bey1SO + " / " + bey2SO + "\n" +
                         "Burst Finishes: " + bey1Bst + " / " + bey2Bst + "\n" +
@@ -1517,22 +1518,22 @@ function displayRecords(){
         
     });
 
-    //start NEW
-    if(!wasCopyMatchupToClipGenerated){
-        //document.getElementById("recordsCopybtn").remove();
+    //function for clipboard listener
+    function copyStatFunc() {
+        console.log("copy listener");
+        console.log(displayCopiedStats);
+        navigator.clipboard.writeText(displayCopiedStats);
+    }
+    if(!wasCopyMatchupToClipGenerated) {
+        //copy to clipboard
         recordsCopybtn.innerHTML = "Copy Matchup to Clipboard";
         recordsCopybtn.classList.add("btn");
         recordsCopybtn.classList.add("btn-primary");
-        recordsCopybtn.addEventListener("click", function(){
-            console.log("results table button button pressed");
-            navigator.clipboard.writeText(copiedStats);
-        });
-        //if(document.getElementById("recordsCopybtn") == null){
-            recordsSpace.append(recordsCopybtn);
-        //}
+        recordsCopybtn.addEventListener("click", copyStatFunc);
+        recordsSpace.append(recordsCopybtn);
         wasCopyMatchupToClipGenerated = true;
-        }
-    //end NEW
+    }
+
 }
 
 /**
