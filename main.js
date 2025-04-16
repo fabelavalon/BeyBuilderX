@@ -1285,31 +1285,36 @@ function setDbBey(){
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
             dbBey = doc.build;
-
-            //start NEW
-            //copy to clipboard button
-            if(!wasCopyHistToClipGenerated){
-                copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
-                copyStatsbtn.classList.add("btn");
-                copyStatsbtn.classList.add("btn-primary");
-                copyStatsbtn.addEventListener("click", function(){
-                    var copiedStats =   "Overall Results for " + doc.build.name + "\n" +
-                                        "Average Win%: " + avgWinPercent + "% \n" +
-                                        "Average Points Per Win: " + avgPPW + "\n" +
-                                        "Average Points Per Loss: " + avgPPL + "\n" +
-                                        "Average Points Per Round: " + round(avgPointChangePerRound,2) + "\n" +
-                                        "Spin Finish Win/Loss: " + doc.build.winsSO + "W / " + doc.build.loseSO + "L \n" +
-                                        "Burst Finish Win/Loss: " + doc.build.winsBst + "W / " + doc.build.loseBst + "L \n" +
-                                        "Over Finish Win/Loss: " + doc.build.winsKO + "W / " + doc.build.loseKO + "L \n" + 
-                                        "Xtreme Finish Win/Loss: " + doc.build.winsX + "W / " + doc.build.loseX + "L \n" +
-                                        "Draws: " + doc.build.draws + "\n" +
-                                        "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
-                    navigator.clipboard.writeText(copiedStats);
-                });
-                dbBeySpace.append(copyStatsbtn);
-                wasCopyHistToClipGenerated = true;
+            
+            var copiedStats =   "Overall Results for " + doc.build.name + "\n" +
+                                "Average Win%: " + avgWinPercent + "% \n" +
+                                "Average Points Per Win: " + avgPPW + "\n" +
+                                "Average Points Per Loss: " + avgPPL + "\n" +
+                                "Average Points Per Round: " + round(avgPointChangePerRound,2) + "\n" +
+                                "Spin Finish Win/Loss: " + doc.build.winsSO + "W / " + doc.build.loseSO + "L \n" +
+                                "Burst Finish Win/Loss: " + doc.build.winsBst + "W / " + doc.build.loseBst + "L \n" +
+                                "Over Finish Win/Loss: " + doc.build.winsKO + "W / " + doc.build.loseKO + "L \n" + 
+                                "Xtreme Finish Win/Loss: " + doc.build.winsX + "W / " + doc.build.loseX + "L \n" +
+                                "Draws: " + doc.build.draws + "\n" +
+                                "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
+            
+            //function for clipboard listener
+            function copyStatFunc() {
+                console.log("copy listener");
+                console.log(copiedStats);
+                navigator.clipboard.writeText(copiedStats);
             }
-            //end NEW
+            //copy to clipboard button
+            if(wasCopyHistToClipGenerated){
+                copyStatsbtn.removeEventListener("click", copyStatFunc);
+            }
+            console.log("adding listener");
+            copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
+            copyStatsbtn.classList.add("btn");
+            copyStatsbtn.classList.add("btn-primary");
+            copyStatsbtn.addEventListener("click", copyStatFunc);
+            dbBeySpace.append(copyStatsbtn);
+            wasCopyHistToClipGenerated = true;
 
             //set as bey1 button
             if(!wasSetBey1Generated){
