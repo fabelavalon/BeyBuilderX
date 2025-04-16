@@ -1654,6 +1654,9 @@ function showPartStats(partType, partID){
 
 }
 
+// copy-to-clipboard text. Must be global for the onclick listener to access
+var historyClipboardHolder = "";
+
 //populates the match history popup with selected Beys matchup history
 function populateMatchHist(bey){
 
@@ -1677,7 +1680,7 @@ function populateMatchHist(bey){
         else{ console.log("get fucked") }
 
         // prepare string version that can be copied to clipboard
-        var clipboardHolder = "Results for " + bey.name + ":";
+        historyClipboardHolder = "Results for " + bey.name + ":";
 
         //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
         var winHolder = castDoc.getTotalWin();
@@ -1754,7 +1757,7 @@ function populateMatchHist(bey){
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
 
-        clipboardHolder = "Results for " + bey.name + ":"
+        historyClipboardHolder = "Results for " + bey.name + ":"
         
         for(i = 0; i < doc.total_rows; i++){
             if(doc.rows[i].doc.denfender!==undefined) {
@@ -1767,7 +1770,7 @@ function populateMatchHist(bey){
                 var totalMatches = doc.rows[i].doc.wx + doc.rows[i].doc.wbst + doc.rows[i].doc.wko + doc.rows[i].doc.wso + doc.rows[i].doc.lx + doc.rows[i].doc.lbst + doc.rows[i].doc.lko + doc.rows[i].doc.lso +  doc.rows[i].doc.draws;
                 if(!err && bey.id==doc.rows[i].doc.challenger.id && totalMatches>0){
 
-                    console.log(clipboardHolder);
+                    console.log(historyClipboardHolder);
 
                     //title row
                     var titleRow = matchupSpace.insertRow(1);
@@ -1797,12 +1800,12 @@ function populateMatchHist(bey){
                     cell5.innerHTML = doc.rows[i].doc.draws;
                     cell6.innerHTML = (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + "/" + (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso);
 
-                    clipboardHolder +=  "\n" + "vs " + doc.rows[i].doc.defender.name + ": " + totalMatches + " rounds, " + 
-                                        (round(((doc.rows[i].doc.wso + doc.rows[i].doc.wbst + doc.rows[i].doc.wko +doc.rows[i].doc.wx)/totalMatches),2)*100) + "% of rounds won, " + 
+                    historyClipboardHolder +=  "\n" + "vs " + doc.rows[i].doc.defender.name + ": " + totalMatches + " rounds, " + 
+                                        (round( ((doc.rows[i].doc.wso + doc.rows[i].doc.wbst + doc.rows[i].doc.wko +doc.rows[i].doc.wx)/totalMatches)*100 ,2)) + "% of rounds won, " + 
                                         (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + " points earned " + 
                                         (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso) + " points lost";
 
-                    console.log(clipboardHolder);
+                    console.log(historyClipboardHolder);
 
                 }
             }
@@ -1815,13 +1818,13 @@ function populateMatchHist(bey){
 
        }
 
-       clipboardHolder += "\nCopied from https://fabelavalon.github.io/BeyBuilderX/";
+       historyClipboardHolder += "\nCopied from https://fabelavalon.github.io/BeyBuilderX/";
 
        if(!wasCopyFullHistToClipGenerated){
             matchupHistCopyButton.addEventListener("click", function(){
                 console.log("matchup hist copy button pressed");
-                console.log(clipboardHolder);
-                navigator.clipboard.writeText(clipboardHolder);
+                console.log(historyClipboardHolder);
+                navigator.clipboard.writeText(historyClipboardHolder);
                 wasCopyFullHistToClipGenerated = true;
             });
        };
