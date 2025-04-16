@@ -17,6 +17,7 @@ var allRachets = rachets;
 var allBits = bits;
 
 //create the elements for the buttons that will get generated via this script
+var copyStatsbtn = document.createElement("button"); //NEW
 var bey1Statbtn = document.createElement("button");
 var bey2Statbtn = document.createElement("button");
 var showAllBeysbtn = document.createElement("button");
@@ -123,6 +124,7 @@ var matchupBeyUser = document.getElementById("matchupBeyUser");
 var matchupHistUser = document.getElementById("matchupHistUser");
 var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
+var matchupHistCopyButton = document.getElementById("copyHistToClip");
 
 
 //used to generate the win buttons after both beys are selected
@@ -130,7 +132,12 @@ var wasBey1Generated = false;
 var wasBey2Generated = false;
 
 //used so we dont generate more buttons
+var wasSetBey1Generated = false;
+var wasSetBey2Generated = false;
 var wasWinButtonGenerated = false;
+var wasCopyHistToClipGenerated = false;
+var wasCopyMatchupToClipGenerated = false;
+var wasCopyFullHistToClipGenerated = false;
 
 //global beyblade variables
 var bey1;
@@ -146,6 +153,7 @@ var lastRecordOutcome;
 function main(){
 
     console.log("Welcome to BeyBuilder X Version 1.3");
+    console.log("called main()");
 
     bey1BitChipDropdown.value="random";
     bey2BitChipDropdown.value="random";
@@ -299,6 +307,8 @@ function main(){
 //generate a beyblade based on the selections for the first set of drop downs
 function generateBey1(){
 
+    console.log("called generateBey1");
+
     //uses the id's of all parts for easy call
     var bitChip = -1;
     var blade = -1;
@@ -387,6 +397,8 @@ function generateBey1(){
 //generate a beyblade based on the selections for the second set of drop downs
 function generateBey2(){
 
+    console.log("called generateBey2()");
+
     //uses the id's of all parts for easy call
     var bitChip = -1;
     var blade = -1;
@@ -471,19 +483,10 @@ function generateBey2(){
     
 }
 
-//checks if ANY part is random
-function isBeyRandom(bladeState, rachetState, bitState){
-
-    if(!bladeState || !rachetState || !bitState){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
-
 //populates win buttons on screen
 function createWinButtons(){
+
+    console.log("called createWinButtons()");
 
     var vsContainer = document.getElementById("vsContainer");
 
@@ -512,6 +515,9 @@ function createWinButtons(){
  * @param {string} winType : 'ko', 'so', 'x', 'burst', 'draw'
  */
 function choseWinner(beyNumber, winType) {
+
+    console.log("called chooseWinner(" + beyNumber + ", " + winType + ")");
+
     console.log("Winner: " + beyNumber + " by: " + winType);
     var winnerBey = ( beyNumber==1 ) ? bey1 : bey2; // if beyNumber==1, choose bey1, else choose bey2
     var loserBey = ( beyNumber==1 ) ? bey2 : bey1;
@@ -556,6 +562,9 @@ function choseWinner(beyNumber, winType) {
 
 //add a new, not before generated beyblade to the database
 function addBeyblade(bey) {
+
+    console.log("called addBeyblade(" + bey.name + ")");
+
     if((allBlades[bey.blade].system == "BX") || ((allBlades[bey.blade].system == "UX"))){
         var beyblade = {
             _id: allBlades[bey.blade].id + " " + allRachets[bey.rachet].id + " " + allBits[bey.bit].id,
@@ -584,6 +593,8 @@ function addBeyblade(bey) {
 
 //tracking for actual past match ups, so we know what build blades won or lost against, instead of anon stats
 function addRecord(challenger, defender){
+
+    console.log("called addRecord" + challenger.name + ", " + defender.name + ")");
 
     var winRecord = {
         _id: challenger.id + " " + defender.id,
@@ -614,6 +625,8 @@ function addRecord(challenger, defender){
 
 //edit beyblade win stats incase of mis inputs
 function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
+
+    console.log("called editBey(" + wko + ", " + lko + ", " + wso + ", " + lso + ", " + wbst + ", " + lbst + ", " + wx + ", " + lx + ", " + dr + ")");
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         var statEditor = document.getElementById("statEditor");
@@ -663,6 +676,8 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
 
 //update the records database with a result is chosen
 function updateRecords(winner, loser, outcome){
+
+    console.log("called updateRecords(" + winner.name  + ", " + loser.name + ", " + outcome + ")");
 
     var record1Id = winner.id + " " + loser.id;
     var record2Id = loser.id + " " + winner.id;
@@ -812,6 +827,8 @@ function updateRecords(winner, loser, outcome){
 //updates the win and loss counts for both beys when a result is chosen
 function updateWinCounts(winner, loser, outcome){
 
+    console.log("called updateWinCounts(" + winner.name + ", " + loser.name + ", " + outcome + ")");
+
     switch(outcome){
         case "KO":
         beyBladeDBX.get(winner.id, function(err, doc) {
@@ -942,6 +959,9 @@ function updateWinCounts(winner, loser, outcome){
 
 // undos last entered result
 function undoLastRecord(){
+
+    console.log("called undoLastRecord()");
+
     var winner = lastRecordWinner;
     var loser = lastRecordLoser;
     var outcome = lastRecordOutcome;
@@ -1189,6 +1209,8 @@ function undoLastRecord(){
 //fills the bey selection menu
 function showBeyblades() {
 
+    console.log("called showBeyblades()");
+
     var dbSelectList = document.getElementById("dbSelectList");
 
     //clear the list so we dont just add more options
@@ -1207,16 +1229,21 @@ function showBeyblades() {
                 options.value = doc.rows[i].doc._id;
                 dbSelectList.appendChild(options);
             }
-            // else{
-            //     console.log(err);
-            // }
+            else{
+                //console.log(err);
+            }
        }
     });
 
 }
 
+// DB stats to copy to clipboard. This must be global so the button listener function gets updated text
+var dbCopiedStats = "";
+
 //shows selected bey's stats and allows for the user to set the selected bey to bey 1 or 2
 function setDbBey(){
+
+    console.log("called setDbBey()");
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
@@ -1230,13 +1257,11 @@ function setDbBey(){
                 var castDoc = Object.assign( new BeyBlade(doc.build.bitChip , doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
             }
 
-            //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
+            //TODO: move some calculation into Beyblade class, like getWinPoints, getLosePoints, etc
             var winHolder = castDoc.getTotalWin();
             var winPointHolder = (doc.build.winsBst*2) + (doc.build.winsKO*2) + doc.build.winsSO + (doc.build.winsX*3);
-            // var lossHolder = doc.build.loseBst + doc.build.loseKO + doc.build.loseSO + doc.build.loseX;
             var lossHolder = castDoc.getTotalLoss();
             var lossPointHolder = (doc.build.loseBst*2) + (doc.build.loseKO*2) + doc.build.loseSO + (doc.build.loseX*3);
-            //var totalHolder = winHolder + lossHolder + doc.build.draws;
             var totalHolder = castDoc.getTotalMatch();
             var avgPPW = round((winPointHolder/winHolder),2);
             var avgPPL = round((lossPointHolder/lossHolder),2);
@@ -1253,7 +1278,7 @@ function setDbBey(){
             dbBeyName.textContent = doc.build.name;
             dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
             dbBeyStats.textContent = " Spin: " + doc.build.spin;
-            dbWinPercent.textContent = "Average win%: " + avgWinPercent + "%";
+            dbWinPercent.textContent = "Average Win%: " + avgWinPercent + "%";
             dbPPW.textContent = "Average Points per Win: " + avgPPW;
             dbPPL.textContent = "Average Points per Loss: " + avgPPL;
             dbPointDif.textContent = "Average Points per Round: " + round(avgPointChangePerRound,2); 
@@ -1263,31 +1288,64 @@ function setDbBey(){
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
             dbBey = doc.build;
+            
+            dbCopiedStats =   "Overall Results for " + doc.build.name + "\n" +
+                                "Average Win%: " + avgWinPercent + "% \n" +
+                                "Average Points Per Win: " + avgPPW + "\n" +
+                                "Average Points Per Loss: " + avgPPL + "\n" +
+                                "Average Points Per Round: " + round(avgPointChangePerRound,2) + "\n" +
+                                "Spin Finish Win/Loss: " + doc.build.winsSO + "W / " + doc.build.loseSO + "L \n" +
+                                "Burst Finish Win/Loss: " + doc.build.winsBst + "W / " + doc.build.loseBst + "L \n" +
+                                "Over Finish Win/Loss: " + doc.build.winsKO + "W / " + doc.build.loseKO + "L \n" + 
+                                "Xtreme Finish Win/Loss: " + doc.build.winsX + "W / " + doc.build.loseX + "L \n" +
+                                "Draws: " + doc.build.draws + "\n" +
+                                "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
+            
+            //set copy to history button
+            if(!wasCopyHistToClipGenerated) {
+                console.log("adding listener");
+                copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
+                copyStatsbtn.classList.add("btn");
+                copyStatsbtn.classList.add("btn-primary");
+                copyStatsbtn.addEventListener("click", function() {
+                    console.log("copy to clipboard");
+                    //console.log(dbCopiedStats);
+                    navigator.clipboard.writeText(dbCopiedStats);
+                });
+                dbBeySpace.append(copyStatsbtn);
+                wasCopyHistToClipGenerated = true;
+            }
 
             //set as bey1 button
-            bey1Statbtn.innerHTML = "Set as Bey 1";
-            bey1Statbtn.classList.add("btn");
-            bey1Statbtn.classList.add("btn-primary");
-            bey1Statbtn.addEventListener("click", function() {
-                bey1=dbBey;
-                wasBey1Generated = true;
-                showBeybladeStats(bey1, 1);
-                createWinButtons()
-                console.log(bey1.winsSO)
-            });
-            dbBeySpace.append(bey1Statbtn);
+            if(!wasSetBey1Generated){
+                bey1Statbtn.innerHTML = "Set as Bey 1";
+                bey1Statbtn.classList.add("btn");
+                bey1Statbtn.classList.add("btn-primary");
+                bey1Statbtn.addEventListener("click", function() {
+                    bey1=dbBey;
+                    wasBey1Generated = true;
+                    showBeybladeStats(bey1, 1);
+                    createWinButtons()
+                    console.log(bey1.winsSO)
+                });
+                dbBeySpace.append(bey1Statbtn);
+                wasSetBey1Generated = true;
+            }
 
             //set as bey2 button
-            bey2Statbtn.innerHTML = "Set as Bey 2";
-            bey2Statbtn.classList.add("btn");
-            bey2Statbtn.classList.add("btn-primary");
-            bey2Statbtn.addEventListener("click", function() {
-                bey2=dbBey;
-                wasBey2Generated = true;
-                showBeybladeStats(bey2, 2);
-                createWinButtons()
-            });
-            dbBeySpace.append(bey2Statbtn);
+            if(!wasSetBey2Generated){
+                bey2Statbtn.innerHTML = "Set as Bey 2";
+                bey2Statbtn.classList.add("btn");
+                bey2Statbtn.classList.add("btn-primary");
+                bey2Statbtn.addEventListener("click", function() {
+                    bey2=dbBey;
+                    wasBey2Generated = true;
+                    showBeybladeStats(bey2, 2);
+                    createWinButtons()
+                });
+                dbBeySpace.append(bey2Statbtn);
+                wasSetBey2Generated = true;
+            }
             
             //edit bey stats in database
             editBeybtn.innerHTML = "Edit Stats";
@@ -1326,6 +1384,8 @@ function setDbBey(){
 //displays the win loss and weight stats for the chosen beyblade
 function showBeybladeStats(bey, whichBey) {
 
+    console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + ")");
+
     switch(whichBey){
         case 1:
             beyBladeDBX.get(bey.id, function(err, doc) {
@@ -1338,18 +1398,9 @@ function showBeybladeStats(bey, whichBey) {
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
                 }
-                /*if(!err){
-                    bey1title.textContent = "BeyBlade 1 is: " + doc.build.name;
-                    bey1weight.textContent = round(doc.build.weight,2) + " grams";
-                    bey1spin.textContent = doc.build.winsSO + " / " + doc.build.loseSO;
-                    bey1over.textContent = doc.build.winsKO + " / " + doc.build.loseKO;
-                    bey1burst.textContent = doc.build.winsBst + " / " + doc.build.loseBst;
-                    bey1xtreme.textContent = doc.build.winsX + " / " + doc.build.loseX;
-                    bey1draws.textContent = ""+ doc.build.draws;
-                }*/
-                // else{
-                //     console.log(err);
-                // }
+                else {
+                    //console.log(err);
+                }
             });
         break;
         case 2:
@@ -1363,17 +1414,22 @@ function showBeybladeStats(bey, whichBey) {
                     bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
                 }
-                // else{
-                //     console.log(err);
-                // }
+                else{
+                    //console.log(err);
+                }
             });
         break;
     }
 
 }
 
+// copy-to-clipboard text. Must be global so the onclick listener can access
+var displayCopiedStats = "";
+
 //fill matchup table on main screen when both beys are chosen
 function displayRecords(){
+
+    console.log("called displayRecords()");
 
     var record1 = document.getElementById("record1");
     var wins1 = document.getElementById("wins1");
@@ -1396,26 +1452,87 @@ function displayRecords(){
 
     var recordID = bey1.id + " " + bey2.id;
 
+    var recordsSpace = document.getElementById("recordsSpace"); //NEW
+    var recordsCopybtn = document.createElement("button"); //NEW
+
+    var bey1SO = 0;
+    var bey1Bst = 0;
+    var bey1KO = 0;
+    var bey1X = 0;
+    var bey1Total = 0;
+    var bey1Points = 0;
+    var bey2SO = 0
+    var bey2Bst = 0;
+    var bey2KO = 0;
+    var bey2X = 0;
+    var bey2Total = 0;
+    var bey2Points = 0;
+    var draw = 0;
+    var totalRound = 0;
+
     recordsDBX.get(recordID, function(err, doc){
         record1.innerHTML = noBreakRatchetText(bey1.name);
         ko1.textContent = doc.wko;
+        bey1KO = doc.wko;
         so1.textContent = doc.wso;
+        bey1SO = doc.wso
         bst1.textContent = doc.wbst;
+        bey1Bst = doc.wbst;
         x1.textContent = doc.wx;
+        bey1X = doc.wx;
         wins1.textContent = doc.wx + doc.wbst + doc.wko + doc.wso;
+        bey1Total = doc.wx + doc.wbst + doc.wko + doc.wso;
         points1.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
+        bey1Points = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
         record2.innerHTML = noBreakRatchetText(bey2.name);
         ko2.textContent = doc.lko;
+        bey2KO = doc.lko;
         so2.textContent = doc.lso;
+        bey2SO = doc.lso
         bst2.textContent =  doc.lbst;
+        bey2Bst = doc.lbst;
         x2.textContent =  doc.lx;
+        bey2X = doc.lx;
         wins2.textContent = doc.lx + doc.lbst + doc.lko + doc.lso;
-        totalRounds.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws);
+        bey2Total = doc.lx + doc.lbst + doc.lko + doc.lso
         points2.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
-        
+        bey2Points = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
+
         draws.textContent = doc.draws;
+        draw = doc.draws;
+
+        totalRounds.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws);
+        totalRound = doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws;
+
+        displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
+                        "# of rounds: " + totalRound + "\n" +
+                        "Spin Finishes: " + bey1SO + " / " + bey2SO + "\n" +
+                        "Burst Finishes: " + bey1Bst + " / " + bey2Bst + "\n" +
+                        "Over Finishes: " + bey1KO + " / " + bey2KO + "\n" +
+                        "Xtreme Finishes: " + bey1X + " / " + bey2X + "\n" +
+                        "Draws: " + draw + "\n" +
+                        "Total Wins: " + bey1Total + " / " + bey2Total + "\n" +
+                        "Points: " + bey1Points + " / " + bey2Points + "\n" +
+                        "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
+        
     });
+
+    //function for clipboard listener
+    function copyStatFunc() {
+        console.log("copy listener");
+        console.log(displayCopiedStats);
+        navigator.clipboard.writeText(displayCopiedStats);
+    }
+    if(!wasCopyMatchupToClipGenerated) {
+        //copy to clipboard
+        recordsCopybtn.innerHTML = "Copy Matchup to Clipboard";
+        recordsCopybtn.classList.add("btn");
+        recordsCopybtn.classList.add("btn-primary");
+        recordsCopybtn.addEventListener("click", copyStatFunc);
+        recordsSpace.append(recordsCopybtn);
+        wasCopyMatchupToClipGenerated = true;
+    }
 
 }
 
@@ -1425,6 +1542,9 @@ function displayRecords(){
  * @returns 
  */
 function noBreakRatchetText(beyName) {
+
+    console.log("called noBreakRatchetText(" + beyName + ")");
+
     // split bey name into parts
     var newBeyName = beyName;
     var beynameArray = newBeyName.split(" ");
@@ -1438,6 +1558,8 @@ function noBreakRatchetText(beyName) {
 
 //displays part win/loss records when a user chooses to see them
 function showPartStats(partType, partID){
+
+    console.log("called showPartsStats(" + partType + ", " + partID + ")");
     
     var partWko = 0;
     var partLko = 0;
@@ -1532,8 +1654,13 @@ function showPartStats(partType, partID){
 
 }
 
+// copy-to-clipboard text. Must be global for the onclick listener to access
+var historyClipboardHolder = "";
+
 //populates the match history popup with selected Beys matchup history
 function populateMatchHist(bey){
+
+    console.log("called populateMatchHist(" + bey.name + ")");
 
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
 
@@ -1551,6 +1678,9 @@ function populateMatchHist(bey){
             console.log("its a CX blade");
         }
         else{ console.log("get fucked") }
+
+        // prepare string version that can be copied to clipboard
+        historyClipboardHolder = "Results for " + bey.name + ":";
 
         //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
         var winHolder = castDoc.getTotalWin();
@@ -1626,17 +1756,22 @@ function populateMatchHist(bey){
         cell4.innerHTML = "Xtreme";
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
+
+        historyClipboardHolder = "Results for " + bey.name + ":"
         
         for(i = 0; i < doc.total_rows; i++){
             if(doc.rows[i].doc.denfender!==undefined) {
-                        doc.rows.sort(function(a, b){
-                            return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
-                        });
-                    }
+                    doc.rows.sort(function(a, b){
+                        return (''+b.doc.defender.name).localeCompare(a.doc.defender.name);
+                    });
+            }
             if(doc.rows[i].doc.challenger!==undefined) {
                 // don't display if there are 0 matches
                 var totalMatches = doc.rows[i].doc.wx + doc.rows[i].doc.wbst + doc.rows[i].doc.wko + doc.rows[i].doc.wso + doc.rows[i].doc.lx + doc.rows[i].doc.lbst + doc.rows[i].doc.lko + doc.rows[i].doc.lso +  doc.rows[i].doc.draws;
                 if(!err && bey.id==doc.rows[i].doc.challenger.id && totalMatches>0){
+
+                    console.log(historyClipboardHolder);
+
                     //title row
                     var titleRow = matchupSpace.insertRow(1);
                     var titleCell = titleRow.insertCell(0);
@@ -1664,6 +1799,14 @@ function populateMatchHist(bey){
                     cell4.innerHTML = doc.rows[i].doc.wx + "/" + doc.rows[i].doc.lx;
                     cell5.innerHTML = doc.rows[i].doc.draws;
                     cell6.innerHTML = (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + "/" + (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso);
+
+                    historyClipboardHolder +=  "\n" + "vs " + doc.rows[i].doc.defender.name + ": " + totalMatches + " rounds, " + 
+                                        (round( ((doc.rows[i].doc.wso + doc.rows[i].doc.wbst + doc.rows[i].doc.wko +doc.rows[i].doc.wx)/totalMatches)*100 ,2)) + "% of rounds won, " + 
+                                        (doc.rows[i].doc.wx*3 + doc.rows[i].doc.wbst*2 + doc.rows[i].doc.wko*2 + doc.rows[i].doc.wso) + " points earned " + 
+                                        (doc.rows[i].doc.lx*3 + doc.rows[i].doc.lbst*2 + doc.rows[i].doc.lko*2 + doc.rows[i].doc.lso) + " points lost";
+
+                    console.log(historyClipboardHolder);
+
                 }
             }
             // else if(bey.id!=doc.rows[i].doc.challenger.id) {
@@ -1674,11 +1817,24 @@ function populateMatchHist(bey){
             // }
 
        }
+
+       historyClipboardHolder += "\nCopied from https://fabelavalon.github.io/BeyBuilderX/";
+
+       if(!wasCopyFullHistToClipGenerated){
+            matchupHistCopyButton.addEventListener("click", function(){
+                console.log("matchup hist copy button pressed");
+                console.log(historyClipboardHolder);
+                navigator.clipboard.writeText(historyClipboardHolder);
+                wasCopyFullHistToClipGenerated = true;
+            });
+       };
        
     });
 }
 
 function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChip2, blade2, assist2, rachet2, bit2){
+
+    console.log("populateMatchHistUser2(" + bitChip1 + ", " + blade1 + ", " + assist1 + ", " + rachet1 + ", " + bit1 + ", " + bitChip2 + ", " + blade2 + ", " + assist2 + ", " + rachet2 + ", " + bit2 +")");
 
     // overall stats
     primeMatchupHistStatsTable(); // wipe overall stats
@@ -1804,6 +1960,9 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
 }
 
 function primeMatchupHistStatsTable(){
+
+    console.log("called primeMatchupHistStatsTable()");
+
     matchupStatsBeyTitle.textContent = "";
     
     // stats table
@@ -1818,6 +1977,9 @@ function primeMatchupHistStatsTable(){
  * wipes and recreates table for matchup history
  */
 function primeMatchupHistTable(){
+
+    console.log("called primeMatchupHistTable()");
+
     // hide "parts not selected" text
     matchupBeyUser.style.visibility = "hidden";
     // wipe table
@@ -1831,6 +1993,8 @@ function primeMatchupHistTable(){
 
 // add one line to parts history table
 function fillMatchupHist(history){
+
+    console.log("called fillMatchupHistory(" + history.length + ")");
     
     var row = matchupHistUser.insertRow(1);
     var cellVS = row.insertCell(); 
@@ -1857,6 +2021,8 @@ function fillMatchupHist(history){
 //delete a bey from the system
 function deleteBey(){
 
+    console.log("called deleteBey()");
+
     var dbSelectList = document.getElementById("dbSelectList");
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
@@ -1881,6 +2047,8 @@ function deleteBey(){
 //clears all beyblades in the database
 function deleteAllBeys() {
 
+    console.log("called deleteAllBeys()");
+
     //clear the list so we dont just add more options
     while (dbSelectList.options.length > 0) {                
         dbSelectList.remove(0);
@@ -1895,9 +2063,9 @@ function deleteAllBeys() {
                     }
                 });
             }
-            // else{
-            //     console.log(err);
-            // }
+            else{
+                //console.log(err);
+            }
        }
     });
 
@@ -1906,18 +2074,24 @@ function deleteAllBeys() {
 //turns out JavaScript doesn't have a random number function that just gives an int
 function getRandomInt(max) {
 
-    return Math.floor(Math.random() * max);
+    console.log("called getRandomInt(" + max + ")");
 
+    return Math.floor(Math.random() * max);
 };
 
 //JS math functions suck
 function round(num, places) {
+
+    console.log("called round(" + num + ", " + places + ")");
+
     var multiplier = Math.pow(10, places);
     return Math.round(num * multiplier) / multiplier;
 }
 
 //used to enable and disable the bitchip and assist blade drops downs if the user chooses a non-CX blade
 function disableDropdowns(selection, whichBey){
+
+    console.log("called disableDropdowns(" + selection + ", " + whichBey + ")");
 
     if(whichBey == 1){
         if(allBlades[selection].system == "CX"){
@@ -1975,6 +2149,9 @@ function disableDropdowns(selection, whichBey){
 
 // quick spin animation
 function spinMe(me){
+
+    console.log("called spinMe()");
+
     me.classList.add('spinme');
     me.addEventListener('animationend', function () {
         me.classList.remove('spinme');
@@ -1984,6 +2161,9 @@ function spinMe(me){
 //theme object, will be a pouchDB object
 var selectedTheme;
 function themeSwitchListener(){
+
+    console.log("called themeSwitchListener()");
+
     themeSelect.addEventListener('change', function() {
         saveTheme(themeSelect.value);
     });
@@ -1992,6 +2172,7 @@ function themeSwitchListener(){
 function saveTheme(themeName) {
     console.log('Current DB theme:');
     console.log(JSON.stringify(selectedTheme));
+    // init selectedTheme object for DB insertion
     if(selectedTheme==null) {
         selectedTheme = {
             _id: "selectedTheme",
@@ -2001,10 +2182,11 @@ function saveTheme(themeName) {
     if (themeName!=null && themeName.trim().length > 0) {
         selectedTheme.name= themeSelect.value;
     }
+    // save selected theme
     settings.put(selectedTheme, function callback(err, result) {
         if (!err) {
             console.log('Saved theme selection');
-            // load theme to set CSS and update selectedTheme._rev
+            // load theme. This will set the CSS and update selectedTheme._rev
             loadTheme();
         }
         else{
@@ -2014,6 +2196,9 @@ function saveTheme(themeName) {
 }
 
 function loadTheme(){
+
+    console.log("called loadTheme()");
+
     settings.get("selectedTheme", function callback(err, result) {
         if (!err) {
             selectedTheme=result;
@@ -2026,6 +2211,7 @@ function loadTheme(){
             console.log(err);
             if(err.status=404) {
                 console.log("No existing theme. Using default");
+                // calling saveTheme with no params will select the default theme and properly init the DB theme object
                 saveTheme();
             }
         }
