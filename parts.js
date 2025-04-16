@@ -156,7 +156,7 @@ var bits = [
     {"name":"Cyclone",      "weight":2.12, "height":2, "abbv":"C",  "wins":0, "losses":0, "draws":0, "id":21},
     {"name":"Dot",          "weight":2.00, "height":2, "abbv":"D",  "wins":0, "losses":0, "draws":0, "id":22},
     {"name":"Glide",        "weight":2.52, "height":2, "abbv":"G",  "wins":0, "losses":0, "draws":0, "id":23},
-    {"name":"Elevate",      "weight":2.23, "height":1, "abbv":"E",  "wins":0, "losses":0, "draws":0, "id":24},
+    {"name":"Elevate",      "weight":3.23, "height":1, "abbv":"E",  "wins":0, "losses":0, "draws":0, "id":24},
     {"name":"Free Ball",    "weight":1.94, "height":2, "abbv":"FB", "wins":0, "losses":0, "draws":0, "id":25},
     {"name":"Trans Point",  "weight":2.21, "height":1, "abbv":"TP", "wins":0, "losses":0, "draws":0, "id":26},
     {"name":"Level",        "weight":2.65, "height":2, "abbv":"L",  "wins":0, "losses":0, "draws":0, "id":27},
