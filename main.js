@@ -1506,7 +1506,7 @@ function displayRecords(){
         totalRound = doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws;
 
         displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
-                        "# of rounds: " + totalRound + "\n" +
+                        "Number of rounds: " + totalRound + "\n" +
                         "Spin Finishes: " + bey1SO + " / " + bey2SO + "\n" +
                         "Burst Finishes: " + bey1Bst + " / " + bey2Bst + "\n" +
                         "Over Finishes: " + bey1KO + " / " + bey2KO + "\n" +

@@ -81,7 +81,7 @@ var blades = [
     {"name":"GolemRock",         "spin":"right", "system":"UX", "weight":34.00, "height":0, "abbv":"GlRc", "wins":0, "losses":0, "draws":0, "id":60},
     {"name":"ShelterDrake",      "spin":"right", "system":"BX", "weight":32.65, "height":0, "abbv":"ShDr", "wins":0, "losses":0, "draws":0, "id":61},
     {"name":"DragoonStorm",      "spin":"left",  "system":"BX", "weight":25.35, "height":0, "abbv":"DrSt", "wins":0, "losses":0, "draws":0, "id":62},
-    {"name":"StormPegasus",      "spin":"right", "system":"BX", "weight":30.75, "height":0, "abbv":"StPg", "wins":0, "losses":0, "draws":0, "id":63},
+    {"name":"StormPegasis",      "spin":"right", "system":"BX", "weight":30.75, "height":0, "abbv":"StPg", "wins":0, "losses":0, "draws":0, "id":63},
     {"name":"VictoryValkyrie",   "spin":"right", "system":"BX", "weight":33.05, "height":0, "abbv":"VcVl", "wins":0, "losses":0, "draws":0, "id":64},
     {"name":"XenoXcalibur",      "spin":"right", "system":"BX", "weight":30.95, "height":0, "abbv":"XnXc", "wins":0, "losses":0, "draws":0, "id":65},
     {"name":"Brave",             "spin":"right", "system":"CX", "weight":31.06, "height":0, "abbv":"Br",   "wins":0, "losses":0, "draws":0, "id":66},
