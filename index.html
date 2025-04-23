@@ -539,6 +539,24 @@
                   <option value="wbo">World Beyblade Organization</option>
                   <option value="none">None</option>
                 </select>
+
+                <br>
+                <button type="button" class="btn btn-primary" onclick="exportDb()">Export local database</button>
+
+                <br>
+                <br>
+                <!-- <button type="button" class="btn btn-primary" onclick="importDb()">Import database</button> -->
+
+                <form id="importDbForm">
+                  <div class="form-group">
+                    <input class="form-control" type="file" id="importDbFile" name="importDbFile" accept=".json">
+                    <br>
+                    <!-- <button type="submit" class="btn btn-primary">Import database</button> -->
+                    <button class="btn btn-primary" type="button" onclick="importDb()">Import database</button>
+  
+                  </div>
+                </form>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

@@ -1884,7 +1884,7 @@ function deleteAllBeys() {
     //clear the list so we dont just add more options
     while (dbSelectList.options.length > 0) {                
         dbSelectList.remove(0);
-    }        
+    }
 
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
         for(i = 0; i < doc.total_rows; i++){
@@ -2030,6 +2030,61 @@ function loadTheme(){
             }
         }
     });
+}
+
+async function exportDb() {
+    // Fetch regular documents
+    const resultBeyblades = await beyBladeDBX.allDocs({ include_docs: true });
+    console.log(resultBeyblades);
+    const docsBeyblades = resultBeyblades.rows
+      .map((row) => {
+        const doc = { ...row.doc };
+        delete doc._rev;
+        return doc;
+      });
+
+    const resultRecords = await recordsDBX.allDocs({ include_docs: true });
+    const docsRecords = resultRecords.rows
+    .map((row) => {
+        const doc = { ...row.doc };
+        delete doc._rev;
+        return doc;
+    });
+
+    const resultSettings = await settings.allDocs({ include_docs: true });
+    const docsSettings = resultSettings.rows
+    .map((row) => {
+        const doc = { ...row.doc };
+        delete doc._rev;
+        return doc;
+    });
+    
+    const exportData = {
+        beyBladeDBX: docsBeyblades,
+        recordsDBX: docsRecords,
+        settings: docsSettings
+    };
+
+    // Create a Blob and trigger download (no change here)
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `filameter-db-export-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function importDb() {
+    // clear database
+    //deleteAllBeys();
+    console.log("ImportDB()");
+    // open file picker
+
+    
 }
 
 //run main on startup
