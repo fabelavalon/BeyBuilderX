@@ -2078,14 +2078,42 @@ async function exportDb() {
     URL.revokeObjectURL(url);
 }
 
-function importDb() {
-    // clear database
-    //deleteAllBeys();
-    console.log("ImportDB()");
-    // open file picker
-
-    
+async function importDbSetup(){
+    const fileInput = document.getElementById('importDbFile');
+    const importDbButton = document.getElementById('importDbButton');
+    // load json from file
+    importDbButton.addEventListener('click', async () => {
+        const file = fileInput.files[0];
+        if (!file) {
+            console.error("No file selected");
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            try {
+                const data = JSON.parse(event.target.result);
+                console.log("Importing database:", data);
+                // Clear existing databases
+                await beyBladeDBX.destroy();
+                await recordsDBX.destroy();
+                await settings.destroy();
+                // Recreate databases
+                beyBladeDBX = new PouchDB("BeyBladesX");
+                recordsDBX = new PouchDB("RecordX");
+                settings = new PouchDB("settings");
+                // bulk import
+                await beyBladeDBX.bulkDocs(data.beyBladeDBX);
+                await recordsDBX.bulkDocs(data.recordsDBX);
+                await settings.bulkDocs(data.settings);
+                console.log("Database imported successfully");
+            } catch (error) {
+                console.error("Error importing database:", error);
+            }
+        };
+        reader.readAsText(file);
+    });
 }
+importDbSetup();
 
 //run main on startup
 main();
