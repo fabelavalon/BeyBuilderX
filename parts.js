@@ -92,8 +92,10 @@ var blades = [
     {"name":"Reaper",            "spin":"right", "system":"CX", "weight":29.05, "height":0, "abbv":"Rp",   "wins":0, "losses":0, "draws":0, "id":69},
     {"name":"ScorpioSpear",      "spin":"right", "system":"UX", "weight":39.60, "height":0, "abbv":"ScSp", "wins":0, "losses":0, "draws":0, "id":70},
     {"name":"Brush",             "spin":"right", "system":"CX", "weight":30.30, "height":0, "abbv":"Br",   "wins":0, "losses":0, "draws":0, "id":71},
-    //{"name":"TriceraPress",      "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"TrPr", "wins":0, "losses":0, "draws":0, "id":72},
-    //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":73},
+    {"name":"Hover Wyvern",      "spin":"right", "system":"UX", "weight":35.00, "height":0, "abbv":"WyHv", "wins":0, "losses":0, "draws":0, "id":72},
+    {"name":"Gill Shark",        "spin":"right", "system":"BX", "weight":29.70, "height":0, "abbv":"ShGl", "wins":0, "losses":0, "draws":0, "id":73},
+    //{"name":"TriceraPress",      "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"TrPr", "wins":0, "losses":0, "draws":0, "id":74},
+    //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":75},
     
 ];
 
