@@ -376,7 +376,7 @@ function generateBey1(){
     } 
 
     console.log(JSON.stringify(blade));
-
+    //NEW TODO need to add a check for Turbo here (the bit that is also a ratchet)
     //check if its a CX blade and put it togther...
     if((allBlades[blade].system == "BX") || (allBlades[blade].system == "UX")){
         bey1 = new BeyBlade(-1, blade, -1, rachet, bit);
