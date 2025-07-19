@@ -35,7 +35,7 @@
                     <select id="bey1BitChip" class="select-basic form-select"><option value="random">Random Lock Chip</option></select>
                   </div>
                     <div class="col-sm-4">
-                        <select id="bey1Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 1)"><option value="random">Random Blade</option></select>
+                        <select id="bey1Blade" class="select-basic form-select" onchange="disableDropdowns('blade', this.value, 1)"><option value="random">Random Blade</option></select>
                     </div>
                     <div class="col-sm-4">
                       <select id="bey1AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-2"></div><!-- spacer -->
                     <div class="col-sm-4">
-                      <select id="bey1Bit" class="select-basic form-select" onchange="disableDropdowns(this.value, 1)"><option value="random">Random Bit</option></select>
+                      <select id="bey1Bit" class="select-basic form-select" onchange="disableDropdowns('bit', this.value, 1)"><option value="random">Random Bit</option></select>
                     </div>
                     <div class="col-1"></div><!-- spacer -->
                 </div>
@@ -128,7 +128,7 @@
                     <select id="bey2BitChip" class="select-basic form-select"><option value="random">Random Lock Chip</option></select>
                    </div>
                     <div class="col-sm-4">
-                        <select id="bey2Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 2)"><option value="random" >Random Blade</option></select>
+                        <select id="bey2Blade" class="select-basic form-select" onchange="disableDropdowns('blade', this.value, 2)"><option value="random" >Random Blade</option></select>
                     </div>
                     <div class="col-sm-4">
                       <select id="bey2AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
@@ -140,7 +140,7 @@
                   </div>
                   <div class="col-2"></div><!-- spacer -->
                   <div class="col-sm-4">
-                      <select id="bey2Bit" class="select-basic form-select" onchange="disableDropdowns(this.value, 2)"><option value="random">Random Bit</option></select>
+                      <select id="bey2Bit" class="select-basic form-select" onchange="disableDropdowns('bit', this.value, 2)"><option value="random">Random Bit</option></select>
                   </div>
                   <div class="col-1"></div><!-- spacer -->
                 </div>
@@ -419,13 +419,13 @@
                   <p>
                   <select id="bitChipR1" class="select-basic"><option value="none">Select Lock Chip</option></select>
                   <br>
-                  <select id="bladeR1" class="select-basic" onchange="disableDropdowns(this.value, 3)"><option value="none">Select Blade</option></select>
+                  <select id="bladeR1" class="select-basic" onchange="disableDropdowns('blade', this.value, 3)"><option value="none">Select Blade</option></select>
                   <br>
                   <select id="assistR1" class="select-basic"><option value="none">Select Assist Blade</option></select>
                   <br>
                   <select id="rachetR1" class="select-basic"><option value="none">Select Ratchet</option></select>
                   <br>
-                  <select id="bitR1" class="select-basic" onchange="disableDropdowns(this.value, 3)"><option value="none">Select Bit</option></select>
+                  <select id="bitR1" class="select-basic" onchange="disableDropdowns('bit', this.value, 3)"><option value="none">Select Bit</option></select>
                   <br>
                 </div>
                 <div class="col-md-6 border">
@@ -433,13 +433,13 @@
                   <p>
                   <select id="bitChipR2" class="select-basic"><option value="none">Select Lock Chip</option></select>
                   <br>
-                  <select id="bladeR2" class="select-basic" onchange="disableDropdowns(this.value, 4)"><option value="none">Select Blade</option></select>
+                  <select id="bladeR2" class="select-basic" onchange="disableDropdowns('blade', this.value, 4)"><option value="none">Select Blade</option></select>
                   <br>
                   <select id="assistR2" class="select-basic"><option value="none">Select Assist Blade</option></select>
                   <br>
                   <select id="rachetR2" class="select-basic"><option value="none">Select Ratchet</option></select>
                   <br>
-                  <select id="bitR2" class="select-basic" onchange="disableDropdowns(this.value, 4)"><option value="none">Select Bit</option></select>
+                  <select id="bitR2" class="select-basic" onchange="disableDropdowns('bit', this.value, 4)"><option value="none">Select Bit</option></select>
                   <br>
                 </div>
               </div>
