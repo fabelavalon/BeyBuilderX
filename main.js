@@ -376,14 +376,21 @@ function generateBey1(){
     } 
 
     console.log(JSON.stringify(blade));
-    //NEW TODO need to add a check for Turbo here (the bit that is also a ratchet)
-    //check if its a CX blade and put it togther...
+    
+    // check for part compatibility and remove incompatible parts
     if((allBlades[blade].system == "BX") || (allBlades[blade].system == "UX")){
-        bey1 = new BeyBlade(-1, blade, -1, rachet, bit);
+        bitChip = -1;
+        assist = -1;
     }
-    else if(allBlades[blade].system == "CX"){
-        bey1 = new BeyBlade(bitChip, blade, assist, rachet, bit);
+    if(allBlades[blade].system == "CX"){
+        // CX blades use bit chips and assist blades
+        // don't invalidate anything
     }
+    if(allBits[bit].system == "ratchetBit"){
+        //turbo is bit and rachet combined
+        rachet = -1;
+    }
+    bey1 = new BeyBlade(bitChip, blade, assist, rachet, bit);
 
     wasBey1Generated = true;
     addBeyblade(bey1);
@@ -2119,6 +2126,7 @@ function disableDropdowns(selection, whichBey){
         }
     }
 
+    // in the parts record modal
     if(whichBey == 3){
         if(allBlades[selection].system == "CX"){
             //console.log("bey2 is a CX blade!");
