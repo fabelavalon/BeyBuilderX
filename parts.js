@@ -100,7 +100,7 @@ var blades = [
     {"name":"Gill Shark",        "spin":"right", "system":"BX", "weight":29.70, "height":0, "abbv":"ShGl", "wins":0, "losses":0, "draws":0, "id":73},
     {"name":"TriceraPress",      "spin":"right", "system":"BX", "weight":36.65, "height":0, "abbv":"TrPr", "wins":0, "losses":0, "draws":0, "id":74},
     //{"name":"Blast",             "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Bl",   "wins":0, "losses":0, "draws":0, "id":75},
-    //{"name":"Flame",             "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fl",   "wins":0, "losses":0, "draws":0, "id":76},
+    //{"name":"Flame",             "spin":"right", "system":"CX", "weight":28.47, "height":0, "abbv":"Fl",   "wins":0, "losses":0, "draws":0, "id":76},
     //{"name":"SamuraiCalibur",    "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"SmCb", "wins":0, "losses":0, "draws":0, "id":77},
     //{"name":"SharkScale",        "spin":"right", "system":"UX", "weight":0.00, "height":0, "abbv":"ShSc", "wins":0, "losses":0, "draws":0, "id":78},
     //{"name":"Volt",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Vl",   "wins":0, "losses":0, "draws":0, "id":79},
@@ -118,7 +118,7 @@ var assistBlades = [
     {"name":"Charge",  "spin":"right", "system":"CX", "weight":5.05, "height":0, "abbv":"C",   "wins":0, "losses":0, "draws":0, "id":5},
     {"name":"Jaggy",   "spin":"right", "system":"CX", "weight":4.82, "height":0, "abbv":"J",   "wins":0, "losses":0, "draws":0, "id":6},
     //{"name":"Assault", "spin":"right", "system":"CX", "weight":1.00, "height":0, "abbv":"A",   "wins":0, "losses":0, "draws":0, "id":7},
-    //{"name":"Wheel",   "spin":"right", "system":"CX", "weight":1.00, "height":0, "abbv":"W",   "wins":0, "losses":0, "draws":0, "id":8},
+    //{"name":"Wheel",   "spin":"right", "system":"CX", "weight":7.26, "height":0, "abbv":"W",   "wins":0, "losses":0, "draws":0, "id":8},
     //{"name":"Massive", "spin":"right", "system":"CX", "weight":1.00, "height":0, "abbv":"M",   "wins":0, "losses":0, "draws":0, "id":9},
     
  ];
