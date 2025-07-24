@@ -15,7 +15,7 @@ class BeyBlade {
     assist = -1; 
     rachet = -1;
     bit = -1;
-    id = "";
+    id = ""; // DB index, a string
     name = "";
     weight = 0;
     height = 0;
@@ -43,16 +43,23 @@ class BeyBlade {
         this.bit = bit;
         this.system = allBlades[this.blade].system; 
 
-        if((this.system == "BX") || (this.system == "UX")){
+        // start weight. Add more later depending on parts selected
+        this.weight = allBlades[this.blade].weight + allBits[this.bit].weight;
+
+        if(allBits[this.bit].type == "ratchetBit") { // combo bit and ratchet
+            this.rachet = -1;
+        } else { // regular ratchet
+            this.weight += allRachets[this.rachet].weight;
+        }
+
+        if(this.system == "CX") {
+            this.weight += allBitChips[this.bitChip].weight + allAssists[this.assist].weight;
+        } else { // BX or UX
             this.bitChip = -1;
             this.assist = -1;
-            this.weight = allBlades[this.blade].weight + allRachets[this.rachet].weight + allBits[this.bit].weight;
-            this.id = allBlades[this.blade].id + " " + allRachets[this.rachet].id + " " + allBits[this.bit].id;
         }
-        else if(this.system == "CX"){
-            this.weight = allBitChips[this.bitChip].weight + allBlades[this.blade].weight + allAssists[this.assist].weight + allRachets[this.rachet].weight + allBits[this.bit].weight;
-            this.id = allBitChips[this.bitChip].id + " " + allBlades[this.blade].id + " " + allAssists[this.assist].id + " " + allRachets[this.rachet].id + " " + allBits[this.bit].id;
-        }
+
+        this.id = this.getDbId();
         this.findName();
         this.findSpin();
     }
@@ -100,12 +107,26 @@ class BeyBlade {
     }
 
     findName(){
+        var ratchetNameInclSpaces = " ";
+        if(this.rachet>-1) {
+            // regular ratchet
+            ratchetNameInclSpaces += allRachets[this.rachet].name + " ";
+        }
+
         if((this.system == "BX") || (this.system == "UX")){
-            this.name = allBlades[this.blade].name + " " + allRachets[this.rachet].name + " " + allBits[this.bit].name;
+            this.name = allBlades[this.blade].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
         else if(this.system == "CX"){
-            this.name = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name + " " + allRachets[this.rachet].name + " " + allBits[this.bit].name;
+            this.name = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
+    }
+
+    getDbId(){
+        return ( this.system=="CX" ? allBitChips[this.bitChip].id + " " : "" ) +
+                    allBlades[this.blade].id + " " +
+                    ( this.system=="CX" ? allAssists[this.assist].id + " " : "" ) +
+                    ( this.rachet==-1 ? "" : allRachets[this.rachet].id + " " ) +
+                    allBits[this.bit].id ;
     }
 
 }

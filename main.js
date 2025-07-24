@@ -375,15 +375,8 @@ function generateBey1(){
         bitChosen = true;
     } 
 
-    console.log(JSON.stringify(blade));
-    //NEW TODO need to add a check for Turbo here (the bit that is also a ratchet)
-    //check if its a CX blade and put it togther...
-    if((allBlades[blade].system == "BX") || (allBlades[blade].system == "UX")){
-        bey1 = new BeyBlade(-1, blade, -1, rachet, bit);
-    }
-    else if(allBlades[blade].system == "CX"){
-        bey1 = new BeyBlade(bitChip, blade, assist, rachet, bit);
-    }
+    //console.log(JSON.stringify(blade));
+    bey1 = new BeyBlade(bitChip, blade, assist, rachet, bit);
 
     wasBey1Generated = true;
     addBeyblade(bey1);
@@ -466,13 +459,7 @@ function generateBey2(){
         bitChosen = true;
     }
 
-    //check if its a CX blade and put it togther...
-    if((allBlades[blade].system == "BX") || (allBlades[blade].system == "UX")){
-        bey2 = new BeyBlade(-1, blade, -1, rachet, bit);
-    }
-    else if(allBlades[blade].system == "CX"){
-        bey2 = new BeyBlade(bitChip, blade, assist, rachet, bit);
-    }
+    bey2 = new BeyBlade(bitChip, blade, assist, rachet, bit);
 
     wasBey2Generated = true;
     addBeyblade(bey2);
@@ -564,21 +551,13 @@ function choseWinner(beyNumber, winType) {
 function addBeyblade(bey) {
 
     console.log("called addBeyblade(" + bey.name + ")");
+    isRatchetBit = ( allBits[bey.bit].type="ratchetBit" );
+    var beyblade = {
+        _id: bey.getDbId(),
+        title: bey.name,
+        build: bey
+    };
 
-    if((allBlades[bey.blade].system == "BX") || ((allBlades[bey.blade].system == "UX"))){
-        var beyblade = {
-            _id: allBlades[bey.blade].id + " " + allRachets[bey.rachet].id + " " + allBits[bey.bit].id,
-            title: bey.name,
-            build: bey
-        };
-    }
-    if(allBlades[bey.blade].system == "CX"){
-        var beyblade = {
-            _id: allBitChips[bey.bitChip].id + " " + allBlades[bey.blade].id + " " + allAssists[bey.assist].id + " " + allRachets[bey.rachet].id + " " + allBits[bey.bit].id,
-            title: bey.name,
-            build: bey
-        };
-    }
     beyBladeDBX.put(beyblade, function callback(err, result) {
         if (!err) {
             showBeyblades();
@@ -1243,7 +1222,7 @@ var dbCopiedStats = "";
 //shows selected bey's stats and allows for the user to set the selected bey to bey 1 or 2
 function setDbBey(){
 
-    console.log("called setDbBey()");
+    console.log("called setDbBey(), selectedBey: " + selectedBey.value);
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
@@ -1384,7 +1363,8 @@ function setDbBey(){
 //displays the win loss and weight stats for the chosen beyblade
 function showBeybladeStats(bey, whichBey) {
 
-    console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + ")");
+    var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+    console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + castDoc.getDbId() );
 
     switch(whichBey){
         case 1:
@@ -2021,7 +2001,7 @@ function fillMatchupHist(history){
 //delete a bey from the system
 function deleteBey(){
 
-    console.log("called deleteBey()");
+    console.log("called deleteBey(), selectedBey: " + selectedBey.value);
 
     var dbSelectList = document.getElementById("dbSelectList");
 
@@ -2081,68 +2061,62 @@ function getRandomInt(max) {
 
 //JS math functions suck
 function round(num, places) {
-
-    console.log("called round(" + num + ", " + places + ")");
+    //console.log("called round(" + num + ", " + places + ")");
 
     var multiplier = Math.pow(10, places);
     return Math.round(num * multiplier) / multiplier;
 }
 
-//used to enable and disable the bitchip and assist blade drops downs if the user chooses a non-CX blade
-function disableDropdowns(selection, whichBey){
 
-    console.log("called disableDropdowns(" + selection + ", " + whichBey + ")");
+/**
+ * enable or disable dropdowns. CX enables bitChip and assistBlade selection. ratchetBit disables bit selection.
+ * @param {string} partType - what type of part is being selected, 'bit' or 'blade'
+ * @param {int} selection - part ID
+ * @param {int} whichBey - which area of HTML
+ */
+function disableDropdowns(partType, selection, whichBey){
+    console.log("called disableDropdowns( " + partType + ", " + selection + ", " + whichBey + " )");
 
-    if(whichBey == 1){
+    // HTML IDs for part selectors
+    dropdownIDs = {
+        // main VS screen
+        1: { "blade":"bey1Blade", "assistBlade":"bey1AssistBlade", "bitChip":"bey1BitChip", "ratchet":"bey1Rachet", "bit":"bey1Bit" },
+        2: { "blade":"bey2Blade", "assistBlade":"bey2AssistBlade", "bitChip":"bey2BitChip", "ratchet":"bey2Rachet", "bit":"bey2Bit" },
+        // part record modal
+        3: { "blade":"bladeR1", "assistBlade":"assistR1", "bitChip":"bitChipR1", "ratchet":"rachetR1", "bit":"bitR1" },
+        4: { "blade":"bladeR2", "assistBlade":"assistR2", "bitChip":"bitChipR2", "ratchet":"rachetR2", "bit":"bitR2" }
+    };
+
+    disableParts = [];
+    enableParts = [];
+
+    // decide what parts to enable/disable
+    if(partType=="blade") {
+        console.log("checking blades");
         if(allBlades[selection].system == "CX"){
-            //console.log("bey1 is a CX blade!");
-            document.getElementById("bey1BitChip").disabled = false;
-            document.getElementById("bey1AssistBlade").disabled = false;
+            //console.log("CX blade selected");
+            enableParts = ["bitChip", "assistBlade"];
         }
-        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
-            //console.log("bey1 is a BX/UX blade!");
-            document.getElementById("bey1BitChip").disabled = true;
-            document.getElementById("bey1AssistBlade").disabled = true;
+        else {
+            disableParts = ["bitChip", "assistBlade"];
+        }
+    }
+    if(partType=="bit") {
+        console.log("checking bits");
+        if(allBits[selection].type == "ratchetBit"){
+            //console.log("ratchet-bit selected");
+            disableParts = ["ratchet"];
+        } else {
+            enableParts = ["ratchet"];
         }
     }
 
-    if(whichBey == 2){
-        if(allBlades[selection].system == "CX"){
-            //console.log("bey2 is a CX blade!");
-            document.getElementById("bey2BitChip").disabled = false;
-            document.getElementById("bey2AssistBlade").disabled = false;
-        }
-        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
-            //console.log("bey2 is a BX/UX blade!");
-            document.getElementById("bey2BitChip").disabled = true;
-            document.getElementById("bey2AssistBlade").disabled = true;
-        }
+    // enable disable HTML
+    for (const partToDisable of disableParts) {
+        document.getElementById( dropdownIDs[whichBey][partToDisable] ).disabled = true;
     }
-
-    if(whichBey == 3){
-        if(allBlades[selection].system == "CX"){
-            //console.log("bey2 is a CX blade!");
-            document.getElementById("bitChipR1").disabled = false;
-            document.getElementById("assistR1").disabled = false;
-        }
-        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
-            //console.log("bey2 is a BX/UX blade!");
-            document.getElementById("bitChipR1").disabled = true;
-            document.getElementById("assistR1").disabled = true;
-        }
-    }
-
-    if(whichBey == 4){
-        if(allBlades[selection].system == "CX"){
-            //console.log("bey2 is a CX blade!");
-            document.getElementById("bitChipR2").disabled = false;
-            document.getElementById("assistR2").disabled = false;
-        }
-        if((allBlades[selection].system == "BX") || (allBlades[selection].system == "UX")){
-            //console.log("bey2 is a BX/UX blade!");
-            document.getElementById("bitChipR2").disabled = true;
-            document.getElementById("assistR2").disabled = true;
-        }
+    for (const partToDisable of enableParts) {
+        document.getElementById( dropdownIDs[whichBey][partToDisable] ).disabled = false;
     }
 
 }
