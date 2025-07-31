@@ -57,7 +57,8 @@ class BeyBlade {
 
         if(allBits[this.bit].type == "ratchetBit") { // combo bit and ratchet
             this.rachet = -1;
-        } else { // regular ratchet
+        } else if (this.rachet != -1) {
+            // regular ratchet
             this.weight += allRachets[this.rachet].weight;
         }
 
