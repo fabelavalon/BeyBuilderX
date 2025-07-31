@@ -1365,7 +1365,7 @@ function showBeybladeStats(bey, whichBey) {
 
     //console.log("casting object ...");
     //var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
-    console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + bey.getDbId() );
+    //console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + bey.getDbId() );
 
     switch(whichBey){
         case 1:
