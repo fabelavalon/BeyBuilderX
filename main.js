@@ -473,7 +473,7 @@ function generateBey2(){
 //populates win buttons on screen
 function createWinButtons(){
 
-    console.log("called createWinButtons()");
+    //console.log("called createWinButtons()");
 
     var vsContainer = document.getElementById("vsContainer");
 
@@ -503,7 +503,7 @@ function createWinButtons(){
  */
 function choseWinner(beyNumber, winType) {
 
-    console.log("called chooseWinner(" + beyNumber + ", " + winType + ")");
+    //console.log("called chooseWinner(" + beyNumber + ", " + winType + ")");
 
     console.log("Winner: " + beyNumber + " by: " + winType);
     var winnerBey = ( beyNumber==1 ) ? bey1 : bey2; // if beyNumber==1, choose bey1, else choose bey2
@@ -551,7 +551,7 @@ function choseWinner(beyNumber, winType) {
 function addBeyblade(bey) {
 
     console.log("called addBeyblade(" + bey.name + ")");
-    isRatchetBit = ( allBits[bey.bit].type="ratchetBit" );
+    isRatchetBit = ( "ratchetBit" == allBits[bey.bit].type );
     var beyblade = {
         _id: bey.getDbId(),
         title: bey.name,
@@ -1188,7 +1188,7 @@ function undoLastRecord(){
 //fills the bey selection menu
 function showBeyblades() {
 
-    console.log("called showBeyblades()");
+    //console.log("called showBeyblades()");
 
     var dbSelectList = document.getElementById("dbSelectList");
 
@@ -1363,8 +1363,9 @@ function setDbBey(){
 //displays the win loss and weight stats for the chosen beyblade
 function showBeybladeStats(bey, whichBey) {
 
-    var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
-    console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + castDoc.getDbId() );
+    //console.log("casting object ...");
+    //var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+    console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + bey.getDbId() );
 
     switch(whichBey){
         case 1:
@@ -2053,7 +2054,6 @@ function deleteAllBeys() {
 
 //turns out JavaScript doesn't have a random number function that just gives an int
 function getRandomInt(max) {
-
     console.log("called getRandomInt(" + max + ")");
 
     return Math.floor(Math.random() * max);
@@ -2115,8 +2115,8 @@ function disableDropdowns(partType, selection, whichBey){
     for (const partToDisable of disableParts) {
         document.getElementById( dropdownIDs[whichBey][partToDisable] ).disabled = true;
     }
-    for (const partToDisable of enableParts) {
-        document.getElementById( dropdownIDs[whichBey][partToDisable] ).disabled = false;
+    for (const partToEnable of enableParts) {
+        document.getElementById( dropdownIDs[whichBey][partToEnable] ).disabled = false;
     }
 
 }
@@ -2171,7 +2171,7 @@ function saveTheme(themeName) {
 
 function loadTheme(){
 
-    console.log("called loadTheme()");
+    //console.log("called loadTheme()");
 
     settings.get("selectedTheme", function callback(err, result) {
         if (!err) {

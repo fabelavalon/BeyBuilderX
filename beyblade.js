@@ -35,13 +35,22 @@ class BeyBlade {
     totalMatches = 0;
 
     constructor(bitChip, blade, assist, rachet, bit){
-        // console.log("building bey");
-        this.bitChip = bitChip; 
+        /*
+        console.log("building bey with parts: " +
+                    "bitChip: " + bitChip + ", " +
+                    "blade: " + blade + ", " +
+                    "assist: " + assist + ", " +
+                    "rachet: " + rachet + ", " +
+                    "bit: " + bit
+                );
+        */
+
+        this.bitChip = bitChip;
         this.blade = blade;
         this.assist = assist; 
         this.rachet = rachet;
         this.bit = bit;
-        this.system = allBlades[this.blade].system; 
+        this.system = allBlades[this.blade].system;
 
         // start weight. Add more later depending on parts selected
         this.weight = allBlades[this.blade].weight + allBits[this.bit].weight;
@@ -119,6 +128,7 @@ class BeyBlade {
         else if(this.system == "CX"){
             this.name = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
+
     }
 
     getDbId(){
