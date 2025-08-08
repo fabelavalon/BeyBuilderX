@@ -2023,6 +2023,55 @@ function deleteBey(){
             });
         }
     });
+
+    /*
+    loop through recordsdbx     --ezpz
+    find all records containing selectedbey     --ezpz
+    remove the found records and adjust win/loss totals for opponents     --how to make effcient
+    */
+   recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
+        for(i = 0; i < doc.total_rows; i++){
+            //clear records where the selceted bey is bey1
+            if(!err && (doc.challenger.id == selectedBey.id)){
+                console.log("clearing beys");
+                recordsDBX.remove(doc.rows[i].doc, function(err, doc){
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            }
+            //clear records where selected bey is bey2 and edit bey1's win/loss accordingly
+            if(!err && (doc.defender.id == selectedBey.id)){
+                beyBladeDBX.get(doc.challenger.id, function(err, doc2) {
+                    if(!err){
+                        doc2.build.winsKO = 0;
+                        doc2.build.loseKO = 0;
+                        doc2.build.winsSO = 0;
+                        doc2.build.loseSO = 0;
+                        doc2.build.winsBst = 0;
+                        doc2.build.loseBst = 0;
+                        doc2.build.winsX = 0;
+                        doc2.build.loseX = 0;
+                        doc2.build.draws = 0;
+                        beyBladeDBX.put(doc2);
+                        //showBeybladeStats(bey1,1);
+                    }
+                    // else{
+                    //     console.log(err);
+                    // }
+                });
+                recordsDBX.remove(doc.rows[i].doc, function(err, doc){
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            }
+            else{
+                //console.log(err);
+            }
+       }
+    });
+
 }
 
 //clears all beyblades in the database
@@ -2035,10 +2084,29 @@ function deleteAllBeys() {
         dbSelectList.remove(0);
     }        
 
+    //clear individual beyblades
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
         for(i = 0; i < doc.total_rows; i++){
             if(!err){
+                console.log("clearing beys");
                 beyBladeDBX.remove(doc.rows[i].doc, function(err, doc){
+                    if(err){
+                        console.log(err);
+                    }
+                });
+            }
+            else{
+                //console.log(err);
+            }
+       }
+    });
+
+    //clear records
+    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
+        for(i = 0; i < doc.total_rows; i++){
+            if(!err){
+                console.log("clearing records");
+                recordsDBX.remove(doc.rows[i].doc, function(err, doc){
                     if(err){
                         console.log(err);
                     }
