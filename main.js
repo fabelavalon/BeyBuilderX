@@ -2025,23 +2025,26 @@ function deleteBey(){
     });
 
     /*
-    loop through recordsdbx     --ezpz
-    find all records containing selectedbey     --ezpz
+    loop through recordsdbx     --done
+    find all records containing selectedbey     --done
     remove the found records and adjust win/loss totals for opponents     --how to make effcient
     */
-   recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
-        for(i = 0; i < doc.total_rows; i++){
+   recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allRecords) {
+        for(i = 0; i < allRecords.total_rows; i++){
+            console.log("challenger:" + JSON.stringify( allRecords.rows[i] ) );
+            console.log("selectedBey:" + selectedBey.value);
             //clear records where the selceted bey is bey1
-            if(!err && (doc.challenger.id == selectedBey.id)){
+            if(!err && (allRecords.rows[i].doc.challenger.id == selectedBey.value)){
                 console.log("clearing beys");
-                recordsDBX.remove(doc.rows[i].doc, function(err, doc){
+                recordsDBX.remove(allRecords.rows[i].doc, function(err, doc){
                     if(err){
                         console.log(err);
                     }
                 });
             }
             //clear records where selected bey is bey2 and edit bey1's win/loss accordingly
-            if(!err && (doc.defender.id == selectedBey.id)){
+            var doc = allRecords.rows[i].doc;
+            if(!err && (doc.defender.id == selectedBey.value)){
                 beyBladeDBX.get(doc.challenger.id, function(err, doc2) {
                     if(!err){
                         doc2.build.winsKO = 0;
@@ -2049,7 +2052,7 @@ function deleteBey(){
                         doc2.build.winsSO = 0;
                         doc2.build.loseSO = 0;
                         doc2.build.winsBst = 0;
-                        doc2.build.loseBst = 0;
+                        doc2.build.loseBst = 0; 
                         doc2.build.winsX = 0;
                         doc2.build.loseX = 0;
                         doc2.build.draws = 0;
