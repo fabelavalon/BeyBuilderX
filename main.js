@@ -2033,8 +2033,10 @@ function deleteBey(){
         for(i = 0; i < allRecords.total_rows; i++){
             console.log("challenger:" + JSON.stringify( allRecords.rows[i] ) );
             console.log("selectedBey:" + selectedBey.value);
-            //clear records where the selceted bey is bey1
+
+            // find records where bey1 == selectedBey
             if(!err && (allRecords.rows[i].doc.challenger.id == selectedBey.value)){
+                //clear records
                 console.log("clearing beys");
                 recordsDBX.remove(allRecords.rows[i].doc, function(err, doc){
                     if(err){
@@ -2042,7 +2044,7 @@ function deleteBey(){
                     }
                 });
             }
-            //clear records where selected bey is bey2 and edit bey1's win/loss accordingly
+            // find records where bey2 == selectedBey
             var doc = allRecords.rows[i].doc;
             if(!err && (doc.defender.id == selectedBey.value)){
                 beyBladeDBX.get(doc.challenger.id, function(err, doc2) {
@@ -2059,15 +2061,21 @@ function deleteBey(){
                         beyBladeDBX.put(doc2);
                         //showBeybladeStats(bey1,1);
                     }
-                    // else{
-                    //     console.log(err);
-                    // }
+                    else{
+                        console.log(err);
+                    }
                 });
-                recordsDBX.remove(doc.rows[i].doc, function(err, doc){
+                
+                //clear records
+                recordsDBX.remove(allRecords.rows[i].doc, function(err, doc){
                     if(err){
                         console.log(err);
                     }
                 });
+
+                // edit bey1's win/loss accordingly
+                // ...
+
             }
             else{
                 //console.log(err);
