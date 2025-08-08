@@ -1410,7 +1410,7 @@ var displayCopiedStats = "";
 //fill matchup table on main screen when both beys are chosen
 function displayRecords(){
 
-    console.log("called displayRecords()");
+    //console.log("called displayRecords()");
 
     var record1 = document.getElementById("record1");
     var wins1 = document.getElementById("wins1");
@@ -1524,13 +1524,13 @@ function displayRecords(){
  */
 function noBreakRatchetText(beyName) {
 
-    console.log("called noBreakRatchetText(" + beyName + ")");
+    //console.log("called noBreakRatchetText(" + beyName + ")");
 
     // split bey name into parts
     var newBeyName = beyName;
     var beynameArray = newBeyName.split(" ");
     var beynameEnd = beynameArray[beynameArray.length-1];
-    console.log("end: " + beynameEnd);
+    //console.log("end: " + beynameEnd);
     var beynameEndNoBr = "<nobr>" + beynameEnd + "</nobr>";
     newBeyName = newBeyName.replace(beynameEnd, beynameEndNoBr);
     
@@ -1540,7 +1540,7 @@ function noBreakRatchetText(beyName) {
 //displays part win/loss records when a user chooses to see them
 function showPartStats(partType, partID){
 
-    console.log("called showPartsStats(" + partType + ", " + partID + ")");
+    //console.log("called showPartsStats(" + partType + ", " + partID + ")");
     
     var partWko = 0;
     var partLko = 0;
@@ -2001,7 +2001,6 @@ function fillMatchupHist(history){
 
 //delete a bey from the system
 function deleteBey(){
-
     console.log("called deleteBey(), selectedBey: " + selectedBey.value);
 
     var dbSelectList = document.getElementById("dbSelectList");
@@ -2017,9 +2016,9 @@ function deleteBey(){
                     }
                     showBeyblades();
                 }
-                // else{
-                //     console.log(err);
-                // }
+                else{
+                    console.log(err);
+                }
             });
         }
     });
@@ -2037,15 +2036,14 @@ function deleteBey(){
         }
 
         for(i = 0; i < allRecords.total_rows; i++){
-            console.log("challenger:" + JSON.stringify( allRecords.rows[i] ) );
-            console.log("selectedBey:" + selectedBey.value);
-            var doc = allRecords.rows[i].doc;
+            //console.log("challenger:" + JSON.stringify( allRecords.rows[i] ) );
+            //var doc = allRecords.rows[i].doc;
 
             // find records where bey1 == selectedBey
-            if( doc.challenger.id == selectedBey.value ){
+            if( allRecords.rows[i].doc.challenger.id == selectedBey.value ){
                 //clear records
-                console.log("clearing beys");
-                recordsDBX.remove(doc, function(err, doc){
+                console.log("clearing bey " + allRecords.rows[i].doc.challenger.id);
+                recordsDBX.remove(allRecords.rows[i].doc, function(err, errDoc){
                     if(err){
                         console.log(err);
                     }
@@ -2053,24 +2051,40 @@ function deleteBey(){
             }
 
             // find records where bey2 == selectedBey
-            if( doc.defender.id == selectedBey.value ){
-                beyBladeDBX.get(doc.challenger.id, function(err, beyblade) {
+            if( allRecords.rows[i].doc.defender.id == selectedBey.value ){ // defender will be deleted
+                console.log(JSON.stringify(allRecords.rows[i].doc));
+                console.log(
+                    "wko: " + allRecords.rows[i].doc.wko + ", lko: " + allRecords.rows[i].doc.lko + ", wso: " + allRecords.rows[i].doc.wso + ", lso: " + allRecords.rows[i].doc.lso +
+                    ", wbst: " + allRecords.rows[i].doc.wbst + ", lbst: " + allRecords.rows[i].doc.lbst + ", wx: " + allRecords.rows[i].doc.wx + ", lx: " + allRecords.rows[i].doc.lx +
+                    ", draws: " + allRecords.rows[i].doc.draws
+                );
+                var thisRecord = structuredClone(allRecords.rows[i].doc); // JS deep copy crap. If copied normally (by reference), inside function will have incorrect data. Thanks JS.
+                beyBladeDBX.get(allRecords.rows[i].doc.challenger.id, function(err, beyblade) { // challenger will be edited
                     if(!err){
-                        console.log("");
+                        //console.log("what happened to record \n"+JSON.stringify(allRecords.rows[i])); //undefined
+                        console.log("sanity check \n"+JSON.stringify(thisRecord)); 
+                        console.log("challenger beylade \n" + JSON.stringify(beyblade));
                         // edit bey1's win/loss accordingly
                         // subtract from here, then resubmit beyBladeDBX
-                        beyblade.build.winsKO -= doc.lko;
-                        beyblade.build.loseKO -= doc.wko;
-                        beyblade.build.winsSO -= doc.lso;
-                        beyblade.build.loseSO -= doc.wso;
-                        beyblade.build.winsBst -= doc.lbst;
-                        beyblade.build.loseBst -= doc.wbst; 
-                        beyblade.build.winsX -= doc.wx;
-                        beyblade.build.loseX -= doc.lx;
-                        beyblade.build.draws -= doc.draws;
 
-                        // beyBladeDBX.put(beyblade);
-                        //showBeybladeStats(beyblade,1);
+                        // sanity check, this should match the console log above
+                        console.log("beyblade winsKO "+ beyblade.build.winsKO);
+                        console.log("allRecords.rows[i].doc.wko " +thisRecord.wko);
+                        console.log("allRecords.rows[i].doc.draws " +thisRecord.draws);
+
+                        beyblade.build.winsKO  -= thisRecord.wko;
+                        beyblade.build.loseKO  -= thisRecord.lko;
+                        beyblade.build.winsSO  -= thisRecord.wso;
+                        beyblade.build.loseSO  -= thisRecord.lso;
+                        beyblade.build.winsBst -= thisRecord.wbst;
+                        beyblade.build.loseBst -= thisRecord.lbst; 
+                        beyblade.build.winsX   -= thisRecord.wx;
+                        beyblade.build.loseX   -= thisRecord.lx;
+                        beyblade.build.draws   -= thisRecord.draws;
+                        
+                        console.log("after edit " + JSON.stringify(beyblade));
+                        beyBladeDBX.put(beyblade);
+                        showBeybladeStats(beyblade,1);
 
                     }
                     else{
@@ -2078,8 +2092,8 @@ function deleteBey(){
                     }
                 });
                 
-                //clear records
-                recordsDBX.remove(doc, function(err, doc){
+                // clear records
+                recordsDBX.remove(allRecords.rows[i].doc, function(err, errDoc){
                     if(err){
                         console.log(err);
                     }
