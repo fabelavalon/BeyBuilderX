@@ -2030,36 +2030,48 @@ function deleteBey(){
     remove the found records and adjust win/loss totals for opponents     --how to make effcient
     */
    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allRecords) {
+        if(err) {
+            console.log(err);
+            console.log("returning");
+            return;
+        }
+
         for(i = 0; i < allRecords.total_rows; i++){
             console.log("challenger:" + JSON.stringify( allRecords.rows[i] ) );
             console.log("selectedBey:" + selectedBey.value);
+            var doc = allRecords.rows[i].doc;
 
             // find records where bey1 == selectedBey
-            if(!err && (allRecords.rows[i].doc.challenger.id == selectedBey.value)){
+            if( doc.challenger.id == selectedBey.value ){
                 //clear records
                 console.log("clearing beys");
-                recordsDBX.remove(allRecords.rows[i].doc, function(err, doc){
+                recordsDBX.remove(doc, function(err, doc){
                     if(err){
                         console.log(err);
                     }
                 });
             }
+
             // find records where bey2 == selectedBey
-            var doc = allRecords.rows[i].doc;
-            if(!err && (doc.defender.id == selectedBey.value)){
-                beyBladeDBX.get(doc.challenger.id, function(err, doc2) {
+            if( doc.defender.id == selectedBey.value ){
+                beyBladeDBX.get(doc.challenger.id, function(err, beyblade) {
                     if(!err){
-                        doc2.build.winsKO = 0;
-                        doc2.build.loseKO = 0;
-                        doc2.build.winsSO = 0;
-                        doc2.build.loseSO = 0;
-                        doc2.build.winsBst = 0;
-                        doc2.build.loseBst = 0; 
-                        doc2.build.winsX = 0;
-                        doc2.build.loseX = 0;
-                        doc2.build.draws = 0;
-                        beyBladeDBX.put(doc2);
-                        //showBeybladeStats(bey1,1);
+                        console.log("");
+                        // edit bey1's win/loss accordingly
+                        // subtract from here, then resubmit beyBladeDBX
+                        beyblade.build.winsKO -= doc.lko;
+                        beyblade.build.loseKO -= doc.wko;
+                        beyblade.build.winsSO -= doc.lso;
+                        beyblade.build.loseSO -= doc.wso;
+                        beyblade.build.winsBst -= doc.lbst;
+                        beyblade.build.loseBst -= doc.wbst; 
+                        beyblade.build.winsX -= doc.wx;
+                        beyblade.build.loseX -= doc.lx;
+                        beyblade.build.draws -= doc.draws;
+
+                        // beyBladeDBX.put(beyblade);
+                        //showBeybladeStats(beyblade,1);
+
                     }
                     else{
                         console.log(err);
@@ -2067,20 +2079,14 @@ function deleteBey(){
                 });
                 
                 //clear records
-                recordsDBX.remove(allRecords.rows[i].doc, function(err, doc){
+                recordsDBX.remove(doc, function(err, doc){
                     if(err){
                         console.log(err);
                     }
                 });
 
-                // edit bey1's win/loss accordingly
-                // ...
-
             }
-            else{
-                //console.log(err);
-            }
-       }
+        }
     });
 
 }
