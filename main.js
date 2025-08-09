@@ -1532,12 +1532,16 @@ function displayRecords(){
 
 function clearMatchupHistory(){
     nullifyBeybladeScores(bey1.id, bey2.id);
+    showBeybladeStats(bey1, 1);
+    showBeybladeStats(bey2, 2);
+    displayRecords();
+
 }
 
 /**
  * pretend a matchup never happened
  * negates the score on the beyblade build, sets vsRecord to 0s
- * @param {srting} primaryBeyId 
+ * @param {string} primaryBeyId 
  * @param {string} nullifyBeyId 
  */
 function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
