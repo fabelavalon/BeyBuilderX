@@ -2028,7 +2028,7 @@ function deleteBey(){
     find all records containing selectedbey     --done
     remove the found records and adjust win/loss totals for opponents     --how to make effcient
     */
-   recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allRecords) {
+    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allRecords) {
         if(err) {
             console.log(err);
             console.log("returning");
@@ -2042,7 +2042,7 @@ function deleteBey(){
             // find records where bey1 == selectedBey
             if( allRecords.rows[i].doc.challenger.id == selectedBey.value ){
                 //clear records
-                console.log("clearing bey " + allRecords.rows[i].doc.challenger.id);
+                //console.log("clearing bey " + allRecords.rows[i].doc.challenger.id);
                 recordsDBX.remove(allRecords.rows[i].doc, function(err, errDoc){
                     if(err){
                         console.log(err);
@@ -2052,18 +2052,18 @@ function deleteBey(){
 
             // find records where bey2 == selectedBey
             if( allRecords.rows[i].doc.defender.id == selectedBey.value ){ // defender will be deleted
-                console.log(JSON.stringify(allRecords.rows[i].doc));
-                console.log(
-                    "wko: " + allRecords.rows[i].doc.wko + ", lko: " + allRecords.rows[i].doc.lko + ", wso: " + allRecords.rows[i].doc.wso + ", lso: " + allRecords.rows[i].doc.lso +
-                    ", wbst: " + allRecords.rows[i].doc.wbst + ", lbst: " + allRecords.rows[i].doc.lbst + ", wx: " + allRecords.rows[i].doc.wx + ", lx: " + allRecords.rows[i].doc.lx +
-                    ", draws: " + allRecords.rows[i].doc.draws
-                );
+                // console.log(JSON.stringify(allRecords.rows[i].doc));
+                // console.log(
+                //     "wko: " + allRecords.rows[i].doc.wko + ", lko: " + allRecords.rows[i].doc.lko + ", wso: " + allRecords.rows[i].doc.wso + ", lso: " + allRecords.rows[i].doc.lso +
+                //     ", wbst: " + allRecords.rows[i].doc.wbst + ", lbst: " + allRecords.rows[i].doc.lbst + ", wx: " + allRecords.rows[i].doc.wx + ", lx: " + allRecords.rows[i].doc.lx +
+                //     ", draws: " + allRecords.rows[i].doc.draws
+                // );
                 var thisRecord = structuredClone(allRecords.rows[i].doc); // JS deep copy crap. If copied normally (by reference), inside function will have incorrect data. Thanks JS.
                 beyBladeDBX.get(allRecords.rows[i].doc.challenger.id, function(err, beyblade) { // challenger will be edited
                     if(!err){
                         //console.log("what happened to record \n"+JSON.stringify(allRecords.rows[i])); //undefined
-                        console.log("sanity check \n"+JSON.stringify(thisRecord)); 
-                        console.log("challenger beylade \n" + JSON.stringify(beyblade));
+                        // console.log("sanity check \n"+JSON.stringify(thisRecord)); 
+                        // console.log("challenger beylade \n" + JSON.stringify(beyblade));
                         // edit bey1's win/loss accordingly
                         // subtract from here, then resubmit beyBladeDBX
 
