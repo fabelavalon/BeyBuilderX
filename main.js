@@ -1560,7 +1560,7 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
             beyblade.build.draws   -= vsRecordClone.draws;
         
             console.log("build after edit: \n"+JSON.stringify(beyblade));
-            //beyBladeDBX.put(beyblade);
+            beyBladeDBX.put(beyblade);
         });
 
         vsRecord.wko = 0;
@@ -1573,8 +1573,8 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
         vsRecord.lx = 0;
         vsRecord.draws = 0;
 
-        console.log(vsRecord);
-        //recordsDBX.put(vsRecord);
+        console.log("vsrecord after edit:+\n"+vsRecord);
+        recordsDBX.put(vsRecord);
     });
 
     // delete the mirror record and subtract scores from the other bey
