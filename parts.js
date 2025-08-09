@@ -1,5 +1,5 @@
 /*==========================================================*
- * BeyBuilder v1.3 for Beyblade X                           *
+ * BeyBuilder v1.4 for Beyblade X                           *
  * Author: Fabel                                            *
  * Copyright 2023-2025                                      *
  *==========================================================*/
@@ -103,8 +103,8 @@ var blades = [
     {"name":"Flame",             "spin":"right", "system":"CX", "weight":28.47, "height":0, "abbv":"Fl",   "wins":0, "losses":0, "draws":0, "id":76},
     {"name":"Volt",              "spin":"right", "system":"CX", "weight":31.00, "height":0, "abbv":"Vl",   "wins":0, "losses":0, "draws":0, "id":77},
     {"name":"RockLeone",         "spin":"right", "system":"BX", "weight":29.88, "height":0, "abbv":"RcLn", "wins":0, "losses":0, "draws":0, "id":78},
-    //{"name":"SamuraiCalibur",    "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"SmCb", "wins":0, "losses":0, "draws":0, "id":79},
-    //{"name":"SharkScale",        "spin":"right", "system":"UX", "weight":0.00, "height":0, "abbv":"ShSc", "wins":0, "losses":0, "draws":0, "id":80},
+    {"name":"SamuraiCalibur",    "spin":"right", "system":"BX", "weight":36.00, "height":0, "abbv":"SmCb", "wins":0, "losses":0, "draws":0, "id":79},
+    {"name":"SharkScale",        "spin":"right", "system":"UX", "weight":37.60, "height":0, "abbv":"ShSc", "wins":0, "losses":0, "draws":0, "id":80},
     //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":81},
     
 ];
@@ -153,9 +153,9 @@ var rachets = [
     {"name":"4-55", "weight":4.78,  "height":5.5, "abbv":"4-55", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":24},
     {"name":"0-70", "weight":7.02,  "height":7,   "abbv":"0-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":25},
     {"name":"M-85", "weight":10.65, "height":8.5, "abbv":"M-85", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":26},
-    //{"name":"6-70", "weight":0, "height":7,   "abbv":"6-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":27},
-    //{"name":"4-50", "weight":0, "height":5,   "abbv":"4-50", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":28},
-    //{"name":"1-70", "weight":0, "height":7,   "abbv":"1-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":29},
+    {"name":"6-70", "weight":6.35,  "height":7,   "abbv":"6-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":27},
+    {"name":"4-50", "weight":5.92,  "height":5,   "abbv":"4-50", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":28},
+    {"name":"1-70", "weight":6.16,  "height":7,   "abbv":"1-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":29},
 ];
 
 var bits = [
@@ -200,7 +200,7 @@ var bits = [
     {"name":"Gear Rush",    "weight":2.10,  "height":2,   "abbv":"GR", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":37},
     {"name":"Turbo",        "weight":12.59, "height":5,   "abbv":"Tr", "type":"ratchetBit", "wins":0, "losses":0, "draws":0, "id":38},
     {"name":"Wall Ball",    "weight":2.43,  "height":3,   "abbv":"WB", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":39},
-    //{"name":"Merge",        "weight":2.10,  "height":2,   "abbv":"M",  "type":"bit",        "wins":0, "losses":0, "draws":0, "id":40},
-    //{"name":"Under Flat",   "weight":2.10,  "height":0,   "abbv":"UF", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":41},
+    {"name":"Merge",        "weight":3.39,  "height":6,   "abbv":"M",  "type":"bit",        "wins":0, "losses":0, "draws":0, "id":40},
+    {"name":"Under Flat",   "weight":2.05,  "height":0,   "abbv":"UF", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":41},
 
 ];
