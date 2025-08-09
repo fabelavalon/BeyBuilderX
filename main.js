@@ -670,8 +670,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.wko += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -680,8 +679,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.lko += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -692,8 +690,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.wso += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -702,8 +699,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.lso += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -714,8 +710,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.wbst += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -724,8 +719,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.lbst += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -736,8 +730,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.wx += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -746,8 +739,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.lx += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -758,8 +750,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.draws += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -768,8 +759,7 @@ function updateRecords(winner, loser, outcome){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.draws += 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -815,8 +805,7 @@ function updateWinCounts(winner, loser, outcome){
         beyBladeDBX.get(winner.id, function(err, doc) {
             if(!err){
                 doc.build.winsKO += 1;
-                beyBladeDBX.put(doc);
-                showBeybladeStats(bey1,1);
+                beyBladeDBX.put(doc).then(refreshUI);
             }
             // else{
             //     console.log(err);
@@ -826,8 +815,7 @@ function updateWinCounts(winner, loser, outcome){
         beyBladeDBX.get(loser.id, function(err, doc) {
             if(!err){
                 doc.build.loseKO += 1;
-                beyBladeDBX.put(doc);
-                showBeybladeStats(bey2,2);
+                beyBladeDBX.put(doc).then(refreshUI);
             }
             // else{
             //     console.log(err);
@@ -839,8 +827,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.winsSO += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -850,8 +837,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.loseSO += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -863,8 +849,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.winsBst += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -874,8 +859,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.loseBst += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -887,8 +871,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.winsX += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -898,8 +881,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.loseX += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -911,8 +893,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.draws += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -922,8 +903,7 @@ function updateWinCounts(winner, loser, outcome){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.draws += 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -954,8 +934,7 @@ function undoLastRecord(){
         beyBladeDBX.get(winner.id, function(err, doc) {
             if(!err){
                 doc.build.winsKO -= 1;
-                beyBladeDBX.put(doc);
-                showBeybladeStats(bey1,1);
+                beyBladeDBX.put(doc).then(refreshUI);
             }
             // else{
             //     console.log(err);
@@ -966,8 +945,7 @@ function undoLastRecord(){
         beyBladeDBX.get(loser.id, function(err, doc) {
             if(!err){
                 doc.build.loseKO -= 1;
-                beyBladeDBX.put(doc);
-                showBeybladeStats(bey2,2);
+                beyBladeDBX.put(doc).then(refreshUI);
             }
             // else{
             //     console.log(err);
@@ -977,8 +955,7 @@ function undoLastRecord(){
         recordsDBX.get(record1Id, function(err, doc) {
             if(!err){
                 doc.wko -= 1;
-                recordsDBX.put(doc);
-                displayRecords();
+                recordsDBX.put(doc).then(displayRecords);
             }
             // else{
             //     console.log(err);
@@ -987,8 +964,7 @@ function undoLastRecord(){
         recordsDBX.get(record2Id, function(err, doc) {
             if(!err){
                 doc.lko -= 1;
-                recordsDBX.put(doc);
-                displayRecords();
+                recordsDBX.put(doc).then(displayRecords);
             }
             // else{
             //     console.log(err);
@@ -1001,8 +977,7 @@ function undoLastRecord(){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.winsSO -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1012,8 +987,7 @@ function undoLastRecord(){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.loseSO -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1023,8 +997,7 @@ function undoLastRecord(){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.wso -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1033,8 +1006,7 @@ function undoLastRecord(){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.lso -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1046,8 +1018,7 @@ function undoLastRecord(){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.winsBst -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1057,8 +1028,7 @@ function undoLastRecord(){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.loseBst -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1068,8 +1038,7 @@ function undoLastRecord(){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.wbst -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1078,8 +1047,7 @@ function undoLastRecord(){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.lbst -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1091,8 +1059,7 @@ function undoLastRecord(){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.winsX -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1102,8 +1069,7 @@ function undoLastRecord(){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.loseX -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1113,8 +1079,7 @@ function undoLastRecord(){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.wx -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1123,8 +1088,7 @@ function undoLastRecord(){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.lx -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1136,8 +1100,7 @@ function undoLastRecord(){
             beyBladeDBX.get(winner.id, function(err, doc) {
                 if(!err){
                     doc.build.draws -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey1,1);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1147,8 +1110,7 @@ function undoLastRecord(){
             beyBladeDBX.get(loser.id, function(err, doc) {
                 if(!err){
                     doc.build.draws -= 1;
-                    beyBladeDBX.put(doc);
-                    showBeybladeStats(bey2,2);
+                    beyBladeDBX.put(doc).then(refreshUI);
                 }
                 // else{
                 //     console.log(err);
@@ -1158,8 +1120,7 @@ function undoLastRecord(){
             recordsDBX.get(record1Id, function(err, doc) {
                 if(!err){
                     doc.draws -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1168,8 +1129,7 @@ function undoLastRecord(){
             recordsDBX.get(record2Id, function(err, doc) {
                 if(!err){
                     doc.draws -= 1;
-                    recordsDBX.put(doc);
-                    displayRecords();
+                    recordsDBX.put(doc).then(displayRecords);
                 }
                 // else{
                 //     console.log(err);
@@ -1306,7 +1266,7 @@ function setDbBey(){
                     bey1=dbBey;
                     wasBey1Generated = true;
                     showBeybladeStats(bey1, 1);
-                    createWinButtons()
+                    createWinButtons();
                     console.log(bey1.winsSO)
                 });
                 dbBeySpace.append(bey1Statbtn);
@@ -1322,7 +1282,7 @@ function setDbBey(){
                     bey2=dbBey;
                     wasBey2Generated = true;
                     showBeybladeStats(bey2, 2);
-                    createWinButtons()
+                    createWinButtons();
                 });
                 dbBeySpace.append(bey2Statbtn);
                 wasSetBey2Generated = true;
@@ -1366,12 +1326,14 @@ function setDbBey(){
 function showBeybladeStats(bey, whichBey) {
 
     //console.log("casting object ...");
-    //var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
-    //console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + bey.getDbId() ); 
+    var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+    console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + castDoc.getDbId() ); 
 
+    
     switch(whichBey){
         case 1:
             beyBladeDBX.get(bey.id, function(err, doc) {
+                console.log(JSON.stringify(doc));
                 if(!err){
                     bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
                     bey1Stats.textContent = "Weight: " + round(doc.build.weight, 2) + " grams";
@@ -1522,7 +1484,7 @@ function displayRecords(){
         //copy to clipboard
         clearHistoryBtn.innerHTML = "Clear Matchup History";
         clearHistoryBtn.classList.add("btn");
-        clearHistoryBtn.classList.add("btn-primary");
+        clearHistoryBtn.classList.add("btn-danger");
         clearHistoryBtn.addEventListener("click", clearMatchupHistory);
         recordsSpace.append(clearHistoryBtn);
         wasClearMatchupHistoryGenerated = true;
@@ -1532,10 +1494,14 @@ function displayRecords(){
 
 function clearMatchupHistory(){
     nullifyBeybladeScores(bey1.id, bey2.id);
+}
+/**
+ * re-runs all UI functions so we see the latest record
+ */
+function refreshUI(){
     showBeybladeStats(bey1, 1);
     showBeybladeStats(bey2, 2);
     displayRecords();
-
 }
 
 /**
@@ -1549,10 +1515,10 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
     console.log("clearing matchup history for " + recordID);
     recordsDBX.get(recordID, function(err, vsRecord){
         console.log( JSON.stringify(vsRecord) );
-        var vsRecordClone = structuredClone(vsRecord);
+        var vsRecordClone = structuredClone(vsRecord); //JS deep copy
         // subtract win/loss from bey1
         beyBladeDBX.get(primaryBeyId, function(err, beyblade) {
-            console.log("build: \n"+JSON.stringify(beyblade));
+            //console.log("build: \n"+JSON.stringify(beyblade));
             beyblade.build.winsKO  -= vsRecordClone.wko;
             beyblade.build.loseKO  -= vsRecordClone.lko;
             beyblade.build.winsSO  -= vsRecordClone.wso;
@@ -1563,8 +1529,8 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
             beyblade.build.loseX   -= vsRecordClone.lx;
             beyblade.build.draws   -= vsRecordClone.draws;
         
-            console.log("build after edit: \n"+JSON.stringify(beyblade));
-            beyBladeDBX.put(beyblade);
+            //console.log("build after edit: \n"+JSON.stringify(beyblade));
+            beyBladeDBX.put(beyblade).then(refreshUI);
         });
 
         vsRecord.wko = 0;
@@ -1577,8 +1543,8 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
         vsRecord.lx = 0;
         vsRecord.draws = 0;
 
-        console.log("vsrecord after edit:+\n"+vsRecord);
-        recordsDBX.put(vsRecord);
+        //console.log("vsrecord after edit:+\n"+vsRecord);
+        recordsDBX.put(vsRecord).then(refreshUI);
     });
 
     // delete the mirror record and subtract scores from the other bey
@@ -2154,8 +2120,7 @@ function deleteBey(){
                         beyblade.build.draws   -= thisRecord.draws;
                         
                         console.log("after edit " + JSON.stringify(beyblade));
-                        beyBladeDBX.put(beyblade);
-                        showBeybladeStats(beyblade,1);
+                        beyBladeDBX.put(beyblade).then(refreshUI);
 
                     }
                     else{
