@@ -1485,9 +1485,11 @@ function displayRecords(){
         clearHistoryBtn.innerHTML = "Clear Matchup History";
         clearHistoryBtn.classList.add("btn");
         clearHistoryBtn.classList.add("btn-danger");
-        clearHistoryBtn.addEventListener("click", clearMatchupHistory);
+        clearHistoryBtn.setAttribute("data-bs-toggle", "modal");
+        clearHistoryBtn.setAttribute("data-bs-target", "#areYouSure3");
         recordsSpace.append(clearHistoryBtn);
         wasClearMatchupHistoryGenerated = true;
+        
     }
 
 }
