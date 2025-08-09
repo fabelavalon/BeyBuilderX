@@ -109,7 +109,7 @@ class BeyBlade {
         return this.totalLosses;
     }
     getTotalMatch(){
-        this.totalMatches =  this.totalWins + this.totalLosses + this.draws;
+        this.totalMatches =  this.getTotalWin() + this.getTotalLoss() + this.draws;
         return this.totalMatches;
     }
     findSpin(){
