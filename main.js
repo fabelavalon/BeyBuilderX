@@ -125,6 +125,7 @@ var matchupHistUser = document.getElementById("matchupHistUser");
 var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
 var matchupHistCopyButton = document.getElementById("copyHistToClip");
+var clearHistButton = document.getElementById("clearHist");
 
 
 //used to generate the win buttons after both beys are selected
@@ -137,6 +138,7 @@ var wasSetBey2Generated = false;
 var wasWinButtonGenerated = false;
 var wasCopyHistToClipGenerated = false;
 var wasCopyMatchupToClipGenerated = false;
+var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
 
 //global beyblade variables
@@ -1435,6 +1437,7 @@ function displayRecords(){
 
     var recordsSpace = document.getElementById("recordsSpace"); //NEW
     var recordsCopybtn = document.createElement("button"); //NEW
+    var clearHistoryBtn = document.createElement("button"); //NEW
 
     var bey1SO = 0;
     var bey1Bst = 0;
@@ -1515,7 +1518,71 @@ function displayRecords(){
         wasCopyMatchupToClipGenerated = true;
     }
 
+    if(!wasClearMatchupHistoryGenerated){
+        //copy to clipboard
+        clearHistoryBtn.innerHTML = "Clear Matchup History";
+        clearHistoryBtn.classList.add("btn");
+        clearHistoryBtn.classList.add("btn-primary");
+        clearHistoryBtn.addEventListener("click", clearMatchupHistory);
+        recordsSpace.append(clearHistoryBtn);
+        wasClearMatchupHistoryGenerated = true;
+    }
+
 }
+
+function clearMatchupHistory(){
+    nullifyBeybladeScores(bey1.id, bey2.id);
+}
+
+/**
+ * pretend a matchup never happened
+ * negates the score on the beyblade build, sets vsRecord to 0s
+ * @param {srting} primaryBeyId 
+ * @param {string} nullifyBeyId 
+ */
+function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
+    var recordID = primaryBeyId + " " + nullifyBeyId;
+    console.log("clearing matchup history for " + recordID);
+    recordsDBX.get(recordID, function(err, vsRecord){
+        console.log( JSON.stringify(vsRecord) );
+        var vsRecordClone = structuredClone(vsRecord);
+        // subtract win/loss from bey1
+        beyBladeDBX.get(primaryBeyId, function(err, beyblade) {
+            console.log("build: \n"+JSON.stringify(beyblade));
+            beyblade.build.winsKO  -= vsRecordClone.wko;
+            beyblade.build.loseKO  -= vsRecordClone.lko;
+            beyblade.build.winsSO  -= vsRecordClone.wso;
+            beyblade.build.loseSO  -= vsRecordClone.lso;
+            beyblade.build.winsBst -= vsRecordClone.wbst;
+            beyblade.build.loseBst -= vsRecordClone.lbst; 
+            beyblade.build.winsX   -= vsRecordClone.wx;
+            beyblade.build.loseX   -= vsRecordClone.lx;
+            beyblade.build.draws   -= vsRecordClone.draws;
+        
+            console.log("build after edit: \n"+JSON.stringify(beyblade));
+            //beyBladeDBX.put(beyblade);
+        });
+
+        vsRecord.wko = 0;
+        vsRecord.lko = 0;
+        vsRecord.wso = 0;
+        vsRecord.lso = 0;
+        vsRecord.wbst = 0;
+        vsRecord.lbst = 0;
+        vsRecord.wx = 0;
+        vsRecord.lx = 0;
+        vsRecord.draws = 0;
+
+        console.log(vsRecord);
+        //recordsDBX.put(vsRecord);
+    });
+
+    // delete the mirror record and subtract scores from the other bey
+    if(nullifyBoth) {
+        nullifyBeybladeScores(nullifyBeyId, primaryBeyId, nullifyBoth=false);
+    }
+}
+
 
 /**
  * Disable text-wrapping on the ratchet
