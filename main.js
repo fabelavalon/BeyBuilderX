@@ -575,32 +575,44 @@ function addBeyblade(bey) {
 //tracking for actual past match ups, so we know what build blades won or lost against, instead of anon stats
 function addRecord(challenger, defender){
 
-    console.log("called addRecord" + challenger.name + ", " + defender.name + ")");
+    var vsId = challenger.id + " " + defender.id;
+    console.log("called addRecord" + challenger.name + ", " + defender.name + "), checking/creating "+vsId);
 
-    var winRecord = {
-        _id: challenger.id + " " + defender.id,
-        title: challenger.name + " vs " + defender.name,
-        wko: 0,
-        lko: 0,
-        wso: 0,
-        lso: 0,
-        wbst: 0,
-        lbst: 0,
-        wx: 0,
-        lx: 0,
-        draws: 0,
-        challenger: challenger,
-        defender: defender
-    }
+    recordsDBX.get(vsId).then() //if doc exists, do nothing
+    .catch(function (err) {
+        if (err.name === 'not_found') {
+            // create doc
+            var winRecord = {
+                _id: challenger.id + " " + defender.id,
+                title: challenger.name + " vs " + defender.name,
+                wko: 0,
+                lko: 0,
+                wso: 0,
+                lso: 0,
+                wbst: 0,
+                lbst: 0,
+                wx: 0,
+                lx: 0,
+                draws: 0,
+                challenger: challenger,
+                defender: defender
+            }
 
-    recordsDBX.put(winRecord, function callback(err, doc){
-        if(!err){
-            console.log("Successfully added a record");
-        }
-        else{
+            recordsDBX.put(winRecord, function callback(err, doc){
+                if(!err){
+                    console.log("Successfully added a record");
+                }
+                else{
+                    console.log(err);
+                }
+            });
+        } else {
+            // real error
             console.log(err);
         }
     });
+
+
 
 }
 
@@ -1244,7 +1256,7 @@ function setDbBey(){
             
             //set copy to history button
             if(!wasCopyHistToClipGenerated) {
-                console.log("adding listener");
+                console.log("adding listener for copy to history button");
                 copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
                 copyStatsbtn.classList.add("btn");
                 copyStatsbtn.classList.add("btn-primary");
@@ -1267,7 +1279,6 @@ function setDbBey(){
                     wasBey1Generated = true;
                     showBeybladeStats(bey1, 1);
                     createWinButtons();
-                    console.log(bey1.winsSO)
                 });
                 dbBeySpace.append(bey1Statbtn);
                 wasSetBey1Generated = true;
