@@ -484,9 +484,13 @@ function createWinButtons(){
         vsContainer.style.display="inherit";
 
         //once both beys are made, make sure they have a matchup in the recordsDBX
-        updateRecords(bey1, bey2, "update");
-        updateRecords(bey2, bey1, "update");
-        displayRecords();
+        console.log("win button adding records 1");
+        updateRecords(bey1, bey2, "update")
+        .then(()=>{
+            console.log("win button adding records 2");
+            return updateRecords(bey2, bey1, "update");
+        })
+        .then(displayRecords);
 
         // titles above win buttons
         bey1WinTitle.textContent = bey1.name;
@@ -570,14 +574,18 @@ function addBeyblade(bey) {
 
 }
 
-//tracking for actual past match ups, so we know what build blades won or lost against, instead of anon stats
-function addRecord(challenger, defende){
+//tracking for past match ups, so we know what build blades won or lost against, instead of anon stats
+function addRecord(challenger, defender){
 
+    //console.log("called addRecord \n" + JSON.stringify(challenger) + "\n" + JSON.stringify(defender));
     var vsId = challenger.id + " " + defender.id;
-    console.log("called addRecord" + challenger.name + ", " + defender.name + "), checking/creating "+vsId);
+    console.log("called addRecord( "+vsId)
 
-    recordsDBX.get(vsId)
-    .then(function() { console.log("vsRecord already exists") }) //if doc exists, do nothing
+    // return promise for more chaining
+    return recordsDBX.get(vsId)
+    .then(function() { 
+        console.log("vsRecord already exists") 
+    }) //if doc exists, do nothing
     .catch(function (err) { // if doc doesn't exist, create it
         if (err.name === 'not_found') {
             console.log("vsRecord not found, creating");
@@ -598,22 +606,12 @@ function addRecord(challenger, defende){
                 defender: defender
             }
 
-            recordsDBX.put(winRecord, function callback(err, doc){
-                if(err){
-                    console.log("Error creating blank vs record: ");
-                    console.log(err);
-                } else {
-                    console.log("Successfully added a record");
-                }
-            });
+            return recordsDBX.put(winRecord); // return promise
         } else {
-            // real error
-            console.log(err);
+            console.log("error creating record +\n"+err);
+            throw err; // rethrow to propagate
         }
     });
-
-
-
 }
 
 //edit beyblade win stats incase of mis inputs
@@ -670,144 +668,91 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
 //update the records database with a result is chosen
 function updateRecords(winner, loser, outcome){
 
-    console.log("called updateRecords(" + winner.name  + ", " + loser.name + ", " + outcome + ")");
+    if(outcome=="update"){
+        if(winner!=undefined&&loser!=undefined) {
+            var record1Id = winner.id + " " + loser.id;
+            var record2Id = loser.id + " " + winner.id;
+            console.log("called updateRecords( " + record1Id);
+        }
+    } else {
+        console.log("called updateRecords(" + winner.name  + ", " + loser.name + ", " + outcome + ")");
+    }
 
     var record1Id = winner.id + " " + loser.id;
     var record2Id = loser.id + " " + winner.id;
     // create if they don't exist
-    addRecord(winner, loser);
-    addRecord(loser, winner);
-    //TODO: async chain these to update
+    console.log("pre-promise");
 
-    switch(outcome){
+    promise1 = addRecord(winner, loser)
+    .then(() => addRecord(loser, winner))
+    .then(() => {
+        console.log("update record");
+        // collect promises for both records
+        let promises = [];
+
+        switch (outcome) {
         case "KO":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wko += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lko += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wko++));
+            promises.push(updateField(record2Id, d => d.lko++));
             break;
         case "SO":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wso += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lso += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wso++));
+            promises.push(updateField(record2Id, d => d.lso++));
             break;
         case "burst":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wbst += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lbst += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wbst++));
+            promises.push(updateField(record2Id, d => d.lbst++));
             break;
         case "x":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wx += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lx += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wx++));
+            promises.push(updateField(record2Id, d => d.lx++));
             break;
         case "draw":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.draws += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.draws += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.draws++));
+            promises.push(updateField(record2Id, d => d.draws++));
             break;
         case "update":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.challenger = winner;
-                    doc.defender = loser;
-                    recordsDBX.put(doc).then();
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.challenger = loser;
-                    doc.defender = winner;
-                    recordsDBX.put(doc).then();
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => {
+                d.challenger = winner;
+                d.defender = loser;
+            }));
+            promises.push(updateField(record2Id, d => {
+                d.challenger = loser;
+                d.defender = winner;
+            }));
             break;
         default:
-            console.log("Something went wrong. Record not added")
-            
-    }
+            console.log("Something went wrong. Record not added");
+        }
+
+        return Promise.all(promises);
+    })
+    .then(() => {
+        // all DB updates finished, now update UI
+        return displayRecords();
+    });
+
+    return promise1;
+
 
 }
+
+/**
+ * updates one field on a vsRecord
+ * returns promise from pouchdb
+ * ex: increment wko (KO wins)
+ * updateField(record1Id, d => d.wko++).then(doStuffFunc);
+ * @param {string} id - beyblade id
+ * @param {*} updater - provide your own function
+ * @returns promise
+ */
+function updateField(id, updater) {
+  return recordsDBX.get(id).then(doc => {
+    updater(doc);
+    return recordsDBX.put(doc);
+  });
+}
+
 
 //updates the win and loss counts for both beys when a result is chosen
 function updateWinCounts(winner, loser, outcome){
@@ -1408,7 +1353,7 @@ function displayRecords(){
     var draws = document.getElementById("draws");
     var totalRounds = document.getElementById("vsTotalRounds");
 
-    var recordID = bey1.id + " " + bey2.id;
+    var vsId = bey1.id + " " + bey2.id;
 
     var recordsSpace = document.getElementById("recordsSpace"); //NEW
     var recordsCopybtn = document.createElement("button"); //NEW
@@ -1429,8 +1374,21 @@ function displayRecords(){
     var draw = 0;
     var totalRound = 0;
 
-    recordsDBX.get(recordID, function(err, doc){
-        console.log("displayRecords() got:+\n"+JSON.stringify(doc));
+    console.log("fetching record ID " + vsId);
+    recordsDBX.get(vsId)
+    .then(function() { 
+        console.log("vsRecord already exists") 
+    })
+    .catch(function (err) {
+        console.log("error:\n"+err);
+    });
+    recordsDBX.get(vsId, function(err, vsRecord){
+        doc = vsRecord;
+        if (doc!=undefined && doc.title!=undefined) {
+            console.log("displayRecords() got:\n"+doc.title);
+        } else {
+            console.log("displayRecords() got:\n"+JSON.stringify(doc));
+        }
         record1.innerHTML = noBreakRatchetText(bey1.name);
         ko1.textContent = doc.wko;
         bey1KO = doc.wko;
