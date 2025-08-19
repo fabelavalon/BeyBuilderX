@@ -87,9 +87,11 @@
 /* vs win buttons */
 .btn-win {
     width: 120px;
+    margin-bottom: 8px;
 }
 .btn-nowin {
     width: 80px;
+    margin-bottom: 8px;
 }
 
 /* Matchup History table */
