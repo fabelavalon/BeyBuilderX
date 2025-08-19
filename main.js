@@ -484,8 +484,6 @@ function createWinButtons(){
         vsContainer.style.display="inherit";
 
         //once both beys are made, make sure they have a matchup in the recordsDBX
-        addRecord(bey1, bey2);
-        addRecord(bey2, bey1);
         updateRecords(bey1, bey2, "update");
         updateRecords(bey2, bey1, "update");
         displayRecords();
@@ -573,14 +571,16 @@ function addBeyblade(bey) {
 }
 
 //tracking for actual past match ups, so we know what build blades won or lost against, instead of anon stats
-function addRecord(challenger, defender){
+function addRecord(challenger, defende){
 
     var vsId = challenger.id + " " + defender.id;
     console.log("called addRecord" + challenger.name + ", " + defender.name + "), checking/creating "+vsId);
 
-    recordsDBX.get(vsId).then() //if doc exists, do nothing
-    .catch(function (err) {
+    recordsDBX.get(vsId)
+    .then(function() { console.log("vsRecord already exists") }) //if doc exists, do nothing
+    .catch(function (err) { // if doc doesn't exist, create it
         if (err.name === 'not_found') {
+            console.log("vsRecord not found, creating");
             // create doc
             var winRecord = {
                 _id: challenger.id + " " + defender.id,
@@ -599,11 +599,11 @@ function addRecord(challenger, defender){
             }
 
             recordsDBX.put(winRecord, function callback(err, doc){
-                if(!err){
-                    console.log("Successfully added a record");
-                }
-                else{
+                if(err){
+                    console.log("Error creating blank vs record: ");
                     console.log(err);
+                } else {
+                    console.log("Successfully added a record");
                 }
             });
         } else {
@@ -651,7 +651,7 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
             if(dr){
                 doc.build.draws = parseInt(dr);                
             }
-            beyBladeDBX.put(doc);
+            beyBladeDBX.put(doc).then();
             statEditor.reset();
             showBeyblades();
             dbBeyName.textContent = doc.build.name;
@@ -674,8 +674,10 @@ function updateRecords(winner, loser, outcome){
 
     var record1Id = winner.id + " " + loser.id;
     var record2Id = loser.id + " " + winner.id;
+    // create if they don't exist
     addRecord(winner, loser);
-    addRecord(loser, winner)
+    addRecord(loser, winner);
+    //TODO: async chain these to update
 
     switch(outcome){
         case "KO":
@@ -783,7 +785,7 @@ function updateRecords(winner, loser, outcome){
                 if(!err){
                     doc.challenger = winner;
                     doc.defender = loser;
-                    recordsDBX.put(doc);
+                    recordsDBX.put(doc).then();
                 }
                 // else{
                 //     console.log(err);
@@ -793,7 +795,7 @@ function updateRecords(winner, loser, outcome){
                 if(!err){
                     doc.challenger = loser;
                     doc.defender = winner;
-                    recordsDBX.put(doc);
+                    recordsDBX.put(doc).then();
                 }
                 // else{
                 //     console.log(err);
@@ -1428,6 +1430,7 @@ function displayRecords(){
     var totalRound = 0;
 
     recordsDBX.get(recordID, function(err, doc){
+        console.log("displayRecords() got:+\n"+JSON.stringify(doc));
         record1.innerHTML = noBreakRatchetText(bey1.name);
         ko1.textContent = doc.wko;
         bey1KO = doc.wko;
