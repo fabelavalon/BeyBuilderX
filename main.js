@@ -514,8 +514,8 @@ function choseWinner(beyNumber, winType) {
     var loserBey = ( beyNumber==1 ) ? bey2 : bey1;
 
     // set winner (or draw)
-    updateWinCounts(winnerBey, loserBey, winType);
-    updateRecords(winnerBey, loserBey, winType);
+    asyncUpdateWinCounts(winnerBey, loserBey, winType);
+    asyncUpdateRecords(winnerBey, loserBey, winType);
     lastRecordOutcome = winType;
     lastRecordWinner = winnerBey;
     lastRecordLoser = loserBey;
@@ -665,6 +665,62 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
 
 }
 
+//update vsRecords with win/loss
+async function asyncUpdateRecords(winner, loser, outcome){
+
+    if(outcome=="update"){
+        if(winner!=undefined&&loser!=undefined) {
+            console.log("called updateRecords( " + winner.id + " " + loser.id);
+        }
+    } else {
+        console.log("called updateRecords(" + winner.name  + ", " + loser.name + ", " + outcome + ")");
+    }
+
+    var record1Id = winner.id + " " + loser.id;
+    var record2Id = loser.id + " " + winner.id;
+
+    console.log("called asyncUpdateRecords(" + winner.name + ", " + loser.name + ", " + outcome + ")");
+
+    try {
+        let vsRecord1 = await recordsDBX.get(record1Id.id);
+        let vsRecord2 = await recordsDBX.get(record2Id.id);
+        await addToVsRecordUndoStack(vsRecord1);
+        await addToVsRecordUndoStack(vsRecord2);
+
+        switch(outcome) {
+            case "KO":
+                vsRecord1.wko += 1;
+                vsRecord2.lko += 1;
+                break;
+            case "SO":
+                vsRecord1.wso += 1;
+                vsRecord2.lso += 1;
+                break;
+            case "burst":
+                vsRecord1.wbst += 1;
+                vsRecord2.lbst += 1;
+                break;
+            case "x":
+                vsRecord1.wx += 1;
+                vsRecord2.lx += 1;
+                break;
+            case "draw":
+                vsRecord1.draws += 1;
+                vsRecord2.draws += 1;
+                break;
+            default:
+                console.log("error updating winners and losers")
+        }
+        // save changes
+        await recordsDBX.put(vsRecord1);
+        await recordsDBX.put(vsRecord2);
+
+        //await refreshUI();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 //update the records database with a result is chosen
 function updateRecords(winner, loser, outcome){
 
@@ -687,7 +743,7 @@ function updateRecords(winner, loser, outcome){
     .then(() => addRecord(loser, winner))
     .then(() => {
         console.log("update record");
-        // collect promises for both records
+        // collect promises (DB updates) for both records
         let promises = [];
 
         switch (outcome) {
@@ -724,7 +780,7 @@ function updateRecords(winner, loser, outcome){
         default:
             console.log("Something went wrong. Record not added");
         }
-
+        // submit whatever results are in the list
         return Promise.all(promises);
     })
     .then(() => {
@@ -752,6 +808,73 @@ function updateField(id, updater) {
     return recordsDBX.put(doc);
   });
 }
+
+async function asyncUpdateWinCounts(winner, loser, outcome){
+    console.log("called asyncUpdateWinCounts(" + winner.name + ", " + loser.name + ", " + outcome + ")");
+
+    try {
+        let winnerRecord = await beyBladeDBX.get(winner.id);
+        let loserRecord = await beyBladeDBX.get(loser.id);
+        await addToBeybladeUndoStack(winnerRecord);
+        await addToBeybladeUndoStack(loserRecord);
+
+        switch(outcome) {
+            case "KO":
+                winnerRecord.build.winsKO += 1;
+                loserRecord.build.loseKO += 1;
+                break;
+            case "SO":
+                winnerRecord.build.winsSO += 1;
+                loserRecord.build.winsSO += 1;
+                break;
+            case "burst":
+                winnerRecord.build.winsBst += 1;
+                loserRecord.build.loseBst += 1;
+                break;
+            case "x":
+                winnerRecord.build.winsX += 1;
+                loserRecord.build.loseX += 1;
+                break;
+            case "draw":
+                winnerRecord.build.draws += 1;
+                loserRecord.build.draws += 1;
+                break;
+            default:
+                console.log("error updating winners and losers")
+        }
+
+        await beyBladeDBX.put(winnerRecord);
+        await beyBladeDBX.put(loserRecord);
+
+        await refreshUI();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const undoStackBeyblade = [];
+const undoStackVsRecord = [];
+async function addToBeybladeUndoStack(doc) {
+    undoStackBeyblade.push(structuredClone(doc));
+}
+async function addToVsRecordUndoStack(doc) {
+    undoStackVsRecord.push(structuredClone(doc));
+}
+async function undo() {
+    if(undoStackBeyblade.length > 0) {
+        beyBladeDBX.put( undoStackBeyblade.pop() );
+    } else {
+        console.log("nothing to undo (bey)");
+        //TODO: display to user
+    }
+    if(undoStackVsRecord.legnth > 0) {
+        recordsDBX.put(undoStackVsRecord.pop());
+    } else {
+        console.log("nothing to undo (vs)");
+        //TODO: display to user
+    }
+}
+
 
 
 //updates the win and loss counts for both beys when a result is chosen
