@@ -507,7 +507,7 @@ function createWinButtons(){
  */
 function choseWinner(beyNumber, winType) {
 
-    //console.log("called chooseWinner(" + beyNumber + ", " + winType + ")");
+    console.log("called chooseWinner(" + beyNumber + ", " + winType + ")");
 
     console.log("Winner: " + beyNumber + " by: " + winType);
     var winnerBey = ( beyNumber==1 ) ? bey1 : bey2; // if beyNumber==1, choose bey1, else choose bey2
@@ -682,8 +682,8 @@ async function asyncUpdateRecords(winner, loser, outcome){
     console.log("called asyncUpdateRecords(" + winner.name + ", " + loser.name + ", " + outcome + ")");
 
     try {
-        let vsRecord1 = await recordsDBX.get(record1Id.id);
-        let vsRecord2 = await recordsDBX.get(record2Id.id);
+        let vsRecord1 = await recordsDBX.get(record1Id);
+        let vsRecord2 = await recordsDBX.get(record2Id);
         await addToVsRecordUndoStack(vsRecord1);
         await addToVsRecordUndoStack(vsRecord2);
 
@@ -737,9 +737,8 @@ function updateRecords(winner, loser, outcome){
     var record1Id = winner.id + " " + loser.id;
     var record2Id = loser.id + " " + winner.id;
     // create if they don't exist
-    console.log("pre-promise");
 
-    promise1 = addRecord(winner, loser)
+    promiseChain = addRecord(winner, loser)
     .then(() => addRecord(loser, winner))
     .then(() => {
         console.log("update record");
@@ -788,7 +787,7 @@ function updateRecords(winner, loser, outcome){
         return displayRecords();
     });
 
-    return promise1;
+    return promiseChain;
 
 
 }
@@ -855,26 +854,79 @@ async function asyncUpdateWinCounts(winner, loser, outcome){
 const undoStackBeyblade = [];
 const undoStackVsRecord = [];
 async function addToBeybladeUndoStack(doc) {
-    undoStackBeyblade.push(structuredClone(doc));
+    console.log("adding to undo beyblade stack: " + doc._id);
+    let cloneDoc = structuredClone(doc);
+    undoStackBeyblade.push( cloneDoc );
 }
 async function addToVsRecordUndoStack(doc) {
-    undoStackVsRecord.push(structuredClone(doc));
+    console.log("adding to undo vs stack: " + doc._id);
+    cloneVsRecord = structuredClone(doc);
+    undoStackVsRecord.push( cloneVsRecord );
 }
-async function undo() {
-    if(undoStackBeyblade.length > 0) {
-        beyBladeDBX.put( undoStackBeyblade.pop() );
-    } else {
-        console.log("nothing to undo (bey)");
-        //TODO: display to user
+/**
+ * return beyblades and VS Record to their previous states
+ */
+async function undoRecord() {
+    console.log("undo-ing");
+    // beyblade undo
+    try {
+        if(undoStackBeyblade.length > 0) {
+            let applyMe1 =  undoStackBeyblade.pop();
+            // get current revision of this doc, grab the _rev field, apply to obj
+            let currentRev1 = await beyBladeDBX.get(applyMe1._id);
+            applyMe1._rev = currentRev1._rev;
+            
+            console.log(JSON.stringify(applyMe1));
+            await beyBladeDBX.put( applyMe1 );
+
+            let applyMe2 =  undoStackBeyblade.pop();
+            let currentRev2 = await beyBladeDBX.get(applyMe2._id);
+            applyMe2._rev = currentRev2._rev;
+            console.log(JSON.stringify(applyMe2));
+            await beyBladeDBX.put( applyMe2 );
+        } else {
+            console.log("nothing to undo (bey)");
+        }
+    } catch(err) {
+        console.log("error re-applying beyblade stack:");
+        console.log(err);
     }
-    if(undoStackVsRecord.legnth > 0) {
-        recordsDBX.put(undoStackVsRecord.pop());
-    } else {
-        console.log("nothing to undo (vs)");
-        //TODO: display to user
+
+    //vs record undo
+    try {
+        if(undoStackVsRecord.length > 0) {
+            let applyVs1 = undoStackVsRecord.pop();
+            let currentVsRev1 = await recordsDBX.get(applyVs1._id);
+            applyVs1._rev = currentVsRev1._rev;
+            await recordsDBX.put(applyVs1);
+
+            let applyVs2 = undoStackVsRecord.pop();
+            let currentVsRev2 = await recordsDBX.get(applyVs2._id);
+            applyVs2._rev = currentVsRev2._rev;
+            await recordsDBX.put(applyVs2);
+        } else {
+            console.log("nothing to undo (vs)");
+        }
+    } catch(err) {
+        console.log("error re-applying vsRecord stack:");
+        console.log(err);
     }
+    refreshUI();
+    //TODO: display to user
 }
 
+// prevents double taps on touchscreen, but introduces delay in the function firing
+const undoDebounced = debounce(undoRecord); // call from HTML like undoDebounced()
+function debounce(callback){
+    let delay = 250; //ms
+    let timer;
+    return function() {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            callback();
+        }, delay)
+    }
+}
 
 
 //updates the win and loss counts for both beys when a result is chosen
