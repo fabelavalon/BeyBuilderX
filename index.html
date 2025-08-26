@@ -12,10 +12,10 @@
     <title>BeyBuilder X v1.4</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="./bootstrap.css" rel="stylesheet"  />
+    <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
     <link href="./theme-default.css" rel="stylesheet" id="theme"  />
-    <script src="./bootstrap.bundle.js"></script>
+    <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
 </head>
 
 <body>
@@ -217,7 +217,7 @@
               <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
             </div>
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoRecord()">Undo</button>
+              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoDebounced()">Undo</button>
             </div>
           </div>
 
@@ -565,7 +565,8 @@
 
 
     <!--import scripts-->
-    <script src="./pouchdb-7.3.1.js"></script>
+    <script src="./libraries/pouchdb-7.3.1.js"></script>
+    <script src="./libraries/debounce/debounce.js"></script>
     <script src="./parts.js"></script>
     <script src="./beyblade.js"></script>
     <script src="./main.js?v3"></script>

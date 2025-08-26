@@ -670,16 +670,16 @@ async function asyncUpdateRecords(winner, loser, outcome){
 
     if(outcome=="update"){
         if(winner!=undefined&&loser!=undefined) {
-            console.log("called updateRecords( " + winner.id + " " + loser.id);
+            console.log("called updateRecords: " + winner.id + " " + loser.id);
         }
     } else {
-        console.log("called updateRecords(" + winner.name  + ", " + loser.name + ", " + outcome + ")");
+        console.log("called updateRecords: " + winner.name  + ", " + loser.name + ", " + outcome + "");
     }
 
     var record1Id = winner.id + " " + loser.id;
     var record2Id = loser.id + " " + winner.id;
 
-    console.log("called asyncUpdateRecords(" + winner.name + ", " + loser.name + ", " + outcome + ")");
+    console.log("called asyncUpdateRecords: " + winner.name + ", " + loser.name + ", " + outcome + "");
 
     try {
         let vsRecord1 = await recordsDBX.get(record1Id);
@@ -728,10 +728,10 @@ function updateRecords(winner, loser, outcome){
         if(winner!=undefined&&loser!=undefined) {
             var record1Id = winner.id + " " + loser.id;
             var record2Id = loser.id + " " + winner.id;
-            console.log("called updateRecords( " + record1Id);
+            console.log("called updateRecords: " + record1Id);
         }
     } else {
-        console.log("called updateRecords(" + winner.name  + ", " + loser.name + ", " + outcome + ")");
+        console.log("called updateRecords: " + winner.name  + ", " + loser.name + ", " + outcome + ")");
     }
 
     var record1Id = winner.id + " " + loser.id;
@@ -794,6 +794,7 @@ function updateRecords(winner, loser, outcome){
 
 /**
  * updates one field on a vsRecord
+ * (technically, it can do more with the function)
  * returns promise from pouchdb
  * ex: increment wko (KO wins)
  * updateField(record1Id, d => d.wko++).then(doStuffFunc);
@@ -916,17 +917,7 @@ async function undoRecord() {
 }
 
 // prevents double taps on touchscreen, but introduces delay in the function firing
-const undoDebounced = debounce(undoRecord); // call from HTML like undoDebounced()
-function debounce(callback){
-    let delay = 250; //ms
-    let timer;
-    return function() {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            callback();
-        }, delay)
-    }
-}
+const undoDebounced = debounce(undoRecord); // call from HTML as undoDebounced()
 
 
 //updates the win and loss counts for both beys when a result is chosen
