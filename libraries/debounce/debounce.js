@@ -2,7 +2,7 @@
 //     https://underscorejs.org
 //     (c) 2009-2024 Jeremy Ashkenas, Julian Gonggrijp, and DocumentCloud and Investigative Reporters & Editors
 //     Underscore may be freely distributed under the MIT license.
-
+// adapted by Maave
 
 /**
  * Prevent a button from being double-tapped.
@@ -13,19 +13,20 @@
  * triggered at the beginning of the sequence instead of at the end.
  * 
  * @param {function} func - callback function
- * @param {int} wait - delay in milliseconds, default 150
+ * @param {int} wait - delay in milliseconds, default 200
  * @param {boolean} immediate - run function at the beginning (true) or end (false), default true
  * @returns 
  */
-function debounce(func, wait = 150, immediate = true) {
+function debounce(func, wait = 200, immediate = true) {
     var timeout, previous, args, result, context;
 
     var later = function() {
-        var passed = now() - previous;
+        var passed = performance.now() - previous;
+        console.log("time passed: " + passed);
         if (wait > passed) {
             timeout = setTimeout(later, wait - passed);
         } else {
-        timeout = null;
+            timeout = null;
             if (!immediate) result = func.apply(context, args);
             // This check is needed because `func` can recursively invoke `debounced`.
             if (!timeout) args = context = null;
@@ -35,7 +36,7 @@ function debounce(func, wait = 150, immediate = true) {
     var debounced = restArguments(function(_args) {
         context = this;
         args = _args;
-        previous = now();
+        previous = performance.now();
         if (!timeout) {
             timeout = setTimeout(later, wait);
             if (immediate) result = func.apply(context, args);
@@ -49,4 +50,35 @@ function debounce(func, wait = 150, immediate = true) {
     };
 
     return debounced;
+}
+
+// Some functions take a variable number of arguments, or a few expected
+// arguments at the beginning and then a variable number of values to operate
+// on. This helper accumulates all remaining arguments past the function’s
+// argument length (or an explicit `startIndex`), into an array that becomes
+// the last argument. Similar to ES6’s "rest parameter".
+function restArguments(func, startIndex) {
+    
+    startIndex = startIndex == null ? func.length - 1 : +startIndex;
+    return function() {
+        var length = Math.max(arguments.length - startIndex, 0),
+            rest = Array(length),
+            index = 0;
+        for (; index < length; index++) {
+            rest[index] = arguments[index + startIndex];
+        }
+        
+        switch (startIndex) {
+            case 0: return func.call(this, rest);
+            case 1: return func.call(this, arguments[0], rest);
+            case 2: return func.call(this, arguments[0], arguments[1], rest);
+        }
+        var args = Array(startIndex + 1);
+        for (index = 0; index < startIndex; index++) {
+            args[index] = arguments[index];
+        }
+        args[startIndex] = rest;
+        
+        return func.apply(this, args);
+    };
 }

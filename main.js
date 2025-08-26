@@ -500,6 +500,10 @@ function createWinButtons(){
 
 }
 
+const choseWinnerDebounced = debounce(function(number, wintype) {
+    choseWinner(number, wintype);
+});
+
 /**
  * set winner when user presses button
  * @param {int} beyNumber 
@@ -916,9 +920,8 @@ async function undoRecord() {
     //TODO: display to user
 }
 
-// prevents double taps on touchscreen, but introduces delay in the function firing
-const undoDebounced = debounce(undoRecord); // call from HTML as undoDebounced()
-
+// prevents double taps on touchscreen
+let undoDebounced = debounce(undoRecord);
 
 //updates the win and loss counts for both beys when a result is chosen
 function updateWinCounts(winner, loser, outcome){
