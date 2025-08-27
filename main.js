@@ -1464,9 +1464,9 @@ function showBeybladeStats(bey, whichBey) {
                 if(!err){
                     bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
                     bey1Stats.textContent = "Weight: " + round(doc.build.weight, 2) + " grams";
-                    bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey1SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey1Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
+                    bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
                 }
@@ -1480,9 +1480,9 @@ function showBeybladeStats(bey, whichBey) {
                 if(!err){
                     bey2Is.textContent = "BeyBlade 2 is: " + doc.build.name;
                     bey2Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
-                    bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey2SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey2Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
+                    bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
                 }
