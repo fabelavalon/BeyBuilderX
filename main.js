@@ -829,7 +829,7 @@ async function asyncUpdateWinCounts(winner, loser, outcome){
                 break;
             case "SO":
                 winnerRecord.build.winsSO += 1;
-                loserRecord.build.winsSO += 1;
+                loserRecord.build.loseSO += 1;
                 break;
             case "burst":
                 winnerRecord.build.winsBst += 1;
