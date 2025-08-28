@@ -12,10 +12,10 @@
     <title>BeyBuilder X v1.4</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="./bootstrap.css" rel="stylesheet"  />
+    <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
     <link href="./theme-default.css" rel="stylesheet" id="theme"  />
-    <script src="./bootstrap.bundle.js"></script>
+    <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
 </head>
 
 <body>
@@ -69,11 +69,11 @@
                           <br>
                           <span id="bey1Stats"></span>
                           <br>
-                          <span id="bey1KO"></span>
-                          <br>
                           <span id="bey1SO"></span>
                           <br>
                           <span id="bey1Bst"></span>
+                          <br>
+                          <span id="bey1KO"></span>
                           <br>
                           <span id="bey1X"></span>
                           <br>
@@ -161,11 +161,11 @@
                         <br>
                         <span id="bey2Stats"></span>
                         <br>
-                        <span id="bey2KO"></span>
-                        <br>
                         <span id="bey2SO"></span>
                         <br>
                         <span id="bey2Bst"></span>
+                        <br>
+                        <span id="bey2KO"></span>
                         <br>
                         <span id="bey2X"></span>
                         <br>
@@ -190,10 +190,10 @@
                 Bey 1:
               </p>
               <div class="row">
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
 
@@ -203,10 +203,10 @@
               </p>
               <div class="row">
                 <!-- Bey 2 Win Buttons -->
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
           </div>
@@ -214,10 +214,10 @@
           <!-- Draw and Undo Buttons -->
           <div class="row">
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
+              <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinnerDebounced(0, 'draw')">Draw</button>
             </div>
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
+              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoDebounced()">Undo</button>
             </div>
           </div>
 
@@ -324,11 +324,11 @@
               <br>
               <span id="dbPointDif"></span> <!-- new rows end -->
               <br>
-              <span id="dbBeyKO"></span>
-              <br>
               <span id="dbBeySO"></span>
               <br>
               <span id="dbBeyBst"></span>
+              <br>
+              <span id="dbBeyKO"></span>
               <br>
               <span id="dbBeyX"></span>
               <br>
@@ -565,7 +565,8 @@
 
 
     <!--import scripts-->
-    <script src="./pouchdb-7.3.1.js"></script>
+    <script src="./libraries/pouchdb-7.3.1.js"></script>
+    <script src="./libraries/debounce/debounce.js"></script>
     <script src="./parts.js"></script>
     <script src="./beyblade.js"></script>
     <script src="./main.js?v3"></script>

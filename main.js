@@ -386,6 +386,7 @@ function generateBey1(){
     bey1Is.textContent = "" + bey1.name;
     showBeybladeStats(bey1, 1);
     createWinButtons();
+    clearUndoStack();
 
 }
 
@@ -469,7 +470,8 @@ function generateBey2(){
     bey2Is.textContent = "" + bey2.name;
     showBeybladeStats(bey2, 2);
     createWinButtons();
-    
+    clearUndoStack();
+
 }
 
 //populates win buttons on screen
@@ -484,11 +486,16 @@ function createWinButtons(){
         vsContainer.style.display="inherit";
 
         //once both beys are made, make sure they have a matchup in the recordsDBX
-        addRecord(bey1, bey2);
-        addRecord(bey2, bey1);
-        updateRecords(bey1, bey2, "update");
-        updateRecords(bey2, bey1, "update");
-        displayRecords();
+        console.log("win button adding records 1");
+        // TODO: swap for asyncUpdateRecords
+        updateRecords(bey1, bey2, "update")
+        .then(()=>{
+            console.log("win button adding records 2");
+            return updateRecords(bey2, bey1, "update");
+        })
+        .then(displayRecords);
+
+
 
         // titles above win buttons
         bey1WinTitle.textContent = bey1.name;
@@ -498,6 +505,10 @@ function createWinButtons(){
 
 }
 
+const choseWinnerDebounced = debounce(function(number, wintype) {
+    choseWinner(number, wintype);
+});
+
 /**
  * set winner when user presses button
  * @param {int} beyNumber 
@@ -505,15 +516,15 @@ function createWinButtons(){
  */
 function choseWinner(beyNumber, winType) {
 
-    //console.log("called chooseWinner(" + beyNumber + ", " + winType + ")");
+    console.log("called chooseWinner(" + beyNumber + ", " + winType + ")");
 
     console.log("Winner: " + beyNumber + " by: " + winType);
     var winnerBey = ( beyNumber==1 ) ? bey1 : bey2; // if beyNumber==1, choose bey1, else choose bey2
     var loserBey = ( beyNumber==1 ) ? bey2 : bey1;
 
     // set winner (or draw)
-    updateWinCounts(winnerBey, loserBey, winType);
-    updateRecords(winnerBey, loserBey, winType);
+    asyncUpdateWinCounts(winnerBey, loserBey, winType);
+    asyncUpdateRecords(winnerBey, loserBey, winType);
     lastRecordOutcome = winType;
     lastRecordWinner = winnerBey;
     lastRecordLoser = loserBey;
@@ -572,36 +583,44 @@ function addBeyblade(bey) {
 
 }
 
-//tracking for actual past match ups, so we know what build blades won or lost against, instead of anon stats
+//tracking for past match ups, so we know what build blades won or lost against, instead of anon stats
 function addRecord(challenger, defender){
 
-    console.log("called addRecord" + challenger.name + ", " + defender.name + ")");
+    //console.log("called addRecord \n" + JSON.stringify(challenger) + "\n" + JSON.stringify(defender));
+    var vsId = challenger.id + " " + defender.id;
+    console.log("called addRecord( "+vsId)
 
-    var winRecord = {
-        _id: challenger.id + " " + defender.id,
-        title: challenger.name + " vs " + defender.name,
-        wko: 0,
-        lko: 0,
-        wso: 0,
-        lso: 0,
-        wbst: 0,
-        lbst: 0,
-        wx: 0,
-        lx: 0,
-        draws: 0,
-        challenger: challenger,
-        defender: defender
-    }
+    // return promise for more chaining
+    return recordsDBX.get(vsId)
+    .then(function() { 
+        console.log("vsRecord already exists") 
+    }) //if doc exists, do nothing
+    .catch(function (err) { // if doc doesn't exist, create it
+        if (err.name === 'not_found') {
+            console.log("vsRecord not found, creating");
+            // create doc
+            var winRecord = {
+                _id: challenger.id + " " + defender.id,
+                title: challenger.name + " vs " + defender.name,
+                wko: 0,
+                lko: 0,
+                wso: 0,
+                lso: 0,
+                wbst: 0,
+                lbst: 0,
+                wx: 0,
+                lx: 0,
+                draws: 0,
+                challenger: challenger,
+                defender: defender
+            }
 
-    recordsDBX.put(winRecord, function callback(err, doc){
-        if(!err){
-            console.log("Successfully added a record");
-        }
-        else{
-            console.log(err);
+            return recordsDBX.put(winRecord); // return promise
+        } else {
+            console.log("error creating record +\n"+err);
+            throw err; // rethrow to propagate
         }
     });
-
 }
 
 //edit beyblade win stats incase of mis inputs
@@ -639,7 +658,7 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
             if(dr){
                 doc.build.draws = parseInt(dr);                
             }
-            beyBladeDBX.put(doc);
+            beyBladeDBX.put(doc).then();
             statEditor.reset();
             showBeyblades();
             dbBeyName.textContent = doc.build.name;
@@ -655,268 +674,273 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
 
 }
 
-//update the records database with a result is chosen
-function updateRecords(winner, loser, outcome){
+//update vsRecords with win/loss
+async function asyncUpdateRecords(winner, loser, outcome){
 
-    console.log("called updateRecords(" + winner.name  + ", " + loser.name + ", " + outcome + ")");
+    if(outcome=="update"){
+        if(winner!=undefined&&loser!=undefined) {
+            console.log("called updateRecords: " + winner.id + " " + loser.id);
+        }
+    } else {
+        console.log("called updateRecords: " + winner.name  + ", " + loser.name + ", " + outcome + "");
+    }
 
     var record1Id = winner.id + " " + loser.id;
     var record2Id = loser.id + " " + winner.id;
-    addRecord(winner, loser);
-    addRecord(loser, winner)
 
-    switch(outcome){
+    console.log("called asyncUpdateRecords: " + winner.name + ", " + loser.name + ", " + outcome + "");
+
+    try {
+        let vsRecord1 = await recordsDBX.get(record1Id);
+        let vsRecord2 = await recordsDBX.get(record2Id);
+        await addToVsRecordUndoStack(vsRecord1);
+        await addToVsRecordUndoStack(vsRecord2);
+
+        switch(outcome) {
+            case "KO":
+                vsRecord1.wko += 1;
+                vsRecord2.lko += 1;
+                break;
+            case "SO":
+                vsRecord1.wso += 1;
+                vsRecord2.lso += 1;
+                break;
+            case "burst":
+                vsRecord1.wbst += 1;
+                vsRecord2.lbst += 1;
+                break;
+            case "x":
+                vsRecord1.wx += 1;
+                vsRecord2.lx += 1;
+                break;
+            case "draw":
+                vsRecord1.draws += 1;
+                vsRecord2.draws += 1;
+                break;
+            default:
+                console.log("error updating winners and losers")
+        }
+        // save changes
+        await recordsDBX.put(vsRecord1);
+        await recordsDBX.put(vsRecord2);
+
+        //await refreshUI();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+//update the records database with a result is chosen
+function updateRecords(winner, loser, outcome){
+
+    if(outcome=="update"){
+        if(winner!=undefined&&loser!=undefined) {
+            var record1Id = winner.id + " " + loser.id;
+            var record2Id = loser.id + " " + winner.id;
+            console.log("called updateRecords: " + record1Id);
+        }
+    } else {
+        console.log("called updateRecords: " + winner.name  + ", " + loser.name + ", " + outcome + ")");
+    }
+
+    var record1Id = winner.id + " " + loser.id;
+    var record2Id = loser.id + " " + winner.id;
+    // create if they don't exist
+
+    promiseChain = addRecord(winner, loser)
+    .then(() => addRecord(loser, winner))
+    .then(() => {
+        console.log("update record");
+        // collect promises (DB updates) for both records
+        let promises = [];
+
+        switch (outcome) {
         case "KO":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wko += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lko += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wko++));
+            promises.push(updateField(record2Id, d => d.lko++));
             break;
         case "SO":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wso += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lso += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wso++));
+            promises.push(updateField(record2Id, d => d.lso++));
             break;
         case "burst":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wbst += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lbst += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wbst++));
+            promises.push(updateField(record2Id, d => d.lbst++));
             break;
         case "x":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.wx += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.lx += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.wx++));
+            promises.push(updateField(record2Id, d => d.lx++));
             break;
         case "draw":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.draws += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.draws += 1;
-                    recordsDBX.put(doc).then(displayRecords);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => d.draws++));
+            promises.push(updateField(record2Id, d => d.draws++));
             break;
         case "update":
-            recordsDBX.get(record1Id, function(err, doc) {
-                if(!err){
-                    doc.challenger = winner;
-                    doc.defender = loser;
-                    recordsDBX.put(doc);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-            recordsDBX.get(record2Id, function(err, doc) {
-                if(!err){
-                    doc.challenger = loser;
-                    doc.defender = winner;
-                    recordsDBX.put(doc);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
+            promises.push(updateField(record1Id, d => {
+                d.challenger = winner;
+                d.defender = loser;
+            }));
+            promises.push(updateField(record2Id, d => {
+                d.challenger = loser;
+                d.defender = winner;
+            }));
             break;
         default:
-            console.log("Something went wrong. Record not added")
+            console.log("Something went wrong. Record not added");
+        }
+        // submit whatever results are in the list
+        return Promise.all(promises);
+    })
+    .then(() => {
+        // all DB updates finished, now update UI
+        return displayRecords();
+    });
+
+    return promiseChain;
+
+
+}
+
+/**
+ * updates one field on a vsRecord
+ * (technically, it can do more with the function)
+ * returns promise from pouchdb
+ * ex: increment wko (KO wins)
+ * updateField(record1Id, d => d.wko++).then(doStuffFunc);
+ * @param {string} id - beyblade id
+ * @param {*} updater - provide your own function
+ * @returns promise
+ */
+function updateField(id, updater) {
+  return recordsDBX.get(id).then(doc => {
+    updater(doc);
+    return recordsDBX.put(doc);
+  });
+}
+
+async function asyncUpdateWinCounts(winner, loser, outcome){
+    console.log("called asyncUpdateWinCounts(" + winner.name + ", " + loser.name + ", " + outcome + ")");
+
+    try {
+        let winnerRecord = await beyBladeDBX.get(winner.id);
+        let loserRecord = await beyBladeDBX.get(loser.id);
+        await addToBeybladeUndoStack(winnerRecord);
+        await addToBeybladeUndoStack(loserRecord);
+
+        switch(outcome) {
+            case "KO":
+                winnerRecord.build.winsKO += 1;
+                loserRecord.build.loseKO += 1;
+                break;
+            case "SO":
+                winnerRecord.build.winsSO += 1;
+                loserRecord.build.loseSO += 1;
+                break;
+            case "burst":
+                winnerRecord.build.winsBst += 1;
+                loserRecord.build.loseBst += 1;
+                break;
+            case "x":
+                winnerRecord.build.winsX += 1;
+                loserRecord.build.loseX += 1;
+                break;
+            case "draw":
+                winnerRecord.build.draws += 1;
+                loserRecord.build.draws += 1;
+                break;
+            default:
+                console.log("error updating winners and losers")
+        }
+
+        await beyBladeDBX.put(winnerRecord);
+        await beyBladeDBX.put(loserRecord);
+
+        await refreshUI();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const undoStackBeyblade = [];
+const undoStackVsRecord = [];
+async function addToBeybladeUndoStack(doc) {
+    console.log("adding to undo beyblade stack: " + doc._id);
+    let cloneDoc = structuredClone(doc);
+    undoStackBeyblade.push( cloneDoc );
+}
+async function addToVsRecordUndoStack(doc) {
+    console.log("adding to undo vs stack: " + doc._id);
+    cloneVsRecord = structuredClone(doc);
+    undoStackVsRecord.push( cloneVsRecord );
+}
+function clearUndoStack(){
+    console.log("clear undo stack");
+    // clear const arrays
+    while (undoStackVsRecord.length > 0) {
+        undoStackVsRecord.pop();
+    }
+    while (undoStackBeyblade.length > 0) {
+        undoStackBeyblade.pop();
+    }
+}
+
+/**
+ * return beyblades and VS Record to their previous states
+ */
+async function undoRecord() {
+    console.log("undo-ing");
+    // beyblade undo
+    try {
+        if(undoStackBeyblade.length > 0) {
+            let applyMe1 =  undoStackBeyblade.pop();
+            // get current revision of this doc, grab the _rev field, apply to obj
+            let currentRev1 = await beyBladeDBX.get(applyMe1._id);
+            applyMe1._rev = currentRev1._rev;
             
+            console.log(JSON.stringify(applyMe1));
+            await beyBladeDBX.put( applyMe1 );
+
+            let applyMe2 =  undoStackBeyblade.pop();
+            let currentRev2 = await beyBladeDBX.get(applyMe2._id);
+            applyMe2._rev = currentRev2._rev;
+            console.log(JSON.stringify(applyMe2));
+            await beyBladeDBX.put( applyMe2 );
+        } else {
+            console.log("nothing to undo (bey)");
+        }
+    } catch(err) {
+        console.log("error re-applying beyblade stack:");
+        console.log(err);
     }
 
-}
+    //vs record undo
+    try {
+        if(undoStackVsRecord.length > 0) {
+            let applyVs1 = undoStackVsRecord.pop();
+            let currentVsRev1 = await recordsDBX.get(applyVs1._id);
+            applyVs1._rev = currentVsRev1._rev;
+            await recordsDBX.put(applyVs1);
 
-//updates the win and loss counts for both beys when a result is chosen
-function updateWinCounts(winner, loser, outcome){
+            let applyVs2 = undoStackVsRecord.pop();
+            let currentVsRev2 = await recordsDBX.get(applyVs2._id);
+            applyVs2._rev = currentVsRev2._rev;
+            await recordsDBX.put(applyVs2);
 
-    console.log("called updateWinCounts(" + winner.name + ", " + loser.name + ", " + outcome + ")");
-
-    switch(outcome){
-        case "KO":
-        beyBladeDBX.get(winner.id, function(err, doc) {
-            if(!err){
-                doc.build.winsKO += 1;
-                beyBladeDBX.put(doc).then(refreshUI);
-            }
-            // else{
-            //     console.log(err);
-            // }
-        });
-    
-        beyBladeDBX.get(loser.id, function(err, doc) {
-            if(!err){
-                doc.build.loseKO += 1;
-                beyBladeDBX.put(doc).then(refreshUI);
-            }
-            // else{
-            //     console.log(err);
-            // }
-        });
-        break;
-
-        case "SO":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.winsSO += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.loseSO += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        case "burst":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.winsBst += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.loseBst += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        case "x":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.winsX += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.loseX += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        case "draw":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.draws += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.draws += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        default:
-            console.log("something went wrong with updating wins");
-
+            winners.textContent = "Undid last round";
+        } else {
+            console.log("nothing to undo (vs)");
+            winners.textContent = "Nothing to undo";
+        }
+    } catch(err) {
+        console.log("error re-applying vsRecord stack:");
+        console.log(err);
     }
+    refreshUI();
     
 }
+
+// prevents double taps on touchscreen
+let undoDebounced = debounce(undoRecord);
 
 // undos last entered result
 function undoLastRecord(){
@@ -1244,7 +1268,7 @@ function setDbBey(){
             
             //set copy to history button
             if(!wasCopyHistToClipGenerated) {
-                console.log("adding listener");
+                console.log("adding listener for copy to history button");
                 copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
                 copyStatsbtn.classList.add("btn");
                 copyStatsbtn.classList.add("btn-primary");
@@ -1267,7 +1291,7 @@ function setDbBey(){
                     wasBey1Generated = true;
                     showBeybladeStats(bey1, 1);
                     createWinButtons();
-                    console.log(bey1.winsSO)
+                    clearUndoStack();
                 });
                 dbBeySpace.append(bey1Statbtn);
                 wasSetBey1Generated = true;
@@ -1283,6 +1307,7 @@ function setDbBey(){
                     wasBey2Generated = true;
                     showBeybladeStats(bey2, 2);
                     createWinButtons();
+                    clearUndoStack();
                 });
                 dbBeySpace.append(bey2Statbtn);
                 wasSetBey2Generated = true;
@@ -1337,9 +1362,9 @@ function showBeybladeStats(bey, whichBey) {
                 if(!err){
                     bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
                     bey1Stats.textContent = "Weight: " + round(doc.build.weight, 2) + " grams";
-                    bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey1SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey1Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
+                    bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
                 }
@@ -1353,9 +1378,9 @@ function showBeybladeStats(bey, whichBey) {
                 if(!err){
                     bey2Is.textContent = "BeyBlade 2 is: " + doc.build.name;
                     bey2Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
-                    bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey2SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey2Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
+                    bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
                 }
@@ -1395,7 +1420,7 @@ function displayRecords(){
     var draws = document.getElementById("draws");
     var totalRounds = document.getElementById("vsTotalRounds");
 
-    var recordID = bey1.id + " " + bey2.id;
+    var vsId = bey1.id + " " + bey2.id;
 
     var recordsSpace = document.getElementById("recordsSpace"); //NEW
     var recordsCopybtn = document.createElement("button"); //NEW
@@ -1416,7 +1441,21 @@ function displayRecords(){
     var draw = 0;
     var totalRound = 0;
 
-    recordsDBX.get(recordID, function(err, doc){
+    console.log("fetching record ID " + vsId);
+    recordsDBX.get(vsId)
+    .then(function() { 
+        console.log("vsRecord already exists") 
+    })
+    .catch(function (err) {
+        console.log("error:\n"+err);
+    });
+    recordsDBX.get(vsId, function(err, vsRecord){
+        doc = vsRecord;
+        if (doc!=undefined && doc.title!=undefined) {
+            console.log("displayRecords() got:\n"+doc.title);
+        } else {
+            console.log("displayRecords() got:\n"+JSON.stringify(doc));
+        }
         record1.innerHTML = noBreakRatchetText(bey1.name);
         ko1.textContent = doc.wko;
         bey1KO = doc.wko;

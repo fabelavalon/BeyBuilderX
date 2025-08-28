@@ -18,7 +18,11 @@ var bitChips = [
     {"name":"Cerberus", "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Cr", "wins":0, "losses":0, "draws":0, "id":7},
     {"name":"Whale",    "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Wh", "wins":0, "losses":0, "draws":0, "id":8},
     {"name":"Valkyrie", "spin":"right", "system":"CX", "type":"metal",    "weight":5.43, "height":0, "abbv":"Vl", "wins":0, "losses":0, "draws":0, "id":9},
-    //{"name":"Leon",     "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Ln", "wins":0, "losses":0, "draws":0, "id":10},
+    {"name":"Hornet",   "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Hr", "wins":0, "losses":0, "draws":0, "id":10},
+    {"name":"Kraken",   "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Kr", "wins":0, "losses":0, "draws":0, "id":11},
+    {"name":"Stag",     "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"St", "wins":0, "losses":0, "draws":0, "id":12},
+    //{"name":"Sol",      "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Sl", "wins":0, "losses":0, "draws":0, "id":13},
+    //{"name":"Leon",     "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Ln", "wins":0, "losses":0, "draws":0, "id":14},
 
 ];
 
@@ -105,7 +109,12 @@ var blades = [
     {"name":"RockLeone",         "spin":"right", "system":"BX", "weight":29.88, "height":0, "abbv":"RcLn", "wins":0, "losses":0, "draws":0, "id":78},
     {"name":"SamuraiCalibur",    "spin":"right", "system":"BX", "weight":36.00, "height":0, "abbv":"SmCb", "wins":0, "losses":0, "draws":0, "id":79},
     {"name":"SharkScale",        "spin":"right", "system":"UX", "weight":37.60, "height":0, "abbv":"ShSc", "wins":0, "losses":0, "draws":0, "id":80},
-    //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":81},
+    {"name":"Fort",              "spin":"right", "system":"CX", "weight":28.72, "height":0, "abbv":"Fr",   "wins":0, "losses":0, "draws":0, "id":81},
+    {"name":"Wriggle",           "spin":"right", "system":"CX", "weight":29.45, "height":0, "abbv":"Wr",   "wins":0, "losses":0, "draws":0, "id":82},
+    {"name":"Antler",            "spin":"right", "system":"CX", "weight":29.33, "height":0, "abbv":"An",   "wins":0, "losses":0, "draws":0, "id":83},
+    {"name":"GoatTackle",        "spin":"right", "system":"BX", "weight":31.46, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":84},
+    //{"name":"Eclipse",           "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Ec",   "wins":0, "losses":0, "draws":0, "id":85},
+    //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":86},
     
 ];
 
@@ -121,6 +130,7 @@ var assistBlades = [
     {"name":"Assault", "spin":"right", "system":"CX", "weight":5.00, "height":0, "abbv":"A",   "wins":0, "losses":0, "draws":0, "id":7},
     {"name":"Wheel",   "spin":"right", "system":"CX", "weight":7.26, "height":0, "abbv":"W",   "wins":0, "losses":0, "draws":0, "id":8},
     {"name":"Massive", "spin":"right", "system":"CX", "weight":5.32, "height":0, "abbv":"M",   "wins":0, "losses":0, "draws":0, "id":9},
+    //{"name":"Dual",    "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"D",   "wins":0, "losses":0, "draws":0, "id":10},
     
  ];
 
@@ -202,5 +212,6 @@ var bits = [
     {"name":"Wall Ball",    "weight":2.43,  "height":3,   "abbv":"WB", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":39},
     {"name":"Merge",        "weight":3.39,  "height":6,   "abbv":"M",  "type":"bit",        "wins":0, "losses":0, "draws":0, "id":40},
     {"name":"Under Flat",   "weight":2.05,  "height":0,   "abbv":"UF", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":41},
+    //{"name":"Trans Kick",   "weight":0.00,  "height":0,   "abbv":"TK", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":42},
 
 ];
