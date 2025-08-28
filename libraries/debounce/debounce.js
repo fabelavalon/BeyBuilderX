@@ -33,6 +33,7 @@ function debounce(func, wait = 200, immediate = true) {
         }
     };
 
+    // collect arguments passed by callback func
     var debounced = restArguments(function(_args) {
         context = this;
         args = _args;
@@ -52,11 +53,18 @@ function debounce(func, wait = 200, immediate = true) {
     return debounced;
 }
 
-// Some functions take a variable number of arguments, or a few expected
-// arguments at the beginning and then a variable number of values to operate
-// on. This helper accumulates all remaining arguments past the function’s
-// argument length (or an explicit `startIndex`), into an array that becomes
-// the last argument. Similar to ES6’s "rest parameter".
+
+/**
+ * Some functions take a variable number of arguments, or a few expected
+ * arguments at the beginning and then a variable number of values to operate
+ * on. This helper accumulates all remaining arguments past the function’s
+ * argument length (or an explicit `startIndex`), into an array that becomes
+ * the last argument. Similar to ES6’s "rest parameter".
+ * 
+ * @param {*} func 
+ * @param {*} startIndex 
+ * @returns 
+ */
 function restArguments(func, startIndex) {
     
     startIndex = startIndex == null ? func.length - 1 : +startIndex;
