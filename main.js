@@ -386,6 +386,7 @@ function generateBey1(){
     bey1Is.textContent = "" + bey1.name;
     showBeybladeStats(bey1, 1);
     createWinButtons();
+    clearUndoStack();
 
 }
 
@@ -469,7 +470,8 @@ function generateBey2(){
     bey2Is.textContent = "" + bey2.name;
     showBeybladeStats(bey2, 2);
     createWinButtons();
-    
+    clearUndoStack();
+
 }
 
 //populates win buttons on screen
@@ -485,12 +487,15 @@ function createWinButtons(){
 
         //once both beys are made, make sure they have a matchup in the recordsDBX
         console.log("win button adding records 1");
+        // TODO: swap for asyncUpdateRecords
         updateRecords(bey1, bey2, "update")
         .then(()=>{
             console.log("win button adding records 2");
             return updateRecords(bey2, bey1, "update");
         })
         .then(displayRecords);
+
+
 
         // titles above win buttons
         bey1WinTitle.textContent = bey1.name;
@@ -868,6 +873,17 @@ async function addToVsRecordUndoStack(doc) {
     cloneVsRecord = structuredClone(doc);
     undoStackVsRecord.push( cloneVsRecord );
 }
+function clearUndoStack(){
+    console.log("clear undo stack");
+    // clear const arrays
+    while (undoStackVsRecord.length > 0) {
+        undoStackVsRecord.pop();
+    }
+    while (undoStackBeyblade.length > 0) {
+        undoStackBeyblade.pop();
+    }
+}
+
 /**
  * return beyblades and VS Record to their previous states
  */
@@ -909,142 +925,22 @@ async function undoRecord() {
             let currentVsRev2 = await recordsDBX.get(applyVs2._id);
             applyVs2._rev = currentVsRev2._rev;
             await recordsDBX.put(applyVs2);
+
+            winners.textContent = "Undid last round";
         } else {
             console.log("nothing to undo (vs)");
+            winners.textContent = "Nothing to undo";
         }
     } catch(err) {
         console.log("error re-applying vsRecord stack:");
         console.log(err);
     }
     refreshUI();
-    //TODO: display to user
+    
 }
 
 // prevents double taps on touchscreen
 let undoDebounced = debounce(undoRecord);
-
-//updates the win and loss counts for both beys when a result is chosen
-function updateWinCounts(winner, loser, outcome){
-
-    console.log("called updateWinCounts(" + winner.name + ", " + loser.name + ", " + outcome + ")");
-
-    switch(outcome){
-        case "KO":
-        beyBladeDBX.get(winner.id, function(err, doc) {
-            if(!err){
-                doc.build.winsKO += 1;
-                beyBladeDBX.put(doc).then(refreshUI);
-            }
-            // else{
-            //     console.log(err);
-            // }
-        });
-    
-        beyBladeDBX.get(loser.id, function(err, doc) {
-            if(!err){
-                doc.build.loseKO += 1;
-                beyBladeDBX.put(doc).then(refreshUI);
-            }
-            // else{
-            //     console.log(err);
-            // }
-        });
-        break;
-
-        case "SO":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.winsSO += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.loseSO += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        case "burst":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.winsBst += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.loseBst += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        case "x":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.winsX += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.loseX += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        case "draw":
-            beyBladeDBX.get(winner.id, function(err, doc) {
-                if(!err){
-                    doc.build.draws += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        
-            beyBladeDBX.get(loser.id, function(err, doc) {
-                if(!err){
-                    doc.build.draws += 1;
-                    beyBladeDBX.put(doc).then(refreshUI);
-                }
-                // else{
-                //     console.log(err);
-                // }
-            });
-        break;
-
-        default:
-            console.log("something went wrong with updating wins");
-
-    }
-    
-}
 
 // undos last entered result
 function undoLastRecord(){
@@ -1395,6 +1291,7 @@ function setDbBey(){
                     wasBey1Generated = true;
                     showBeybladeStats(bey1, 1);
                     createWinButtons();
+                    clearUndoStack();
                 });
                 dbBeySpace.append(bey1Statbtn);
                 wasSetBey1Generated = true;
@@ -1410,6 +1307,7 @@ function setDbBey(){
                     wasBey2Generated = true;
                     showBeybladeStats(bey2, 2);
                     createWinButtons();
+                    clearUndoStack();
                 });
                 dbBeySpace.append(bey2Statbtn);
                 wasSetBey2Generated = true;
