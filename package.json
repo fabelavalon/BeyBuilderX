@@ -6,9 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 logo.svg"
   },
   "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@vite-pwa/assets-generator": "^1.0.0",
+    "eslint": "^9.35.0",
+    "globals": "^16.3.0",
     "vite": "^7.1.2"
   }
 }
