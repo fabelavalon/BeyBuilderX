@@ -2354,12 +2354,12 @@ function loadTheme(){
             selectedTheme=result;
             console.log('Loaded saved theme');
             console.log(JSON.stringify(result));
-            theme.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
+            theme.href="./css/theme-"+selectedTheme.name.toLowerCase()+".css";
             themeSelect.value=selectedTheme.name;
         }
         else{
             console.log(err);
-            if(err.status=404) {
+            if(err.status === 404) {
                 console.log("No existing theme. Using default");
                 // calling saveTheme with no params will select the default theme and properly init the DB theme object
                 saveTheme();
