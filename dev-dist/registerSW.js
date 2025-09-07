@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/BeyBuilderX/dev-sw.js?dev-sw', { scope: '/BeyBuilderX/', type: 'classic' })
