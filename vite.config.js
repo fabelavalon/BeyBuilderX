@@ -1,9 +1,7 @@
 import { VitePWA } from "vite-plugin-pwa";
 
-const basePath = import.meta.env.MODE === "development" ? "" : "/BeyBuilderX/";
-
 export default {
-  base: basePath,
+  base: "/BeyBuilderX/",
   server: {
     port: 8080,
   },
