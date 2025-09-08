@@ -21,6 +21,15 @@
     <link href="./beybuilder.css" rel="stylesheet"  />
     <link href="./theme-default.css" rel="stylesheet" id="theme"  />
     <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
+    <link rel="manifest" href="/BeyBuilderX/manifest.webmanifest">
+    <script id="vite-plugin-pwa:register-sw" src="/BeyBuilderX/registerSW.js"></script>
+    <script>
+      if('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        })
+      }
+    </script>
 </head>
 
 <body>

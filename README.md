@@ -34,5 +34,5 @@ BeyBuilder is a Beyblade stat tracker and random build generator for Beyblade X
 
 - Clone the repo
 - Install the latest LTS Version of [Node.js](https://nodejs.org/en)
-- Run `npm run dev`
+- Run `npm run install`
 - That's it!
