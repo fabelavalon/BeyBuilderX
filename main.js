@@ -292,8 +292,10 @@ function main(){
     //fill the dbList
     showBeyblades();
     
+    // on click and other event listeners
     loadTheme();
     themeSwitchListener();
+    importDbSetup();
 };
 
 //generate a beyblade based on the selections for the first set of drop downs
@@ -1223,6 +1225,7 @@ function setDbBey(){
             //TODO: move text and buttons to HTML, to make styling/layout easier
 
             // build a new BeyBlade object using parts, then overlay win/loss data from database
+            //if(allBlades[doc.build.blade].system != undefined)
             if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
                 var castDoc = Object.assign( new BeyBlade(-1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
             }
@@ -2065,55 +2068,79 @@ async function exportDb() {
         settings: docsSettings
     };
 
-    // Create a Blob and trigger download (no change here)
+    // Create a Blob and trigger download
+    let dateString = new Date()
+        .toISOString()
+        .replace(/[:.]/g, '-')  //swap chars for dash, for filename safety
+        .replace("T", "_")
+        .replace("Z", "")
+        .slice(0, 16); // trim to YYYY-MM-DD_HH-MM
+    exportFilename = `beybuilderX-database-${dateString}.json`;
+
     const dataStr = JSON.stringify(exportData, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `filameter-db-export-${Date.now()}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const tmpElement = document.createElement("a");
+    tmpElement.href = url;
+    tmpElement.download = exportFilename;;
+    document.body.appendChild(tmpElement);
+    tmpElement.click();
+    document.body.removeChild(tmpElement);
     URL.revokeObjectURL(url);
 }
 
+const fileInput = document.getElementById('importDbFile');
 async function importDbSetup(){
-    const fileInput = document.getElementById('importDbFile');
-    const importDbButton = document.getElementById('importDbButton');
-    // load json from file
-    importDbButton.addEventListener('click', async () => {
-        const file = fileInput.files[0];
-        if (!file) {
-            console.error("No file selected");
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-            try {
-                const data = JSON.parse(event.target.result);
-                console.log("Importing database:", data);
-                // Clear existing databases
-                await beyBladeDBX.destroy();
-                await recordsDBX.destroy();
-                await settings.destroy();
-                // Recreate databases
-                beyBladeDBX = new PouchDB("BeyBladesX");
-                recordsDBX = new PouchDB("RecordX");
-                settings = new PouchDB("settings");
-                // bulk import
-                await beyBladeDBX.bulkDocs(data.beyBladeDBX);
-                await recordsDBX.bulkDocs(data.recordsDBX);
-                await settings.bulkDocs(data.settings);
-                console.log("Database imported successfully");
-            } catch (error) {
-                console.error("Error importing database:", error);
-            }
-        };
-        reader.readAsText(file);
-    });
+    fileInput.addEventListener('change', () => {
+        // hide bootstrap model id="settings"
+        var settingsModal = bootstrap.Modal.getInstance(document.getElementById('settings'));
+        settingsModal.hide();
+
+        // show bootstrap modal id="areYouSureImport"
+        var importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'), {});
+        importModal.show();        
+    }
+    );
+
+    
 }
-importDbSetup();
+
+
+//fileInput.addEventListener('change', importDatabase);
+async function importDatabase() {
+    const file = fileInput.files[0];
+    if (!file) {
+        console.error("No file selected");
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        try {
+            console.log("Importing database");
+            const data = JSON.parse(event.target.result);
+            // Clear existing databases
+            await beyBladeDBX.destroy();
+            await recordsDBX.destroy();
+            await settings.destroy();
+            // Recreate databases
+            beyBladeDBX = new PouchDB("BeyBladesX");
+            recordsDBX = new PouchDB("RecordX");
+            settings = new PouchDB("settings");
+            // bulk import
+            await beyBladeDBX.bulkDocs(data.beyBladeDBX);
+            await recordsDBX.bulkDocs(data.recordsDBX);
+            await settings.bulkDocs(data.settings);
+            console.log("Database imported successfully");
+        } catch (error) {
+            console.error("Error importing database:", error);
+        }
+    };
+    reader.readAsText(file);
+
+    
+    showBeyblades();
+    // todo: alert user
+}
 
 //run main on startup
 main();

@@ -527,12 +527,30 @@
         </div>
       </div>
 
-      <!-- pick theme, swap css file -->
-      <div class="modal fade" id="themeSwitcher" tabindex="-1" aria-labelledby="themeSwitcher-body" aria-hidden="true">
+      <!-- import database confirmation popup -->
+      <div class="modal fade" id="areYouSureImport" tabindex="-1" aria-labelledby="importConfirmLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="themeSwitcher-body">Select a theme</h5>
+                <h5 class="modal-title text-center" id="importConfirmLabel">Are You Sure?</h5>
+                <p>Importing a database will <b>overwrite</b> your current database. We recommended you export your current database first.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="importDatabase()">Yes, Import</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- pick theme, swap css file -->
+      <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="settings-body" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+                <h4 class="modal-title" id="settings-body">Settings</h5>
+
+                <h5 class="">Select a theme</h5>
                 <select id="themeSelect" class="select-basic form-select">
                   <option value="default">Default</option>
                   <option value="grey">Grey</option>
@@ -541,18 +559,20 @@
                 </select>
 
                 <br>
+                <h5>Export Database</h5>
                 <button type="button" class="btn btn-primary" onclick="exportDb()">Export local database</button>
 
                 <br>
                 <br>
                 <!-- <button type="button" class="btn btn-primary" onclick="importDb()">Import database</button> -->
 
+                <h5>Import Database</h5>
                 <!-- <form id="importDbForm"> -->
                   <div class="form-group">
+                    <label for="importDbFile">Import database from JSON file:</label>
                     <input class="form-control" type="file" id="importDbFile" name="importDbFile" accept=".json">
                     <br>
-                    <!-- <button type="submit" class="btn btn-primary">Import database</button> -->
-                    <button class="btn btn-primary" type="button" id="importDbButton">Import database</button>
+                    <!-- <button class="btn btn-primary" type="button" id="importDbButton">Import database</button> -->
   
                   </div>
                 <!-- </form> -->
@@ -587,7 +607,7 @@
 
   <ul class="nav col-md-4 justify-content-end overflow-hidden">
     <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX"  target="_blank" rel="noopener" class="nav-link px-3">Source code</a></li>
-    <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#themeSwitcher" class="nav-link px-3">Theme</a></li>
+    <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#settings" class="nav-link px-3">Settings</a></li>
     <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3">About</a></li>
   </ul>
 </footer>
