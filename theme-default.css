@@ -118,6 +118,24 @@ select:disabled {
     box-shadow: 0 0 0 .2rem rgba(190, 190, 190, 0.5);
 }
 
+/* styling for success buttons */
+.btn-success {
+    color: #000;
+    background-color: #67becf;
+    border-color: #59298c;
+}
+
+.btn-success:hover {
+    color: #fff;
+    background-color: #35aa46;
+    border-color: #67becf;
+}
+
+.btn-success:focus,
+.btn-success.focus {
+    box-shadow: 0 0 0 .2rem #35aa46;
+}
+
 
 /* make sure tables and table elements have the proper borders */
 td, tr {

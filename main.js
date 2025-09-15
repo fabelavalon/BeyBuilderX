@@ -57,6 +57,7 @@ var bey2WinTitle = document.getElementById("bey2-button-title");
 
 //...for the dbList
 var selectedBey = document.getElementById("dbSelectList");
+const dbSelectList = document.getElementById("dbSelectList");
 
 //import elements for the logging...
 //..dbBey stats
@@ -109,9 +110,18 @@ var partBst = document.getElementById("partBst");
 var partX = document.getElementById("partX");
 var partDraw = document.getElementById("partDraw");
 
+// settings
+const settingsModal = new bootstrap.Modal(document.getElementById('settings'));
+const importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'));
+const fileInput = document.getElementById('importDbFile');
+
 //theme switcher
 var themeSelect = document.getElementById("themeSelect");
-var theme = document.getElementById("theme");
+var themeLink = document.getElementById("theme");
+
+// error modal
+const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+const errorModalMsg = document.getElementById("errorMsg");
 
 //everything else
 var error = document.getElementById("error");
@@ -1190,8 +1200,7 @@ function undoLastRecord(){
 
 //fills the bey selection menu
 function showBeyblades() {
-
-    var dbSelectList = document.getElementById("dbSelectList");
+    console.log("showBeyblades()");
 
     //clear the list so we dont just add more options
     while (dbSelectList.options.length > 0) {                
@@ -1860,8 +1869,6 @@ function fillMatchupHist(history){
 //delete a bey from the system
 function deleteBey(){
 
-    var dbSelectList = document.getElementById("dbSelectList");
-
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
             beyBladeDBX.remove(doc, function(err, doc){
@@ -2022,7 +2029,7 @@ function loadTheme(){
             selectedTheme=result;
             console.log('Loaded saved theme');
             console.log(JSON.stringify(result));
-            theme.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
+            themeLink.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
             themeSelect.value=selectedTheme.name;
         }
         else{
@@ -2089,9 +2096,6 @@ async function exportDb() {
     URL.revokeObjectURL(url);
 }
 
-const fileInput = document.getElementById('importDbFile');
-var settingsModal = new bootstrap.Modal(document.getElementById('settings'));
-var importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'));
 async function importDbSetup(){
     fileInput.addEventListener('change', () => {
         // hide bootstrap model id="settings"
@@ -2103,24 +2107,33 @@ async function importDbSetup(){
 }
 
 async function openSettings(){
-    // clear file input id="importDbFile"
-    fileInput.value = "";
+    fileInput.value = ""; // clear import file input
     settingsModal.show();
 }
 
 
-//fileInput.addEventListener('change', importDatabase);
 async function importDatabase() {
     const file = fileInput.files[0];
     if (!file) {
         console.error("No file selected");
         return;
     }
+
     const reader = new FileReader();
     reader.onload = async (event) => {
         try {
+            console.log("Backing up databases");
             console.log("Importing database");
             const data = JSON.parse(event.target.result);
+            // Validate structure
+            if (!data.beyBladeDBX || !data.recordsDBX || !data.settings) {
+                throw new Error("Invalid database file");
+            }
+            // check for any data
+            if(data.beyBladeDBX.length == 0 && data.recordsDBX.length == 0 && data.settings.length == 0){
+                throw new Error("No data found in the import file");
+            }
+
             // Clear existing databases
             await beyBladeDBX.destroy();
             await recordsDBX.destroy();
@@ -2134,16 +2147,33 @@ async function importDatabase() {
             await recordsDBX.bulkDocs(data.recordsDBX);
             await settings.bulkDocs(data.settings);
             console.log("Database imported successfully");
+
+            // refresh UI
+            showBeyblades();
+            importModal.hide();
+            fileInput.value = ""; // clear import file input
+            // alert user
+            spinMe(dbSelectList);
+
         } catch (error) {
             console.error("Error importing database:", error);
+            importModal.hide();
+            showErrorModal("Error importing database. Please ensure the file is a valid BeyBuilderX export.<p></p>" + error.message);
+            // clear file input id="importDbFile"
+            fileInput.value = "";
+            showBeyblades();
         }
     };
-    reader.readAsText(file);
-
     
-    showBeyblades();
-    // todo: alert user
+    // start
+    reader.readAsText(file);
 }
+
+async function showErrorModal(errMsg){
+    errorModalMsg.innerHTML = errMsg;
+    errorModal.show();
+}
+
 
 //run main on startup
 main();

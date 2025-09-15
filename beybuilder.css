@@ -78,10 +78,12 @@
 }
 
 /* styling for basic buttons */
-.btn-primary {
+.btn-primary, .btn-success {
     padding: 4px;
     margin: 3px;
 }
+
+
 
 
 /* vs win buttons */
