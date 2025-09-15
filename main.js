@@ -2090,19 +2090,22 @@ async function exportDb() {
 }
 
 const fileInput = document.getElementById('importDbFile');
+var settingsModal = new bootstrap.Modal(document.getElementById('settings'));
+var importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'));
 async function importDbSetup(){
     fileInput.addEventListener('change', () => {
         // hide bootstrap model id="settings"
-        var settingsModal = bootstrap.Modal.getInstance(document.getElementById('settings'));
         settingsModal.hide();
-
         // show bootstrap modal id="areYouSureImport"
-        var importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'), {});
         importModal.show();        
     }
     );
+}
 
-    
+async function openSettings(){
+    // clear file input id="importDbFile"
+    fileInput.value = "";
+    settingsModal.show();
 }
 
 
