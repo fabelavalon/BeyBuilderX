@@ -130,6 +130,15 @@ table{
     border: 1px solid #fff;
 }
 
+.header {
+    background-color: #7355e6;
+}
+.header-logo {
+    max-height: 225;
+    width: 375;
+    margin-top: -45px;
+}
+
 /* make modal headers and footers sticky */
 .modal-header--sticky {
     background-color: inherit;
