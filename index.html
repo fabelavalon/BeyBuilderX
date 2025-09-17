@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--*============================================================*
-    *BeyBuilder X v1.3 for Beyblade X                            *
+    *BeyBuilder X v1.4 for Beyblade X                            *
     *Author: Fabel                                               *
     *Copyright 2023-2025                                         *
     *============================================================*-->
@@ -9,20 +9,20 @@
 <html>
 
 <head>
-    <title>BeyBuilder X v1.3</title>
+    <title>BeyBuilder X v1.4</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="./bootstrap.css" rel="stylesheet"  />
+    <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
     <link href="./theme-default.css" rel="stylesheet" id="theme"  />
-    <script src="./bootstrap.bundle.js"></script>
+    <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
 </head>
 
 <body>
 
     <!--Header space-->
     <div class="container-fluid text-md-start text-center header">
-        <h1>BeyBuilder X v1.3</h1>
+        <h1>BeyBuilder X v1.4</h1>
         <h3>for Beyblade X</h3>
     </div>
 
@@ -32,10 +32,10 @@
             <div class="col-md-9"> <!-- selectors -->
                 <div class="row">
                   <div class="col-sm-4">
-                    <select id="bey1BitChip" class="select-basic form-select"><option value="random">Random Bit Chip</option></select>
+                    <select id="bey1BitChip" class="select-basic form-select"><option value="random">Random Lock Chip</option></select>
                   </div>
                     <div class="col-sm-4">
-                        <select id="bey1Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 1)"><option value="random">Random Blade</option></select>
+                        <select id="bey1Blade" class="select-basic form-select" onchange="disableDropdowns('blade', this.value, 1)"><option value="random">Random Blade</option></select>
                     </div>
                     <div class="col-sm-4">
                       <select id="bey1AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-2"></div><!-- spacer -->
                     <div class="col-sm-4">
-                      <select id="bey1Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                      <select id="bey1Bit" class="select-basic form-select" onchange="disableDropdowns('bit', this.value, 1)"><option value="random">Random Bit</option></select>
                     </div>
                     <div class="col-1"></div><!-- spacer -->
                 </div>
@@ -69,11 +69,11 @@
                           <br>
                           <span id="bey1Stats"></span>
                           <br>
-                          <span id="bey1KO"></span>
-                          <br>
                           <span id="bey1SO"></span>
                           <br>
                           <span id="bey1Bst"></span>
+                          <br>
+                          <span id="bey1KO"></span>
                           <br>
                           <span id="bey1X"></span>
                           <br>
@@ -125,10 +125,10 @@
             <div class="col-md-9"> <!-- selectors -->
                 <div class="row">
                   <div class="col-sm-4">
-                    <select id="bey2BitChip" class="select-basic form-select"><option value="random">Random Bit Chip</option></select>
+                    <select id="bey2BitChip" class="select-basic form-select"><option value="random">Random Lock Chip</option></select>
                    </div>
                     <div class="col-sm-4">
-                        <select id="bey2Blade" class="select-basic form-select" onchange="disableDropdowns(this.value, 2)"><option value="random" >Random Blade</option></select>
+                        <select id="bey2Blade" class="select-basic form-select" onchange="disableDropdowns('blade', this.value, 2)"><option value="random" >Random Blade</option></select>
                     </div>
                     <div class="col-sm-4">
                       <select id="bey2AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
@@ -140,7 +140,7 @@
                   </div>
                   <div class="col-2"></div><!-- spacer -->
                   <div class="col-sm-4">
-                      <select id="bey2Bit" class="select-basic form-select"><option value="random">Random Bit</option></select>
+                      <select id="bey2Bit" class="select-basic form-select" onchange="disableDropdowns('bit', this.value, 2)"><option value="random">Random Bit</option></select>
                   </div>
                   <div class="col-1"></div><!-- spacer -->
                 </div>
@@ -161,11 +161,11 @@
                         <br>
                         <span id="bey2Stats"></span>
                         <br>
-                        <span id="bey2KO"></span>
-                        <br>
                         <span id="bey2SO"></span>
                         <br>
                         <span id="bey2Bst"></span>
+                        <br>
+                        <span id="bey2KO"></span>
                         <br>
                         <span id="bey2X"></span>
                         <br>
@@ -190,10 +190,10 @@
                 Bey 1:
               </p>
               <div class="row">
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(1, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
 
@@ -203,10 +203,10 @@
               </p>
               <div class="row">
                 <!-- Bey 2 Win Buttons -->
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinner(2, 'x')">Xtreme Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'SO')">Spin Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'burst')">Burst Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'KO')">Over Finish</button></div>
+                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'x')">Xtreme Finish</button></div>
               </div>
             </div>
           </div>
@@ -214,10 +214,10 @@
           <!-- Draw and Undo Buttons -->
           <div class="row">
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinner(0, 'draw')">Draw</button>
+              <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinnerDebounced(0, 'draw')">Draw</button>
             </div>
             <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoLastRecord()">Undo</button>
+              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoDebounced()">Undo</button>
             </div>
           </div>
 
@@ -324,11 +324,11 @@
               <br>
               <span id="dbPointDif"></span> <!-- new rows end -->
               <br>
-              <span id="dbBeyKO"></span>
-              <br>
               <span id="dbBeySO"></span>
               <br>
               <span id="dbBeyBst"></span>
+              <br>
+              <span id="dbBeyKO"></span>
               <br>
               <span id="dbBeyX"></span>
               <br>
@@ -352,6 +352,7 @@
                 <table class="wide" id="matchupSpace"></table>
             </div>
             <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
+              <button type="button" class="btn btn-primary" id="copyHistToClip">Copy results to clipboard</button>
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
@@ -416,29 +417,29 @@
                 <div class="col-md-6 border">
                   Pick which combination of parts youd like to check the records for. Note: You do not need to choose a full build.
                   <p>
-                  <select id="bitChipR1" class="select-basic"><option value="none">Select Bit Chip</option></select>
+                  <select id="bitChipR1" class="select-basic"><option value="none">Select Lock Chip</option></select>
                   <br>
-                  <select id="bladeR1" class="select-basic" onchange="disableDropdowns(this.value, 3)"><option value="none">Select Blade</option></select>
+                  <select id="bladeR1" class="select-basic" onchange="disableDropdowns('blade', this.value, 3)"><option value="none">Select Blade</option></select>
                   <br>
                   <select id="assistR1" class="select-basic"><option value="none">Select Assist Blade</option></select>
                   <br>
                   <select id="rachetR1" class="select-basic"><option value="none">Select Ratchet</option></select>
                   <br>
-                  <select id="bitR1" class="select-basic"><option value="none">Select Bit</option></select>
+                  <select id="bitR1" class="select-basic" onchange="disableDropdowns('bit', this.value, 3)"><option value="none">Select Bit</option></select>
                   <br>
                 </div>
                 <div class="col-md-6 border">
                   Pick which part or combination of parts to check the records against. Note: At least one part must be selected.
                   <p>
-                  <select id="bitChipR2" class="select-basic"><option value="none">Select Bit Chip</option></select>
+                  <select id="bitChipR2" class="select-basic"><option value="none">Select Lock Chip</option></select>
                   <br>
-                  <select id="bladeR2" class="select-basic" onchange="disableDropdowns(this.value, 4)"><option value="none">Select Blade</option></select>
+                  <select id="bladeR2" class="select-basic" onchange="disableDropdowns('blade', this.value, 4)"><option value="none">Select Blade</option></select>
                   <br>
                   <select id="assistR2" class="select-basic"><option value="none">Select Assist Blade</option></select>
                   <br>
                   <select id="rachetR2" class="select-basic"><option value="none">Select Ratchet</option></select>
                   <br>
-                  <select id="bitR2" class="select-basic"><option value="none">Select Bit</option></select>
+                  <select id="bitR2" class="select-basic" onchange="disableDropdowns('bit', this.value, 4)"><option value="none">Select Bit</option></select>
                   <br>
                 </div>
               </div>
@@ -527,6 +528,21 @@
         </div>
       </div>
 
+      <!-- clear current matchup popup -->
+      <div class="modal fade" id="areYouSure3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title text-center" id="exampleModalLabel3">Are You Sure?</h5>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="clearMatchupHistory()">Yes, Clear the current mathcup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- import database confirmation popup -->
       <div class="modal fade" id="areYouSureImport" tabindex="-1" aria-labelledby="importConfirmLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -605,10 +621,11 @@
       </div>
 
     <!--import scripts-->
-    <script src="./pouchdb-7.3.1.js"></script>
+    <script src="./libraries/pouchdb-7.3.1.js"></script>
+    <script src="./libraries/debounce/debounce.js"></script>
     <script src="./parts.js"></script>
     <script src="./beyblade.js"></script>
-    <script src="./main.js?v2"></script>
+    <script src="./main.js?v3"></script>
     <!--
         TODO:
         ui cleanup
