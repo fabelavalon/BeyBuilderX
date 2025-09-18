@@ -507,8 +507,6 @@ function createWinButtons(){
         })
         .then(displayRecords);
 
-
-
         // titles above win buttons
         bey1WinTitle.textContent = bey1.name;
         bey2WinTitle.textContent = bey2.name;
@@ -1191,14 +1189,16 @@ function showBeyblades() {
     //clear the list so we dont just add more options
     while (dbSelectList.options.length > 0) {                
         dbSelectList.remove(0);
-    }        
+    }
 
+    // add beys to list
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
         doc.rows.sort(function(a, b){
             return (''+a.doc.build.name).localeCompare(b.doc.build.name);
         });
         for(i = 0; i < doc.total_rows; i++){
             if(!err){
+                // add option to list
                 var options = document.createElement("option");
                 options.textContent = doc.rows[i].doc.build.name;
                 options.value = doc.rows[i].doc._id;
@@ -1227,7 +1227,7 @@ function clearDbStats(){
     wasCopyHistToClipGenerated = false;
     wasSetBey1Generated = false;
     wasSetBey2Generated = false;
-
+    dbBeySpace.classList.add("hidden");
 }
 
 // DB stats to copy to clipboard. This must be global so the button listener function gets updated text
@@ -1505,6 +1505,11 @@ function displayRecords(){
 
 function clearMatchupHistory(){
     nullifyBeybladeScores(bey1.id, bey2.id);
+
+    if(dbBey.id == bey1.id || dbBey.id==bey2.id){    
+        // clear selected db bey
+        clearDbStats();
+    }
 }
 
 /**
@@ -2051,7 +2056,11 @@ function fillMatchupHist(history){
 //delete a bey from the system
 function deleteBey(){
     console.log("called deleteBey(), selectedBey: " + selectedBey.value);
+    
+    // clear screen
+    clearDbStats();
 
+    // remove beyblade from DB
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
             beyBladeDBX.remove(doc, function(err, doc){
@@ -2070,11 +2079,8 @@ function deleteBey(){
         }
     });
 
-    /*
-    loop through recordsdbx     --done
-    find all records containing selectedbey     --done
-    remove the found records and adjust win/loss totals for opponents     --how to make effcient
-    */
+
+    // remove vs records
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allRecords) {
         if(err) {
             console.log(err);
@@ -2084,9 +2090,8 @@ function deleteBey(){
 
         for(i = 0; i < allRecords.total_rows; i++){
             //console.log("challenger:" + JSON.stringify( allRecords.rows[i] ) );
-            //var doc = allRecords.rows[i].doc;
 
-            // find records where bey1 == selectedBey
+            // find records where bey1 == selectedBey, delete them
             if( allRecords.rows[i].doc.challenger.id == selectedBey.value ){
                 //clear records
                 //console.log("clearing bey " + allRecords.rows[i].doc.challenger.id);
@@ -2097,28 +2102,15 @@ function deleteBey(){
                 });
             }
 
-            // find records where bey2 == selectedBey
+            // find vs records where bey2 == selectedBey
             if( allRecords.rows[i].doc.defender.id == selectedBey.value ){ // defender will be deleted
                 // console.log(JSON.stringify(allRecords.rows[i].doc));
-                // console.log(
-                //     "wko: " + allRecords.rows[i].doc.wko + ", lko: " + allRecords.rows[i].doc.lko + ", wso: " + allRecords.rows[i].doc.wso + ", lso: " + allRecords.rows[i].doc.lso +
-                //     ", wbst: " + allRecords.rows[i].doc.wbst + ", lbst: " + allRecords.rows[i].doc.lbst + ", wx: " + allRecords.rows[i].doc.wx + ", lx: " + allRecords.rows[i].doc.lx +
-                //     ", draws: " + allRecords.rows[i].doc.draws
-                // );
-                var thisRecord = structuredClone(allRecords.rows[i].doc); // JS deep copy crap. If copied normally (by reference), inside function will have incorrect data. Thanks JS.
+                var thisRecord = structuredClone(allRecords.rows[i].doc); // JS deep copy. If copied normally (by reference), inside function will have incorrect data. Thanks JS.
+                // get beyblade that participated in that vs record, adjust its points
                 beyBladeDBX.get(allRecords.rows[i].doc.challenger.id, function(err, beyblade) { // challenger will be edited
                     if(!err){
-                        //console.log("what happened to record \n"+JSON.stringify(allRecords.rows[i])); //undefined
-                        // console.log("sanity check \n"+JSON.stringify(thisRecord)); 
-                        // console.log("challenger beylade \n" + JSON.stringify(beyblade));
                         // edit bey1's win/loss accordingly
                         // subtract from here, then resubmit beyBladeDBX
-
-                        // sanity check, this should match the console log above
-                        console.log("beyblade winsKO "+ beyblade.build.winsKO);
-                        console.log("allRecords.rows[i].doc.wko " +thisRecord.wko);
-                        console.log("allRecords.rows[i].doc.draws " +thisRecord.draws);
-
                         beyblade.build.winsKO  -= thisRecord.wko;
                         beyblade.build.loseKO  -= thisRecord.lko;
                         beyblade.build.winsSO  -= thisRecord.wso;
@@ -2131,14 +2123,13 @@ function deleteBey(){
                         
                         console.log("after edit " + JSON.stringify(beyblade));
                         beyBladeDBX.put(beyblade).then(refreshUI);
-
                     }
                     else{
                         console.log(err);
                     }
                 });
                 
-                // clear records
+                // remove vs record
                 recordsDBX.remove(allRecords.rows[i].doc, function(err, errDoc){
                     if(err){
                         console.log(err);
@@ -2445,6 +2436,8 @@ async function importDatabase() {
 
             // refresh UI
             showBeyblades();
+            // clear selected db bey
+            clearDbStats();
             importModal.hide();
             fileInput.value = ""; // clear import file input
             // alert user
@@ -2457,6 +2450,8 @@ async function importDatabase() {
             // clear file input id="importDbFile"
             fileInput.value = "";
             showBeyblades();
+            // clear selected db bey
+            clearDbStats();
         }
     };
     
