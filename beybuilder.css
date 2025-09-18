@@ -84,7 +84,9 @@
 }
 
 
-
+.hidden {
+    visibility: hidden;
+}
 
 /* vs win buttons */
 .btn-win {

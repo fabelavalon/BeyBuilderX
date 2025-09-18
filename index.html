@@ -308,7 +308,8 @@
               <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
           </div>
           <!--dbBey display area-->
-          <div class="col-sm-6 col-xl-3 text-center" id="dbBeySpace">
+          <div class="col-sm-6 col-xl-3 text-center hidden" id="dbBeySpace">
+              <!-- TODO: labels and data separate-->
               <br>
               <span id="dbBeyIs"></span>
               <br>
@@ -334,6 +335,13 @@
               <br>
               <span id="dbBeyDraw"></span>
               <br>
+              <!-- buttons -->
+              <button class="btn btn-primary" onclick="copyStats()">Copy Stats to Clipboard</button>
+              <button class="btn btn-primary" onclick="dbSetBey(1)">Set as Bey 1</button>
+              <button class="btn btn-primary" onclick="dbSetBey(2)">Set as Bey 2</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBeyPopup">Edit Bey Stats</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#matchupHist" onclick="populateMatchHistOnclick()">Matchup History</button>
+              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#areYouSure">Delete Bey</button>
           </div>
         </div>
       </div>

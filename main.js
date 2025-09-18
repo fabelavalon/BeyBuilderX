@@ -1209,11 +1209,43 @@ function showBeyblades() {
             }
        }
     });
+}
+
+function clearDbStats(){
+    dbBeyIs.innerHTML = "";
+    dbBeyWeight.innerHTML = "";
+    dbBeyStats.innerHTML = "";
+    dbWinPercent.innerHTML = "";
+    dbPPW.innerHTML = "";
+    dbPPL.innerHTML = "";
+    dbPointDif.innerHTML = "";
+    dbBeySO.innerHTML = "";
+    dbBeyBst.innerHTML = "";
+    dbBeyKO.innerHTML = "";
+    dbBeyX.innerHTML = "";
+    dbBeyDraw.innerHTML = "";
+    wasCopyHistToClipGenerated = false;
+    wasSetBey1Generated = false;
+    wasSetBey2Generated = false;
 
 }
 
 // DB stats to copy to clipboard. This must be global so the button listener function gets updated text
 var dbCopiedStats = "";
+
+function copyStats() {
+    console.log("copy to clipboard");
+    //console.log(dbCopiedStats);
+    navigator.clipboard.writeText(dbCopiedStats);
+}
+function dbSetBey(beyNumber=1) {
+    showBeybladeStats(dbBey, beyNumber);
+    createWinButtons();
+    clearUndoStack();
+}
+function populateMatchHistOnclick(){
+    populateMatchHist(dbBey);
+}
 
 //shows selected bey's stats and allows for the user to set the selected bey to bey 1 or 2
 function setDbBey(){
@@ -1222,11 +1254,9 @@ function setDbBey(){
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
-            //TODO: move text and buttons to HTML, to make styling/layout easier
-
-            // build a new BeyBlade object using parts, then overlay win/loss data from database
-            //if(allBlades[doc.build.blade].system != undefined)
+            // convert to BeyBlade object, so we can access methods like getTotalWin()
             if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
+                // build a new BeyBlade object using parts, then overlay win/loss data from database
                 var castDoc = Object.assign( new BeyBlade(-1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
             }
             else if(allBlades[doc.build.blade].system == "CX"){
@@ -1251,6 +1281,9 @@ function setDbBey(){
             if (isNaN(avgPPL)){ avgPPL=0; }
             if (isNaN(avgPointChangePerRound)){ avgPointChangePerRound=0; }
 
+            dbBeySpace.classList.remove("hidden");
+
+            // fill in html
             dbBeyName.textContent = doc.build.name;
             dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
             dbBeyStats.textContent = " Spin: " + doc.build.spin;
@@ -1265,6 +1298,7 @@ function setDbBey(){
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
             dbBey = doc.build;
             
+            // clipboard
             dbCopiedStats =   "Overall Results for " + doc.build.name + "\n" +
                                 "Average Win%: " + avgWinPercent + "% \n" +
                                 "Average Points Per Win: " + avgPPW + "\n" +
@@ -1276,81 +1310,7 @@ function setDbBey(){
                                 "Xtreme Finish Win/Loss: " + doc.build.winsX + "W / " + doc.build.loseX + "L \n" +
                                 "Draws: " + doc.build.draws + "\n" +
                                 "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
-            
-            //set copy to history button
-            if(!wasCopyHistToClipGenerated) {
-                console.log("adding listener for copy to history button");
-                copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
-                copyStatsbtn.classList.add("btn");
-                copyStatsbtn.classList.add("btn-primary");
-                copyStatsbtn.addEventListener("click", function() {
-                    console.log("copy to clipboard");
-                    //console.log(dbCopiedStats);
-                    navigator.clipboard.writeText(dbCopiedStats);
-                });
-                dbBeySpace.append(copyStatsbtn);
-                wasCopyHistToClipGenerated = true;
-            }
-
-            //set as bey1 button
-            if(!wasSetBey1Generated){
-                bey1Statbtn.innerHTML = "Set as Bey 1";
-                bey1Statbtn.classList.add("btn");
-                bey1Statbtn.classList.add("btn-primary");
-                bey1Statbtn.addEventListener("click", function() {
-                    bey1=dbBey;
-                    wasBey1Generated = true;
-                    showBeybladeStats(bey1, 1);
-                    createWinButtons();
-                    clearUndoStack();
-                });
-                dbBeySpace.append(bey1Statbtn);
-                wasSetBey1Generated = true;
-            }
-
-            //set as bey2 button
-            if(!wasSetBey2Generated){
-                bey2Statbtn.innerHTML = "Set as Bey 2";
-                bey2Statbtn.classList.add("btn");
-                bey2Statbtn.classList.add("btn-primary");
-                bey2Statbtn.addEventListener("click", function() {
-                    bey2=dbBey;
-                    wasBey2Generated = true;
-                    showBeybladeStats(bey2, 2);
-                    createWinButtons();
-                    clearUndoStack();
-                });
-                dbBeySpace.append(bey2Statbtn);
-                wasSetBey2Generated = true;
-            }
-            
-            //edit bey stats in database
-            editBeybtn.innerHTML = "Edit Stats";
-            editBeybtn.classList.add("btn");
-            editBeybtn.classList.add("btn-primary");
-            editBeybtn.setAttribute("data-bs-toggle", "modal");
-            editBeybtn.setAttribute("data-bs-target", "#editBeyPopup");
-            dbBeySpace.append(editBeybtn);
-
-            //show matchup history button
-            showMatchupbtn.innerHTML = "Matchup History";
-            showMatchupbtn.classList.add("btn");
-            showMatchupbtn.classList.add("btn-primary");
-            showMatchupbtn.setAttribute("data-bs-toggle", "modal");
-            showMatchupbtn.setAttribute("data-bs-target", "#matchupHist");
-            showMatchupbtn.addEventListener("click", function() {
-                populateMatchHist(dbBey);
-            });
-            dbBeySpace.append(showMatchupbtn);
-
-            //delete bey from database button
-            removeBeybtn.innerHTML = "Delete Bey";
-            removeBeybtn.classList.add("btn");
-            removeBeybtn.classList.add("btn-danger");
-            removeBeybtn.setAttribute("data-bs-toggle", "modal");
-            removeBeybtn.setAttribute("data-bs-target", "#areYouSure");
-            dbBeySpace.append(removeBeybtn);
-
+                        
         }
         // else{
         //     console.log(err);
@@ -1364,7 +1324,6 @@ function showBeybladeStats(bey, whichBey) {
     //console.log("casting object ...");
     var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
     console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + castDoc.getDbId() ); 
-
     
     switch(whichBey){
         case 1:
@@ -1547,6 +1506,7 @@ function displayRecords(){
 function clearMatchupHistory(){
     nullifyBeybladeScores(bey1.id, bey2.id);
 }
+
 /**
  * re-runs all UI functions so we see the latest record
  */
