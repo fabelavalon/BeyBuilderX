@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--*============================================================*
-    *BeyBuilder X v1.4 for Beyblade X                            *
+    *BeyBuilder X v1.5 for Beyblade X                            *
     *Author: Fabel                                               *
     *Copyright 2023-2025                                         *
     *============================================================*-->
@@ -9,9 +9,10 @@
 <html>
 
 <head>
-    <title>BeyBuilder X v1.4</title>
+    <title>BeyBuilder X v1.5</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Blade.png">
     <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
     <link href="./theme-default.css" rel="stylesheet" id="theme"  />
@@ -21,9 +22,8 @@
 <body>
 
     <!--Header space-->
-    <div class="container-fluid text-md-start text-center header">
-        <h1>BeyBuilder X v1.4</h1>
-        <h3>for Beyblade X</h3>
+    <div class="container-fluid text-md-start text-center header" >
+        <span class="justify-content-center"><img src="./images/BeyBuilder_Logo2.png" class="header-logo"/>v1.5</span>
     </div>
 
     <div class="container-fluid border">
@@ -308,7 +308,8 @@
               <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
           </div>
           <!--dbBey display area-->
-          <div class="col-sm-6 col-xl-3 text-center" id="dbBeySpace">
+          <div class="col-sm-6 col-xl-3 text-center hidden" id="dbBeySpace">
+              <!-- TODO: labels and data separate-->
               <br>
               <span id="dbBeyIs"></span>
               <br>
@@ -334,6 +335,13 @@
               <br>
               <span id="dbBeyDraw"></span>
               <br>
+              <!-- buttons -->
+              <button class="btn btn-primary" onclick="copyStats()">Copy Stats to Clipboard</button>
+              <button class="btn btn-primary" onclick="dbSetBey(1)">Set as Bey 1</button>
+              <button class="btn btn-primary" onclick="dbSetBey(2)">Set as Bey 2</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBeyPopup">Edit Bey Stats</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#matchupHist" onclick="populateMatchHistOnclick()">Matchup History</button>
+              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#areYouSure">Delete Bey</button>
           </div>
         </div>
       </div>
@@ -543,18 +551,58 @@
         </div>
       </div>
 
-      <!-- pick theme, swap css file -->
-      <div class="modal fade" id="themeSwitcher" tabindex="-1" aria-labelledby="themeSwitcher-body" aria-hidden="true">
+      <!-- import database confirmation popup -->
+      <div class="modal fade" id="areYouSureImport" tabindex="-1" aria-labelledby="importConfirmLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="themeSwitcher-body">Select a theme</h5>
+                <h5 class="modal-title text-center" id="importConfirmLabel">Are You Sure?</h5>
+                <p></p>
+                <p>Importing a database will <b>overwrite</b> your current database. We recommended you export your current database first.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="openSettings()">Nevermind</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="importDatabase()">Yes, Import</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- pick theme, swap css file -->
+      <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="settings-body" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+                <h4 class="modal-title" id="settings-body">Settings</h5>
+
+                <h5 class="">Select a theme</h5>
                 <select id="themeSelect" class="select-basic form-select">
                   <option value="default">Default</option>
+                  <option value="og-purple">Dark Purple</option>
                   <option value="grey">Grey</option>
                   <option value="wbo">World Beyblade Organization</option>
                   <option value="none">None</option>
                 </select>
+
+                <br>
+                <h5>Export Database</h5>
+                <button type="button" class="btn btn-primary" onclick="exportDb()">Export local database</button>
+
+                <br>
+                <br>
+                <!-- <button type="button" class="btn btn-primary" onclick="importDb()">Import database</button> -->
+
+                <h5>Import Database</h5>
+                <!-- <form id="importDbForm"> -->
+                  <div class="form-group">
+                    <label for="importDbFile">Import database from JSON file:</label>
+                    <input class="form-control" type="file" id="importDbFile" name="importDbFile" accept=".json">
+                    <br>
+                    <!-- <button class="btn btn-primary" type="button" id="importDbButton">Import database</button> -->
+  
+                  </div>
+                <!-- </form> -->
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -563,6 +611,23 @@
         </div>
       </div>
 
+      <!-- error message modal  -->
+      <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="errorLabel">Error</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span id="errorMsg"></span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <!--import scripts-->
     <script src="./libraries/pouchdb-7.3.1.js"></script>
@@ -586,7 +651,7 @@
 
   <ul class="nav col-md-4 justify-content-end overflow-hidden">
     <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX"  target="_blank" rel="noopener" class="nav-link px-3">Source code</a></li>
-    <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#themeSwitcher" class="nav-link px-3">Theme</a></li>
+    <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#settings" class="nav-link px-3">Settings</a></li>
     <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3">About</a></li>
   </ul>
 </footer>
