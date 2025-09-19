@@ -58,6 +58,7 @@ var bey2WinTitle = document.getElementById("bey2-button-title");
 
 //...for the dbList
 var selectedBey = document.getElementById("dbSelectList");
+const dbSelectList = document.getElementById("dbSelectList");
 
 //import elements for the logging...
 //..dbBey stats
@@ -110,9 +111,18 @@ var partBst = document.getElementById("partBst");
 var partX = document.getElementById("partX");
 var partDraw = document.getElementById("partDraw");
 
+// settings
+const settingsModal = new bootstrap.Modal(document.getElementById('settings'));
+const importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'));
+const fileInput = document.getElementById('importDbFile');
+
 //theme switcher
 var themeSelect = document.getElementById("themeSelect");
-var theme = document.getElementById("theme");
+var themeLink = document.getElementById("theme");
+
+// error modal
+const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+const errorModalMsg = document.getElementById("errorMsg");
 
 //everything else
 var error = document.getElementById("error");
@@ -128,15 +138,7 @@ var matchupHistCopyButton = document.getElementById("copyHistToClip");
 var clearHistButton = document.getElementById("clearHist");
 
 
-//used to generate the win buttons after both beys are selected
-var wasBey1Generated = false;
-var wasBey2Generated = false;
-
-//used so we dont generate more buttons
-var wasSetBey1Generated = false;
-var wasSetBey2Generated = false;
-var wasWinButtonGenerated = false;
-var wasCopyHistToClipGenerated = false;
+//used so we dont generate more buttons\
 var wasCopyMatchupToClipGenerated = false;
 var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
@@ -302,8 +304,10 @@ function main(){
     //fill the dbList
     showBeyblades();
     
+    // on click and other event listeners
     loadTheme();
     themeSwitchListener();
+    importDbSetup();
 };
 
 //generate a beyblade based on the selections for the first set of drop downs
@@ -474,14 +478,15 @@ function generateBey2(){
 
 }
 
-//populates win buttons on screen
+//unhide win buttons on screen
 function createWinButtons(){
-
     //console.log("called createWinButtons()");
 
     var vsContainer = document.getElementById("vsContainer");
 
-    if(wasBey1Generated&&wasBey2Generated&&!wasWinButtonGenerated){
+    // if bey1 and bey2 are set
+    if(bey1 && bey1.id && bey2 && bey2.id) {
+        // display vs buttons
         vsContainer.style.visibility="visible";
         vsContainer.style.display="inherit";
 
@@ -495,14 +500,20 @@ function createWinButtons(){
         })
         .then(displayRecords);
 
-
-
         // titles above win buttons
         bey1WinTitle.textContent = bey1.name;
         bey2WinTitle.textContent = bey2.name;
-
     }
-
+}
+function clearVsButtons(){
+    // unset bey parts
+    bey1=null;
+    bey2=null;
+    // hide vs buttons
+    vsContainer.style.visibility="hidden";
+    vsContainer.style.display="none";
+    // clear stats
+    showBeybladeStats(null, 0);
 }
 
 const choseWinnerDebounced = debounce(function(number, wintype) {
@@ -942,6 +953,7 @@ async function undoRecord() {
 // prevents double taps on touchscreen
 let undoDebounced = debounce(undoRecord);
 
+// DEPRECATED
 // undos last entered result
 function undoLastRecord(){
 
@@ -1173,22 +1185,22 @@ function undoLastRecord(){
 
 //fills the bey selection menu
 function showBeyblades() {
-
-    //console.log("called showBeyblades()");
-
+    console.log("showBeyblades()");
     var dbSelectList = document.getElementById("dbSelectList");
 
     //clear the list so we dont just add more options
     while (dbSelectList.options.length > 0) {                
         dbSelectList.remove(0);
-    }        
+    }
 
+    // add beys to list
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
         doc.rows.sort(function(a, b){
             return (''+a.doc.build.name).localeCompare(b.doc.build.name);
         });
         for(i = 0; i < doc.total_rows; i++){
             if(!err){
+                // add option to list
                 var options = document.createElement("option");
                 options.textContent = doc.rows[i].doc.build.name;
                 options.value = doc.rows[i].doc._id;
@@ -1199,11 +1211,45 @@ function showBeyblades() {
             }
        }
     });
+}
 
+function clearDbStats(){
+    dbBeyIs.innerHTML = "";
+    dbBeyWeight.innerHTML = "";
+    dbBeyStats.innerHTML = "";
+    dbWinPercent.innerHTML = "";
+    dbPPW.innerHTML = "";
+    dbPPL.innerHTML = "";
+    dbPointDif.innerHTML = "";
+    dbBeySO.innerHTML = "";
+    dbBeyBst.innerHTML = "";
+    dbBeyKO.innerHTML = "";
+    dbBeyX.innerHTML = "";
+    dbBeyDraw.innerHTML = "";
+    dbBeySpace.classList.add("hidden");
 }
 
 // DB stats to copy to clipboard. This must be global so the button listener function gets updated text
 var dbCopiedStats = "";
+
+function copyStats() {
+    console.log("copy to clipboard");
+    //console.log(dbCopiedStats);
+    navigator.clipboard.writeText(dbCopiedStats);
+}
+function dbSetBey(beyNumber=1) {
+    showBeybladeStats(dbBey, beyNumber);
+    if (beyNumber==1) {
+        bey1=dbBey;
+    } else {
+        bey2=dbBey;
+    }
+    createWinButtons();
+    clearUndoStack();
+}
+function populateMatchHistOnclick(){
+    populateMatchHist(dbBey);
+}
 
 //shows selected bey's stats and allows for the user to set the selected bey to bey 1 or 2
 function setDbBey(){
@@ -1212,10 +1258,9 @@ function setDbBey(){
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
-            //TODO: move text and buttons to HTML, to make styling/layout easier
-
-            // build a new BeyBlade object using parts, then overlay win/loss data from database
+            // convert to BeyBlade object, so we can access methods like getTotalWin()
             if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
+                // build a new BeyBlade object using parts, then overlay win/loss data from database
                 var castDoc = Object.assign( new BeyBlade(-1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
             }
             else if(allBlades[doc.build.blade].system == "CX"){
@@ -1240,6 +1285,9 @@ function setDbBey(){
             if (isNaN(avgPPL)){ avgPPL=0; }
             if (isNaN(avgPointChangePerRound)){ avgPointChangePerRound=0; }
 
+            dbBeySpace.classList.remove("hidden");
+
+            // fill in html
             dbBeyName.textContent = doc.build.name;
             dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
             dbBeyStats.textContent = " Spin: " + doc.build.spin;
@@ -1254,6 +1302,7 @@ function setDbBey(){
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
             dbBey = doc.build;
             
+            // clipboard
             dbCopiedStats =   "Overall Results for " + doc.build.name + "\n" +
                                 "Average Win%: " + avgWinPercent + "% \n" +
                                 "Average Points Per Win: " + avgPPW + "\n" +
@@ -1265,81 +1314,7 @@ function setDbBey(){
                                 "Xtreme Finish Win/Loss: " + doc.build.winsX + "W / " + doc.build.loseX + "L \n" +
                                 "Draws: " + doc.build.draws + "\n" +
                                 "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
-            
-            //set copy to history button
-            if(!wasCopyHistToClipGenerated) {
-                console.log("adding listener for copy to history button");
-                copyStatsbtn.innerHTML = "Copy Stats to Clipboard";
-                copyStatsbtn.classList.add("btn");
-                copyStatsbtn.classList.add("btn-primary");
-                copyStatsbtn.addEventListener("click", function() {
-                    console.log("copy to clipboard");
-                    //console.log(dbCopiedStats);
-                    navigator.clipboard.writeText(dbCopiedStats);
-                });
-                dbBeySpace.append(copyStatsbtn);
-                wasCopyHistToClipGenerated = true;
-            }
-
-            //set as bey1 button
-            if(!wasSetBey1Generated){
-                bey1Statbtn.innerHTML = "Set as Bey 1";
-                bey1Statbtn.classList.add("btn");
-                bey1Statbtn.classList.add("btn-primary");
-                bey1Statbtn.addEventListener("click", function() {
-                    bey1=dbBey;
-                    wasBey1Generated = true;
-                    showBeybladeStats(bey1, 1);
-                    createWinButtons();
-                    clearUndoStack();
-                });
-                dbBeySpace.append(bey1Statbtn);
-                wasSetBey1Generated = true;
-            }
-
-            //set as bey2 button
-            if(!wasSetBey2Generated){
-                bey2Statbtn.innerHTML = "Set as Bey 2";
-                bey2Statbtn.classList.add("btn");
-                bey2Statbtn.classList.add("btn-primary");
-                bey2Statbtn.addEventListener("click", function() {
-                    bey2=dbBey;
-                    wasBey2Generated = true;
-                    showBeybladeStats(bey2, 2);
-                    createWinButtons();
-                    clearUndoStack();
-                });
-                dbBeySpace.append(bey2Statbtn);
-                wasSetBey2Generated = true;
-            }
-            
-            //edit bey stats in database
-            editBeybtn.innerHTML = "Edit Stats";
-            editBeybtn.classList.add("btn");
-            editBeybtn.classList.add("btn-primary");
-            editBeybtn.setAttribute("data-bs-toggle", "modal");
-            editBeybtn.setAttribute("data-bs-target", "#editBeyPopup");
-            dbBeySpace.append(editBeybtn);
-
-            //show matchup history button
-            showMatchupbtn.innerHTML = "Matchup History";
-            showMatchupbtn.classList.add("btn");
-            showMatchupbtn.classList.add("btn-primary");
-            showMatchupbtn.setAttribute("data-bs-toggle", "modal");
-            showMatchupbtn.setAttribute("data-bs-target", "#matchupHist");
-            showMatchupbtn.addEventListener("click", function() {
-                populateMatchHist(dbBey);
-            });
-            dbBeySpace.append(showMatchupbtn);
-
-            //delete bey from database button
-            removeBeybtn.innerHTML = "Delete Bey";
-            removeBeybtn.classList.add("btn");
-            removeBeybtn.classList.add("btn-danger");
-            removeBeybtn.setAttribute("data-bs-toggle", "modal");
-            removeBeybtn.setAttribute("data-bs-target", "#areYouSure");
-            dbBeySpace.append(removeBeybtn);
-
+                        
         }
         // else{
         //     console.log(err);
@@ -1349,11 +1324,32 @@ function setDbBey(){
 
 //displays the win loss and weight stats for the chosen beyblade
 function showBeybladeStats(bey, whichBey) {
+    console.log("called showBeybladeStats()" ); 
+    
+    // clear stats on page
+    if (bey==null || whichBey==0) {
+        bey1Is.textContent = "Beyblade 1 has not been selected.";
+        bey1Stats.textContent = "";
+        bey1SO.textContent = "";
+        bey1Bst.textContent = "";
+        bey1KO.textContent = "";
+        bey1X.textContent = "";
+        bey1Draw.textContent = "";
+
+        bey2Is.textContent = "Beyblade 2 has not been selected.";
+        bey2Stats.textContent = "";
+        bey2SO.textContent = "";
+        bey2Bst.textContent = "";
+        bey2KO.textContent = "";
+        bey2X.textContent = "";
+        bey2Draw.textContent = "";
+
+        return;
+    }
 
     //console.log("casting object ...");
     var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
     console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + castDoc.getDbId() ); 
-
     
     switch(whichBey){
         case 1:
@@ -1400,6 +1396,10 @@ var displayCopiedStats = "";
 function displayRecords(){
 
     //console.log("called displayRecords()");
+    if(!bey1 || !bey2) {
+        console.log("beys not set");
+        return;
+    }
 
     var record1 = document.getElementById("record1");
     var wins1 = document.getElementById("wins1");
@@ -1535,7 +1535,13 @@ function displayRecords(){
 
 function clearMatchupHistory(){
     nullifyBeybladeScores(bey1.id, bey2.id);
+
+    if(dbBey.id == bey1.id || dbBey.id==bey2.id){    
+        // clear selected db bey
+        clearDbStats();
+    }
 }
+
 /**
  * re-runs all UI functions so we see the latest record
  */
@@ -2079,10 +2085,16 @@ function fillMatchupHist(history){
 
 //delete a bey from the system
 function deleteBey(){
-    console.log("called deleteBey(), selectedBey: " + selectedBey.value);
+    console.log("called deleteBey(), selectedBey: \n" + selectedBey + "\n" + selectedBey.value);
+    
+    // clear db screen
+    clearDbStats();
+    if (bey1 && bey2 && ( selectedBey.value == bey1.id || selectedBey.value == bey2.id ) ) {
+        // clear vs buttons
+        clearVsButtons();
+    }
 
-    var dbSelectList = document.getElementById("dbSelectList");
-
+    // remove beyblade from DB
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
             beyBladeDBX.remove(doc, function(err, doc){
@@ -2101,11 +2113,8 @@ function deleteBey(){
         }
     });
 
-    /*
-    loop through recordsdbx     --done
-    find all records containing selectedbey     --done
-    remove the found records and adjust win/loss totals for opponents     --how to make effcient
-    */
+
+    // remove vs records
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allRecords) {
         if(err) {
             console.log(err);
@@ -2115,9 +2124,8 @@ function deleteBey(){
 
         for(i = 0; i < allRecords.total_rows; i++){
             //console.log("challenger:" + JSON.stringify( allRecords.rows[i] ) );
-            //var doc = allRecords.rows[i].doc;
 
-            // find records where bey1 == selectedBey
+            // find records where bey1 == selectedBey, delete them
             if( allRecords.rows[i].doc.challenger.id == selectedBey.value ){
                 //clear records
                 //console.log("clearing bey " + allRecords.rows[i].doc.challenger.id);
@@ -2128,28 +2136,15 @@ function deleteBey(){
                 });
             }
 
-            // find records where bey2 == selectedBey
+            // find vs records where bey2 == selectedBey
             if( allRecords.rows[i].doc.defender.id == selectedBey.value ){ // defender will be deleted
                 // console.log(JSON.stringify(allRecords.rows[i].doc));
-                // console.log(
-                //     "wko: " + allRecords.rows[i].doc.wko + ", lko: " + allRecords.rows[i].doc.lko + ", wso: " + allRecords.rows[i].doc.wso + ", lso: " + allRecords.rows[i].doc.lso +
-                //     ", wbst: " + allRecords.rows[i].doc.wbst + ", lbst: " + allRecords.rows[i].doc.lbst + ", wx: " + allRecords.rows[i].doc.wx + ", lx: " + allRecords.rows[i].doc.lx +
-                //     ", draws: " + allRecords.rows[i].doc.draws
-                // );
-                var thisRecord = structuredClone(allRecords.rows[i].doc); // JS deep copy crap. If copied normally (by reference), inside function will have incorrect data. Thanks JS.
+                var thisRecord = structuredClone(allRecords.rows[i].doc); // JS deep copy. If copied normally (by reference), inside function will have incorrect data. Thanks JS.
+                // get beyblade that participated in that vs record, adjust its points
                 beyBladeDBX.get(allRecords.rows[i].doc.challenger.id, function(err, beyblade) { // challenger will be edited
                     if(!err){
-                        //console.log("what happened to record \n"+JSON.stringify(allRecords.rows[i])); //undefined
-                        // console.log("sanity check \n"+JSON.stringify(thisRecord)); 
-                        // console.log("challenger beylade \n" + JSON.stringify(beyblade));
                         // edit bey1's win/loss accordingly
                         // subtract from here, then resubmit beyBladeDBX
-
-                        // sanity check, this should match the console log above
-                        console.log("beyblade winsKO "+ beyblade.build.winsKO);
-                        console.log("allRecords.rows[i].doc.wko " +thisRecord.wko);
-                        console.log("allRecords.rows[i].doc.draws " +thisRecord.draws);
-
                         beyblade.build.winsKO  -= thisRecord.wko;
                         beyblade.build.loseKO  -= thisRecord.lko;
                         beyblade.build.winsSO  -= thisRecord.wso;
@@ -2162,14 +2157,13 @@ function deleteBey(){
                         
                         console.log("after edit " + JSON.stringify(beyblade));
                         beyBladeDBX.put(beyblade).then(refreshUI);
-
                     }
                     else{
                         console.log(err);
                     }
                 });
                 
-                // clear records
+                // remove vs record
                 recordsDBX.remove(allRecords.rows[i].doc, function(err, errDoc){
                     if(err){
                         console.log(err);
@@ -2186,12 +2180,15 @@ function deleteBey(){
 function deleteAllBeys() {
 
     console.log("called deleteAllBeys()");
+    
+    // clear bey1 and bey2 in VS UI
+    clearVsButtons();
 
-    //clear the list so we dont just add more options
+    //clear the list
     while (dbSelectList.options.length > 0) {                
         dbSelectList.remove(0);
-    }        
-
+    }
+    
     //clear individual beyblades
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
         for(i = 0; i < doc.total_rows; i++){
@@ -2354,7 +2351,7 @@ function loadTheme(){
             selectedTheme=result;
             console.log('Loaded saved theme');
             console.log(JSON.stringify(result));
-            theme.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
+            themeLink.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
             themeSelect.value=selectedTheme.name;
         }
         else{
@@ -2367,6 +2364,158 @@ function loadTheme(){
         }
     });
 }
+
+async function exportDb() {
+    // Fetch regular documents
+    const resultBeyblades = await beyBladeDBX.allDocs({ include_docs: true });
+    console.log(resultBeyblades);
+    const docsBeyblades = resultBeyblades.rows
+      .map((row) => {
+        const doc = { ...row.doc };
+        delete doc._rev;
+        return doc;
+      });
+
+    const resultRecords = await recordsDBX.allDocs({ include_docs: true });
+    const docsRecords = resultRecords.rows
+    .map((row) => {
+        const doc = { ...row.doc };
+        delete doc._rev;
+        return doc;
+    });
+
+    const resultSettings = await settings.allDocs({ include_docs: true });
+    const docsSettings = resultSettings.rows
+    .map((row) => {
+        const doc = { ...row.doc };
+        delete doc._rev;
+        return doc;
+    });
+    
+    const exportData = {
+        beyBladeDBX: docsBeyblades,
+        recordsDBX: docsRecords,
+        settings: docsSettings
+    };
+
+    // Create a localized date string for the filename
+    let now = new Date();
+    let dateString = now
+        .toLocaleString('sv-SE', { // 'sv-SE' gives YYYY-MM-DD HH:mm:ss
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })
+        .replace(/[:.]/g, '-')  //swap chars for dash, for filename safety
+        //.replace(/[^\d]/g, '-') // replace non-digits with dash for filename safety
+        .replace(" ", "_") // underscore between date and time
+        .slice(0, 16); // trim to YYYY-MM-DD_HH-MM
+
+
+    exportFilename = `beybuilderX-database-${dateString}.json`;
+
+// ...existing code...
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const tmpElement = document.createElement("a");
+    tmpElement.href = url;
+    tmpElement.download = exportFilename;;
+    document.body.appendChild(tmpElement);
+    tmpElement.click();
+    document.body.removeChild(tmpElement);
+    URL.revokeObjectURL(url);
+}
+
+async function importDbSetup(){
+    fileInput.addEventListener('change', () => {
+        // hide bootstrap model id="settings"
+        settingsModal.hide();
+        // show bootstrap modal id="areYouSureImport"
+        importModal.show();        
+    }
+    );
+}
+
+async function openSettings(){
+    fileInput.value = ""; // clear import file input
+    settingsModal.show();
+}
+
+
+async function importDatabase() {
+    const file = fileInput.files[0];
+    if (!file) {
+        console.error("No file selected");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        try {
+            console.log("Backing up databases");
+            console.log("Importing database");
+            const data = JSON.parse(event.target.result);
+            // Validate structure
+            if (!data.beyBladeDBX || !data.recordsDBX || !data.settings) {
+                throw new Error("Invalid database file");
+            }
+            // check for any data
+            if(data.beyBladeDBX.length == 0 && data.recordsDBX.length == 0 && data.settings.length == 0){
+                throw new Error("No data found in the import file");
+            }
+
+            // Clear existing databases
+            await beyBladeDBX.destroy();
+            await recordsDBX.destroy();
+            await settings.destroy();
+            // Recreate databases
+            beyBladeDBX = new PouchDB("BeyBladesX");
+            recordsDBX = new PouchDB("RecordX");
+            settings = new PouchDB("settings");
+            // bulk import
+            await beyBladeDBX.bulkDocs(data.beyBladeDBX);
+            await recordsDBX.bulkDocs(data.recordsDBX);
+            await settings.bulkDocs(data.settings);
+            console.log("Database imported successfully");
+
+            // refresh UI
+            showBeyblades();
+            // clear selected db bey
+            clearDbStats();
+            // clear bey1 and bey2
+            clearVsButtons();
+            importModal.hide();
+            fileInput.value = ""; // clear import file input
+            // alert user
+            spinMe(dbSelectList);
+
+        } catch (error) {
+            console.error("Error importing database:", error);
+            importModal.hide();
+            showErrorModal("Error importing database. Please ensure the file is a valid BeyBuilderX export.<p></p>" + error.message);
+            // clear file input id="importDbFile"
+            fileInput.value = "";
+            showBeyblades();
+            // clear selected db bey
+            clearDbStats();
+            // clear bey1 and bey2
+            clearVsButtons();
+        }
+    };
+    
+    // start
+    reader.readAsText(file);
+}
+
+async function showErrorModal(errMsg){
+    errorModalMsg.innerHTML = errMsg;
+    errorModal.show();
+}
+
 
 //run main on startup
 main();

@@ -16,6 +16,7 @@
     --border-color-secondary:#b3b3b3;
     --bs-border-color:rgb(214, 214, 214, 0);
     --danger-color: #8c2930;
+    --success-color: #2b9550;
     --disable-color: #000;
 }
 
@@ -129,6 +130,24 @@ table{
 .btn-danger:focus,
 .btn-danger.focus {
     box-shadow: 0 0 0 .2rem var(--danger-color);
+}
+
+/* styling for success buttons */
+.btn-success {
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.btn-danger:hover {
+    color: var(--text-color-light);
+    background-color: var(--success-color);
+    border-color: var(--border-color);
+}
+
+.btn-danger:focus,
+.btn-danger.focus {
+    box-shadow: 0 0 0 .2rem var(--success-color);
 }
 
 /* styling for basic buttons */

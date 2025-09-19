@@ -12,6 +12,7 @@
     --text-secondary-color: #000;
     --border-color:#dadada;
     --danger-color: #8c2930;
+    --success-color: #2b9550;
     --disable-color: #000;
 }
 
@@ -130,6 +131,24 @@ select:disabled {
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-primary.dropdown-toggle:focus {
     box-shadow: 0 0 0 .2rem var(--bg-color);
+}
+
+/* styling for success buttons */
+.btn-success {
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    border-color: var(--border-color);
+}
+
+.btn-success:hover {
+    color: var(--disable-color);
+    background-color: var(--success-color);
+    border-color: var(--primary-color);
+}
+
+.btn-success:focus,
+.btn-success.focus {
+    box-shadow: 0 0 0 .2rem var(--success-color);
 }
 
 

@@ -78,11 +78,15 @@
 }
 
 /* styling for basic buttons */
-.btn-primary {
+.btn-primary, .btn-success {
     padding: 4px;
     margin: 3px;
 }
 
+
+.hidden {
+    visibility: hidden;
+}
 
 /* vs win buttons */
 .btn-win {
@@ -125,6 +129,19 @@
     position: sticky;
     bottom: 0;
     z-index: 1055; 
+}
+
+/* header */
+.header {
+    /* centering */
+    display: grid;
+    place-items: center;
+}
+.header-logo {
+    height: auto;
+    max-height: 225px;
+    margin-top: -45px;
+    max-width: 100%;
 }
 
 /* page footer */
