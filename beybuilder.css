@@ -131,6 +131,19 @@
     z-index: 1055; 
 }
 
+/* header */
+.header {
+    /* centering */
+    display: grid;
+    place-items: center;
+}
+.header-logo {
+    height: auto;
+    max-height: 225px;
+    margin-top: -45px;
+    max-width: 100%;
+}
+
 /* page footer */
 
 footer {

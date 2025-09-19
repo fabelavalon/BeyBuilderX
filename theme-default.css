@@ -168,9 +168,6 @@ table{
     background-color: #6257c2;
 }
 .header-logo {
-    max-height: 225;
-    width: 375;
-    margin-top: -45px;
 }
 
 /* make modal headers and footers sticky */
