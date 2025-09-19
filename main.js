@@ -953,6 +953,7 @@ async function undoRecord() {
 // prevents double taps on touchscreen
 let undoDebounced = debounce(undoRecord);
 
+// DEPRECATED
 // undos last entered result
 function undoLastRecord(){
 
@@ -2389,15 +2390,26 @@ async function exportDb() {
         settings: docsSettings
     };
 
-    // Create a Blob and trigger download
-    let dateString = new Date()
-        .toISOString()
+    // Create a localized date string for the filename
+    let now = new Date();
+    let dateString = now
+        .toLocaleString('sv-SE', { // 'sv-SE' gives YYYY-MM-DD HH:mm:ss
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })
         .replace(/[:.]/g, '-')  //swap chars for dash, for filename safety
-        .replace("T", "_")
-        .replace("Z", "")
+        //.replace(/[^\d]/g, '-') // replace non-digits with dash for filename safety
+        .replace(" ", "_") // underscore between date and time
         .slice(0, 16); // trim to YYYY-MM-DD_HH-MM
+
+
     exportFilename = `beybuilderX-database-${dateString}.json`;
 
+// ...existing code...
     const dataStr = JSON.stringify(exportData, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
