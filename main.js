@@ -1240,6 +1240,11 @@ function copyStats() {
 }
 function dbSetBey(beyNumber=1) {
     showBeybladeStats(dbBey, beyNumber);
+    if (beyNumber==1) {
+        bey1=dbBey;
+    } else {
+        bey2=dbBey;
+    }
     createWinButtons();
     clearUndoStack();
 }
