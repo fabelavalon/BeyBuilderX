@@ -12,11 +12,25 @@
     <title>BeyBuilder X v1.5</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Beyblade X Testing Web App">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+    <meta name="theme-color" content="#59298c">
     <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Blade.png">
     <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
     <link href="./theme-default.css" rel="stylesheet" id="theme"  />
     <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
+    <link rel="manifest" href="/BeyBuilderX/manifest.webmanifest">
+    <script id="vite-plugin-pwa:register-sw" src="/BeyBuilderX/registerSW.js"></script>
+    <script>
+      if('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        })
+      }
+    </script>
 </head>
 
 <body>
