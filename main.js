@@ -1396,6 +1396,10 @@ var displayCopiedStats = "";
 function displayRecords(){
 
     //console.log("called displayRecords()");
+    if(!bey1 || !bey2) {
+        console.log("beys not set");
+        return;
+    }
 
     var record1 = document.getElementById("record1");
     var wins1 = document.getElementById("wins1");
@@ -2081,10 +2085,14 @@ function fillMatchupHist(history){
 
 //delete a bey from the system
 function deleteBey(){
-    console.log("called deleteBey(), selectedBey: " + selectedBey.value);
+    console.log("called deleteBey(), selectedBey: \n" + selectedBey + "\n" + selectedBey.value);
     
-    // clear screen
+    // clear db screen
     clearDbStats();
+    if (bey1 && bey2 && ( selectedBey.value == bey1.id || selectedBey.value == bey2.id ) ) {
+        // clear vs buttons
+        clearVsButtons();
+    }
 
     // remove beyblade from DB
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
