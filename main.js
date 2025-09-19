@@ -484,7 +484,9 @@ function createWinButtons(){
 
     var vsContainer = document.getElementById("vsContainer");
 
+    // if bey1 and bey2 are set
     if(bey1 && bey1.id && bey2 && bey2.id) {
+        // display vs buttons
         vsContainer.style.visibility="visible";
         vsContainer.style.display="inherit";
 
@@ -502,6 +504,16 @@ function createWinButtons(){
         bey1WinTitle.textContent = bey1.name;
         bey2WinTitle.textContent = bey2.name;
     }
+}
+function clearVsButtons(){
+    // unset bey parts
+    bey1=null;
+    bey2=null;
+    // hide vs buttons
+    vsContainer.style.visibility="hidden";
+    vsContainer.style.display="none";
+    // clear stats
+    showBeybladeStats(null, 0);
 }
 
 const choseWinnerDebounced = debounce(function(number, wintype) {
@@ -1311,6 +1323,28 @@ function setDbBey(){
 
 //displays the win loss and weight stats for the chosen beyblade
 function showBeybladeStats(bey, whichBey) {
+    console.log("called showBeybladeStats()" ); 
+    
+    // clear stats on page
+    if (bey==null || whichBey==0) {
+        bey1Is.textContent = "Beyblade 1 has not been selected.";
+        bey1Stats.textContent = "";
+        bey1SO.textContent = "";
+        bey1Bst.textContent = "";
+        bey1KO.textContent = "";
+        bey1X.textContent = "";
+        bey1Draw.textContent = "";
+
+        bey2Is.textContent = "Beyblade 2 has not been selected.";
+        bey2Stats.textContent = "";
+        bey2SO.textContent = "";
+        bey2Bst.textContent = "";
+        bey2KO.textContent = "";
+        bey2X.textContent = "";
+        bey2Draw.textContent = "";
+
+        return;
+    }
 
     //console.log("casting object ...");
     var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
@@ -2137,12 +2171,15 @@ function deleteBey(){
 function deleteAllBeys() {
 
     console.log("called deleteAllBeys()");
+    
+    // clear bey1 and bey2 in VS UI
+    clearVsButtons();
 
-    //clear the list so we dont just add more options
+    //clear the list
     while (dbSelectList.options.length > 0) {                
         dbSelectList.remove(0);
     }
-
+    
     //clear individual beyblades
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
         for(i = 0; i < doc.total_rows; i++){
@@ -2429,6 +2466,8 @@ async function importDatabase() {
             showBeyblades();
             // clear selected db bey
             clearDbStats();
+            // clear bey1 and bey2
+            clearVsButtons();
             importModal.hide();
             fileInput.value = ""; // clear import file input
             // alert user
@@ -2443,6 +2482,8 @@ async function importDatabase() {
             showBeyblades();
             // clear selected db bey
             clearDbStats();
+            // clear bey1 and bey2
+            clearVsButtons();
         }
     };
     
