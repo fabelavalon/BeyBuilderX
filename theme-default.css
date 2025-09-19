@@ -1,36 +1,49 @@
 /*=========================================================*
- *BeyBuilder X v1.0 for Beyblade X                         *
+ *BeyBuilder X v1.5 for Beyblade X                         *
  *Author: Fabel                                            *
- *Copyright 2023                                           *
+ *Copyright 2025                                           *
  *=========================================================*/
 
 /* backgrounds and text color */
 html {
-    background-color: #20083a;
+    background-color: #6257c2;
 }
 body {
-    background-color: #20083a;
+    background-color: #6257c2;
     color: #fff;
+    font-weight: 600;
 }
 .modal-content {
-    background-color: #20083a;
+    background-color: #6257c2;
 }
 .nav-link {
     color: #fff;
+}
+.nav-link:hover{
+    color: #9857c2;
 }
 
 
 /* styling for drop downs */
 .select-basic {
-    color: #000;
-    background-color: #67becf;
+    color: #fff;
+    background-color: #5782c2;
     border-color: #59298c;
+    font-weight: 600;
 }
 
 .select-basic:not([disabled]):hover{
     color: #fff;
-    background-color: #59298c;
+    background-color: #9857c2;
     border-color: #67becf;
+}
+
+.select-basic:focus,
+.select-basic.focus {
+    color: #fff;
+    background-color: #9857c2;
+    border-color: #67becf;
+    box-shadow: 0 0 0 .2rem #4B3ADF;
 }
 
 select:disabled {
@@ -39,13 +52,14 @@ select:disabled {
 
 .select-list{
     color:#fff;
-    background-color: #59298c;
+    background-color: #483DA9;
     border-color: #59298c;
+    font-weight: 600;
 }
 
 .select-list:hover{
     color: #fff;
-    background-color: #59298c;
+    background-color: #483DA9;
     border-color: #67becf;
 }
 
@@ -57,9 +71,10 @@ select:disabled {
 
 /* styling for delete buttons */
 .btn-danger {
-    color: #000;
-    background-color: #67becf;
+    color: #fff;
+    background-color: #5782c2;
     border-color: #59298c;
+    font-weight: 600;
 }
 
 .btn-danger:hover {
@@ -75,25 +90,26 @@ select:disabled {
 
 /* styling for basic buttons */
 .btn-primary {
-    color: #000;
-    background-color: #67becf;
+    color: #fff;
+    background-color: #5782c2;
     border-color: #59298c;
+    font-weight: 600;
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #59298c;
+    background-color: #9857c2;
     border-color: #67becf;
 }
 
 .btn-primary:focus,
 .btn-primary.focus {
-    box-shadow: 0 0 0 .2rem #67becf;
+    box-shadow: 0 0 0 .2rem #9857c2;
 }
 
 .btn-primary:focus-visible,
 .btn-primary.focus-visible {
-    background-color: #67becf;
+    background-color: #9857c2;
     box-shadow: 0 0 0 .2rem #59298c;
 }
 
@@ -146,6 +162,15 @@ td, tr {
 
 table{
     border: 1px solid #fff;
+}
+
+.header {
+    background-color: #6257c2;
+}
+.header-logo {
+    max-height: 225;
+    width: 375;
+    margin-top: -45px;
 }
 
 /* make modal headers and footers sticky */
