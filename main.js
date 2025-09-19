@@ -138,15 +138,7 @@ var matchupHistCopyButton = document.getElementById("copyHistToClip");
 var clearHistButton = document.getElementById("clearHist");
 
 
-//used to generate the win buttons after both beys are selected
-var wasBey1Generated = false;
-var wasBey2Generated = false;
-
-//used so we dont generate more buttons
-var wasSetBey1Generated = false;
-var wasSetBey2Generated = false;
-var wasWinButtonGenerated = false;
-var wasCopyHistToClipGenerated = false;
+//used so we dont generate more buttons\
 var wasCopyMatchupToClipGenerated = false;
 var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
@@ -486,14 +478,13 @@ function generateBey2(){
 
 }
 
-//populates win buttons on screen
+//unhide win buttons on screen
 function createWinButtons(){
-
     //console.log("called createWinButtons()");
 
     var vsContainer = document.getElementById("vsContainer");
 
-    if(wasBey1Generated&&wasBey2Generated&&!wasWinButtonGenerated){
+    if(bey1 && bey1.id && bey2 && bey2.id) {
         vsContainer.style.visibility="visible";
         vsContainer.style.display="inherit";
 
@@ -510,9 +501,7 @@ function createWinButtons(){
         // titles above win buttons
         bey1WinTitle.textContent = bey1.name;
         bey2WinTitle.textContent = bey2.name;
-
     }
-
 }
 
 const choseWinnerDebounced = debounce(function(number, wintype) {
@@ -1224,9 +1213,6 @@ function clearDbStats(){
     dbBeyKO.innerHTML = "";
     dbBeyX.innerHTML = "";
     dbBeyDraw.innerHTML = "";
-    wasCopyHistToClipGenerated = false;
-    wasSetBey1Generated = false;
-    wasSetBey2Generated = false;
     dbBeySpace.classList.add("hidden");
 }
 
