@@ -39,7 +39,7 @@ if (!self.define) {
       .then(() => {
         let promise = registry[uri];
         if (!promise) {
-          throw new Error(`Module ${uri} didn’t register its module`);
+          throw new Error(`Module ${uri} didn't register its module`);
         }
         return promise;
       })
@@ -67,7 +67,7 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-54d0af47'], (function (workbox) { 'use strict';
+define(['./workbox'], (function (workbox) { 'use strict';
 
   self.skipWaiting();
   workbox.clientsClaim();
@@ -75,14 +75,14 @@ define(['./workbox-54d0af47'], (function (workbox) { 'use strict';
   /**
    * The precacheAndRoute() method efficiently caches and responds to
    * requests for URLs in the manifest.
-   * See https://goo.gl/S9QRab
+   * See https://developer.chrome.com/docs/workbox/modules/workbox-precaching
    */
   workbox.precacheAndRoute([{
     "url": "registerSW.js",
-    "revision": "4bf567f7f40eb26a207f89757c8d7c44"
+    "revision": "1"
   }, {
     "url": "index.html",
-    "revision": "0.fnbo5cbpve"
+    "revision": "1"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {

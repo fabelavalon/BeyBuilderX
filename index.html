@@ -16,10 +16,10 @@
     <meta name="theme-color" content="#6257c2">
 
     <!-- icons -->
-    <link rel="icon" href="/favicon.ico" sizes="48x48">
-    <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
     <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Chain.png">
+    <link rel="icon" href="./favicon.ico" sizes="48x48">
+    <link rel="icon" href="./favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./apple-touch-icon-180x180.png">
     
     <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
@@ -27,15 +27,8 @@
     <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
     
     <!-- pwa -->
-    <link rel="manifest" href="/manifest.webmanifest">
-    <script id="register-sw" src="/registerSW.js"></script>
-    <script>
-      if('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js', { scope: '/' })
-        })
-      }
-    </script>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <script src="./registerSW.js"></script>
 
 </head>
 

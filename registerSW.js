@@ -1,1 +1,5 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/BeyBuilderX/sw.js', { scope: '/BeyBuilderX/' })})}
+if ('serviceWorker' in navigator) { 
+    window.addEventListener('load', () => { 
+        navigator.serviceWorker.register('/sw.js', { scope: '/BeyBuilderX/' }) 
+    }) 
+}
