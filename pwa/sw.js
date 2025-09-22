@@ -1,92 +1,53 @@
-/**
- * Copyright 2018 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+const CACHE_NAME = 'beybuilderx-cache-v1';
+const PRECACHE_URLS = [
+  'registerSW.js',
+  'index.html',
+  'main.js',
+  'parts.js',
+  'beyblade.js',
+  'beybuilder.css',
+  'theme-dark-purple.css',
+  'theme-default.css',
+  'theme-grey.css',
+  'theme-none.css',
+  'theme-wbo.css',
+  'favicon.png',
+  'libraries/debounce/debounce.js',
+  'libraries/pouchdb-7.3.1.js',
+  'pwa/apple-touch-icon-180x180.png',
+  'libraries/bootstrap/bootstrap.css',
+  'libraries/bootstrap/bootstrap.bundle.js'
+];
 
-// If the loader is already loaded, just stop.
-if (!self.define) {
-  let registry = {};
-
-  // Used for `eval` and `importScripts` where we can't get script URL by other means.
-  // In both cases, it's safe to use a global var because those functions are synchronous.
-  let nextDefineUri;
-
-  const singleRequire = (uri, parentUri) => {
-    uri = new URL(uri + ".js", parentUri).href;
-    return registry[uri] || (
-      
-        new Promise(resolve => {
-          if ("document" in self) {
-            const script = document.createElement("script");
-            script.src = uri;
-            script.onload = resolve;
-            document.head.appendChild(script);
-          } else {
-            nextDefineUri = uri;
-            importScripts(uri);
-            resolve();
-          }
-        })
-      
-      .then(() => {
-        let promise = registry[uri];
-        if (!promise) {
-          throw new Error(`Module ${uri} didn't register its module`);
-        }
-        return promise;
-      })
-    );
-  };
-
-  self.define = (depsNames, factory) => {
-    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
-    if (registry[uri]) {
-      // Module is already loading or loaded.
-      return;
-    }
-    let exports = {};
-    const require = depUri => singleRequire(depUri, uri);
-    const specialDeps = {
-      module: { uri },
-      exports,
-      require
-    };
-    registry[uri] = Promise.all(depsNames.map(
-      depName => specialDeps[depName] || require(depName)
-    )).then(deps => {
-      factory(...deps);
-      return exports;
-    });
-  };
-}
-define(['./workbox-54d0af47'], (function (workbox) { 'use strict';
-
+// Install event: Cache files
+self.addEventListener('install', event => {
   self.skipWaiting();
-  workbox.clientsClaim();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
+  );
+});
 
-  /**
-   * The precacheAndRoute() method efficiently caches and responds to
-   * requests for URLs in the manifest.
-   * See https://developer.chrome.com/docs/workbox/modules/workbox-precaching
-   */
-  workbox.precacheAndRoute([{
-    "url": "registerSW.js",
-    "revision": "1"
-  }, {
-    "url": "index.html",
-    "revision": "1"
-  }], {});
-  workbox.cleanupOutdatedCaches();
-  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
-    allowlist: [/^\/$/]
-  }));
+// Activate event: Cleanup old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
 
-}));
+// Fetch event: Serve from cache, fallback to network
+self.addEventListener('fetch', event => {
+  if (event.request.mode === 'navigate') {
+    // SPA navigation fallback
+    event.respondWith(
+      caches.match('index.html').then(response => response || fetch(event.request))
+    );
+    return;
+  }
+  event.respondWith(
+    caches.match(event.request).then(response => response || fetch(event.request))
+  );
+});
