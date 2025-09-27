@@ -121,8 +121,8 @@ var blades = [
     {"name":"Shockwave",         "spin":"right", "system":"BX", "weight":32.26, "height":0, "abbv":"Sh",   "wins":0, "losses":0, "draws":0, "id":90},
     {"name":"Miles Morales",     "spin":"right", "system":"BX", "weight":31.72, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":91},
     {"name":"Green Goblin",      "spin":"right", "system":"BX", "weight":31.84, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":92},
-    {"name":"Eclipse-Upper",     "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:U", "wins":0, "losses":0, "draws":0, "id":93},
-    {"name":"Eclipse-Smash",     "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:S", "wins":0, "losses":0, "draws":0, "id":94},
+    {"name":"Eclipse-U",         "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:U", "wins":0, "losses":0, "draws":0, "id":93},
+    {"name":"Eclipse-S",         "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:S", "wins":0, "losses":0, "draws":0, "id":94},
     //{"name":"Chewbacca",         "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":95},
     //{"name":"Stormtrooper",      "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":96},
     //{"name":"ClockMirage",       "spin":"right", "system":"UX", "weight":0.00, "height":0, "abbv":"ClMr", "wins":0, "losses":0, "draws":0, "id":97},
@@ -142,8 +142,8 @@ var assistBlades = [
     {"name":"Assault",    "spin":"right", "system":"CX", "weight":5.00, "height":0, "abbv":"A",   "wins":0, "losses":0, "draws":0, "id":7},
     {"name":"Wheel",      "spin":"right", "system":"CX", "weight":7.26, "height":0, "abbv":"W",   "wins":0, "losses":0, "draws":0, "id":8},
     {"name":"Massive",    "spin":"right", "system":"CX", "weight":5.32, "height":0, "abbv":"M",   "wins":0, "losses":0, "draws":0, "id":9},
-    {"name":"Dual-Upper", "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:U", "wins":0, "losses":0, "draws":0, "id":10},
-    {"name":"Dual-Smash", "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:S", "wins":0, "losses":0, "draws":0, "id":11},
+    {"name":"Dual-U",     "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:U", "wins":0, "losses":0, "draws":0, "id":10},
+    {"name":"Dual-S",     "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:S", "wins":0, "losses":0, "draws":0, "id":11},
     
  ];
 
