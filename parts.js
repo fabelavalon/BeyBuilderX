@@ -121,27 +121,29 @@ var blades = [
     {"name":"Shockwave",         "spin":"right", "system":"BX", "weight":32.26, "height":0, "abbv":"Sh",   "wins":0, "losses":0, "draws":0, "id":90},
     {"name":"Miles Morales",     "spin":"right", "system":"BX", "weight":31.72, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":91},
     {"name":"Green Goblin",      "spin":"right", "system":"BX", "weight":31.84, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":92},
-    {"name":"Eclipse",           "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec",   "wins":0, "losses":0, "draws":0, "id":93},
-    //{"name":"Chewbacca",         "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":94},
-    //{"name":"Stormtrooper",      "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":95},
-    //{"name":"ClockMirage",       "spin":"right", "system":"UX", "weight":0.00, "height":0, "abbv":"ClMr", "wins":0, "losses":0, "draws":0, "id":96},
-    //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":97},
+    {"name":"Eclipse-Upper",     "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:U", "wins":0, "losses":0, "draws":0, "id":93},
+    {"name":"Eclipse-Smash",     "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:S", "wins":0, "losses":0, "draws":0, "id":94},
+    //{"name":"Chewbacca",         "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":95},
+    //{"name":"Stormtrooper",      "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":96},
+    //{"name":"ClockMirage",       "spin":"right", "system":"UX", "weight":0.00, "height":0, "abbv":"ClMr", "wins":0, "losses":0, "draws":0, "id":97},
+    //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":98},
     
 ];
 
 var assistBlades = [
 
-    {"name":"Slash",   "spin":"right", "system":"CX", "weight":4.71, "height":0, "abbv":"S",   "wins":0, "losses":0, "draws":0, "id":0},
-    {"name":"Round",   "spin":"right", "system":"CX", "weight":4.64, "height":0, "abbv":"R",   "wins":0, "losses":0, "draws":0, "id":1},
-    {"name":"Bumper",  "spin":"right", "system":"CX", "weight":5.31, "height":0, "abbv":"B",   "wins":0, "losses":0, "draws":0, "id":2},
-    {"name":"Turn-A",  "spin":"right", "system":"CX", "weight":5.85, "height":0, "abbv":"T:A", "wins":0, "losses":0, "draws":0, "id":3},
-    {"name":"Turn-D",  "spin":"right", "system":"CX", "weight":5.85, "height":0, "abbv":"T:D", "wins":0, "losses":0, "draws":0, "id":4},
-    {"name":"Charge",  "spin":"right", "system":"CX", "weight":5.05, "height":0, "abbv":"C",   "wins":0, "losses":0, "draws":0, "id":5},
-    {"name":"Jaggy",   "spin":"right", "system":"CX", "weight":4.82, "height":0, "abbv":"J",   "wins":0, "losses":0, "draws":0, "id":6},
-    {"name":"Assault", "spin":"right", "system":"CX", "weight":5.00, "height":0, "abbv":"A",   "wins":0, "losses":0, "draws":0, "id":7},
-    {"name":"Wheel",   "spin":"right", "system":"CX", "weight":7.26, "height":0, "abbv":"W",   "wins":0, "losses":0, "draws":0, "id":8},
-    {"name":"Massive", "spin":"right", "system":"CX", "weight":5.32, "height":0, "abbv":"M",   "wins":0, "losses":0, "draws":0, "id":9},
-    {"name":"Dual",    "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D",   "wins":0, "losses":0, "draws":0, "id":10},
+    {"name":"Slash",      "spin":"right", "system":"CX", "weight":4.71, "height":0, "abbv":"S",   "wins":0, "losses":0, "draws":0, "id":0},
+    {"name":"Round",      "spin":"right", "system":"CX", "weight":4.64, "height":0, "abbv":"R",   "wins":0, "losses":0, "draws":0, "id":1},
+    {"name":"Bumper",     "spin":"right", "system":"CX", "weight":5.31, "height":0, "abbv":"B",   "wins":0, "losses":0, "draws":0, "id":2},
+    {"name":"Turn-A",     "spin":"right", "system":"CX", "weight":5.85, "height":0, "abbv":"T:A", "wins":0, "losses":0, "draws":0, "id":3},
+    {"name":"Turn-D",     "spin":"right", "system":"CX", "weight":5.85, "height":0, "abbv":"T:D", "wins":0, "losses":0, "draws":0, "id":4},
+    {"name":"Charge",     "spin":"right", "system":"CX", "weight":5.05, "height":0, "abbv":"C",   "wins":0, "losses":0, "draws":0, "id":5},
+    {"name":"Jaggy",      "spin":"right", "system":"CX", "weight":4.82, "height":0, "abbv":"J",   "wins":0, "losses":0, "draws":0, "id":6},
+    {"name":"Assault",    "spin":"right", "system":"CX", "weight":5.00, "height":0, "abbv":"A",   "wins":0, "losses":0, "draws":0, "id":7},
+    {"name":"Wheel",      "spin":"right", "system":"CX", "weight":7.26, "height":0, "abbv":"W",   "wins":0, "losses":0, "draws":0, "id":8},
+    {"name":"Massive",    "spin":"right", "system":"CX", "weight":5.32, "height":0, "abbv":"M",   "wins":0, "losses":0, "draws":0, "id":9},
+    {"name":"Dual-Upper", "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:U", "wins":0, "losses":0, "draws":0, "id":10},
+    {"name":"Dual-Smash", "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:S", "wins":0, "losses":0, "draws":0, "id":11},
     
  ];
 
