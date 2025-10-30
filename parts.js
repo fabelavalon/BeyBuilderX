@@ -23,6 +23,8 @@ var bitChips = [
     {"name":"Stag",     "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"St", "wins":0, "losses":0, "draws":0, "id":12},
     {"name":"Sol",      "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Sl", "wins":0, "losses":0, "draws":0, "id":13},
     //{"name":"Leon",     "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Ln", "wins":0, "losses":0, "draws":0, "id":14},
+    //{"name":"Emperor",  "spin":"right", "system":"CX", "type":"metal-l",  "weight":1.73, "height":0, "abbv":"Em", "wins":0, "losses":0, "draws":0, "id":15},
+    //{"name":"Wolf",     "spin":"right", "system":"CX", "type":"standard", "weight":1.73, "height":0, "abbv":"Wl", "wins":0, "losses":0, "draws":0, "id":16},
 
 ];
 
@@ -123,10 +125,12 @@ var blades = [
     {"name":"Green Goblin",      "spin":"right", "system":"BX", "weight":31.84, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":92},
     {"name":"Eclipse-U",         "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:U", "wins":0, "losses":0, "draws":0, "id":93},
     {"name":"Eclipse-S",         "spin":"right", "system":"CX", "weight":32.25, "height":0, "abbv":"Ec:S", "wins":0, "losses":0, "draws":0, "id":94},
-    //{"name":"Chewbacca",         "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":95},
-    //{"name":"Stormtrooper",      "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":96},
-    //{"name":"ClockMirage",       "spin":"right", "system":"UX", "weight":0.00, "height":0, "abbv":"ClMr", "wins":0, "losses":0, "draws":0, "id":97},
+    {"name":"ClockMirage",       "spin":"right", "system":"UX", "weight":37.70, "height":0, "abbv":"ClMr", "wins":0, "losses":0, "draws":0, "id":95},
+    //{"name":"Chewbacca",         "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":96},
+    //{"name":"Stormtrooper",      "spin":"right", "system":"BX", "weight":0.00, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":97},
     //{"name":"Fang",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Fn",   "wins":0, "losses":0, "draws":0, "id":98},
+    //{"name":"Might",             "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Mg",   "wins":0, "losses":0, "draws":0, "id":99},
+    //{"name":"Hunt",              "spin":"right", "system":"CX", "weight":0.00, "height":0, "abbv":"Hn",   "wins":0, "losses":0, "draws":0, "id":100},
     
 ];
 
@@ -144,6 +148,8 @@ var assistBlades = [
     {"name":"Massive",    "spin":"right", "system":"CX", "weight":5.32, "height":0, "abbv":"M",   "wins":0, "losses":0, "draws":0, "id":9},
     {"name":"Dual-U",     "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:U", "wins":0, "losses":0, "draws":0, "id":10},
     {"name":"Dual-S",     "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:S", "wins":0, "losses":0, "draws":0, "id":11},
+    //{"name":"Heavy",      "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"H",   "wins":0, "losses":0, "draws":0, "id":12},
+    //{"name":"Free",       "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"F",   "wins":0, "losses":0, "draws":0, "id":13},
     
  ];
 
@@ -179,7 +185,8 @@ var rachets = [
     {"name":"6-70", "weight":6.35,  "height":7,   "abbv":"6-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":27},
     {"name":"4-50", "weight":5.92,  "height":5,   "abbv":"4-50", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":28},
     {"name":"1-70", "weight":6.16,  "height":7,   "abbv":"1-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":29},
-    //{"name":"9-65", "weight":0.00,  "height":65,   "abbv":"9-65", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":30},
+    {"name":"9-65", "weight":4.48,  "height":6.5, "abbv":"9-65", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":30},
+    //{"name":"0-60", "weight":4.48,  "height":6,   "abbv":"0-60", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":31},
 ];
 
 var bits = [
@@ -227,5 +234,6 @@ var bits = [
     {"name":"Merge",        "weight":3.39,  "height":6,   "abbv":"M",  "type":"bit",        "wins":0, "losses":0, "draws":0, "id":40},
     {"name":"Under Flat",   "weight":2.05,  "height":0,   "abbv":"UF", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":41},
     {"name":"Trans Kick",   "weight":2.28,  "height":0,   "abbv":"TK", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":42},
+    //{"name":"Operate",      "weight":2.28,  "height":0,   "abbv":"Op", "type":"ratchetBit", "wins":0, "losses":0, "draws":0, "id":43},
 
 ];
