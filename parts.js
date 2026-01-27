@@ -25,6 +25,7 @@ var bitChips = [
     {"name":"Wolf",     "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Wl", "wins":0, "losses":0, "draws":0, "id":14},
     {"name":"Emperor",  "spin":"right", "system":"CX", "type":"metal-light", "weight":4.73, "height":0, "abbv":"Em", "wins":0, "losses":0, "draws":0, "id":15},
     {"name":"Leon",     "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Ln", "wins":0, "losses":0, "draws":0, "id":16},
+    {"name":"Phoenix",  "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Ph", "wins":0, "losses":0, "draws":0, "id":17},
 
 ];
 
@@ -111,7 +112,7 @@ var blades = [
     {"name":"RockLeone",         "spin":"right", "system":"BX", "weight":29.88, "height":0, "abbv":"RcLn", "wins":0, "losses":0, "draws":0, "id":78},
     {"name":"SamuraiCalibur",    "spin":"right", "system":"BX", "weight":36.00, "height":0, "abbv":"SmCb", "wins":0, "losses":0, "draws":0, "id":79},
     {"name":"SharkScale",        "spin":"right", "system":"UX", "weight":37.60, "height":0, "abbv":"ShSc", "wins":0, "losses":0, "draws":0, "id":80},
-    {"name":"Fort",              "spin":"right", "system":"CX", "weight":28.72, "height":0, "abbv":"Fr",   "wins":0, "losses":0, "draws":0, "id":81},
+    {"name":"Fort",              "spin":"right", "system":"CX", "weight":28.72, "height":0, "abbv":"Ft",   "wins":0, "losses":0, "draws":0, "id":81},
     {"name":"Wriggle",           "spin":"right", "system":"CX", "weight":29.45, "height":0, "abbv":"Wr",   "wins":0, "losses":0, "draws":0, "id":82},
     {"name":"Antler",            "spin":"right", "system":"CX", "weight":29.33, "height":0, "abbv":"An",   "wins":0, "losses":0, "draws":0, "id":83},
     {"name":"GoatTackle",        "spin":"right", "system":"BX", "weight":31.46, "height":0, "abbv":"GtTc", "wins":0, "losses":0, "draws":0, "id":84},
@@ -134,6 +135,8 @@ var blades = [
     {"name":"Stun Medusa",       "spin":"right", "system":"BX", "weight":27.32, "height":0, "abbv":"StMd", "wins":0, "losses":0, "draws":0, "id":101},
     {"name":"MeteorDragoon",     "spin":"left",  "system":"UX", "weight":39.04, "height":0, "abbv":"MtDg", "wins":0, "losses":0, "draws":0, "id":102},
     {"name":"MummyCurse",        "spin":"right", "system":"UX", "weight":37.32, "height":0, "abbv":"MmCr", "wins":0, "losses":0, "draws":0, "id":103},
+    {"name":"Flare",             "spin":"right", "system":"CX", "weight":31.36, "height":0, "abbv":"Fr",   "wins":0, "losses":0, "draws":0, "id":104},
+    {"name":"OrochiCluster",     "spin":"right", "system":"BX", "weight":36.36, "height":0, "abbv":"OrCl", "wins":0, "losses":0, "draws":0, "id":105},
     
 ];
 
@@ -153,6 +156,7 @@ var assistBlades = [
     {"name":"Dual-S",     "spin":"right", "system":"CX", "weight":5.63, "height":0, "abbv":"D:S", "wins":0, "losses":0, "draws":0, "id":11},
     {"name":"Free",       "spin":"right", "system":"CX", "weight":5.82, "height":0, "abbv":"F",   "wins":0, "losses":0, "draws":0, "id":12},
     {"name":"Heavy",      "spin":"right", "system":"CX", "weight":7.94, "height":0, "abbv":"H",   "wins":0, "losses":0, "draws":0, "id":13},
+    {"name":"Zillion",    "spin":"right", "system":"CX", "weight":6.66, "height":0, "abbv":"Z",   "wins":0, "losses":0, "draws":0, "id":14},
     
  ];
 
@@ -240,5 +244,6 @@ var bits = [
     {"name":"Trans Kick",   "weight":2.28,  "height":1.5, "abbv":"TK", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":42},
     {"name":"Operate",      "weight":14.01, "height":4,   "abbv":"Op", "type":"ratchetBit", "wins":0, "losses":0, "draws":0, "id":43},
     {"name":"Jolt",         "weight":2.54,  "height":1,   "abbv":"J",  "type":"bit",        "wins":0, "losses":0, "draws":0, "id":44},
+    {"name":"Wall Wedge",   "weight":2.43,  "height":2,   "abbv":"WW", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":45},
 
 ];
