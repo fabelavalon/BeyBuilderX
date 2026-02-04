@@ -5,8 +5,20 @@
  *==========================================================*/
 
 //create beyblade database
-var beyBladeDBX = new PouchDB("BeyBladesX");
-var recordsDBX = new PouchDB("RecordX");
+var beyBladeDBX = new PouchDB("BeyBladesX"); //standard xtreme stadium
+var recordsDBX = new PouchDB("RecordX");  
+var beybladesDXS = new PouchDB("BeybladesDXS"); //double xtreme stadium
+var recordsDXS = new PouchDB("RecordsDXS"); 
+var beybladesWXS = new PouchDB("BeybladesWXS"); //wide xtreme stadium
+var recordsWXS = new PouchDB("RecordsWXS");
+var beybladesIXS = new PouchDB("BeybladesIXS"); //infinity xtreme stadium
+var recordsIXS = new PouchDB("RecordsIXS");
+var beybladesHXS = new PouchDB("BeybladesHXS"); //hasbro xtreme stadium
+var recordsHXS = new PouchDB("RecordsHXS");
+var beybladesDAS = new PouchDB("BeybladesDAS"); //drop attack stadium
+var recordsDAS = new PouchDB("RecordsDAS");
+var beybladesBKT = new PouchDB("BeybladesBKT"); //bucket stadiums
+var recordsBKT = new PouchDB("RecordsBKT");
 var settings = new PouchDB("settings");
 
 //import the parts lists
@@ -26,6 +38,10 @@ var editBeybtn = document.createElement("button");
 var showMatchupbtn = document.createElement("button");
 
 //import the elements for the dropdowns...
+//...for stadiums
+var whichStadiumDropdown = document.getElementById("whichStadium");
+const stadiums = ["dxs", "wxs", "ixs", "hxs", "das", "bkt"];
+
 //...for bey1
 var bey1BitChipDropdown = document.getElementById("bey1BitChip"); 
 var bey1BladeDropdown = document.getElementById("bey1Blade");
@@ -178,9 +194,19 @@ function main(){
     bey1BitDropdown.value="random";
     bey2BitDropdown.value="random";
     bitDropdown1.value="none";
+
+    whichStadiumDropdown.value="xst";
     
     //create and populate the drop downs with the parts from the database...
     
+    //...the stadiums
+    for (var i = 0; i < stadiums.length; i++) {
+        var options = document.createElement("option");
+        options.textContent = stadiums[i];
+        options.value = stadiums[i];
+        whichStadiumDropdown.appendChild(options);
+    }
+
     //sort for display purposes, leave original array the same so we can get by ID
     allBitChipsSorted = structuredClone(allBitChips); // JS deep copy crap
     allBitChipsSorted.sort((a, b) => a.name.localeCompare(b.name));
