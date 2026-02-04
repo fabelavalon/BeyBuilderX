@@ -1,10 +1,10 @@
 /*==========================================================*
- * BeyBuilder v1.4 for Beyblade X                           *
+ * BeyBuilder v1.6 for Beyblade X                           *
  * Author: Fabel                                            *
  * Copyright 2023-2025                                      *
  *==========================================================*/
 
-//create beyblade database
+//create databases for each stadium
 var beyBladeDBX = new PouchDB("BeyBladesX"); //standard xtreme stadium
 var recordsDBX = new PouchDB("RecordX");  
 var beybladesDXS = new PouchDB("BeybladesDXS"); //double xtreme stadium
@@ -40,7 +40,7 @@ var showMatchupbtn = document.createElement("button");
 //import the elements for the dropdowns...
 //...for stadiums
 var whichStadiumDropdown = document.getElementById("whichStadium");
-const stadiums = ["dxs", "wxs", "ixs", "hxs", "das", "bkt"];
+const stadiums = ["dxs", "Double Xtreme Stadium", "wxs", "Wide Xtreme Stadium", "ixs", "Infinity Stadium", "hxs", "Hasbro Xtreme Stadium", "das", "Drop Attack Stadium", "bkt", "Bucket Stadiums"];
 
 //...for bey1
 var bey1BitChipDropdown = document.getElementById("bey1BitChip"); 
@@ -200,11 +200,12 @@ function main(){
     //create and populate the drop downs with the parts from the database...
     
     //...the stadiums
-    for (var i = 0; i < stadiums.length; i++) {
+    for (var i = 0; i < stadiums.length; i+=2) {
         var options = document.createElement("option");
-        options.textContent = stadiums[i];
+        options.textContent = stadiums[i+1];
         options.value = stadiums[i];
         whichStadiumDropdown.appendChild(options);
+        console.log(i);
     }
 
     //sort for display purposes, leave original array the same so we can get by ID
@@ -596,6 +597,61 @@ function choseWinner(beyNumber, winType) {
 
 }
 
+//get the active records database
+function getActiveRecordsDB(){
+    if(whichStadiumDropdown.value == "xts"){
+        return recordsDBX;
+    }
+    else if(whichStadiumDropdown.value == "dxs"){
+        return recordsDXS;
+    }
+    else if(whichStadiumDropdown.value == "wxs"){
+        return recordsWXS;
+    }
+    else if(whichStadiumDropdown.value == "ixs"){
+        return recordsIXS;
+    }
+    else if(whichStadiumDropdown.value == "hxs"){
+        return recordsHXS;
+    }
+    else if(whichStadiumDropdown.value == "das"){
+        return recordsDAS;
+    }
+    else if(whichStadiumDropdown.value == "bkt"){
+        return recordsBKT;
+    }
+    else{
+        console.error("couldnt fetch records db");
+    }
+};
+
+//get the active beyblades database
+function getActiveBeybladesDB(){
+    if(whichStadiumDropdown.value == "xts"){
+        return beyBladeDBX;
+    }
+    else if(whichStadiumDropdown.value == "dxs"){
+        return beybladesDXS;
+    }
+    else if(whichStadiumDropdown.value == "wxs"){
+        return beybladesWXS;
+    }
+    else if(whichStadiumDropdown.value == "ixs"){
+        return beybladesIXS;
+    }
+    else if(whichStadiumDropdown.value == "hxs"){
+        return beybladesHXS;
+    }
+    else if(whichStadiumDropdown.value == "das"){
+        return beybladesDAS;
+    }
+    else if(whichStadiumDropdown.value == "bkt"){
+        return beybladesBKT;
+    }
+    else{
+        console.error("couldnt fetch beyblades db");
+    }
+};
 
 //add a new, not before generated beyblade to the database
 function addBeyblade(bey) {
