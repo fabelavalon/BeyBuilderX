@@ -653,6 +653,11 @@ function getActiveBeybladesDB(){
     }
 };
 
+//set the selected stadium
+function setStadium(){
+    //unsure if this is needed
+}
+
 //add a new, not before generated beyblade to the database
 function addBeyblade(bey) {
 
