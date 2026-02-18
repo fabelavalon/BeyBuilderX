@@ -1,7 +1,7 @@
 /*==========================================================*
  * BeyBuilder v1.4 for Beyblade X                           *
  * Author: Fabel                                            *
- * Copyright 2023-2025                                      *
+ * Copyright 2023-2026                                      *
  *==========================================================*/
 
 //create beyblade database
@@ -11,6 +11,7 @@ var settings = new PouchDB("settings");
 
 //import the parts lists
 var allBitChips = bitChips;
+var allOverBlades = overBlades;
 var allBlades = blades;
 var allAssists = assistBlades;
 var allRachets = rachets;
@@ -28,25 +29,29 @@ var showMatchupbtn = document.createElement("button");
 //import the elements for the dropdowns...
 //...for bey1
 var bey1BitChipDropdown = document.getElementById("bey1BitChip"); 
+var bey1OverBladeDropdown = document.getElementById("bey1OverBlade"); 
 var bey1BladeDropdown = document.getElementById("bey1Blade");
 var bey1AssistBladeDropdown = document.getElementById("bey1AssistBlade"); 
 var bey1RachetDropdown = document.getElementById("bey1Rachet");
 var bey1BitDropdown = document.getElementById("bey1Bit");
 
 //...for bey2
-var bey2BitChipDropdown = document.getElementById("bey2BitChip"); 
+var bey2BitChipDropdown = document.getElementById("bey2BitChip");
+var bey2OverBladeDropdown = document.getElementById("bey2OverBlade"); 
 var bey2BladeDropdown = document.getElementById("bey2Blade");
 var bey2RachetDropdown = document.getElementById("bey2Rachet");
 var bey2AssistBladeDropdown = document.getElementById("bey2AssistBlade"); 
 var bey2BitDropdown = document.getElementById("bey2Bit");
 
 //...for the parts records
-var bitChipDropdown1 = document.getElementById("bitChipR1"); 
+var bitChipDropdown1 = document.getElementById("bitChipR1");
+var overBladeDropdown1 = document.getElementById("overBladeR1"); 
 var bladeDropdown1 = document.getElementById("bladeR1");
 var assistBladeDropdown1 = document.getElementById("assistR1"); 
 var rachetDropdown1 = document.getElementById("rachetR1");
 var bitDropdown1 = document.getElementById("bitR1");
 var bitChipDropdown2 = document.getElementById("bitChipR2"); 
+var overBladeDropdown2 = document.getElementById("overBladeR2");
 var bladeDropdown2 = document.getElementById("bladeR2");
 var assistBladeDropdown2 = document.getElementById("assistR2"); 
 var rachetDropdown2 = document.getElementById("rachetR2");
@@ -163,6 +168,10 @@ function main(){
     bey2BitChipDropdown.value="random";
     bitChipDropdown1.value="none";
 
+    bey1OverBladeDropdown.value="random";
+    bey2OverBladeDropdown.value="random";
+    overBladeDropdown1.value="none";
+
     bey1BladeDropdown.value="random";
     bey2BladeDropdown.value="random";
     bladeDropdown1.value="none";
@@ -202,6 +211,30 @@ function main(){
         bey2BitChipDropdown.appendChild(option2);
         bitChipDropdown1.appendChild(option3);
         bitChipDropdown2.appendChild(option4);
+
+    }
+
+    //sort for display purposes, leave original array the same so we can get by ID
+    allOverBladesSorted = structuredClone(allOverBlades); // JS deep copy crap
+    allOverBladesSorted.sort((a, b) => a.name.localeCompare(b.name));
+    //...the Over Blades
+    for (var i = 0; i < allOverBladesSorted.length; i++) {
+        var options = document.createElement("option");
+        var option2 = document.createElement("option");
+        var option3 = document.createElement("option");
+        var option4 = document.createElement("option");
+        options.textContent = allOverBladesSorted[i].name;
+        options.value = allOverBladesSorted[i].id;
+        option2.textContent = allOverBladesSorted[i].name;
+        option2.value = allOverBladesSorted[i].id;
+        option3.textContent = allOverBladesSorted[i].name;
+        option3.value = allOverBladesSorted[i].id;
+        option4.textContent = allOverBladesSorted[i].name;
+        option4.value = allOverBladesSorted[i].id;
+        bey1OverBladeDropdown.appendChild(options);
+        bey2OverBladeDropdown.appendChild(option2);
+        overBladeDropdown1.appendChild(option3);
+        overBladeDropdown2.appendChild(option4);
 
     }
     
@@ -317,6 +350,7 @@ function generateBey1(){
 
     //uses the id's of all parts for easy call
     var bitChip = -1;
+    var over = -1;
     var blade = -1;
     var assist = -1;
     var rachet = -1;
@@ -324,6 +358,7 @@ function generateBey1(){
 
     //boolean values to check if the beyblade is random or not
     var bitChipChosen = false;
+    var overBladeChosen = false;
     var bladeChosen = false;
     var assistChosen = false;
     var rachetChosen = false;
@@ -339,6 +374,16 @@ function generateBey1(){
     else{
         bitChip = allBitChips[parseInt(bey1BitChipDropdown.value)].id;
         bitChipChosen = true;
+    }
+    //...over blade?
+    if(bey1OverBladeDropdown.value=="random"){
+        var randOverBlade = getRandomInt(allOverBlades.length);
+        over = allOverBlades[randOverBlade].id;
+        overBladeChosen = false;
+    }
+    else{
+        over = allOverBlades[parseInt(bey1OverBladeDropdown.value)].id;
+        overBladeChosen = true;
     }
     //...blade?
     if(bey1BladeDropdown.value=="random"){
@@ -381,16 +426,26 @@ function generateBey1(){
         bitChosen = true;
     } 
 
-    //console.log(JSON.stringify(blade));
-    bey1 = new BeyBlade(bitChip, blade, assist, rachet, bit);
+    if(allBlades[blade].abbv == "ClMr" && allRachets[rachet].type != "simple"){ //check for ClockMirage and Simple Ratchets
+        //throw error
+        console.error("ClockMirage is only compatable with Simple Ratchets (ie. 4-55, M-85 etc.)");
+    }
+    else if(allBlades[blade].system == "UX2" && allBits[bit].type == "ratchetBit"){ //check for UX Expanded/Infinity blades and ratchet integrated bits
+        //throw error
+        console.error("UX Expanded/Infinity blades are not compatable with Ratchet Integrated Bits");
+    }
+    else{
+        //console.log(JSON.stringify(blade));
+        bey1 = new BeyBlade(bitChip, over, blade, assist, rachet, bit);
 
-    wasBey1Generated = true;
-    addBeyblade(bey1);
-    error.textContent = "";
-    bey1Is.textContent = "" + bey1.name;
-    showBeybladeStats(bey1, 1);
-    createWinButtons();
-    clearUndoStack();
+        wasBey1Generated = true;
+        addBeyblade(bey1);
+        error.textContent = "";
+        bey1Is.textContent = "" + bey1.name;
+        showBeybladeStats(bey1, 1);
+        createWinButtons();
+        clearUndoStack();
+    }
 
 }
 
@@ -401,6 +456,7 @@ function generateBey2(){
 
     //uses the id's of all parts for easy call
     var bitChip = -1;
+    var over = -1;
     var blade = -1;
     var assist = -1;
     var rachet = -1;
@@ -408,6 +464,7 @@ function generateBey2(){
 
     //boolean values to check if the beyblade is random or not
     var bitChipChosen = false;
+    var overBladeChosen = false;
     var bladeChosen = false;
     var assistChosen = false;
     var rachetChosen = false;
@@ -423,6 +480,16 @@ function generateBey2(){
     else{
         bitChip = allBitChips[parseInt(bey2BitChipDropdown.value)].id;
         bitChipChosen = true;
+    }
+    //...over blade?
+    if(bey2OverBladeDropdown.value=="random"){
+        var randOverBlade = getRandomInt(allOverBlades.length);
+        over = allOverBlades[randOverBlade].id;
+        overBladeChosen = false;
+    }
+    else{
+        over = allOverBlades[parseInt(bey2OverBladeDropdown.value)].id;
+        overBladeChosen = true;
     }
     //...blade?
     if(bey2BladeDropdown.value=="random"){
@@ -466,15 +533,25 @@ function generateBey2(){
         bitChosen = true;
     }
 
-    bey2 = new BeyBlade(bitChip, blade, assist, rachet, bit);
+    if(allBlades[blade].abbv == "ClMr" && allRachets[rachet].type != "simple"){ //check for ClockMirage and Simple Ratchets
+        //throw error
+        console.error("ClockMirage is only compatable with Simple Ratchets (ie. 4-55, M-85 etc.)");
+    }
+    else if(allBlades[blade].system == "UX2" && allBits[bit].type == "ratchetBit"){ //check for ratchet integrated blades and ratchet integrated bits
+        //throw error
+        console.error("UX Expanded/Infinity blades are not compatable with Ratchet Integrated Bits");
+    }
+    else{
+        bey2 = new BeyBlade(bitChip, over, blade, assist, rachet, bit);
 
-    wasBey2Generated = true;
-    addBeyblade(bey2);
-    error.textContent = "";
-    bey2Is.textContent = "" + bey2.name;
-    showBeybladeStats(bey2, 2);
-    createWinButtons();
-    clearUndoStack();
+        wasBey2Generated = true;
+        addBeyblade(bey2);
+        error.textContent = "";
+        bey2Is.textContent = "" + bey2.name;
+        showBeybladeStats(bey2, 2);
+        createWinButtons();
+        clearUndoStack();
+    }
 
 }
 
@@ -1261,10 +1338,15 @@ function setDbBey(){
             // convert to BeyBlade object, so we can access methods like getTotalWin()
             if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
                 // build a new BeyBlade object using parts, then overlay win/loss data from database
-                var castDoc = Object.assign( new BeyBlade(-1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
+                var castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
+            }
+            else if(allBlades[doc.build.blade].system == "UX2"){
+                var castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, -1, doc.build.bit), doc.build );
             }
             else if(allBlades[doc.build.blade].system == "CX"){
-                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip , doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
+                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip, -1, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
+            }else if(allBlades[doc.build.blade].system == "CX2"){
+                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip, doc.build.over, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
             }
 
             //TODO: move some calculation into Beyblade class, like getWinPoints, getLosePoints, etc
@@ -1348,7 +1430,7 @@ function showBeybladeStats(bey, whichBey) {
     }
 
     //console.log("casting object ...");
-    var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+    var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.over, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
     console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + castDoc.getDbId() ); 
     
     switch(whichBey){
@@ -1735,12 +1817,19 @@ function populateMatchHist(bey){
 
         // build a new BeyBlade object using parts, then overlay win/loss data from database
         if(((allBlades[bey.blade].system == "BX") || (allBlades[bey.blade].system == "UX"))){
-            var castDoc = Object.assign( new BeyBlade(-1, bey.blade, -1, bey.rachet, bey.bit), bey);
+            var castDoc = Object.assign( new BeyBlade(-1, -1, bey.blade, -1, bey.rachet, bey.bit), bey);
             console.log("its a BX/UX Blade");
         }
+        if(((allBlades[bey.blade].system == "UX2") || (allBlades[bey.blade].system == "UX"))){
+            var castDoc = Object.assign( new BeyBlade(-1, -1, bey.blade, -1, -1, bey.bit), bey);
+            console.log("its a UX2 Blade");
+        }
         else if(allBlades[bey.blade].system == "CX"){
-            var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+            var castDoc = Object.assign( new BeyBlade(bey.bitChip, -1, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
             console.log("its a CX blade");
+        }else if(allBlades[bey.blade].system == "CX2"){
+            var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.over, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+            console.log("its a CX2 blade");
         }
         else{ console.log("get fucked") }
 
@@ -1897,16 +1986,16 @@ function populateMatchHist(bey){
     });
 }
 
-function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChip2, blade2, assist2, rachet2, bit2){
+function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1, bitChip2, over2, blade2, assist2, rachet2, bit2){
 
-    console.log("populateMatchHistUser2(" + bitChip1 + ", " + blade1 + ", " + assist1 + ", " + rachet1 + ", " + bit1 + ", " + bitChip2 + ", " + blade2 + ", " + assist2 + ", " + rachet2 + ", " + bit2 +")");
+    console.log("populateMatchHistUser2(" + bitChip1 + ", " + over1 + ", " + blade1 + ", " + assist1 + ", " + rachet1 + ", " + bit1 + ", " + bitChip2 + ", " + over1 + ", " + blade2 + ", " + assist2 + ", " + rachet2 + ", " + bit2 +")");
 
     // overall stats
     primeMatchupHistStatsTable(); // wipe overall stats
 
     primeMatchupHistTable(); //table html
     // if all parts are "none", return
-    if(blade1=="none" && rachet1=="none" && bit1=="none" && blade2=="none" && rachet2=="none" && bit2=="none" && bitChip1=="none" && assist1=="none" && bitChip2=="none" && assist2=="none"){
+    if(blade1=="none" && rachet1=="none" && bit1=="none" && blade2=="none" && rachet2=="none" && bit2=="none" && bitChip1=="none" && assist1=="none" && bitChip2=="none" && assist2=="none" && over1=="none" && over2=="none"){
         return;
     }
 
@@ -1934,6 +2023,18 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
                 matches = matches.filter(match => { return ( match.doc.challenger!=undefined && assist1==match.doc.challenger.assist ) });
             }
         }
+        if(blade1=="none" || allBlades[blade1].system == "CX2"){
+            // CX blade parts, bit chip and assist blade
+            if(bitChip1!="none"){
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bitChip1==match.doc.challenger.bitChip ) });
+            }
+            if(assist1!="none") {
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && assist1==match.doc.challenger.assist ) });
+            }
+            if(over1!="none") {
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && over1==match.doc.challenger.over ) });
+            }
+        }
 
         // filter bey2 parts, if they're set
         if(blade2!="none") {
@@ -1952,6 +2053,18 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
             }
             if(assist2!="none") {
                 matches = matches.filter(match => { return ( match.doc.defender!=undefined && assist2==match.doc.defender.assist ) });
+            }
+        }
+        if(blade2=="none" || allBlades[blade2].system == "CX2"){
+            // CX blade parts, bit chip and assist blade
+            if(bitChip2!="none"){
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && bitChip2==match.doc.challenger.bitChip ) });
+            }
+            if(assist2!="none") {
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && assist2==match.doc.challenger.assist ) });
+            }
+            if(over2!="none") {
+                matches = matches.filter(match => { return ( match.doc.challenger!=undefined && over2==match.doc.challenger.over ) });
             }
         }
 
@@ -2004,6 +2117,7 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
         // add parts to stats title
         var statBeyName = ""
         statBeyName += (bitChip1!="none" ? allBitChips[bitChip1].name : ""); // no space on Bit Chip, it combines with blade name
+        statBeyName += (over1!="none" ? allOverBlades[over1].name : "");
         statBeyName += (blade1!="none" ? allBlades[blade1].name + " " : "");
         statBeyName += (assist1!="none" ? allAssists[assist1].name + " " : "");
         statBeyName += (rachet1!="none" ? allRachets[rachet1].name + " " : "");
@@ -2011,8 +2125,10 @@ function populateMatchHistUser2(bitChip1, blade1, assist1, rachet1, bit1, bitChi
         // if bey2 parts are selected, title will be "X vs Y"
         var defenderBeyName = "";
         defenderBeyName += (bitChip2!="none" ? allBitChips[bitChip2].name : "");
+        statBeyName += (over2!="none" ? allOverBlades[over2].name : "");
         defenderBeyName += (blade2!="none" ? allBlades[blade2].name + " " : "");
         defenderBeyName += (assist2!="none" ? allAssists[assist2].name + " " : "");
+        console.log(rachet2);
         defenderBeyName += (rachet2!="none" ? allRachets[rachet2].name + " " : "");
         defenderBeyName += (bit2!="none" ? allBits[bit2].name + " " : "");
         if(defenderBeyName.trim() != "") {
@@ -2253,11 +2369,11 @@ function disableDropdowns(partType, selection, whichBey){
     // HTML IDs for part selectors
     dropdownIDs = {
         // main VS screen
-        1: { "blade":"bey1Blade", "assistBlade":"bey1AssistBlade", "bitChip":"bey1BitChip", "ratchet":"bey1Rachet", "bit":"bey1Bit" },
-        2: { "blade":"bey2Blade", "assistBlade":"bey2AssistBlade", "bitChip":"bey2BitChip", "ratchet":"bey2Rachet", "bit":"bey2Bit" },
+        1: { "bitChip":"bey1BitChip", "overBlade":"bey1OverBlade", "blade":"bey1Blade", "assistBlade":"bey1AssistBlade", "ratchet":"bey1Rachet", "bit":"bey1Bit" },
+        2: { "bitChip":"bey2BitChip", "overBlade":"bey1OverBlade", "blade":"bey2Blade", "assistBlade":"bey2AssistBlade", "ratchet":"bey2Rachet", "bit":"bey2Bit" },
         // part record modal
-        3: { "blade":"bladeR1", "assistBlade":"assistR1", "bitChip":"bitChipR1", "ratchet":"rachetR1", "bit":"bitR1" },
-        4: { "blade":"bladeR2", "assistBlade":"assistR2", "bitChip":"bitChipR2", "ratchet":"rachetR2", "bit":"bitR2" }
+        3: { "bitChip":"bitChipR1", "overBlade":"overBladeR1", "blade":"bladeR1", "assistBlade":"assistR1", "ratchet":"rachetR1", "bit":"bitR1" },
+        4: { "bitChip":"bitChipR2", "overBlade":"overBladeR2", "blade":"bladeR2", "assistBlade":"assistR2", "ratchet":"rachetR2", "bit":"bitR2" }
     };
 
     disableParts = [];
@@ -2268,10 +2384,20 @@ function disableDropdowns(partType, selection, whichBey){
         console.log("checking blades");
         if(allBlades[selection].system == "CX"){
             //console.log("CX blade selected");
-            enableParts = ["bitChip", "assistBlade"];
+            enableParts = ["bitChip", "assistBlade", "ratchet"];
+            disableParts = ["overBlade"];
+        }
+        else if(allBlades[selection].system == "CX2"){
+            //console.log("CX2 blade selected");
+            enableParts = ["bitChip", "assistBlade", "overBlade", "ratchet"];
+        }
+        else if(allBlades[selection].system == "UX2"){
+            //console.log("UX2 blade selected");
+            disableParts = ["ratchet"]; 
         }
         else {
-            disableParts = ["bitChip", "assistBlade"];
+            disableParts = ["bitChip", "assistBlade", "overBlade"];
+            enableParts = ["ratchet"];
         }
     }
     if(partType=="bit") {
