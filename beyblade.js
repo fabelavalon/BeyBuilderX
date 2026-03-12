@@ -147,7 +147,7 @@ class BeyBlade {
     // construct beyblade ID string
     getDbId(){
         return ( (this.system=="CX" || this.system=="CX2") ? allBitChips[this.bitChip].id + " " : "" ) + // if CX, add bitChip name + space
-                    ( this.system=="CX2" ? allOverBlades[this.over].id + " " : "" ) +
+                    ( this.system=="CX2" ? allOverBlades[this.over].id + " " : "" ) + // if CX2, add overBlade name + space
                     allBlades[this.blade].id + " " +
                     ( (this.system=="CX" || this.system=="CX2") ? allAssists[this.assist].id + " " : "" ) + // if CX, add assistBlade name + space
                     ( this.rachet==-1 ? "" : allRachets[this.rachet].id + " " ) + // if no ratchet, blank, else ratchet name + space
