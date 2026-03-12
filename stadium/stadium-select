@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xtreme Surging Stadium</title>
+<style>
+  body {
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  #stadium {
+    position: relative;
+    width: 800px;
+    height: 500px;
+    background: radial-gradient(circle at center, #444 60%, #222 100%);
+    border-radius: 50% / 50%;
+    overflow: hidden;
+    box-shadow: 0 0 30px #000;
+  }
+
+  /* Upper Deck */
+  .upper-deck {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    top: 0;
+    border-top-left-radius: 50% 50%;
+    border-top-right-radius: 50% 50%;
+    background: #666;
+    box-shadow: 0 -5px 15px #000 inset;
+  }
+
+  /* Craters */
+  .crater {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #111 60%, #000 100%);
+    box-shadow: 0 0 20px #000 inset;
+  }
+
+  #east-crater {
+    right: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  #west-crater {
+    left: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* X Rail */
+  .x-rail {
+    position: absolute;
+    width: 20px;
+    height: 400px;
+    top: 50px;
+    left: 100px;
+    background: repeating-linear-gradient(
+      45deg,
+      #888,
+      #888 10px,
+      #444 10px,
+      #444 20px
+    );
+    transform: rotate(25deg);
+    transform-origin: top left;
+    border-radius: 10px;
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+
+<div id="stadium">
+  <div class="upper-deck"></div>
+  <div id="east-crater" class="crater"></div>
+  <div id="west-crater" class="crater"></div>
+  <div class="x-rail"></div>
+</div>
+
+<script>
+  // Optional: You can animate X Rail effects or highlight zones here later
+</script>
+
+</body>
+</html>
