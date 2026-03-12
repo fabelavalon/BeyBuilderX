@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Xtreme Surging Stadium</title>
+<style>
+body{
+background:#111;
+color:white;
+text-align:center;
+font-family:sans-serif;
+}
+
+canvas{
+background:#222;
+border:4px solid white;
+border-radius:50px;
+}
+
+button{
+margin-top:15px;
+font-size:20px;
+padding:10px 20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Xtreme Surging Stadium</h1>
+
+<canvas id="stadium" width="900" height="500"></canvas>
+<br>
+<button onclick="launch()">Launch</button>
+
+<script>
+
+const canvas = document.getElementById("stadium");
+const ctx = canvas.getContext("2d");
+
+let beys = [];
+let running = false;
+
+function createBeys(){
+beys = [];
+
+for(let i=0;i<4;i++){
+beys.push({
+x:450 + Math.random()*100-50,
+y:250 + Math.random()*100-50,
+vx:(Math.random()-0.5)*4,
+vy:(Math.random()-0.5)*4,
+spin:Math.random()*10+10,
+radius:12
+});
+}
+}
+
+function drawStadium(){
+
+ctx.clearRect(0,0,900,500);
+
+ctx.strokeStyle="white";
+ctx.lineWidth=6;
+ctx.beginPath();
+ctx.ellipse(450,250,420,200,0,0,Math.PI*2);
+ctx.stroke();
+
+ctx.strokeStyle="orange";
+ctx.lineWidth=3;
+ctx.beginPath();
+ctx.moveTo(100,400);
+ctx.lineTo(800,100);
+ctx.stroke();
+
+ctx.strokeStyle="blue";
+ctx.beginPath();
+ctx.arc(250,250,60,0,Math.PI*2);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(650,250,60,0,Math.PI*2);
+ctx.stroke();
+
+ctx.strokeStyle="purple";
+ctx.lineWidth=8;
+ctx.beginPath();
+ctx.ellipse(450,250,380,170,0,0,Math.PI*2);
+ctx.stroke();
+}
+
+function drawBeys(){
+
+ctx.fillStyle="red";
+
+beys.forEach(b=>{
+
+ctx.beginPath();
+ctx.arc(b.x,b.y,b.radius,0,Math.PI*2);
+ctx.fill();
+
+});
+}
+
+function update(){
+
+beys.forEach(b=>{
+
+b.x+=b.vx;
+b.y+=b.vy;
+
+b.vx*=0.995;
+b.vy*=0.995;
+
+let dx=b.x-450;
+let dy=b.y-250;
+
+if((dx*dx)/(420*420)+(dy*dy)/(200*200)>1){
+b.vx*=-1;
+b.vy*=-1;
+}
+
+if(Math.abs((b.y-400)-(b.x-100)*(-300/700))<5){
+b.vx*=1.1;
+b.vy*=1.1;
+}
+
+beys.forEach(o=>{
+
+if(o!==b){
+
+let dist=Math.hypot(b.x-o.x,b.y-o.y);
+
+if(dist<24){
+
+let temp=b.vx;
+b.vx=o.vx;
+o.vx=temp;
+
+temp=b.vy;
+b.vy=o.vy;
+o.vy=temp;
+
+}
+
+}
+
+});
+
+});
+
+}
+
+function loop(){
+
+if(!running)return;
+
+drawStadium();
+update();
+drawBeys();
+
+requestAnimationFrame(loop);
+}
+
+function launch(){
+
+createBeys();
+running=true;
+loop();
+
+}
+
+drawStadium();
+
+</script>
+
+</body>
+</html>
