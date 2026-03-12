@@ -28,7 +28,7 @@ var bitChips = [
     {"name":"Phoenix",  "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Ph", "wins":0, "losses":0, "draws":0, "id":17},
     {"name":"Bahamut",  "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Bh", "wins":0, "losses":0, "draws":0, "id":18},
     {"name":"Knight",   "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Kn", "wins":0, "losses":0, "draws":0, "id":19},
-    {"name":"Ranga",    "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Rn", "wins":0, "losses":0, "draws":0, "id":20},
+    {"name":"Ragna",    "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Rn", "wins":0, "losses":0, "draws":0, "id":20},
 
 ];
 
