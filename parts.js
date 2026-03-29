@@ -6,6 +6,8 @@
 
 //0 weight means no weight data yet, same for height
 
+//TODO removes wins/losses/draws
+
 var bitChips = [ 
 
     {"name":"Dran",     "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Dr", "wins":0, "losses":0, "draws":0, "id":0},
