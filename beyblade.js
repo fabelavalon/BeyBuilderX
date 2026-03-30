@@ -1,7 +1,7 @@
 /*==========================================================*
  * BeyBuilder v1.3 for Beyblade X                           *
  * Author: Fabel                                            *
- * Copyright 2023-2025                                      *
+ * Copyright 2023-2026                                      *
  *==========================================================*/
 
 var allBlades = blades;
@@ -10,7 +10,8 @@ var allBits = bits;
 
 class BeyBlade {
 
-    bitChip = -1; 
+    bitChip = -1;
+    over = -1; 
     blade = -1;
     assist = -1; 
     rachet = -1;
@@ -34,10 +35,11 @@ class BeyBlade {
     draws = 0;
     totalMatches = 0;
 
-    constructor(bitChip, blade, assist, rachet, bit){
+    constructor(bitChip, over, blade, assist, rachet, bit){
         /*
         console.log("building bey with parts: " +
                     "bitChip: " + bitChip + ", " +
+                    "over: " + over + ", " +
                     "blade: " + blade + ", " +
                     "assist: " + assist + ", " +
                     "rachet: " + rachet + ", " +
@@ -46,6 +48,7 @@ class BeyBlade {
         */
 
         this.bitChip = bitChip;
+        this.over = over;
         this.blade = blade;
         this.assist = assist; 
         this.rachet = rachet;
@@ -55,7 +58,7 @@ class BeyBlade {
         // start weight. Add more later depending on parts selected
         this.weight = allBlades[this.blade].weight + allBits[this.bit].weight;
 
-        if(allBits[this.bit].type == "ratchetBit") { // combo bit and ratchet
+        if(allBits[this.bit].type == "ratchetBit" || allBlades[this.blade].type == "UX2") { // combo bit and ratchet or combo blade ratchet
             this.rachet = -1;
         } else if (this.rachet != -1) {
             // regular ratchet
@@ -64,8 +67,11 @@ class BeyBlade {
 
         if(this.system == "CX") {
             this.weight += allBitChips[this.bitChip].weight + allAssists[this.assist].weight;
+        } else if(this.system == "CX2") {
+            this.weight += allBitChips[this.bitChip].weight + allOverBlades[this.over].weight + allAssists[this.assist].weight;
         } else { // BX or UX
             this.bitChip = -1;
+            this.over = -1;
             this.assist = -1;
         }
 
@@ -126,17 +132,25 @@ class BeyBlade {
         if((this.system == "BX") || (this.system == "UX")){
             this.name = allBlades[this.blade].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
+        else if(this.system == "UX2"){
+            this.name = allBlades[this.blade].name + " " + allBits[this.bit].name;
+        }
         else if(this.system == "CX"){
             this.name = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name + ratchetNameInclSpaces + allBits[this.bit].name;
+        }
+        else if(this.system == "CX2"){
+            this.name = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allOverBlades[this.over].name + " " + allAssists[this.assist].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
 
     }
 
+    // construct beyblade ID string
     getDbId(){
-        return ( this.system=="CX" ? allBitChips[this.bitChip].id + " " : "" ) +
+        return ( (this.system=="CX" || this.system=="CX2") ? allBitChips[this.bitChip].id + " " : "" ) + // if CX, add bitChip name + space
+                    ( this.system=="CX2" ? allOverBlades[this.over].id + " " : "" ) + // if CX2, add overBlade name + space
                     allBlades[this.blade].id + " " +
-                    ( this.system=="CX" ? allAssists[this.assist].id + " " : "" ) +
-                    ( this.rachet==-1 ? "" : allRachets[this.rachet].id + " " ) +
+                    ( (this.system=="CX" || this.system=="CX2") ? allAssists[this.assist].id + " " : "" ) + // if CX, add assistBlade name + space
+                    ( this.rachet==-1 ? "" : allRachets[this.rachet].id + " " ) + // if no ratchet, blank, else ratchet name + space
                     allBits[this.bit].id ;
     }
 
