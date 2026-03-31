@@ -1,20 +1,24 @@
 const CACHE_NAME = 'beybuilderx-cache-v1';
 const PRECACHE_URLS = [
   'registerSW.js',
+  // main application
   'index.html',
   'main.js',
   'parts.js',
   'beyblade.js',
+  // themes
   'beybuilder.css',
   'theme-dark-purple.css',
   'theme-default.css',
   'theme-grey.css',
   'theme-none.css',
   'theme-wbo.css',
+  // images
+  'images/BeyBuilder_Logo2.png',
   'favicon.png',
+  // libraries
   'libraries/debounce/debounce.js',
   'libraries/pouchdb-7.3.1.js',
-  'pwa/apple-touch-icon-180x180.png',
   'libraries/bootstrap/bootstrap.css',
   'libraries/bootstrap/bootstrap.bundle.js'
 ];
@@ -38,7 +42,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event: Serve from cache, fallback to network
+// Fetch event: Cache first, then refresh cache in background
 self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     // SPA navigation fallback
@@ -47,7 +51,23 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
+  
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(event.request).then(response => {
+      // Return cached response immediately
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        // Update cache with fresh response
+        if (networkResponse && networkResponse.status === 200) {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return networkResponse;
+      });
+      
+      // Return cached response, or wait for network if no cache
+      return response || fetchPromise;
+    })
   );
 });
