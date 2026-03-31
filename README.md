@@ -37,9 +37,11 @@ BeyBuilder is a Beyblade stat tracker and random build generator for Beyblade X
 
 ### PWA development
 
-Testing the installable PWA requires a web server:
+Testing the installable PWA requires a web server. Run locally with the NPM package `http-server`
 
 - Install the latest LTS Version of [Node.js](https://nodejs.org/en) using [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows)
 - Run `npm install`
 - Run `npm start`
-- That's it! Access the page at `localhost:8080`
+- That's it! Access the page at `localhost:8080/BeyBuilder/`
+
+It must be served under `/BeyBuilder/` to match GitHub's path.
