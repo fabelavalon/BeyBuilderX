@@ -1,6 +1,6 @@
 const CACHE_NAME = 'beybuilderx-cache-v1';
 const PRECACHE_URLS = [
-  'registerSW.js',
+  'pwa/registerSW.js',
   // main application
   'index.html',
   'main.js',
@@ -26,6 +26,7 @@ const PRECACHE_URLS = [
 // Install event: Cache files
 self.addEventListener('install', event => {
   self.skipWaiting();
+  console.log("install event");
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
   );
@@ -47,7 +48,7 @@ self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     // SPA navigation fallback
     event.respondWith(
-      caches.match('index.html').then(response => response || fetch(event.request))
+      caches.match('index.html').then(response => response || fetch(event.request).catch(() => null))
     );
     return;
   }
@@ -55,16 +56,18 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
       // Return cached response immediately
-      const fetchPromise = fetch(event.request).then(networkResponse => {
-        // Update cache with fresh response
-        if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
-          });
-        }
-        return networkResponse;
-      });
+      const fetchPromise = fetch(event.request)
+        .then(networkResponse => {
+          // Update cache with fresh response
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => null); // Handle offline errors silently
       
       // Return cached response, or wait for network if no cache
       return response || fetchPromise;

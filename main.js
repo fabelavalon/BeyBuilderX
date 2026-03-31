@@ -156,7 +156,7 @@ var lastRecordOutcome;
 //runs on launch, fills dropdowns and database list
 function main(){
 
-    console.log("Welcome to BeyBuilder X Version 1.3");
+    console.log("Welcome to BeyBuilder X Version 1.5");
     console.log("called main()");
 
     bey1BitChipDropdown.value="random";
