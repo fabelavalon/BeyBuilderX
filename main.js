@@ -2370,7 +2370,7 @@ function disableDropdowns(partType, selection, whichBey){
     dropdownIDs = {
         // main VS screen
         1: { "bitChip":"bey1BitChip", "overBlade":"bey1OverBlade", "blade":"bey1Blade", "assistBlade":"bey1AssistBlade", "ratchet":"bey1Rachet", "bit":"bey1Bit" },
-        2: { "bitChip":"bey2BitChip", "overBlade":"bey1OverBlade", "blade":"bey2Blade", "assistBlade":"bey2AssistBlade", "ratchet":"bey2Rachet", "bit":"bey2Bit" },
+        2: { "bitChip":"bey2BitChip", "overBlade":"bey2OverBlade", "blade":"bey2Blade", "assistBlade":"bey2AssistBlade", "ratchet":"bey2Rachet", "bit":"bey2Bit" },
         // part record modal
         3: { "bitChip":"bitChipR1", "overBlade":"overBladeR1", "blade":"bladeR1", "assistBlade":"assistR1", "ratchet":"rachetR1", "bit":"bitR1" },
         4: { "bitChip":"bitChipR2", "overBlade":"overBladeR2", "blade":"bladeR2", "assistBlade":"assistR2", "ratchet":"rachetR2", "bit":"bitR2" }
