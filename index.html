@@ -12,6 +12,16 @@
     <title>BeyBuilder X v1.5</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Beyblade X score tracker">
+    <meta name="theme-color" content="#6257c2">
+
+    <!-- icons -->
+    <!-- <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Chain_2.png"> -->
+    <link rel="icon" type="image/x-icon" href="./favicon.png"> <!-- filename matters, Chrome will prioritize "favicon" over other filenames -->
+    <!-- <link rel="icon" href="./favicon.ico" sizes="48x48"> -->
+    <!-- <link rel="icon" href="./favicon.svg" sizes="any" type="image/svg+xml"> -->
+    <link rel="apple-touch-icon" href="./pwa/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Chain.png">
     
     <!-- Open Graph link preview -->
     <meta property="og:type" content="website">
@@ -20,11 +30,15 @@
     <meta property="og:image" content="https://fabelavalon.github.io/BeyBuilderX/images/BeyBuilder_Chain2.png">
     <meta property="og:url" content="https://fabelavalon.github.io/BeyBuilderX/">
     
-    <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Chain.png">
     <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
     <link href="./beybuilder.css" rel="stylesheet"  />
     <link href="./theme-default.css" rel="stylesheet" id="theme"  />
     <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="./pwa/manifest.webmanifest">
+    <script src="./pwa/registerSW.js"></script>
+
 </head>
 
 <body>
@@ -404,7 +418,7 @@
                 <form id="statEditor">
                     <label for="wko">Bey Wins by Over Finish:</label>
                     <input type="number" id="wko" name="wko" value=""><br><br>
-                    <label for="wlo">Bey Losses by KO:</label>
+                    <label for="lko">Bey Losses by KO:</label>
                     <input type="number" id="lko" name="lko" value=""><br><br>
 
                     <label for="wko">Bey Wins by Spin Finish:</label>
