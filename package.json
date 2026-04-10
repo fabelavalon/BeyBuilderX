@@ -11,5 +11,8 @@
   },
   "scripts": {
     "start": "cd ../ && npx http-server -p 8080 -c-1 --base-dir /BeyBuilderX/"
+  },
+  "scriptsComments": {
+    "start": "Runs local server for PWA testing, using the same /BeyBuilderX/ path as Github hosting"
   }
 }
