@@ -58,9 +58,12 @@ class BeyBlade {
         // start weight. Add more later depending on parts selected
         this.weight = allBlades[this.blade].weight + allBits[this.bit].weight;
 
-        if(allBits[this.bit].type == "ratchetBit" || allBlades[this.blade].type == "UX2") { // combo bit and ratchet or combo blade ratchet
+        if(allBits[this.bit].type == "ratchetBit" || allBlades[this.blade].system == "UX2") { // combo bit and ratchet or combo blade ratchet
+            console.log("disabling ratchets")
             this.rachet = -1;
-        } else if (this.rachet != -1 && this.system != "UX2") {
+        }
+        
+        if (this.rachet != -1) {
             // regular ratchet
             this.weight += allRachets[this.rachet].weight;
         }
