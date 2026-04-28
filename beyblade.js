@@ -60,7 +60,7 @@ class BeyBlade {
 
         if(allBits[this.bit].type == "ratchetBit" || allBlades[this.blade].type == "UX2") { // combo bit and ratchet or combo blade ratchet
             this.rachet = -1;
-        } else if (this.rachet != -1) {
+        } else if (this.rachet != -1 && this.system != "UX2") {
             // regular ratchet
             this.weight += allRachets[this.rachet].weight;
         }
