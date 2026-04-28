@@ -157,7 +157,7 @@ var blades = [
     {"name":"Rage",              "spin":"right", "system":"CX2", "weight":27.17, "height":0, "abbv":"Rg",   "wins":0, "losses":0, "draws":0, "id":108},
     {"name":"StormSpriggan",     "spin":"right", "system":"BX",  "weight":31.00, "height":0, "abbv":"StSp", "wins":0, "losses":0, "draws":0, "id":109},
     {"name":"Delta",             "spin":"right", "system":"CX2", "weight":27.85, "height":0, "abbv":"Dl",   "wins":0, "losses":0, "draws":0, "id":110},
-    {"name":"BulletGriffin",     "spin":"right", "system":"UX2", "weight":60.15, "height":0, "abbv":"BlGr", "wins":0, "losses":0, "draws":0, "id":111},
+    //{"name":"BulletGriffin",     "spin":"right", "system":"UX2", "weight":60.15, "height":0, "abbv":"BlGr", "wins":0, "losses":0, "draws":0, "id":111},
     //{"name":"DranStrike",        "spin":"right", "system":"BX2", "weight":10.36, "height":0, "abbv":"DrSt", "wins":0, "losses":0, "draws":0, "id":112},
     //{"name":"Cutter Shinobi",    "spin":"right", "system":"UX2", "weight":10.36, "height":0, "abbv":"ShCt", "wins":0, "losses":0, "draws":0, "id":113},
     //{"name":"Rampart Aegis",     "spin":"right", "system":"UX2", "weight":10.36, "height":0, "abbv":"AgRm", "wins":0, "losses":0, "draws":0, "id":114},
