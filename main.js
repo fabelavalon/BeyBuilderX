@@ -2393,8 +2393,11 @@ function disableDropdowns(partType, selection, whichBey){
         }
         else if(allBlades[selection].system == "UX2"){
             //console.log("UX2 blade selected");
-            disableParts = ["ratchet"]; 
+            disableParts = ["bitChip", "assistBlade", "overBlade", "ratchet"]; 
         }
+        // else if(allBlades[selection] == 111){ //BulletGriffon check
+        //     disableParts = ["bitChip", "overBlade", "assistBlade", "ratchet"];
+        // }
         else {
             disableParts = ["bitChip", "assistBlade", "overBlade"];
             enableParts = ["ratchet"];
@@ -2402,7 +2405,7 @@ function disableDropdowns(partType, selection, whichBey){
     }
     if(partType=="bit") {
         console.log("checking bits");
-        if(allBits[selection].type == "ratchetBit"){
+        if(allBits[selection].type == "ratchetBit" || allBlades[blade.value].system == "UX2"){
             //console.log("ratchet-bit selected");
             disableParts = ["ratchet"];
         } else {
