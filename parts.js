@@ -192,7 +192,7 @@ var assistBlades = [
     {"name":"Knuckle",    "spin":"right", "system":"CX", "weight":4.89, "height":50, "abbv":"K",   "wins":0, "losses":0, "draws":0, "id":15},
     {"name":"Vertical",   "spin":"right", "system":"CX", "weight":5.47, "height":60, "abbv":"V",   "wins":0, "losses":0, "draws":0, "id":16},
     {"name":"Erase",      "spin":"right", "system":"CX", "weight":6.10, "height":70, "abbv":"E",   "wins":0, "losses":0, "draws":0, "id":17},
-    {"name":"Odd",        "spin":"right", "system":"CX", "weight":4.46, "height":70, "abbv":"E",   "wins":0, "losses":0, "draws":0, "id":18},
+    {"name":"Odd",        "spin":"right", "system":"CX", "weight":4.46, "height":70, "abbv":"O",   "wins":0, "losses":0, "draws":0, "id":18},
     
  ];
 
