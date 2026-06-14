@@ -32,7 +32,7 @@ var bitChips = [
     {"name":"Knight",   "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Kn", "wins":0, "losses":0, "draws":0, "id":19},
     {"name":"Ragna",    "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Rn", "wins":0, "losses":0, "draws":0, "id":20},
     {"name":"Unicorn",  "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Un", "wins":0, "losses":0, "draws":0, "id":21},
-    //{"name":"Brachio",  "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Br", "wins":0, "losses":0, "draws":0, "id":22},
+    {"name":"Brachio",  "spin":"right", "system":"CX", "type":"standard",    "weight":1.73, "height":0, "abbv":"Br", "wins":0, "losses":0, "draws":0, "id":22},
 
 ];
 
@@ -42,7 +42,7 @@ var overBlades = [
     {"name":"Guard",     "spin":"right", "system":"CX2", "type":"standard",    "weight":3.36, "height":0, "abbv":"G", "wins":0, "losses":0, "draws":0, "id":1},
     {"name":"Flow",      "spin":"right", "system":"CX2", "type":"standard",    "weight":3.78, "height":0, "abbv":"F", "wins":0, "losses":0, "draws":0, "id":2},
     {"name":"Peak",      "spin":"right", "system":"CX2", "type":"standard",    "weight":3.47, "height":0, "abbv":"P", "wins":0, "losses":0, "draws":0, "id":3},
-    //{"name":"Outer",     "spin":"right", "system":"CX2", "type":"standard",    "weight":3.47, "height":0, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":4},
+    {"name":"Outer",     "spin":"right", "system":"CX2", "type":"standard",    "weight":3.65, "height":0, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":4},
 
 ]
 
@@ -167,8 +167,8 @@ var blades = [
     {"name":"Rampart Aegis",     "spin":"right", "system":"UX2", "weight":32.90, "height":0, "abbv":"AgRm", "wins":0, "losses":0, "draws":0, "id":116},
     {"name":"Valor Bison",       "spin":"right", "system":"UX2", "weight":40.58, "height":0, "abbv":"VlBs", "wins":0, "losses":0, "draws":0, "id":117},
     {"name":"Ring Aether",       "spin":"right", "system":"BX",  "weight":37.14, "height":0, "abbv":"RnAt", "wins":0, "losses":0, "draws":0, "id":118},
-    //{"name":"Gust Bat",          "spin":"right", "system":"BX",  "weight":37.14, "height":0, "abbv":"GsBt", "wins":0, "losses":0, "draws":0, "id":119},
-    //{"name":"Whip",              "spin":"right", "system":"CX2", "weight":37.14, "height":0, "abbv":"Wh",   "wins":0, "losses":0, "draws":0, "id":120},
+    {"name":"Whip",              "spin":"right", "system":"CX2", "weight":27.54, "height":0, "abbv":"Wh",   "wins":0, "losses":0, "draws":0, "id":119},
+    //{"name":"Gust Bat",          "spin":"right", "system":"BX",  "weight":37.14, "height":0, "abbv":"GsBt", "wins":0, "losses":0, "draws":0, "id":120},
 
 ];
 
@@ -288,6 +288,6 @@ var bits = [
     {"name":"Gear Unite",   "weight":2.25,  "height":2,   "abbv":"GU", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":48},
     {"name":"Free Flat",    "weight":2.20,  "height":2,   "abbv":"FF", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":49},
     {"name":"Disk Spike",   "weight":3.09,  "height":2,   "abbv":"DS", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":50},
-    //{"name":"Narrow",       "weight":3.09,  "height":2,   "abbv":"Nr", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":51},
+    {"name":"Narrow",       "weight":1.88,  "height":2,   "abbv":"Nr", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":51},
 
 ];
