@@ -6,7 +6,14 @@
 
 //create beyblade database
 var beyBladeDBX = new PouchDB("BeyBladesX");
-var recordsDBX = new PouchDB("RecordX");
+var recordsDBX = new PouchDB("RecordX");        //standard stadium
+var recordsDBWX = new PouchDB("RecordWX");      //wide stadium
+var recordsDBDX = new PouchDB("RecordDX");      //double xtreme
+var recordsDBIX = new PouchDB("RecordIX");      //infinity stadium
+var recordsDBHX = new PouchDB("RecordHX");      //hasbro xtreme
+var recordsDBCNCX = new PouchDB("RecordCNCX");  //cnc stadium
+var recordsDBSX = new PouchDB("RecordSX");      //sneak attack
+var recordsDBDAX = new PouchDB("RecordDAX");    //drop attack
 var settings = new PouchDB("settings");
 
 //import the parts lists
