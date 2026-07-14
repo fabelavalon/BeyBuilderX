@@ -166,9 +166,11 @@ var blades = [
     {"name":"Cutter Shinobi",    "spin":"right", "system":"UX2", "weight":37.35, "height":0, "abbv":"ShCt", "wins":0, "losses":0, "draws":0, "id":115},
     {"name":"Rampart Aegis",     "spin":"right", "system":"UX2", "weight":32.90, "height":0, "abbv":"AgRm", "wins":0, "losses":0, "draws":0, "id":116},
     {"name":"Valor Bison",       "spin":"right", "system":"UX2", "weight":40.58, "height":0, "abbv":"VlBs", "wins":0, "losses":0, "draws":0, "id":117},
-    {"name":"Ring Aether",       "spin":"right", "system":"BX",  "weight":37.14, "height":0, "abbv":"RnAt", "wins":0, "losses":0, "draws":0, "id":118},
+    {"name":"HeavensRing",       "spin":"right", "system":"BX",  "weight":37.14, "height":0, "abbv":"HvRn", "wins":0, "losses":0, "draws":0, "id":118},
     {"name":"Whip",              "spin":"right", "system":"CX2", "weight":27.54, "height":0, "abbv":"Wh",   "wins":0, "losses":0, "draws":0, "id":119},
-    //{"name":"Gust Bat",          "spin":"right", "system":"BX",  "weight":37.14, "height":0, "abbv":"GsBt", "wins":0, "losses":0, "draws":0, "id":120},
+    {"name":"Gust Bat",          "spin":"right", "system":"BX",  "weight":35.92, "height":0, "abbv":"GsBt", "wins":0, "losses":0, "draws":0, "id":120},
+    {"name":"GloryValkyrie",     "spin":"right", "system":"UX2", "weight":43.30, "height":0, "abbv":"GlVl", "wins":0, "losses":0, "draws":0, "id":121},
+    //{"name":"HellsNether",       "spin":"right", "system":"UX2", "weight":43.30, "height":0, "abbv":"GlVl", "wins":0, "losses":0, "draws":0, "id":122}, 
 
 ];
 
