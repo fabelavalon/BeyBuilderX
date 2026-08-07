@@ -89,14 +89,6 @@ var bey1SO = document.getElementById("bey1SO");
 var bey1Bst = document.getElementById("bey1Bst");
 var bey1X = document.getElementById("bey1X");
 var bey1Draw = document.getElementById("bey1Draw");
-//unfinished maave block
-var bey1title = document.getElementById("bey1title");
-var bey1draws = document.getElementById("bey1weight");
-var bey1weight = document.getElementById("bey1draws");
-var bey1spin = document.getElementById("bey1spin");
-var bey1over = document.getElementById("bey1over");
-var bey1burst = document.getElementById("bey1burst");
-var bey1xtreme = document.getElementById("bey1xtreme");
 
 //bey2 stats
 var bey2Is = document.getElementById("bey2Is");
