@@ -147,6 +147,7 @@ var clearHistButton = document.getElementById("clearHist");
 var wasCopyMatchupToClipGenerated = false;
 var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
+var wasOverlayGenerated = false;
 
 //global beyblade variables
 var bey1;
@@ -1507,6 +1508,7 @@ function displayRecords(){
     var recordsSpace = document.getElementById("recordsSpace"); //NEW
     var recordsCopybtn = document.createElement("button"); //NEW
     var clearHistoryBtn = document.createElement("button"); //NEW
+    var overlayBtn = document.createElement("button"); //NEW
 
     var bey1SO = 0;
     var bey1Bst = 0;
@@ -1602,7 +1604,7 @@ function displayRecords(){
     }
 
     if(!wasClearMatchupHistoryGenerated){
-        //copy to clipboard
+        //clear matchup history, remove all matches between these 2 blades
         clearHistoryBtn.innerHTML = "Clear Matchup History";
         clearHistoryBtn.classList.add("btn");
         clearHistoryBtn.classList.add("btn-danger");
@@ -1610,7 +1612,18 @@ function displayRecords(){
         clearHistoryBtn.setAttribute("data-bs-target", "#areYouSure3");
         recordsSpace.append(clearHistoryBtn);
         wasClearMatchupHistoryGenerated = true;
-        
+    }
+
+
+    if(!wasOverlayGenerated){
+        // pop-out modal for score and buttons
+        overlayBtn.innerHTML = "Overlay";
+        overlayBtn.classList.add("btn");
+        overlayBtn.classList.add("btn-primary");
+        overlayBtn.setAttribute("data-bs-toggle", "modal");
+        overlayBtn.setAttribute("data-bs-target", "#overlay");
+        recordsSpace.append(overlayBtn);
+        wasOverlayGenerated = true;
     }
 
 }
