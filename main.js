@@ -1476,24 +1476,24 @@ function displayRecords(){
         return;
     }
 
-    var record1 = document.getElementById("record1");
-    var wins1 = document.getElementById("wins1");
-    var points1 = document.getElementById("points1");
-    var ko1 = document.getElementById("ko1");
-    var so1 = document.getElementById("so1");
-    var bst1 = document.getElementById("bst1");
-    var x1 = document.getElementById("x1");
+    var record1 = document.getElementsByName("record1");
+    var wins1 = document.getElementsByName("wins1");
+    var points1 = document.getElementsByName("points1");
+    var ko1 = document.getElementsByName("ko1");
+    var so1 = document.getElementsByName("so1");
+    var bst1 = document.getElementsByName("bst1");
+    var x1 = document.getElementsByName("x1");
     
-    var record2 = document.getElementById("record2");
-    var wins2 = document.getElementById("wins2");
-    var points2 = document.getElementById("points2");
-    var ko2 = document.getElementById("ko2");
-    var so2 = document.getElementById("so2");
-    var bst2 = document.getElementById("bst2");
-    var x2 = document.getElementById("x2");
+    var record2 = document.getElementsByName("record2");
+    var wins2 = document.getElementsByName("wins2");
+    var points2 = document.getElementsByName("points2");
+    var ko2 = document.getElementsByName("ko2");
+    var so2 = document.getElementsByName("so2");
+    var bst2 = document.getElementsByName("bst2");
+    var x2 = document.getElementsByName("x2");
 
-    var draws = document.getElementById("draws");
-    var totalRounds = document.getElementById("vsTotalRounds");
+    var draws = document.getElementsByName("draws");
+    var totalRounds = document.getElementsByName("vsTotalRounds");
 
     var vsId = bey1.id + " " + bey2.id;
 
@@ -1532,38 +1532,40 @@ function displayRecords(){
         } else {
             console.log("displayRecords() got:\n"+JSON.stringify(doc));
         }
-        record1.innerHTML = noBreakRatchetText(bey1.name);
-        ko1.textContent = doc.wko;
+        //record1.innerHTML = noBreakRatchetText(bey1.name);
+        record1.forEach(el => el.innerHTML = noBreakRatchetText(bey1.name));
+        
+        ko1.forEach(el => el.textContent = doc.wko);
         bey1KO = doc.wko;
-        so1.textContent = doc.wso;
+        so1.forEach(el => el.textContent = doc.wso);
         bey1SO = doc.wso
-        bst1.textContent = doc.wbst;
+        bst1.forEach(el => el.textContent = doc.wbst);
         bey1Bst = doc.wbst;
-        x1.textContent = doc.wx;
+        x1.forEach(el => el.textContent = doc.wx);
         bey1X = doc.wx;
-        wins1.textContent = doc.wx + doc.wbst + doc.wko + doc.wso;
+        wins1.forEach(el => el.textContent = doc.wx + doc.wbst + doc.wko + doc.wso);
         bey1Total = doc.wx + doc.wbst + doc.wko + doc.wso;
-        points1.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
+        points1.forEach(el => el.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso);
         bey1Points = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
-        record2.innerHTML = noBreakRatchetText(bey2.name);
-        ko2.textContent = doc.lko;
+        record2.forEach(el => el.innerHTML = noBreakRatchetText(bey2.name));
+        ko2.forEach(el => el.textContent = doc.lko);
         bey2KO = doc.lko;
-        so2.textContent = doc.lso;
+        so2.forEach(el => el.textContent = doc.lso);
         bey2SO = doc.lso
-        bst2.textContent =  doc.lbst;
+        bst2.forEach(el => el.textContent =  doc.lbst);
         bey2Bst = doc.lbst;
-        x2.textContent =  doc.lx;
+        x2.forEach(el => el.textContent =  doc.lx);
         bey2X = doc.lx;
-        wins2.textContent = doc.lx + doc.lbst + doc.lko + doc.lso;
+        wins2.forEach(el => el.textContent = doc.lx + doc.lbst + doc.lko + doc.lso);
         bey2Total = doc.lx + doc.lbst + doc.lko + doc.lso
-        points2.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
+        points2.forEach(el => el.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso);
         bey2Points = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
 
-        draws.textContent = doc.draws;
+        draws.forEach(el => el.textContent =  doc.draws);
         draw = doc.draws;
 
-        totalRounds.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws);
+        totalRounds.forEach(el => el.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws));
         totalRound = doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws;
 
         displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
