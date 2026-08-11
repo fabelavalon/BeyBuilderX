@@ -1,0 +1,34 @@
+/*=========================================================*
+ *BeyBuilder X v1.5 for Beyblade X                         *
+ *Author: Maave                                            *
+ *Copyright 2026                                           *
+ *=========================================================*/
+
+/* backgrounds and text color */
+html {
+    background-color: #6257c2;
+}
+body {
+    background-color: #6257c2;
+    color: #fff;
+    font-weight: 600;
+}
+
+
+#vsContainer {
+    color: white;
+    visibility: hidden;
+    display: none;
+}
+
+
+/* make sure tables and table elements have the proper borders */
+td, tr {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-color: #fff;
+}
+
+table{
+    border: 1px solid #fff;
+}

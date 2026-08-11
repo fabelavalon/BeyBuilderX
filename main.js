@@ -1471,7 +1471,7 @@ var displayCopiedStats = "";
 //fill matchup table on main screen when both beys are chosen
 function displayRecords(){
 
-    //console.log("called displayRecords()");
+    console.log("called displayRecords()");
     if(!bey1 || !bey2) {
         console.log("beys not set");
         return;
@@ -2630,22 +2630,19 @@ async function exportDb() {
 
 /* score-board popup window for OBS overlay
 */
-function createBrowserPopup() {
+//function createBrowserPopup() {
+    const createBrowserPopup = async () => {
     // HTML is stored on main page
     const html = document.getElementById("score-overlay-template").innerHTML;
     // opening a blank popup gives us DOM control, avoiding same-origin issues when loading HTML with file://
     scoreOverlayWindow = window.open("", "msgWindow", "width=300,height=300,top=200,right=200");
     scoreOverlayWindow.document.write(html);
-
-    return scoreOverlayWindow;
-}
-function updateBrowserPopup() {
-    if (scoreOverlayWindow && !scoreOverlayWindow.closed) {
-        // Accesses the popup's document directly to rewrite content
-        scoreOverlayWindow.document.getElementById("record1").innerHTML = "<b>Success!</b> The parent window updated this text.";
-    } else {
-        alert("The popup window is not open!");
-    }
+    // wait a few milliseconds for the page to open, needs at least 50ms
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+    await delay(100);
+    // load bey names and records onto popup
+    displayRecords();
+    //return scoreOverlayWindow;
 }
 
 async function importDbSetup(){
