@@ -14,11 +14,28 @@ body {
     font-weight: 600;
 }
 
+.text-black-outline {
+    /* stroke with paint-order */
+    /* color = outline color, fill = inside text color */
+    color: black;
+    stroke-width: 10px;
+    /* Chrome still requires `-webkit-` prefix */
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke: 0.18rem;
+    paint-order: stroke fill; /* draw outline around text, then fill inside */
+}
+
+p {
+    margin-bottom: 0.3rem;
+}
+
 .results-title {
     font-size: 1.5rem; /* default 1 rem */
+    display: none;
 }
 .score-number {
-    color: orangered;
+    /* color: orangered; */ 
+    -webkit-text-fill-color: orangered;
 }
 
 /* make sure tables and table elements have the proper borders */

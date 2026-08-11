@@ -2631,18 +2631,25 @@ async function exportDb() {
 /* score-board popup window for OBS overlay
 */
 //function createBrowserPopup() {
-    const createBrowserPopup = async () => {
+const createBrowserPopup = async () => {
+    // if window exists, don't create another / write again
+    if ( scoreOverlayWindow && !scoreOverlayWindow.closed ) {
+        console.log("popup already open");
+        return;
+    }
     // HTML is stored on main page
     const html = document.getElementById("score-overlay-template").innerHTML;
     // opening a blank popup gives us DOM control, avoiding same-origin issues when loading HTML with file://
-    scoreOverlayWindow = window.open("", "msgWindow", "width=300,height=300,top=200,right=200");
+    scoreOverlayWindow = window.open("", 
+        "msgWindow", 
+        "width=600,height=300,top=200,left=200"  // forces a new window, set size, move away from corner
+    );
     scoreOverlayWindow.document.write(html);
     // wait a few milliseconds for the page to open, needs at least 50ms
     const delay = ms => new Promise(res => setTimeout(res, ms));
     await delay(100);
     // load bey names and records onto popup
     displayRecords();
-    //return scoreOverlayWindow;
 }
 
 async function importDbSetup(){
