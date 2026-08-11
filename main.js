@@ -133,7 +133,8 @@ var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
 var matchupHistCopyButton = document.getElementById("copyHistToClip");
 var clearHistButton = document.getElementById("clearHist");
-
+// window object for OBS overlay
+var scoreOverlayWindow = null;
 
 //used so we dont generate more buttons\
 var wasCopyMatchupToClipGenerated = false;
@@ -1476,11 +1477,24 @@ function displayRecords(){
         return;
     }
 
-    var record1 = document.getElementsByName("record1");
+    if(scoreOverlayWindow)
+        console.log("looking for record1: " + scoreOverlayWindow.document.getElementsByName("record1").length );
+    
+    // var record1 = document.getElementsByName("record1");
+    var record1 = new Set([
+        ...document.getElementsByName("record1"),
+        scoreOverlayWindow ? scoreOverlayWindow.document.getElementsByName("record1") : new Set()
+        //...scoreOverlayWindow.getElementsByName("record1")
+    ]);
     var wins1 = document.getElementsByName("wins1");
     var points1 = document.getElementsByName("points1");
     var ko1 = document.getElementsByName("ko1");
-    var so1 = document.getElementsByName("so1");
+    //var so1 = document.getElementsByName("so1");
+    var so1 = new Set([
+        ...document.getElementsByName("so1"),
+        scoreOverlayWindow ? scoreOverlayWindow.document.getElementsByName("so1") : new Set()
+        //...scoreOverlayWindow.getElementsByName("so1")
+    ]);
     var bst1 = document.getElementsByName("bst1");
     var x1 = document.getElementsByName("x1");
     
@@ -1501,6 +1515,7 @@ function displayRecords(){
     var recordsCopybtn = document.createElement("button"); //NEW
     var clearHistoryBtn = document.createElement("button"); //NEW
     var overlayBtn = document.createElement("button"); //NEW
+    var overlayBtn2 = document.createElement("button"); //NEW
 
     var bey1SO = 0;
     var bey1Bst = 0;
@@ -1614,10 +1629,21 @@ function displayRecords(){
         overlayBtn.innerHTML = "Overlay";
         overlayBtn.classList.add("btn");
         overlayBtn.classList.add("btn-primary");
-        overlayBtn.setAttribute("data-bs-toggle", "modal");
-        overlayBtn.setAttribute("data-bs-target", "#overlay");
+        // overlayBtn.setAttribute("data-bs-toggle", "modal");
+        // overlayBtn.setAttribute("data-bs-target", "#overlay");
+        overlayBtn.onclick = createBrowserPopup;
         recordsSpace.append(overlayBtn);
         wasOverlayGenerated = true;
+
+        // pop-out modal for score and buttons
+        // overlayBtn2.innerHTML = "Overlay modal";
+        // overlayBtn2.classList.add("btn");
+        // overlayBtn2.classList.add("btn-primary");
+        // overlayBtn2.setAttribute("data-bs-toggle", "modal");
+        // overlayBtn2.setAttribute("data-bs-target", "#overlay");
+        // // overlayBtn2.onclick = openScoreOverlay;
+        // recordsSpace.append(overlayBtn2);
+        // wasOverlayGenerated = true;
     }
 
 }
@@ -2564,6 +2590,26 @@ async function exportDb() {
     tmpElement.click();
     document.body.removeChild(tmpElement);
     URL.revokeObjectURL(url);
+}
+
+/* score-board popup window for OBS overlay
+*/
+function createBrowserPopup() {
+    // HTML is stored on main page
+    const html = document.getElementById("score-overlay-template").innerHTML;
+    // opening a blank popup gives us DOM control, avoiding same-origin issues when loading HTML with file://
+    scoreOverlayWindow = window.open("", "msgWindow", "width=300,height=300,top=200,right=200");
+    scoreOverlayWindow.document.write(html);
+
+    return scoreOverlayWindow;
+}
+function updateBrowserPopup() {
+    if (scoreOverlayWindow && !scoreOverlayWindow.closed) {
+        // Accesses the popup's document directly to rewrite content
+        scoreOverlayWindow.document.getElementById("record1").innerHTML = "<b>Success!</b> The parent window updated this text.";
+    } else {
+        alert("The popup window is not open!");
+    }
 }
 
 async function importDbSetup(){
