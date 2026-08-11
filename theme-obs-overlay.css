@@ -14,13 +14,12 @@ body {
     font-weight: 600;
 }
 
-
-#vsContainer {
-    color: white;
-    visibility: hidden;
-    display: none;
+.results-title {
+    font-size: 1.5rem; /* default 1 rem */
 }
-
+.score-number {
+    color: orangered;
+}
 
 /* make sure tables and table elements have the proper borders */
 td, tr {
