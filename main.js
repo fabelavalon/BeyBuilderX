@@ -1477,37 +1477,73 @@ function displayRecords(){
         return;
     }
 
-    if(scoreOverlayWindow)
-        console.log("looking for record1: " + scoreOverlayWindow.document.getElementsByName("record1").length );
-    
-    // var record1 = document.getElementsByName("record1");
+    // element collections (include overlay window elements when present)
     var record1 = new Set([
         ...document.getElementsByName("record1"),
-        scoreOverlayWindow ? scoreOverlayWindow.document.getElementsByName("record1") : new Set()
-        //...scoreOverlayWindow.getElementsByName("record1")
+        ...(scoreOverlayWindow?.document.getElementsByName("record1") ?? [])
     ]);
-    var wins1 = document.getElementsByName("wins1");
-    var points1 = document.getElementsByName("points1");
-    var ko1 = document.getElementsByName("ko1");
-    //var so1 = document.getElementsByName("so1");
+    var wins1 = new Set([
+        ...document.getElementsByName("wins1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("wins1") ?? [])
+    ]);
+    var points1 = new Set([
+        ...document.getElementsByName("points1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("points1") ?? [])
+    ]);
+    var ko1 = new Set([
+        ...document.getElementsByName("ko1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("ko1") ?? [])
+    ]);
     var so1 = new Set([
         ...document.getElementsByName("so1"),
-        scoreOverlayWindow ? scoreOverlayWindow.document.getElementsByName("so1") : new Set()
-        //...scoreOverlayWindow.getElementsByName("so1")
+        ...(scoreOverlayWindow?.document.getElementsByName("so1") ?? [])
     ]);
-    var bst1 = document.getElementsByName("bst1");
-    var x1 = document.getElementsByName("x1");
-    
-    var record2 = document.getElementsByName("record2");
-    var wins2 = document.getElementsByName("wins2");
-    var points2 = document.getElementsByName("points2");
-    var ko2 = document.getElementsByName("ko2");
-    var so2 = document.getElementsByName("so2");
-    var bst2 = document.getElementsByName("bst2");
-    var x2 = document.getElementsByName("x2");
+    var bst1 = new Set([
+        ...document.getElementsByName("bst1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("bst1") ?? [])
+    ]);
+    var x1 = new Set([
+        ...document.getElementsByName("x1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("x1") ?? [])
+    ]);
 
-    var draws = document.getElementsByName("draws");
-    var totalRounds = document.getElementsByName("vsTotalRounds");
+    var record2 = new Set([
+        ...document.getElementsByName("record2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("record2") ?? [])
+    ]);
+    var wins2 = new Set([
+        ...document.getElementsByName("wins2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("wins2") ?? [])
+    ]);
+    var points2 = new Set([
+        ...document.getElementsByName("points2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("points2") ?? [])
+    ]);
+    var ko2 = new Set([
+        ...document.getElementsByName("ko2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("ko2") ?? [])
+    ]);
+    var so2 = new Set([
+        ...document.getElementsByName("so2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("so2") ?? [])
+    ]);
+    var bst2 = new Set([
+        ...document.getElementsByName("bst2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("bst2") ?? [])
+    ]);
+    var x2 = new Set([
+        ...document.getElementsByName("x2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("x2") ?? [])
+    ]);
+
+    var draws = new Set([
+        ...document.getElementsByName("draws"),
+        ...(scoreOverlayWindow?.document.getElementsByName("draws") ?? [])
+    ]);
+    var totalRounds = new Set([
+        ...document.getElementsByName("vsTotalRounds"),
+        ...(scoreOverlayWindow?.document.getElementsByName("vsTotalRounds") ?? [])
+    ]);
 
     var vsId = bey1.id + " " + bey2.id;
 
