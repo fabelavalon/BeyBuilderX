@@ -572,8 +572,8 @@ function createWinButtons(){
         .then(displayRecords);
 
         // titles above win buttons
-        bey1WinTitle.textContent = bey1.name;
-        bey2WinTitle.textContent = bey2.name;
+        bey1WinTitle.innerHTML = bey1.findName(includeHtml=true);
+        bey2WinTitle.innerHTML = bey2.findName(includeHtml=true);
     }
 }
 function clearVsButtons(){
@@ -1330,17 +1330,18 @@ function setDbBey(){
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
             // convert to BeyBlade object, so we can access methods like getTotalWin()
+            var castDoc;
             if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
                 // build a new BeyBlade object using parts, then overlay win/loss data from database
-                var castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
             }
             else if(allBlades[doc.build.blade].system == "UX2"){
-                var castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, -1, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, -1, doc.build.bit), doc.build );
             }
             else if(allBlades[doc.build.blade].system == "CX"){
-                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip, -1, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(doc.build.bitChip, -1, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
             }else if(allBlades[doc.build.blade].system == "CX2"){
-                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip, doc.build.over, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(doc.build.bitChip, doc.build.over, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
             }
 
             //TODO: move some calculation into Beyblade class, like getWinPoints, getLosePoints, etc
@@ -1376,7 +1377,8 @@ function setDbBey(){
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
-            dbBey = doc.build;
+            dbBey = castDoc;
+
             
             // clipboard
             dbCopiedStats =   "Overall Results for " + doc.build.name + "\n" +
@@ -1583,9 +1585,8 @@ function displayRecords(){
         } else {
             console.log("displayRecords() got:\n"+JSON.stringify(doc));
         }
-        //record1.innerHTML = noBreakRatchetText(bey1.name);
-        record1.forEach(el => el.innerHTML = noBreakRatchetText(bey1.name));
         
+        record1.forEach(el => el.innerHTML = (bey1.findName(includeHtml=true)));
         ko1.forEach(el => el.textContent = doc.wko);
         bey1KO = doc.wko;
         so1.forEach(el => el.textContent = doc.wso);
@@ -1599,7 +1600,7 @@ function displayRecords(){
         points1.forEach(el => el.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso);
         bey1Points = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
-        record2.forEach(el => el.innerHTML = noBreakRatchetText(bey2.name));
+        record2.forEach(el => el.innerHTML = bey2.findName(includeHtml=true));
         ko2.forEach(el => el.textContent = doc.lko);
         bey2KO = doc.lko;
         so2.forEach(el => el.textContent = doc.lso);
@@ -1751,26 +1752,6 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
     }
 }
 
-
-/**
- * Disable text-wrapping on the ratchet
- * @param {String} beyName 
- * @returns 
- */
-function noBreakRatchetText(beyName) {
-
-    //console.log("called noBreakRatchetText(" + beyName + ")");
-
-    // split bey name into parts
-    var newBeyName = beyName;
-    var beynameArray = newBeyName.split(" ");
-    var beynameEnd = beynameArray[beynameArray.length-1];
-    //console.log("end: " + beynameEnd);
-    var beynameEndNoBr = "<nobr>" + beynameEnd + "</nobr>";
-    newBeyName = newBeyName.replace(beynameEnd, beynameEndNoBr);
-    
-    return newBeyName;
-}
 
 //displays part win/loss records when a user chooses to see them
 function showPartStats(partType, partID){

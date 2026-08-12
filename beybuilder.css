@@ -9,6 +9,7 @@
     width:auto;
     display: flex;
     justify-content: center;
+    text-align: center;
 }
 
 /* VS record table */
@@ -53,6 +54,12 @@
     border: none;
     border-top: 0px;
     border-bottom: 0px;
+}
+
+/*  line-break between spans */
+.blade-text {
+    white-space: nowrap;
+    display: inline-block;
 }
 
 /* styling for drop downs */
