@@ -5,10 +5,7 @@
  *=========================================================*/
 
 /* backgrounds and text color */
-html {
-    background-color: #6257c2;
-}
-body {
+html, body {
     background-color: #6257c2;
     color: #fff;
     font-weight: 600;
@@ -18,10 +15,10 @@ body {
     /* stroke with paint-order */
     /* color = outline color, fill = inside text color */
     color: black;
-    stroke-width: 10px;
     /* Chrome still requires `-webkit-` prefix */
     -webkit-text-fill-color: white;
-    -webkit-text-stroke: 0.18rem;
+    -webkit-text-stroke: 0.48rem;
+    font-size: 2rem;
     paint-order: stroke fill; /* draw outline around text, then fill inside */
 }
 
