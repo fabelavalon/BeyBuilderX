@@ -5,10 +5,7 @@
  *=========================================================*/
 
 /* backgrounds and text color */
-html {
-    background-color: #6257c2;
-}
-body {
+html, body {
     background-color: #6257c2;
     color: #fff;
     font-weight: 600;
