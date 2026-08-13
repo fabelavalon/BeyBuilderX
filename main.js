@@ -2623,7 +2623,7 @@ const createBrowserPopup = async () => {
     // opening a blank popup gives us DOM control, avoiding same-origin issues when loading HTML with file://
     scoreOverlayWindow = window.open("", 
         "msgWindow", 
-        "width=1200,height=600,top=200,left=200"  // forces a new window, set size, move away from corner
+        "width=1000,height=700,top=200,left=200"  // forces a new window, set size, move away from corner
     );
     scoreOverlayWindow.document.write(html);
     // wait a few milliseconds for the page to open, needs at least 50ms

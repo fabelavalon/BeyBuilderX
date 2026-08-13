@@ -12,18 +12,19 @@ html, body {
 }
 
 .text-black-outline {
-    /* stroke with paint-order */
-    /* color = outline color, fill = inside text color */
+    /* outline color */
     color: black;
-    /* Chrome still requires `-webkit-` prefix */
+    /* inside font color */
     -webkit-text-fill-color: white;
-    -webkit-text-stroke: 0.48rem;
-    font-size: 2rem;
+    -webkit-text-stroke: 0.52rem;
+    font-size: 2.15rem;
     paint-order: stroke fill; /* draw outline around text, then fill inside */
 }
 
 p {
     margin-bottom: 0.3rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 }
 
 .results-title {
