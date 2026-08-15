@@ -21,6 +21,13 @@ html, body {
     paint-order: stroke fill; /* draw outline around text, then fill inside */
 }
 
+.overlay-bey-name-1 {
+
+}
+.overlay-bey-name-2 {
+
+}
+
 p {
     margin-bottom: 0.3rem;
     margin-left: 1.5rem;
