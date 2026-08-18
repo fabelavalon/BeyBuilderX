@@ -141,6 +141,7 @@ var wasCopyMatchupToClipGenerated = false;
 var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
 var wasOverlayGenerated = false;
+var wasSwapGenerated = false;
 
 //global beyblade variables
 var bey1;
@@ -1553,7 +1554,7 @@ function displayRecords(){
     var recordsCopybtn = document.createElement("button"); //NEW
     var clearHistoryBtn = document.createElement("button"); //NEW
     var overlayBtn = document.createElement("button"); //NEW
-    var overlayBtn2 = document.createElement("button"); //NEW
+    var overlaySwapBeysBtn = document.createElement("button"); //NEW
 
     var bey1SO = 0;
     var bey1Bst = 0;
@@ -1672,15 +1673,17 @@ function displayRecords(){
         recordsSpace.append(overlayBtn);
         wasOverlayGenerated = true;
 
-        // pop-out modal for score and buttons
-        // overlayBtn2.innerHTML = "Overlay modal";
-        // overlayBtn2.classList.add("btn");
-        // overlayBtn2.classList.add("btn-primary");
-        // overlayBtn2.setAttribute("data-bs-toggle", "modal");
-        // overlayBtn2.setAttribute("data-bs-target", "#overlay");
-        // // overlayBtn2.onclick = openScoreOverlay;
-        // recordsSpace.append(overlayBtn2);
-        // wasOverlayGenerated = true;
+    }
+    if ( !wasSwapGenerated && scoreOverlayWindow && !scoreOverlayWindow.closed ) {
+        // swap bey 1 and bey 2 score display on the popup
+        overlaySwapBeysBtn.innerHTML = "Swap on Overlay";
+        overlaySwapBeysBtn.classList.add("btn");
+        overlaySwapBeysBtn.classList.add("btn-primary");
+        overlaySwapBeysBtn.setAttribute("data-bs-toggle", "modal");
+        overlaySwapBeysBtn.setAttribute("data-bs-target", "#overlay");
+        overlaySwapBeysBtn.onclick = swapOverlayBeys;
+        recordsSpace.append(overlaySwapBeysBtn);
+        wasSwapGenerated = true;
     }
 
 }
@@ -2632,6 +2635,13 @@ const createBrowserPopup = async () => {
     // load bey names and records onto popup
     displayRecords();
 }
+function swapOverlayBeys() {
+    // these are in a flexbox, with default style "order: 1", so simply set style "order: 2"
+    const pResult1 = scoreOverlayWindow.document.getElementById("overlay-result-first");
+    pResult1.classList.toggle("order-two");
+}
+
+/* settings, import, export  */
 
 async function importDbSetup(){
     fileInput.addEventListener('change', () => {

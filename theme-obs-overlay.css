@@ -21,11 +21,22 @@ html, body {
     paint-order: stroke fill; /* draw outline around text, then fill inside */
 }
 
-.overlay-bey-name-1 {
-
+/* flexbox lets us re-order */
+.overlay-score-box {
+    display: flex;
+    flex-direction: column;
 }
-.overlay-bey-name-2 {
-
+/* default order */
+#overlay-results-second, #overlay-results-first, .results-title {
+    order: 1;
+}
+/* add this class to move element down */
+.order-two {
+    order: 2;
+}
+/* "draws" text always at the bottom */
+.draws-line {
+    order: 99;
 }
 
 p {

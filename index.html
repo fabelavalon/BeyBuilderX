@@ -679,39 +679,37 @@
   <link href="./theme-obs-overlay.css" rel="stylesheet" id="theme"  />
   <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
 </head>
-<body style="">
-    <!--Records table for selected beys-->
-    <div class="col-lg-12 text-center overlay-score-text text-black-outline">
-        <p class="results-title">Results:</p>
-        <p class="overlay-bey-name overlay-bey-name-1" id="record1" name="record1">bey1</p>
-        <p class="">
-            OS: 
-            <span class="score-number" id="so1" name="so1">0</span>
-            Burst: 
-            <span class="score-number" id="bst1" name="bst1">0</span>
-            KO: 
-            <span class="score-number" id="ko1" name="ko1">0</span>
-            X: 
-            <span class="score-number" id="x1" name="x1">0</span>
-        </p>
+<body>
+  <!--Records table for selected beys-->
+  <div class="col-lg-12 text-center overlay-score-box text-black-outline">
+    <p class="results-title">Results:</p>
+    <div class="" id="overlay-result-first">
+      <p class="overlay-bey-name overlay-bey-name-1" id="record1" name="record1">bey1</p>
+      OS: 
+      <span class="score-number" id="so1" name="so1">0</span>
+      Burst: 
+      <span class="score-number" id="bst1" name="bst1">0</span>
+      KO: 
+      <span class="score-number" id="ko1" name="ko1">0</span>
+      X: 
+      <span class="score-number" id="x1" name="x1">0</span>
+    </div>
 
-        <p class="overlay-bey-name overlay-bey-name-2" id="record2" name="record2">bey2</p>
-        <p class="">
-            OS: 
-            <span class="score-number" id="so2" name="so2">0</span>
-            Burst: 
-            <span class="score-number" id="bst2" name="bst2">0</span>
-            KO: 
-            <span class="score-number" id="ko2" name="ko2">0</span>
-            X: 
-            <span class="score-number" id="x2" name="x2">0</span>
-        </p>
+    <div id="overlay-result-second">
+      <p class="overlay-bey-name overlay-bey-name-2" id="record2" name="record2">bey2</p>
+      OS: 
+      <span class="score-number" id="so2" name="so2">0</span>
+      Burst: 
+      <span class="score-number" id="bst2" name="bst2">0</span>
+      KO: 
+      <span class="score-number" id="ko2" name="ko2">0</span>
+      X: 
+      <span class="score-number" id="x2" name="x2">0</span>
+    </div>
 
-        <p class="">Draws: <span class ="score-number" id="draws" name="draws">0</span></p>
-        
-        <p></p>
-        
-    </div><!--end recordSpace-->
+    <p class="draws-line">Draws: <span class ="score-number" id="draws" name="draws">0</span></p>
+    
+  </div><!--end recordSpace-->
 </body>
 </html>
 </template>
