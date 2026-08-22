@@ -18,13 +18,19 @@ var allRachets = rachets;
 var allBits = bits;
 
 //create the elements for the buttons that will get generated via this script
-var copyStatsbtn = document.createElement("button"); //NEW
+var copyStatsbtn = document.createElement("button"); 
 var bey1Statbtn = document.createElement("button");
 var bey2Statbtn = document.createElement("button");
 var showAllBeysbtn = document.createElement("button");
 var removeBeybtn = document.createElement("button");
 var editBeybtn = document.createElement("button");
 var showMatchupbtn = document.createElement("button");
+// under the vs records
+var recordsSpace = document.getElementById("recordsSpace"); 
+var recordsCopybtn = document.createElement("button"); 
+var clearHistoryBtn = document.createElement("button"); 
+var overlayBtn = document.createElement("button"); 
+var overlaySwapBeysBtn = document.createElement("button"); 
 
 //import the elements for the dropdowns...
 //...for bey1
@@ -136,7 +142,7 @@ var clearHistButton = document.getElementById("clearHist");
 // window object for OBS overlay
 var scoreOverlayWindow = null;
 
-//used so we dont generate more buttons\
+//used so we dont generate more buttons
 var wasCopyMatchupToClipGenerated = false;
 var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
@@ -1550,12 +1556,6 @@ function displayRecords(){
 
     var vsId = bey1.id + " " + bey2.id;
 
-    var recordsSpace = document.getElementById("recordsSpace"); //NEW
-    var recordsCopybtn = document.createElement("button"); //NEW
-    var clearHistoryBtn = document.createElement("button"); //NEW
-    var overlayBtn = document.createElement("button"); //NEW
-    var overlaySwapBeysBtn = document.createElement("button"); //NEW
-
     var bey1SO = 0;
     var bey1Bst = 0;
     var bey1KO = 0;
@@ -1675,8 +1675,9 @@ function displayRecords(){
 
     }
     if ( !wasSwapGenerated && scoreOverlayWindow && !scoreOverlayWindow.closed ) {
+        const overlaySwapHtml = ` <span class="d-none">&circlearrowleft;</span>`;
         // swap bey 1 and bey 2 score display on the popup
-        overlaySwapBeysBtn.innerHTML = "Swap on Overlay";
+        overlaySwapBeysBtn.innerHTML = "Swap on Overlay"+overlaySwapHtml;
         overlaySwapBeysBtn.classList.add("btn");
         overlaySwapBeysBtn.classList.add("btn-primary");
         overlaySwapBeysBtn.setAttribute("data-bs-toggle", "modal");
@@ -2639,6 +2640,8 @@ function swapOverlayBeys() {
     // these are in a flexbox, with default style "order: 1", so simply set style "order: 2"
     const pResult1 = scoreOverlayWindow.document.getElementById("overlay-result-first");
     pResult1.classList.toggle("order-two");
+    // show the circular arrow when display is swapped
+    overlaySwapBeysBtn.children[0].classList.toggle("d-none");
 }
 
 /* settings, import, export  */
