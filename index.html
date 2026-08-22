@@ -111,42 +111,6 @@
                           <span id="bey1Draw"></span>
                     </div>
                 </div>
-
-                <!-- hiding until complete -->
-                <!-- TODO: styling, copy to bey2 -->
-                <div class="row" style="display:none"> 
-                  <div class="col">
-                    <table id="bey1StatsTable">
-                      <tr>
-                        <th class="text-center" colspan="2" id="bey1title"></th>
-                      </tr>
-                      <tr>
-                        <td class="text-center record-table-label">Weight:</td>
-                        <td class="text-center" id="bey1weight"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-center record-table-label">Spin Win/Loss:</td>
-                        <td class="text-center" id="bey1spin"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-center record-table-label">Burst Win/Loss:</td>
-                        <td class="text-center" id="bey1burst"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-center record-table-label">Over Win/Loss:</td>
-                        <td class="text-center" id="bey1over"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-center record-table-label">Xtreme Win/Loss:</td>
-                        <td class="text-center" id="bey1xtreme"></td>
-                      </tr>
-                      <tr>
-                        <td class="text-center record-table-label">Draws:</td>
-                        <td class="text-center" id="bey1draws"></td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
                 
             </div>
         </div><!--end blade 1-->
@@ -271,55 +235,55 @@
           <table>
             <tr>
               <td class="text-end"></td>
-              <th class="text-end" id="record1">bey1</th>
+              <th class="text-end" id="record1" name="record1">bey1</th>
               <td class="text-center">vs</td>
-              <th id="record2">bey2</th>
+              <th id="record2" name="record2">bey2</th>
             </tr>
             <tr>
               <td class="text-end record-table-label">Wins:</td>
-              <td class="text-end" id="wins1">0</td>
+              <td class="text-end" id="wins1" name="wins1">0</td>
               <td class="text-center">/</td>
               <td id="wins2Col">
                 <div id="wins2Container">
-                  <span id="wins2">0</span>
-                  <span id="vsTotalRounds">0</span>
+                  <span id="wins2" name="wins2">0</span>
+                  <span id="vsTotalRounds" name="vsTotalRounds">0</span>
                 </div>
               </td>
             </tr>
             <tr>
               <td class="text-end record-table-label">Points:</td>
-              <td class="text-end" id="points1">0</td>
+              <td class="text-end" id="points1" name="points1">0</td>
               <td class="text-center">/</td>
-              <td class="text-start" id="points2">0</td>
+              <td class="text-start" id="points2" name="points2">0</td>
             </tr>
             <tr>
               <td class="text-end record-table-label">Spin:</td>
-              <td class="text-end" id="so1">0</td>
+              <td class="text-end" id="so1" name="so1">0</td>
               <td class="text-center">/</td>
-              <td class="text-start" id="so2">0</td>
+              <td class="text-start" id="so2" name="so2">0</td>
             </tr>
             <tr>
               <td class="text-end record-table-label">Burst:</td>
-              <td class="text-end" id="bst1">0</td>
+              <td class="text-end" id="bst1" name="bst1">0</td>
               <td class="text-center">/</td>
-              <td class="text-start" id="bst2">0</td>
+              <td class="text-start" id="bst2" name="bst2">0</td>
             </tr>
             <tr>
               <td class="text-end record-table-label">Over:</td>
-              <td class="text-end" id="ko1">0</td>
+              <td class="text-end" id="ko1" name="ko1">0</td>
               <td class="text-center">/</td>
-              <td class="text-start" id="ko2">0</td>
+              <td class="text-start" id="ko2" name="ko2">0</td>
             </tr>
             <tr>
               <td class="text-end record-table-label">Xtreme:</td>
-              <td class="text-end" id="x1">0</td>
+              <td class="text-end" id="x1" name="x1">0</td>
               <td class="text-center">/</td>
-              <td class="text-start" id="x2">0</td>
+              <td class="text-start" id="x2" name="x2">0</td>
             </tr>
             <tr>
               <td class="text-end record-table-label">Draws:</td>
               <td></td>
-              <td class="text-center" id="draws">0</td>
+              <td class="text-center" id="draws" name="draws">0</td>
             </tr>
           </table>
   
@@ -700,3 +664,52 @@
 </footer>
 
 </html>
+
+
+<!-- score tracker popup -->
+<template id="score-overlay-template">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Score</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.png">
+
+  <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
+  <link href="./beybuilder.css" rel="stylesheet"  />
+  <link href="./theme-obs-overlay.css" rel="stylesheet" id="theme"  />
+  <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
+</head>
+<body>
+  <!--Records table for selected beys-->
+  <div class="col-lg-12 text-center overlay-score-box text-black-outline">
+    <p class="results-title">Results:</p>
+    <div class="" id="overlay-result-first">
+      <p class="overlay-bey-name overlay-bey-name-1" id="record1" name="record1">bey1</p>
+      OS: 
+      <span class="score-number" id="so1" name="so1">0</span>
+      Burst: 
+      <span class="score-number" id="bst1" name="bst1">0</span>
+      KO: 
+      <span class="score-number" id="ko1" name="ko1">0</span>
+      X: 
+      <span class="score-number" id="x1" name="x1">0</span>
+    </div>
+
+    <div id="overlay-result-second">
+      <p class="overlay-bey-name overlay-bey-name-2" id="record2" name="record2">bey2</p>
+      OS: 
+      <span class="score-number" id="so2" name="so2">0</span>
+      Burst: 
+      <span class="score-number" id="bst2" name="bst2">0</span>
+      KO: 
+      <span class="score-number" id="ko2" name="ko2">0</span>
+      X: 
+      <span class="score-number" id="x2" name="x2">0</span>
+    </div>
+
+    <p class="draws-line">Draws: <span class ="score-number" id="draws" name="draws">0</span></p>
+    
+  </div><!--end recordSpace-->
+</body>
+</html>
+</template>
