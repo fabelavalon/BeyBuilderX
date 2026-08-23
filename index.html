@@ -580,7 +580,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
-                <h4 class="modal-title" id="settings-body">Settings</h5>
+                <h4 class="modal-title" id="settings-body">Settings</h4>
 
                 <h5 class="">Select a theme</h5>
                 <select id="themeSelect" class="select-basic form-select">
@@ -591,6 +591,14 @@
                   <option value="none">None</option>
                 </select>
 
+                <br>
+                <span class="d-flex justify-content-between">
+                  <h5>Enable stream overlay buttons?</h5>
+                  <input type="checkbox" id="enableOverlayBtnsCheckbox">
+                </span>
+
+                
+                <br>
                 <br>
                 <h5>Export Database</h5>
                 <button type="button" class="btn btn-primary" onclick="exportDb()">Export local database</button>

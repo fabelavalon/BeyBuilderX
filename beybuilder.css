@@ -125,6 +125,14 @@
     width: 100%
 }
 
+/* settings modal */
+input[type='checkbox'] {
+    transform: scale(1.5);
+}
+#settings input[type='checkbox']{
+    margin-right: 24px;
+}
+
 /* make modal headers and footers sticky */
 .modal-header--sticky {
     position: sticky;
