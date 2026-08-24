@@ -122,6 +122,8 @@ const fileInput = document.getElementById('importDbFile');
 //theme switcher
 var themeSelect = document.getElementById("themeSelect");
 var themeLink = document.getElementById("theme");
+// checkbox to enable OBS overlay button
+const enableOverlayBtnsCheckbox = document.getElementById("enableOverlayBtnsCheckbox");
 
 // error modal
 const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
@@ -148,6 +150,10 @@ var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
 var wasOverlayGenerated = false;
 var wasSwapGenerated = false;
+
+// settings, pouchDB json objects
+var selectedTheme; // pouchDB json with string "name"
+var overlaySetting; // pouchDB json with boolean "value"
 
 //global beyblade variables
 var bey1;
@@ -341,6 +347,8 @@ function main(){
     // on click and other event listeners
     loadTheme();
     themeSwitchListener();
+    loadOverlaySetting();
+    overlaySettingListener();
     importDbSetup();
 };
 
@@ -1662,7 +1670,7 @@ function displayRecords(){
     }
 
 
-    if(!wasOverlayGenerated){
+    if(!wasOverlayGenerated  && enableOverlayBtnsCheckbox.checked){
         // pop-out modal for score and buttons
         overlayBtn.innerHTML = "Overlay";
         overlayBtn.classList.add("btn");
@@ -1674,7 +1682,7 @@ function displayRecords(){
         wasOverlayGenerated = true;
 
     }
-    if ( !wasSwapGenerated && scoreOverlayWindow && !scoreOverlayWindow.closed ) {
+    if ( !wasSwapGenerated && scoreOverlayWindow && !scoreOverlayWindow.closed && enableOverlayBtnsCheckbox.checked ) {
         const overlaySwapHtml = ` <span class="d-none">&circlearrowleft;</span>`;
         // swap bey 1 and bey 2 score display on the popup
         overlaySwapBeysBtn.innerHTML = "Swap on Overlay"+overlaySwapHtml;
@@ -2488,8 +2496,6 @@ function spinMe(me){
     }, { once: true });
 }
 
-//theme object, will be a pouchDB object
-var selectedTheme;
 function themeSwitchListener(){
 
     console.log("called themeSwitchListener()");
@@ -2543,6 +2549,65 @@ function loadTheme(){
                 console.log("No existing theme. Using default");
                 // calling saveTheme with no params will select the default theme and properly init the DB theme object
                 saveTheme();
+            }
+        }
+    });
+}
+
+// setting for showing/hiding Overlay button
+function overlaySettingListener(){
+
+    console.log("called overlaySettingListener()");
+
+    enableOverlayBtnsCheckbox.addEventListener('change', function() {
+        saveOverlaySetting(enableOverlayBtnsCheckbox.checked);
+    });
+}
+
+function saveOverlaySetting(shouldShowOverlayBtnBoolean) {
+    console.log('Selected overlay status: ' + shouldShowOverlayBtnBoolean);
+
+    // init shouldShowOverlayBtn object for DB insertion
+    if(overlaySetting==null) {
+        console.log("creating overlay setting json var");
+        overlaySetting = {
+            _id: "shouldShowOverlayBtn",
+            value: shouldShowOverlayBtnBoolean
+        };
+    } else {
+        overlaySetting.value = shouldShowOverlayBtnBoolean;
+    }
+    // save
+    settings.put(overlaySetting, function callback(err, result) {
+        console.log("saving, result: "+JSON.stringify(result));
+        if (!err) {
+            console.log('Saved theme selection');
+            // load theme. This will set the CSS and update overlaySetting._rev
+            loadOverlaySetting();
+        }
+        else{
+            console.log(err);
+        }
+    });
+}
+
+function loadOverlaySetting(){
+    console.log("called loadOverlaySetting()");
+
+    settings.get("shouldShowOverlayBtn", function callback(err, result) {
+        if (!err) {
+            overlaySetting=result;
+            console.log('Loaded overlay setting');
+            console.log("overlay setting load result: " + JSON.stringify(result));
+            enableOverlayBtnsCheckbox.checked=overlaySetting.value; // checkbox in settings 
+            displayRecords();
+        }
+        else{
+            console.log(err);
+            if(err.status=404) {
+                console.log("No existing overlay setting. Using default");
+                // calling saveTheme with no params will select the default theme and properly init the DB theme object
+                //saveTheme();
             }
         }
     });
