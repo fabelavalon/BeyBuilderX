@@ -2466,8 +2466,8 @@ function disableDropdowns(partType, selection, whichBey){
         }
     }
     if(partType=="bit") {
-        console.log("checking bits");
-        if(allBits[selection].type == "ratchetBit" || allBlades[blade.value].system == "UX2"){
+        console.log("checking bits");        
+        if(allBits[selection].type == "ratchetBit"){
             //console.log("ratchet-bit selected");
             disableParts = ["ratchet"];
         } else {
