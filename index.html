@@ -36,10 +36,6 @@
     <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
     
     <!-- PWA -->
-    <script> // don't load for local HTML files
-      if (!location.protocol.startsWith('file:')) 
-        document.write(' <link rel="manifest" href="./pwa/manifest.webmanifest"> ');
-    </script>
     <script src="./pwa/registerSW.js"></script>
 
 </head>
