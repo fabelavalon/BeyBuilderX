@@ -587,8 +587,8 @@ function createWinButtons(){
         .then(displayRecords);
 
         // titles above win buttons
-        bey1WinTitle.innerHTML = bey1.findName(includeHtml=true);
-        bey2WinTitle.innerHTML = bey2.findName(includeHtml=true);
+        bey1WinTitle.innerHTML = bey1.findNameHtml();
+        bey2WinTitle.innerHTML = bey2.findNameHtml();
     }
 }
 function clearVsButtons(){
@@ -1595,7 +1595,7 @@ function displayRecords(){
             console.log("displayRecords() got:\n"+JSON.stringify(doc));
         }
         
-        record1.forEach(el => el.innerHTML = (bey1.findName(includeHtml=true)));
+        record1.forEach(el => el.innerHTML = (bey1.findNameHtml()));
         ko1.forEach(el => el.textContent = doc.wko);
         bey1KO = doc.wko;
         so1.forEach(el => el.textContent = doc.wso);
@@ -1609,7 +1609,7 @@ function displayRecords(){
         points1.forEach(el => el.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso);
         bey1Points = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
-        record2.forEach(el => el.innerHTML = bey2.findName(includeHtml=true));
+        record2.forEach(el => el.innerHTML = bey2.findNameHtml());
         ko2.forEach(el => el.textContent = doc.lko);
         bey2KO = doc.lko;
         so2.forEach(el => el.textContent = doc.lso);

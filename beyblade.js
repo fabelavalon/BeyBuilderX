@@ -127,41 +127,68 @@ class BeyBlade {
 
     /**
      * generate full beyblade name, blade ratchet bit
-     * @param {boolean} includeHtml - generate <span> tags to help style and line-break
-     * @returns name
+     * @returns {string} name
      */
-    findName( includeHtml=false ){
+    findName(){
         var newName = "";
 
-
-        var span1 = "";
-        var span2 = "";
-        var spanClose = "";
-        if (includeHtml) {
-            span1 = `<span class="blade-text">`; // start
-            span2 = `</span><span class="blade-text">&nbsp;`; // split text at the ratchet
-            spanClose = `</span>`; // end
-        }
-
-        var ratchetNameInclSpaces = includeHtml ? "" : " ";
+        var ratchetNameInclSpaces = " ";
         if(this.rachet>-1) {
             // regular ratchet
             ratchetNameInclSpaces += allRachets[this.rachet].name + " ";
         }
 
         if((this.system == "BX") || (this.system == "UX")){
-            newName = span1 + allBlades[this.blade].name + span2 + ratchetNameInclSpaces + allBits[this.bit].name + spanClose;
+            newName = allBlades[this.blade].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
         else if(this.system == "UX2"){
-            newName = span1 + allBlades[this.blade].name + " " + allBits[this.bit].name + spanClose;
+            newName = allBlades[this.blade].name + " " + allBits[this.bit].name;
         }
         else if(this.system == "CX"){
-            newName = span1 + allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name + span2 + ratchetNameInclSpaces + allBits[this.bit].name +spanClose;
+            newName = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
         else if(this.system == "CX2"){
-            newName = span1 + allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allOverBlades[this.over].name + " " + allAssists[this.assist].name + span2 + ratchetNameInclSpaces + allBits[this.bit].name + spanClose;
+            newName = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allOverBlades[this.over].name + " " + allAssists[this.assist].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
 
+        return newName;
+    }
+
+    /**
+     * generate full beyblade name with <span> tags to help style and line-break
+     * @returns {string} name as HTML
+     */
+    findNameHtml(){
+        var bladeText = "";
+        var tailText = "";
+
+        var ratchetNameInclSpaces = "";
+        if(this.rachet>-1) {
+            // regular ratchet
+            ratchetNameInclSpaces += allRachets[this.rachet].name + " ";
+        }
+
+        if((this.system == "BX") || (this.system == "UX")){
+            bladeText = allBlades[this.blade].name;
+            tailText = ratchetNameInclSpaces + allBits[this.bit].name;
+        }
+        else if(this.system == "UX2"){
+            bladeText = allBlades[this.blade].name + " " + allBits[this.bit].name;
+        }
+        else if(this.system == "CX"){
+            bladeText = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allAssists[this.assist].name;
+            tailText = ratchetNameInclSpaces + allBits[this.bit].name;
+        }
+        else if(this.system == "CX2"){
+            bladeText = allBitChips[this.bitChip].name + allBlades[this.blade].name + " " + allOverBlades[this.over].name + " " + allAssists[this.assist].name;
+            tailText = ratchetNameInclSpaces + allBits[this.bit].name;
+        }
+
+        var newName = `<span class="blade-text">` + bladeText + `</span>`;
+        if(tailText){
+            // split at the ratchet so the name can wrap
+            newName += `<span class="blade-text">&nbsp;` + tailText + `</span>`;
+        }
         return newName;
     }
 
