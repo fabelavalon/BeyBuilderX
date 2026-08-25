@@ -48,7 +48,7 @@ self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     // SPA navigation fallback
     event.respondWith(
-      caches.match('index.html').then(response => response || fetch(event.request).catch(() => null))
+      caches.match('index.html').then(response => response || fetch(event.request).catch(() => Response.error()))
     );
     return;
   }
@@ -67,7 +67,7 @@ self.addEventListener('fetch', event => {
           }
           return networkResponse;
         })
-        .catch(() => null); // Handle offline errors silently
+        .catch(() => Response.error()); // Handle offline errors silently
       
       // Return cached response, or wait for network if no cache
       return response || fetchPromise;
