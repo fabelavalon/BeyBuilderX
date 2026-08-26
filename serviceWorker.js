@@ -1,4 +1,4 @@
-const CACHE_NAME = 'beybuilderx-cache-v1';
+const CACHE_NAME = 'beybuilderx-cache-v2';
 const PRECACHE_URLS = [
   'pwa/registerSW.js',
   // main application
@@ -6,6 +6,8 @@ const PRECACHE_URLS = [
   'main.js',
   'parts.js',
   'beyblade.js',
+  'migrations/migrate.js',
+  'migrations/versions/001_dedupe_vs_records.js',
   // themes
   'beybuilder.css',
   'theme-dark-purple.css',
