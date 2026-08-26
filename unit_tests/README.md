@@ -20,4 +20,4 @@ node unit_tests/migration_001_stadium.test.js
 |------|--------|
 | `migration_001_stadium.test.js` | Migration engine + revision `001` (stadium schema, indexes) |
 
-No test framework — plain `node` + `assert` / thrown errors.
+No test framework - plain `node` + `assert` / thrown errors.

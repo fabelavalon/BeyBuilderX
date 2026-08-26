@@ -1,10 +1,11 @@
-/*==========================================================*
- * Revision 001 — vsRecord schema v1                        *
- * - Dedupe reverse-orientation pairs                       *
- * - Canonical _id: bey1Id_bey2Id_stadiumId (bey ids sorted)*
- * - Shape: bey1Id, bey2Id, stadiumId, bey1, bey2, scores   *
- * Legacy records migrate to DEFAULT stadium "xtreme".      *
- *==========================================================*/
+/*
+ * Revision 001 - vsRecord schema v1
+ * - Deduplicate reverse-orientation pairs
+ * - Canonical _id: bey1Id_bey2Id_stadiumId (bey ids sorted)
+ * - Shape: bey1Id, bey2Id, stadiumId, bey1, bey2, scores
+ * Legacy records migrate to DEFAULT stadium "xtreme".
+ * Function names include `_001` to avoid conflicting with main.js
+ */
 
 var DEFAULT_STADIUM_ID_001 = "xtreme";
 var VS_RECORDS_DESIGN_ID = "_design/vsRecords";
@@ -81,26 +82,22 @@ function vsRecordsDesignDoc_001() {
     return {
         _id: VS_RECORDS_DESIGN_ID,
         views: {
+            // All stadiums for one bey (matchup history)
+            by_bey: {
+                map: function (doc) {
+                    if (doc.type === "vsRecord" && doc.bey1Id && doc.bey2Id) {
+                        emit(doc.bey1Id, null);
+                        emit(doc.bey2Id, null);
+                    }
+                }.toString()
+            },
+            // All stadiums for a sorted bey pair
             by_bey_pair: {
-                map: "function (doc) {\n" +
-                    "  if (doc.type === 'vsRecord' && doc.bey1Id && doc.bey2Id) {\n" +
-                    "    emit([doc.bey1Id, doc.bey2Id], null);\n" +
-                    "  }\n" +
-                    "}"
-            },
-            by_stadium: {
-                map: "function (doc) {\n" +
-                    "  if (doc.type === 'vsRecord' && doc.stadiumId) {\n" +
-                    "    emit(doc.stadiumId, null);\n" +
-                    "  }\n" +
-                    "}"
-            },
-            by_bey_and_stadium: {
-                map: "function (doc) {\n" +
-                    "  if (doc.type === 'vsRecord' && doc.bey1Id && doc.bey2Id && doc.stadiumId) {\n" +
-                    "    emit([doc.bey1Id, doc.bey2Id, doc.stadiumId], null);\n" +
-                    "  }\n" +
-                    "}"
+                map: function (doc) {
+                    if (doc.type === "vsRecord" && doc.bey1Id && doc.bey2Id) {
+                        emit([doc.bey1Id, doc.bey2Id], null);
+                    }
+                }.toString()
             }
         }
     };
@@ -135,7 +132,10 @@ registerMigration({
             }
         }
         try {
-            await context.recordsDBX.get(VS_RECORDS_DESIGN_ID);
+            var design = await context.recordsDBX.get(VS_RECORDS_DESIGN_ID);
+            if (!design.views || !design.views.by_bey || !design.views.by_bey_pair) {
+                return true;
+            }
         } catch (err) {
             if (err.name === "not_found" || err.status === 404) {
                 return true;
