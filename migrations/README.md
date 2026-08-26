@@ -20,3 +20,19 @@ Migrations run on app start and after DB import (`main.js`).
 
 - Keep migration files self-contained. Do not call helpers from `main.js`.
 - Prefer small, reversible `upgrade` / `downgrade` pairs when practical.
+- Optional `reapplyIf(context)` on a revision: if already at that head but schema is incomplete, `upgrade` runs again (used when amending an unreleased migration).
+
+## vsRecord shape (revision 001+)
+
+```js
+{
+  _id: "bey1Id_bey2Id_stadiumId",  // bey ids sorted alphabetically
+  type: "vsRecord",
+  bey1Id, bey2Id, stadiumId,
+  bey1, bey2,                      // full build snapshots
+  title,
+  scores: { wko, lko, wso, lso, wbst, lbst, wx, lx, draws }
+}
+```
+
+Indexes: `_design/vsRecords` views `by_bey_pair`, `by_stadium`, `by_bey_and_stadium`.

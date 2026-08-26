@@ -151,5 +151,18 @@ async function runMigrations(dbs, opts) {
         }
     }
 
+    // Schema amends on the current head (e.g. expanding an unreleased revision)
+    var headMigration = chain.length ? chain[chain.length - 1] : null;
+    if (
+        headMigration &&
+        versionDoc.revision === headMigration.revision &&
+        typeof headMigration.reapplyIf === "function" &&
+        await headMigration.reapplyIf(context)
+    ) {
+        console.log("DB migration re-apply " + headMigration.revision + ": " + headMigration.message);
+        await headMigration.upgrade(context);
+        console.log("DB migration re-apply " + headMigration.revision + " complete");
+    }
+
     return versionDoc.revision;
 }

@@ -1,6 +1,6 @@
 /**
- * Smoke test: migration engine + revision 001 vsRecord dedupe.
- * Run: node unit_tests/migration_001_dedupe.test.js
+ * Smoke test: migration 001 — stadium vsRecord schema.
+ * Run: node unit_tests/migration_001_stadium.test.js
  */
 import fs from "fs";
 import path from "path";
@@ -63,7 +63,7 @@ vm.runInContext(
 );
 vm.runInContext(
     fs.readFileSync(
-        path.join(root, "migrations/versions/001_dedupe_vs_records.js"),
+        path.join(root, "migrations/versions/001_stadium_vs_records.js"),
         "utf8"
     ),
     sandbox
@@ -78,7 +78,7 @@ const beyZ = { id: "bladeZ r b", name: "Z" };
 const beyB = { id: "bladeB r b", name: "B" };
 const beyC = { id: "bladeC r b", name: "C" };
 
-// Only reverse orientation exists
+// Only reverse orientation exists (pre-dedupe legacy)
 await recordsDBX.put({
     _id: beyZ.id + " " + beyA.id,
     title: "Z vs A",
@@ -130,26 +130,42 @@ await recordsDBX.put({
 const rev = await sandbox.runMigrations({ settings, recordsDBX, beyBladeDBX });
 assert.strictEqual(rev, "001");
 
-const keys = recordsDBX.keys();
-assert.deepStrictEqual(keys, [
-    beyA.id + " " + beyZ.id,
-    beyB.id + " " + beyC.id
-]);
+const expectedZA = beyA.id + "_" + beyZ.id + "_xtreme";
+const expectedBC = beyB.id + "_" + beyC.id + "_xtreme";
 
-const canonZA = await recordsDBX.get(beyA.id + " " + beyZ.id);
-assert.strictEqual(canonZA.challenger.id, beyA.id);
-assert.strictEqual(canonZA.wko, 2);
-assert.strictEqual(canonZA.lko, 1);
+const dataKeys = recordsDBX.keys().filter((k) => !k.startsWith("_design/"));
+assert.deepStrictEqual(dataKeys, [expectedBC, expectedZA].sort());
 
-const canonBC = await recordsDBX.get(beyB.id + " " + beyC.id);
-assert.strictEqual(canonBC.wko, 5);
+const canonZA = await recordsDBX.get(expectedZA);
+assert.strictEqual(canonZA.type, "vsRecord");
+assert.strictEqual(canonZA.stadiumId, "xtreme");
+assert.strictEqual(canonZA.bey1Id, beyA.id);
+assert.strictEqual(canonZA.bey2Id, beyZ.id);
+assert.strictEqual(canonZA.scores.wko, 2);
+assert.strictEqual(canonZA.scores.lko, 1);
+
+const canonBC = await recordsDBX.get(expectedBC);
+assert.strictEqual(canonBC.scores.wko, 5);
+assert.strictEqual(canonBC.bey1Id, beyB.id);
 
 await assert.rejects(
     () => recordsDBX.get(beyC.id + " " + beyB.id),
     (err) => err.name === "not_found"
 );
 
+const design = await recordsDBX.get("_design/vsRecords");
+assert.ok(design.views.by_bey_pair);
+assert.ok(design.views.by_stadium);
+
 const ver = await settings.get("dbVersion");
 assert.strictEqual(ver.revision, "001");
 
-console.log("migration_001_dedupe.test.js: ok");
+// Idempotent re-apply when already at 001
+const rev2 = await sandbox.runMigrations({ settings, recordsDBX, beyBladeDBX });
+assert.strictEqual(rev2, "001");
+assert.deepStrictEqual(
+    recordsDBX.keys().filter((k) => !k.startsWith("_design/")),
+    [expectedBC, expectedZA].sort()
+);
+
+console.log("migration_001_stadium.test.js: ok");
