@@ -716,7 +716,7 @@ function getSelectedStadiumId() {
  * Stored docs are always bey1-oriented (alphabetical first id).
  */
 function vsStatsFromPerspective(vsDoc, perspectiveBeyId) {
-    var scores = vsDoc.scores || emptyVsScores();
+    var scores = vsDoc.scores;
     if (vsDoc.bey1Id === perspectiveBeyId) {
         return {
             wko: scores.wko, lko: scores.lko,
@@ -741,7 +741,7 @@ function vsStatsFromPerspective(vsDoc, perspectiveBeyId) {
  * Temporary flip of bey1/bey2 + scores for display/aggregation (does not change ids).
  */
 function invertVsRecordOrientation(source) {
-    var scores = source.scores || emptyVsScores();
+    var scores = source.scores;
     return {
         _id: source._id,
         type: source.type,
@@ -775,6 +775,32 @@ function buildVsRecordDoc(beyA, beyB, stadiumId) {
         title: ordered.bey1.name + " vs " + ordered.bey2.name,
         scores: emptyVsScores()
     };
+}
+
+/**
+ * vsRecords involving a bey across all stadiums (vsRecords/by_bey, else allDocs).
+ */
+function queryVsRecordsForBey(beyId) {
+    return recordsDBX.query("vsRecords/by_bey", { // check index
+        key: beyId,
+        include_docs: true
+    }).then(function (result) {
+        return result.rows
+            .map(function (row) { return row.doc; })
+            .filter(function (doc) { return !!doc; }); // drop missing docs
+    }).catch(function (err) {
+        // view (index) is missing or not built yet - scan all docs instead
+        console.log("queryVsRecordsForBey fallback:", err);
+        return recordsDBX.allDocs({ include_docs: true }).then(function (all) {
+            return all.rows
+                .map(function (row) { return row.doc; })
+                // same bey as bey1 or bey2, any stadium
+                .filter(function (doc) {
+                    return doc && doc.type === "vsRecord"
+                        && (doc.bey1Id === beyId || doc.bey2Id === beyId);
+                });
+        });
+    });
 }
 
 //tracking for past match ups, so we know what build blades won or lost against, instead of anon stats
@@ -852,9 +878,6 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
 
 /** Apply a win/loss/draw onto a bey1-oriented vsRecord (scores nest). */
 function applyOutcomeToVsRecord(vsRecord, winnerId, outcome) {
-    if (!vsRecord.scores) {
-        vsRecord.scores = emptyVsScores();
-    }
     var winnerIsBey1 = (vsRecord.bey1Id === winnerId);
     switch(outcome) {
         case "KO":
@@ -1412,7 +1435,7 @@ function displayRecords(){
         totalRounds.forEach(el => el.textContent = "Total: " + (bey1Stats.wx + bey1Stats.wbst + bey1Stats.wko + bey1Stats.wso + bey1Stats.lx + bey1Stats.lbst + bey1Stats.lko + bey1Stats.lso + bey1Stats.draws));
         totalRound = bey1Stats.wx + bey1Stats.wbst + bey1Stats.wko + bey1Stats.wso + bey1Stats.lx + bey1Stats.lbst + bey1Stats.lko + bey1Stats.lso + bey1Stats.draws;
 
-        var stadiumLabel = getStadiumName(doc.stadiumId || getSelectedStadiumId());
+        var stadiumLabel = getStadiumName(doc.stadiumId);
         displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
                         "Stadium: " + stadiumLabel + "\n" +
                         "Number of rounds: " + totalRound + "\n" +
@@ -1516,7 +1539,7 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId){
         }
         console.log( JSON.stringify(vsRecord) );
         var vsRecordClone = structuredClone(vsRecord); //JS deep copy
-        var scores = vsRecordClone.scores || emptyVsScores();
+        var scores = vsRecordClone.scores;
 
         function subtractFromBey(beyId, stats) {
             beyBladeDBX.get(beyId, function(err, beyblade) {
@@ -1665,11 +1688,12 @@ function populateMatchHist(bey){
 
     console.log("called populateMatchHist(" + bey.name + ")");
 
-    recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
+    // All stadiums for this bey
+    queryVsRecordsForBey(bey.id).then(function (vsDocs) {
 
         matchupSpace.textContent = "";
         totalsSpace.textContent = "";
-        matchupBey.textContent = "Matchup History for " + bey.name;
+        matchupBey.textContent = "Matchup History for " + bey.name + " (all stadiums)";
 
         // build a new BeyBlade object using parts, then overlay win/loss data from database
         if(((allBlades[bey.blade].system == "BX") || (allBlades[bey.blade].system == "UX"))){
@@ -1767,21 +1791,17 @@ function populateMatchHist(bey){
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
 
-        historyClipboardHolder = "Results for " + bey.name + ":"
+        historyClipboardHolder = "Results for " + bey.name + " (all stadiums):"
         
-        for(i = 0; i < doc.total_rows; i++){
-            var vsDoc = doc.rows[i].doc;
-            if(!vsDoc || vsDoc.type !== "vsRecord" || !vsDoc.bey1) {
-                continue;
-            }
-            var scores = vsDoc.scores || emptyVsScores();
+        for(i = 0; i < vsDocs.length; i++){
+            var vsDoc = vsDocs[i];
+            var scores = vsDoc.scores;
             var totalMatches = scores.wx + scores.wbst + scores.wko + scores.wso + scores.lx + scores.lbst + scores.lko + scores.lso + scores.draws;
-            var isParticipant = bey.id==vsDoc.bey1Id || bey.id==vsDoc.bey2Id;
-            if(!err && isParticipant && totalMatches>0){
+            if(totalMatches>0){
 
                     console.log(historyClipboardHolder);
                     var fromBey = vsStatsFromPerspective(vsDoc, bey.id);
-                    var stadiumBit = vsDoc.stadiumId ? " [" + getStadiumName(vsDoc.stadiumId) + "]" : "";
+                    var stadiumBit = " [" + getStadiumName(vsDoc.stadiumId) + "]";
 
                     //title row
                     var titleRow = matchupSpace.insertRow(1);
@@ -1832,6 +1852,8 @@ function populateMatchHist(bey){
             });
        };
        
+    }).catch(function (err) {
+        console.error("populateMatchHist failed:", err);
     });
 }
 
@@ -1904,7 +1926,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         return;
     }
 
-    // get all docs
+    // All stadiums; parts filter needs a full scan (no parts index)
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allMatches) {
         // Match either orientation: side1/side2 may sit on bey1 or bey2
         var matches = allMatches.rows
@@ -1923,7 +1945,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
 
         // for each matchup, write in table
         matches.forEach(match => {
-            var s = match.doc.scores || emptyVsScores();
+            var s = match.doc.scores;
             winHolder = s.wko + s.wso + s.wbst + s.wx;
             lossHolder = s.lko + s.lso + s.lbst + s.lx;
             draws = s.draws;
@@ -1943,7 +1965,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         var totalMatches = 0;
         var draws = 0;
         matches.forEach(match => {
-            var s = match.doc.scores || emptyVsScores();
+            var s = match.doc.scores;
             winHolder += s.wko + s.wso + s.wbst + s.wx;
             winPointHolder += (s.wko*2) + s.wso + (s.wbst*2) + (s.wx*3);
             lossHolder += s.lko + s.lso + s.lbst + s.lx;
@@ -1988,7 +2010,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         if(defenderBeyName.trim() != "") {
             statBeyName += " vs " + defenderBeyName;
         }
-        matchupStatsBeyTitle.textContent = statBeyName;
+        matchupStatsBeyTitle.textContent = statBeyName + " (all stadiums)";
 
     });
 
@@ -2030,7 +2052,7 @@ function primeMatchupHistTable(){
 function fillMatchupHist(history){
 
     console.log("called fillMatchupHistory()");
-    var scores = history.scores || emptyVsScores();
+    var scores = history.scores;
     
     var row = matchupHistUser.insertRow(1);
     var cellVS = row.insertCell(); 
@@ -2044,7 +2066,7 @@ function fillMatchupHist(history){
     var cell6 = row.insertCell();
     var cell7 = row.insertCell();
     var cell8 = row.insertCell();
-    var stadiumBit = history.stadiumId ? "<br><small>" + getStadiumName(history.stadiumId) + "</small>" : "";
+    var stadiumBit = "<br><small>" + getStadiumName(history.stadiumId) + "</small>";
     cellVS.innerHTML = history.bey1.name+"<br>vs<br>"+history.bey2.name + stadiumBit;
     cell1.innerHTML = history.bey1.name;
     cell3.innerHTML = history.bey2.name;
@@ -2112,7 +2134,7 @@ function deleteBey(){
             // find vs records where bey2 == selectedBey
             if( vsDoc.bey2Id == selectedBey.value ){
                 var thisRecord = structuredClone(vsDoc);
-                var thisScores = thisRecord.scores || emptyVsScores();
+                var thisScores = thisRecord.scores;
                 beyBladeDBX.get(vsDoc.bey1Id, function(err, beyblade) {
                     if(!err){
                         beyblade.build.winsKO  -= thisScores.wko;

@@ -1,5 +1,5 @@
 /**
- * Smoke test: migration 001 — stadium vsRecord schema.
+ * Smoke test: migration 001 - stadium vsRecord schema.
  * Run: node unit_tests/migration_001_stadium.test.js
  */
 import fs from "fs";
@@ -154,8 +154,8 @@ await assert.rejects(
 );
 
 const design = await recordsDBX.get("_design/vsRecords");
+assert.ok(design.views.by_bey);
 assert.ok(design.views.by_bey_pair);
-assert.ok(design.views.by_stadium);
 
 const ver = await settings.get("dbVersion");
 assert.strictEqual(ver.revision, "001");
