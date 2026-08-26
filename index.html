@@ -181,7 +181,15 @@
     
     <div class="container-fluid border" id="vsContainer">
 
-      
+      <div class="row mb-2">
+        <div class="col-sm-4">
+          Select your Stadium:
+          <select id="stadiumSelector" class="select-basic form-select">
+            <!-- filled from stadiums.js -->
+          </select>
+        </div>
+      </div>
+
       <div class="row"> <!-- win buttons on left, stat container on right -->
 
         <div class="col-md-6" id="buttonContainer">
@@ -647,13 +655,14 @@
     <script src="./libraries/pouchdb-7.3.1.js"></script>
     <script src="./libraries/debounce/debounce.js"></script>
     <script src="./parts.js"></script>
+    <script src="./stadiums.js"></script>
     <script src="./beyblade.js"></script>
     <!-- migrate old data -->
     <script src="./migrations/migrate.js"></script>
-    <script src="./migrations/versions/001_dedupe_vs_records.js"></script>
+    <script src="./migrations/versions/001_stadium_vs_records.js"></script>
 
     <script src="./main.js?v3"></script>
-    
+
     <!--
         TODO:
         ui cleanup
