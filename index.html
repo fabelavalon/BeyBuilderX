@@ -586,6 +586,23 @@
         </div>
       </div>
 
+      <!-- restore automatic backup confirmation -->
+      <div class="modal fade" id="areYouSureRestoreBackup" tabindex="-1" aria-labelledby="restoreBackupConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title text-center" id="restoreBackupConfirmLabel">Are You Sure?</h5>
+                <p></p>
+                <p id="restoreBackupConfirmMsg"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="openSettings()">Nevermind</button>
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onclick="confirmRestoreMigrationBackup()">Yes, Restore backup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- pick theme, swap css file -->
       <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="settings-body" aria-hidden="true">
         <div class="modal-dialog">
@@ -611,6 +628,14 @@
                 
                 <br>
                 <br>
+                <div id="migrationBackupSection" class="d-none">
+                  <h5>Automatic backup</h5>
+                  <p><strong>Backup time:</strong> <span id="migrationBackupCreatedAt"></span></p>
+                  <p id="migrationBackupInfo" class="small text-muted"></p>
+                  <button type="button" class="btn btn-warning" onclick="restoreMigrationBackupFromSettings()">Restore automatic backup</button>
+                  <br>
+                  <br>
+                </div>
                 <h5>Export Database</h5>
                 <button type="button" class="btn btn-primary" onclick="exportDb()">Export local database</button>
 
@@ -662,6 +687,7 @@
     <script src="./stadiums.js"></script>
     <script src="./beyblade.js"></script>
     <!-- migrate old data -->
+    <script src="./migrations/backup.js"></script>
     <script src="./migrations/migrate.js"></script>
     <script src="./migrations/versions/001_stadium_vs_records.js"></script>
 

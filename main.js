@@ -9,6 +9,9 @@ var beyBladeDBX = new PouchDB("BeyBladesX");
 var recordsDBX = new PouchDB("RecordX");
 var settings = new PouchDB("settings");
 
+// set true when runMigrations creates a pre-upgrade backup (for error messaging)
+var migrationBackupWasCreated = false;
+
 //import the parts lists
 var allBitChips = bitChips;
 var allOverBlades = overBlades;
@@ -116,7 +119,12 @@ var partDraw = document.getElementById("partDraw");
 
 // settings
 const settingsModal = new bootstrap.Modal(document.getElementById('settings'));
+document.getElementById('settings').addEventListener('show.bs.modal', function () {
+    updateMigrationBackupSettings();
+});
 const importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'));
+const restoreBackupModal = new bootstrap.Modal(document.getElementById('areYouSureRestoreBackup'));
+const restoreBackupConfirmMsg = document.getElementById('restoreBackupConfirmMsg');
 const fileInput = document.getElementById('importDbFile');
 
 //theme switcher
@@ -2565,37 +2573,12 @@ function loadOverlaySetting(){
 }
 
 async function exportDb() {
-    // Fetch regular documents
-    const resultBeyblades = await beyBladeDBX.allDocs({ include_docs: true });
-    console.log(resultBeyblades);
-    const docsBeyblades = resultBeyblades.rows
-      .map((row) => {
-        const doc = { ...row.doc };
-        delete doc._rev;
-        return doc;
-      });
-
-    const resultRecords = await recordsDBX.allDocs({ include_docs: true });
-    const docsRecords = resultRecords.rows
-    .map((row) => {
-        const doc = { ...row.doc };
-        delete doc._rev;
-        return doc;
+    const exportData = await dumpDatabases({
+        beyBladeDBX: beyBladeDBX,
+        recordsDBX: recordsDBX,
+        settings: settings
     });
-
-    const resultSettings = await settings.allDocs({ include_docs: true });
-    const docsSettings = resultSettings.rows
-    .map((row) => {
-        const doc = { ...row.doc };
-        delete doc._rev;
-        return doc;
-    });
-    
-    const exportData = {
-        beyBladeDBX: docsBeyblades,
-        recordsDBX: docsRecords,
-        settings: docsSettings
-    };
+    console.log(exportData.beyBladeDBX);
 
     // Create a localized date string for the filename
     let now = new Date();
@@ -2677,6 +2660,77 @@ async function openSettings(){
     settingsModal.show();
 }
 
+async function updateMigrationBackupSettings() {
+    var section = document.getElementById("migrationBackupSection");
+    var createdAtEl = document.getElementById("migrationBackupCreatedAt");
+    var info = document.getElementById("migrationBackupInfo");
+    if (!section || !createdAtEl || !info) {
+        return;
+    }
+
+    var backupInfo = await getMigrationBackupInfo();
+    section.classList.toggle("d-none", !backupInfo);
+    if (!backupInfo) {
+        return;
+    }
+
+    createdAtEl.textContent = backupInfo.createdAtLabel;
+    var reasonLabel = backupInfo.reason === "import" ? "before import" : "before migration";
+    var revPart = backupInfo.toRevision ? " (upgrade to " + backupInfo.toRevision + ")" : "";
+    info.textContent = "Saved " + reasonLabel + revPart + ".";
+}
+
+async function restoreMigrationBackupFromSettings() {
+    var backupInfo = await getMigrationBackupInfo();
+    var createdAtLabel = backupInfo ? backupInfo.createdAtLabel : "unknown time";
+    restoreBackupConfirmMsg.textContent = "Restore the automatic backup from " + createdAtLabel + "? This will replace your current database.";
+    settingsModal.hide();
+    restoreBackupModal.show();
+}
+
+async function confirmRestoreMigrationBackup() {
+    try {
+        var dbs = await restoreMigrationBackup();
+        assignDatabaseGlobals(dbs);
+        showBeyblades();
+        clearDbStats();
+        clearVsButtons();
+        await updateMigrationBackupSettings();
+        settingsModal.hide();
+        spinMe(dbSelectList);
+    } catch (error) {
+        console.error("Restore backup failed:", error);
+        showErrorModal("Could not restore backup.<p></p>" + (error && error.message ? error.message : error));
+    }
+}
+
+async function migrationCreateBackup(context, meta) {
+    if (!await databasesHaveUserData({
+        beyBladeDBX: context.beyBladeDBX,
+        recordsDBX: context.recordsDBX,
+        settings: context.settings
+    })) {
+        console.log("Migration backup skipped: no user data");
+        return false;
+    }
+
+    await saveMigrationBackup({
+        beyBladeDBX: context.beyBladeDBX,
+        recordsDBX: context.recordsDBX,
+        settings: context.settings
+    }, meta);
+    migrationBackupWasCreated = true;
+    return true;
+}
+
+async function migrationRestoreBackup(context) {
+    var dbs = await restoreMigrationBackup();
+    assignDatabaseGlobals(dbs);
+    context.beyBladeDBX = dbs.beyBladeDBX;
+    context.recordsDBX = dbs.recordsDBX;
+    context.settings = dbs.settings;
+}
+
 
 async function importDatabase() {
     const file = fileInput.files[0];
@@ -2687,9 +2741,8 @@ async function importDatabase() {
 
     const reader = new FileReader();
     reader.onload = async (event) => {
+        var importBackupCreated = false;
         try {
-            console.log("Backing up databases");
-            console.log("Importing database");
             const data = JSON.parse(event.target.result);
             // Validate structure
             if (!data.beyBladeDBX || !data.recordsDBX || !data.settings) {
@@ -2698,6 +2751,20 @@ async function importDatabase() {
             // check for any data
             if(data.beyBladeDBX.length == 0 && data.recordsDBX.length == 0 && data.settings.length == 0){
                 throw new Error("No data found in the import file");
+            }
+
+            if (await databasesHaveUserData({ beyBladeDBX, recordsDBX, settings })) {
+                var versionDoc = await getDbVersionDoc(settings);
+                await saveMigrationBackup({
+                    beyBladeDBX: beyBladeDBX,
+                    recordsDBX: recordsDBX,
+                    settings: settings
+                }, {
+                    from: versionDoc.revision,
+                    to: null,
+                    reason: "import"
+                });
+                importBackupCreated = true;
             }
 
             // Clear existing databases
@@ -2718,7 +2785,9 @@ async function importDatabase() {
             await runMigrations({
                 settings: settings,
                 recordsDBX: recordsDBX,
-                beyBladeDBX: beyBladeDBX
+                beyBladeDBX: beyBladeDBX,
+                createBackup: migrationCreateBackup,
+                restoreBackup: migrationRestoreBackup
             });
 
             // refresh UI
@@ -2734,8 +2803,28 @@ async function importDatabase() {
 
         } catch (error) {
             console.error("Error importing database:", error);
+            if (importBackupCreated) {
+                try {
+                    var restored = await restoreMigrationBackup();
+                    assignDatabaseGlobals(restored);
+                } catch (restoreError) {
+                    console.error("Import restore failed:", restoreError);
+                    showErrorModal(
+                        buildMigrationFailureMessage(restoreError, false)
+                    );
+                    importModal.hide();
+                    fileInput.value = "";
+                    showBeyblades();
+                    clearDbStats();
+                    clearVsButtons();
+                    return;
+                }
+            }
             importModal.hide();
-            showErrorModal("Error importing database. Please ensure the file is a valid BeyBuilderX export.<p></p>" + error.message);
+            var importErrorMsg = importBackupCreated
+                ? buildMigrationFailureMessage(error, true)
+                : ("Error importing database. Please ensure the file is a valid BeyBuilderX export.<p></p>" + error.message);
+            showErrorModal(importErrorMsg);
             // clear file input id="importDbFile"
             fileInput.value = "";
             showBeyblades();
@@ -2755,21 +2844,33 @@ async function showErrorModal(errMsg){
     errorModal.show();
 }
 
+function buildMigrationFailureMessage(err, dataRestored) {
+    var msg = "Update failed. Export NOW and send a bug report.";
+    if (dataRestored) {
+        msg += "<p></p>Your data was put back from the automatic backup.";
+    }
+    msg += "<p></p>" + (err && err.message ? err.message : err);
+    return msg;
+}
+
 
 /**
  * Apply pending DB migrations, then start the UI.
  * Also re-run after import so restored dumps get upgraded.
  */
 async function startApp() {
+    migrationBackupWasCreated = false;
     try {
         await runMigrations({
             settings: settings,
             recordsDBX: recordsDBX,
-            beyBladeDBX: beyBladeDBX
+            beyBladeDBX: beyBladeDBX,
+            createBackup: migrationCreateBackup,
+            restoreBackup: migrationRestoreBackup
         });
     } catch (err) {
         console.error("DB migration failed:", err);
-        showErrorModal("Database migration failed.<p></p>" + (err && err.message ? err.message : err));
+        showErrorModal(buildMigrationFailureMessage(err, migrationBackupWasCreated));
     }
     main();
 }
