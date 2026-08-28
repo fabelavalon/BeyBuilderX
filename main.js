@@ -684,16 +684,6 @@ function addBeyblade(bey) {
 
 }
 
-/**
- * Canonical vsRecord _id: sortedBey1_sortedBey2_stadiumId
- * (Bey ids may contain spaces; stadium ids must not contain underscores.)
- */
-function vsRecordId(id1, id2, stadiumId) {
-    var sorted = [id1, id2].slice().sort();
-    var stadium = stadiumId || getSelectedStadiumId();
-    return sorted[0] + "_" + sorted[1] + "_" + stadium;
-}
-
 /** Order two beys so bey1 is the alphabetically-first id. */
 function orderBeysForVsRecord(beyA, beyB) {
     if (beyA.id <= beyB.id) {
@@ -1379,7 +1369,7 @@ function displayRecords(){
         ...(scoreOverlayWindow?.document.getElementsByName("vsTotalRounds") ?? [])
     ]);
 
-    var vsId = vsRecordId(bey1.id, bey2.id);
+    var vsId = vsRecordId(bey1.id, bey2.id, getSelectedStadiumId());
 
     var bey1SO = 0;
     var bey1Bst = 0;
@@ -1561,7 +1551,7 @@ function refreshUI(){
  * @param {string} nullifyBeyId 
  */
 function nullifyBeybladeScores(primaryBeyId, nullifyBeyId){
-    var recordID = vsRecordId(primaryBeyId, nullifyBeyId);
+    var recordID = vsRecordId(primaryBeyId, nullifyBeyId, getSelectedStadiumId());
     console.log("clearing matchup history for " + recordID);
     recordsDBX.get(recordID, function(err, vsRecord){
         if (err || !vsRecord) {
@@ -1722,16 +1712,9 @@ function filterAndSortMatchupHistDocs(vsDocs, beyId, stadiumFilterId) {
         });
     }
 
-    var stadiumOrder = {};
-    for (var i = 0; i < stadiums.length; i++) {
-        stadiumOrder[stadiums[i].id] = i;
-    }
-
     docs.sort(function (a, b) {
         if (stadiumFilterId === "all") {
-            var orderA = stadiumOrder[a.stadiumId];
-            var orderB = stadiumOrder[b.stadiumId];
-            var stadiumOrderCompare = (orderA != null ? orderA : 999) - (orderB != null ? orderB : 999);
+            var stadiumOrderCompare = compareStadiumIds(a.stadiumId, b.stadiumId);
             if (stadiumOrderCompare !== 0) {
                 return stadiumOrderCompare;
             }
