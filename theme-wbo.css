@@ -17,6 +17,7 @@
     --bs-border-color:rgb(214, 214, 214, 0);
     --danger-color: #8c2930;
     --success-color: #2b9550;
+    --text-muted-color: #999;
     --disable-color: #000;
 }
 
@@ -24,6 +25,9 @@
 head, body, footer, .modal-content {
     background-color: var(--bg-color);
     color: var(--text-color);
+}
+.text-muted {
+    color: var(--text-muted-color) !important;
 }
 .nav-link {
     color: var(--text-color);

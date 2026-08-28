@@ -2458,7 +2458,7 @@ async function updateMigrationBackupSettings() {
     createdAtEl.textContent = backupInfo.createdAtLabel;
     var reasonLabel = backupInfo.reason === "import" ? "before import" : "before migration";
     var revPart = backupInfo.toRevision ? " (upgrade to " + backupInfo.toRevision + ")" : "";
-    info.textContent = "Saved " + reasonLabel + revPart + ".";
+    info.textContent = reasonLabel + revPart + ".";
 }
 
 async function restoreMigrationBackupFromSettings() {
