@@ -79,7 +79,7 @@
 }
 
 /* styling for delete buttons */
-.btn-danger {
+.btn-danger, .btn-warning {
     padding: 4px;
     margin: 3px;
 }

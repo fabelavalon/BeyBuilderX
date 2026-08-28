@@ -10,6 +10,9 @@ html, body {
     color: #fff;
     font-weight: 600;
 }
+.text-muted {
+    color: #c4bce8 !important;
+}
 
 .text-black-outline {
     /* outline color */
