@@ -4,14 +4,15 @@
 
 /** @type {{id: string, name: string}[]} */
 var stadiums = [
-    { id: "xtreme",   name: "TT Xtreme Stadium" },
-    { id: "wide",     name: "Wide Xtreme Stadium" },
-    { id: "double",   name: "Double Xtreme Stadium" },
-    { id: "infinity", name: "Infinity Stadium" },
-    { id: "hxtreme",  name: "Hasbro Xtreme Stadium" },
-    { id: "drop",     name: "Drop Attack Stadium" },
-    { id: "cnc",      name: "Clash and Carry Stadium" },
-    { id: "sneak",    name: "Sneak Attack Stadium" }
+    { id: "xtreme",        name: "TT Xtreme Stadium" },
+    { id: "wide",          name: "Wide Xtreme Stadium" },
+    { id: "double",        name: "Double Xtreme Stadium" },
+    { id: "infinity",      name: "Infinity Stadium" },
+    { id: "hxtreme",       name: "Hasbro Xtreme Stadium" },
+    { id: "drop",          name: "Drop Attack Stadium" },
+    { id: "cnc",           name: "Clash and Carry Stadium" },
+    { id: "sneak",         name: "Sneak Attack Stadium" },
+    { id: "hinfinity",     name: "Infinity Rail Stadium" },
 ];
 
 /** Default stadium for new matches and legacy migration */
