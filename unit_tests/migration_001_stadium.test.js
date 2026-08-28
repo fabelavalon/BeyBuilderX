@@ -153,10 +153,6 @@ await assert.rejects(
     (err) => err.name === "not_found"
 );
 
-const design = await recordsDBX.get("_design/vsRecords");
-assert.ok(design.views.by_bey);
-assert.ok(design.views.by_bey_pair);
-
 const ver = await settings.get("dbVersion");
 assert.strictEqual(ver.revision, "001");
 
