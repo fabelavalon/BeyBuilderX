@@ -4,11 +4,17 @@ Alembic-style schema upgrades for the PouchDB stores.
 
 ## How it works
 
-- **Engine:** `migrate.js` - registers revisions, walks the upgrade/downgrade chain, updates version.
+- **Engine:** `migrate.js` - registers revisions, walks the upgrade chain, updates version.
 - **Version doc:** `settings` DB, `_id: "dbVersion"`, field `revision` (e.g. `"001"`). Missing doc = base (never migrated).
-- **Versions:** one file per revision under `versions/`. Each calls `registerMigration({ revision, down_revision, message, upgrade, downgrade })`.
+- **Versions:** one file per revision under `versions/`. Each calls `registerMigration({ revision, down_revision, message, upgrade })`.
 
 Migrations run on app start and after DB import (`main.js`).
+
+## Automatic backup
+
+Before a pending **upgrade** or **import** (when beys or records exist), the app saves one rolling snapshot to the `BeyBuilderX_migration_backup` PouchDB (`migrations/backup.js`). If the upgrade throws, that snapshot is restored automatically.
+
+Users can also restore manually from Settings. Export/import is the long-term archive and the way to test migrations against known data.
 
 ## Adding a migration
 
@@ -19,7 +25,7 @@ Migrations run on app start and after DB import (`main.js`).
 ## Notes
 
 - Keep migration files self-contained. Do not call helpers from `main.js`. Avoid collisions in function names by appending ID like `_001`.
-- Prefer small, reversible `upgrade` / `downgrade` pairs when practical.
+- Migrations are forward-only. To roll back, import an export or restore the automatic snapshot.
 - Optional `reapplyIf(context)` on a revision: if already at that head but schema is incomplete, `upgrade` runs again (used when amending an unreleased migration).
 
 ## vsRecord shape (revision 001+)

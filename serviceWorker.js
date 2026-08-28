@@ -7,6 +7,7 @@ const PRECACHE_URLS = [
   'parts.js',
   'stadiums.js',
   'beyblade.js',
+  'migrations/backup.js',
   'migrations/migrate.js',
   'migrations/versions/001_stadium_vs_records.js',
   // themes

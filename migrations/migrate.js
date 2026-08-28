@@ -5,12 +5,12 @@
 
 var DB_VERSION_DOC_ID = "dbVersion";
 
-/** @type {Array<{revision: string, down_revision: string|null, message: string, upgrade: Function, downgrade?: Function}>} */
+/** @type {Array<{revision: string, down_revision: string|null, message: string, upgrade: Function, reapplyIf?: Function}>} */
 var MIGRATIONS = [];
 
 /**
  * Register a migration. Call from each versions/*.js script.
- * @param {{revision: string, down_revision: string|null, message: string, upgrade: Function, downgrade?: Function}} migration
+ * @param {{revision: string, down_revision: string|null, message: string, upgrade: Function, reapplyIf?: Function}} migration
  */
 function registerMigration(migration) {
     if (!migration || !migration.revision) {
@@ -89,9 +89,12 @@ async function setDbVersion(settingsDb, revision, existingDoc) {
 }
 
 /**
- * Run all pending upgrades (and optionally downgrades) against live DBs.
+ * Run pending upgrades against live DBs.
  * @param {{settings: PouchDB.Database, recordsDBX: PouchDB.Database, beyBladeDBX: PouchDB.Database}} dbs
- * @param {{target?: string|null}} [opts] - target revision; omit to upgrade to head
+ * @param {{target?: string|null, createBackup?: Function, restoreBackup?: Function}} [opts]
+ *   - target: revision to migrate to; omit for head (upgrades only)
+ *   - createBackup(context, meta): optional; return true if snapshot was saved
+ *   - restoreBackup(context): optional; restore after failed upgrade
  */
 async function runMigrations(dbs, opts) {
     opts = opts || {};
@@ -118,6 +121,9 @@ async function runMigrations(dbs, opts) {
     if (target !== null && targetIndex === -1) {
         throw new Error("Unknown target migration revision: " + target);
     }
+    if (targetIndex < currentIndex) {
+        throw new Error("Downgrade is not supported. Import a backup or restore the automatic snapshot.");
+    }
 
     var context = {
         settings: dbs.settings,
@@ -127,27 +133,35 @@ async function runMigrations(dbs, opts) {
 
     // Upgrade
     if (targetIndex > currentIndex) {
-        for (var i = currentIndex + 1; i <= targetIndex; i++) {
-            var up = chain[i];
-            console.log("DB migration upgrade " + up.revision + ": " + up.message);
-            await up.upgrade(context);
-            versionDoc = await setDbVersion(dbs.settings, up.revision, versionDoc);
-            console.log("DB migration upgrade " + up.revision + " complete");
+        var backupCreated = false;
+        if (typeof opts.createBackup === "function") {
+            backupCreated = await opts.createBackup(context, {
+                from: current,
+                to: chain[targetIndex].revision,
+                reason: "migration"
+            }) === true;
         }
-    }
 
-    // Downgrade
-    if (targetIndex < currentIndex) {
-        for (var j = currentIndex; j > targetIndex; j--) {
-            var down = chain[j];
-            if (typeof down.downgrade !== "function") {
-                throw new Error("Migration " + down.revision + " has no downgrade()");
+        try {
+            for (var i = currentIndex + 1; i <= targetIndex; i++) {
+                var up = chain[i];
+                console.log("DB migration upgrade " + up.revision + ": " + up.message);
+                await up.upgrade(context);
+                versionDoc = await setDbVersion(dbs.settings, up.revision, versionDoc);
+                console.log("DB migration upgrade " + up.revision + " complete");
             }
-            console.log("DB migration downgrade " + down.revision + ": " + down.message);
-            await down.downgrade(context);
-            var prevRevision = down.down_revision === undefined ? null : down.down_revision;
-            versionDoc = await setDbVersion(dbs.settings, prevRevision, versionDoc);
-            console.log("DB migration downgrade " + down.revision + " complete");
+        } catch (upgradeErr) {
+            if (backupCreated && typeof opts.restoreBackup === "function") {
+                try {
+                    await opts.restoreBackup(context);
+                } catch (restoreErr) {
+                    throw new Error(
+                        "Migration failed and automatic restore also failed: "
+                        + (restoreErr && restoreErr.message ? restoreErr.message : restoreErr)
+                    );
+                }
+            }
+            throw upgradeErr;
         }
     }
 
