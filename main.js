@@ -684,24 +684,6 @@ function addBeyblade(bey) {
 
 }
 
-/** Order two beys so bey1 is the alphabetically-first id. */
-function orderBeysForVsRecord(beyA, beyB) {
-    if (beyA.id <= beyB.id) {
-        return { bey1: beyA, bey2: beyB };
-    }
-    return { bey1: beyB, bey2: beyA };
-}
-
-function emptyVsScores() {
-    return {
-        wko: 0, lko: 0,
-        wso: 0, lso: 0,
-        wbst: 0, lbst: 0,
-        wx: 0, lx: 0,
-        draws: 0
-    };
-}
-
 function getSelectedStadiumId() {
     if (stadiumSelector && stadiumSelector.value) {
         return stadiumSelector.value;
@@ -710,98 +692,6 @@ function getSelectedStadiumId() {
         return selectedStadium.stadiumId;
     }
     return DEFAULT_STADIUM_ID;
-}
-
-/**
- * Win/loss fields from the perspective of perspectiveBeyId.
- * Stored docs are always bey1-oriented (alphabetical first id).
- */
-function vsStatsFromPerspective(vsDoc, perspectiveBeyId) {
-    var scores = vsDoc.scores;
-    if (vsDoc.bey1Id === perspectiveBeyId) {
-        return {
-            wko: scores.wko, lko: scores.lko,
-            wso: scores.wso, lso: scores.lso,
-            wbst: scores.wbst, lbst: scores.lbst,
-            wx: scores.wx, lx: scores.lx,
-            draws: scores.draws,
-            opponent: vsDoc.bey2
-        };
-    }
-    return {
-        wko: scores.lko, lko: scores.wko,
-        wso: scores.lso, lso: scores.wso,
-        wbst: scores.lbst, lbst: scores.wbst,
-        wx: scores.lx, lx: scores.wx,
-        draws: scores.draws,
-        opponent: vsDoc.bey1
-    };
-}
-
-/**
- * Temporary flip of bey1/bey2 + scores for display/aggregation (does not change ids).
- */
-function invertVsRecordOrientation(source) {
-    var scores = source.scores;
-    return {
-        _id: source._id,
-        type: source.type,
-        bey1Id: source.bey2Id,
-        bey2Id: source.bey1Id,
-        stadiumId: source.stadiumId,
-        bey1: source.bey2,
-        bey2: source.bey1,
-        title: source.bey2.name + " vs " + source.bey1.name,
-        scores: {
-            wko: scores.lko, lko: scores.wko,
-            wso: scores.lso, lso: scores.wso,
-            wbst: scores.lbst, lbst: scores.wbst,
-            wx: scores.lx, lx: scores.wx,
-            draws: scores.draws
-        }
-    };
-}
-
-function buildVsRecordDoc(beyA, beyB, stadiumId) {
-    var ordered = orderBeysForVsRecord(beyA, beyB);
-    var stadium = stadiumId || getSelectedStadiumId();
-    return {
-        _id: vsRecordId(ordered.bey1.id, ordered.bey2.id, stadium),
-        type: "vsRecord",
-        bey1Id: ordered.bey1.id,
-        bey2Id: ordered.bey2.id,
-        stadiumId: stadium,
-        bey1: ordered.bey1,
-        bey2: ordered.bey2,
-        title: ordered.bey1.name + " vs " + ordered.bey2.name,
-        scores: emptyVsScores()
-    };
-}
-
-/**
- * vsRecords involving a bey across all stadiums (vsRecords/by_bey, else allDocs).
- */
-function queryVsRecordsForBey(beyId) {
-    return recordsDBX.query("vsRecords/by_bey", { // check index
-        key: beyId,
-        include_docs: true
-    }).then(function (result) {
-        return result.rows
-            .map(function (row) { return row.doc; })
-            .filter(function (doc) { return !!doc; }); // drop missing docs
-    }).catch(function (err) {
-        // view (index) is missing or not built yet - scan all docs instead
-        console.log("queryVsRecordsForBey fallback:", err);
-        return recordsDBX.allDocs({ include_docs: true }).then(function (all) {
-            return all.rows
-                .map(function (row) { return row.doc; })
-                // same bey as bey1 or bey2, any stadium
-                .filter(function (doc) {
-                    return doc && doc.type === "vsRecord"
-                        && (doc.bey1Id === beyId || doc.bey2Id === beyId);
-                });
-        });
-    });
 }
 
 //tracking for past match ups, so we know what build blades won or lost against, instead of anon stats
@@ -875,30 +765,6 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
         }
     });
 
-}
-
-/** Apply a win/loss/draw onto a bey1-oriented vsRecord (scores nest). */
-function applyOutcomeToVsRecord(vsRecord, winnerId, outcome) {
-    var winnerIsBey1 = (vsRecord.bey1Id === winnerId);
-    switch(outcome) {
-        case "KO":
-            if (winnerIsBey1) { vsRecord.scores.wko += 1; } else { vsRecord.scores.lko += 1; }
-            break;
-        case "SO":
-            if (winnerIsBey1) { vsRecord.scores.wso += 1; } else { vsRecord.scores.lso += 1; }
-            break;
-        case "burst":
-            if (winnerIsBey1) { vsRecord.scores.wbst += 1; } else { vsRecord.scores.lbst += 1; }
-            break;
-        case "x":
-            if (winnerIsBey1) { vsRecord.scores.wx += 1; } else { vsRecord.scores.lx += 1; }
-            break;
-        case "draw":
-            vsRecord.scores.draws += 1;
-            break;
-        default:
-            console.log("error updating winners and losers");
-    }
 }
 
 //update vsRecords with win/loss
@@ -1151,30 +1017,16 @@ function setDbBey(){
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
-            // convert to BeyBlade object, so we can access methods like getTotalWin()
-            var castDoc;
-            if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
-                // build a new BeyBlade object using parts, then overlay win/loss data from database
-                castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
-            }
-            else if(allBlades[doc.build.blade].system == "UX2"){
-                castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, -1, doc.build.bit), doc.build );
-            }
-            else if(allBlades[doc.build.blade].system == "CX"){
-                castDoc = Object.assign( new BeyBlade(doc.build.bitChip, -1, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
-            }else if(allBlades[doc.build.blade].system == "CX2"){
-                castDoc = Object.assign( new BeyBlade(doc.build.bitChip, doc.build.over, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
-            }
+            var castDoc = BeyBlade.fromBuild(doc.build);
 
-            //TODO: move some calculation into Beyblade class, like getWinPoints, getLosePoints, etc
             var winHolder = castDoc.getTotalWin();
-            var winPointHolder = (doc.build.winsBst*2) + (doc.build.winsKO*2) + doc.build.winsSO + (doc.build.winsX*3);
+            var winPointHolder = castDoc.getWinPoints();
             var lossHolder = castDoc.getTotalLoss();
-            var lossPointHolder = (doc.build.loseBst*2) + (doc.build.loseKO*2) + doc.build.loseSO + (doc.build.loseX*3);
+            var lossPointHolder = castDoc.getLossPoints();
             var totalHolder = castDoc.getTotalMatch();
             var avgPPW = round((winPointHolder/winHolder),2);
             var avgPPL = round((lossPointHolder/lossHolder),2);
-            var totalPointChange = (doc.build.winsKO-doc.build.loseKO)*2 +(doc.build.winsSO-doc.build.loseSO) +(doc.build.winsBst-doc.build.loseBst)*2 +(doc.build.winsX-doc.build.loseX)*3;
+            var totalPointChange = castDoc.getPointChange();
             var totalMatches = doc.build.winsKO +doc.build.loseKO +doc.build.winsSO +doc.build.loseSO +doc.build.winsBst +doc.build.loseBst +doc.build.winsX+doc.build.loseX + doc.build.draws;
             var avgPointChangePerRound = totalPointChange / totalMatches;
             var avgWinPercent = round((winHolder/totalHolder)*100,2);
@@ -1248,7 +1100,7 @@ function showBeybladeStats(bey, whichBey) {
     }
 
     //console.log("casting object ...");
-    var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.over, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
+    var castDoc = BeyBlade.fromBuild(bey);
     console.log("called showBeybladeStats(" + bey.name + ", " + whichBey + "), id: " + castDoc.getDbId() ); 
     
     switch(whichBey){
@@ -1740,45 +1592,27 @@ function populateMatchHist(bey){
         : "(" + getStadiumName(stadiumFilterId) + ")";
 
     // All stadiums for this bey (filtered/sorted below)
-    queryVsRecordsForBey(bey.id).then(function (vsDocs) {
+    queryVsRecordsForBey(recordsDBX, bey.id).then(function (vsDocs) {
         vsDocs = filterAndSortMatchupHistDocs(vsDocs, bey.id, stadiumFilterId);
 
         matchupSpace.textContent = "";
         totalsSpace.textContent = "";
         matchupBey.textContent = "Matchup History for " + bey.name + " " + stadiumLabel;
 
-        // build a new BeyBlade object using parts, then overlay win/loss data from database
-        if(((allBlades[bey.blade].system == "BX") || (allBlades[bey.blade].system == "UX"))){
-            var castDoc = Object.assign( new BeyBlade(-1, -1, bey.blade, -1, bey.rachet, bey.bit), bey);
-            console.log("its a BX/UX Blade");
-        }
-        if(((allBlades[bey.blade].system == "UX2") || (allBlades[bey.blade].system == "UX"))){
-            var castDoc = Object.assign( new BeyBlade(-1, -1, bey.blade, -1, -1, bey.bit), bey);
-            console.log("its a UX2 Blade");
-        }
-        else if(allBlades[bey.blade].system == "CX"){
-            var castDoc = Object.assign( new BeyBlade(bey.bitChip, -1, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
-            console.log("its a CX blade");
-        }else if(allBlades[bey.blade].system == "CX2"){
-            var castDoc = Object.assign( new BeyBlade(bey.bitChip, bey.over, bey.blade, bey.assist, bey.rachet, bey.bit), bey);
-            console.log("its a CX2 blade");
-        }
-        else{ console.log("get fucked") }
+        var castDoc = BeyBlade.fromBuild(bey);
 
         // prepare string version that can be copied to clipboard
         historyClipboardHolder = "Results for " + bey.name + ":";
 
-        //var winHolder = doc.build.winsBst + doc.build.winsKO + doc.build.winsSO + doc.build.winsX;
         var winHolder = castDoc.getTotalWin();
-        var winPointHolder = (bey.winsBst*2) + (bey.winsKO*2) + bey.winsSO + (bey.winsX*3);
-        // var lossHolder = doc.build.loseBst + doc.build.loseKO + doc.build.loseSO + doc.build.loseX;
+        var winPointHolder = castDoc.getWinPoints();
         var lossHolder = castDoc.getTotalLoss();
-        var lossPointHolder = (bey.loseBst*2) + (bey.loseKO*2) + bey.loseSO + (bey.loseX*3);
+        var lossPointHolder = castDoc.getLossPoints();
         //var totalHolder = winHolder + lossHolder + doc.build.draws;
         var totalHolder = castDoc.getTotalMatch();
         var avgPPW = round((winPointHolder/winHolder),2);
         var avgPPL = round((lossPointHolder/lossHolder),2);
-        var totalPointChange = (bey.winsKO-bey.loseKO)*2 +(bey.winsSO-bey.loseSO) +(bey.winsBst-bey.loseBst)*2 +(bey.winsX-bey.loseX)*3;
+        var totalPointChange = castDoc.getPointChange();
         var totalMatches = bey.winsKO + bey.loseKO + bey.winsSO + bey.loseSO + bey.winsBst + bey.loseBst + bey.winsX+ bey.loseX + bey.draws;
         var avgPointChangePerRound = totalPointChange / totalMatches;
         var avgWinPercent = round((winHolder/totalHolder)*100,2);
@@ -1909,62 +1743,6 @@ function populateMatchHist(bey){
     }).catch(function (err) {
         console.error("populateMatchHist failed:", err);
     });
-}
-
-/**
- * Does a stored bey build match the selected parts filters? ("none" = wildcard)
- */
-function beyMatchesPartsFilter(bey, bitChip, over, blade, assist, rachet, bit) {
-    if (!bey) {
-        return false;
-    }
-    if (blade != "none" && bey.blade != blade) {
-        return false;
-    }
-    if (rachet != "none" && bey.rachet != rachet) {
-        return false;
-    }
-    if (bit != "none" && bey.bit != bit) {
-        return false;
-    }
-    if (blade == "none" || (allBlades[blade] && allBlades[blade].system == "CX")) {
-        if (bitChip != "none" && bey.bitChip != bitChip) {
-            return false;
-        }
-        if (assist != "none" && bey.assist != assist) {
-            return false;
-        }
-    }
-    if (blade == "none" || (allBlades[blade] && allBlades[blade].system == "CX2")) {
-        if (bitChip != "none" && bey.bitChip != bitChip) {
-            return false;
-        }
-        if (assist != "none" && bey.assist != assist) {
-            return false;
-        }
-        if (over != "none" && bey.over != over) {
-            return false;
-        }
-    }
-    return true;
-}
-
-/**
- * Orient a vsRecord so partsFilter1 maps to bey1 stats for display/aggregation.
- * Returns a shallow copy with possibly swapped bey1/bey2 and inverted scores.
- */
-function orientVsRecordForPartsQuery(doc, bitChip1, over1, blade1, assist1, rachet1, bit1, bitChip2, over2, blade2, assist2, rachet2, bit2) {
-    var partsFilter1OnBey1 = beyMatchesPartsFilter(doc.bey1, bitChip1, over1, blade1, assist1, rachet1, bit1);
-    var partsFilter2OnBey2 = beyMatchesPartsFilter(doc.bey2, bitChip2, over2, blade2, assist2, rachet2, bit2);
-    if (partsFilter1OnBey1 && partsFilter2OnBey2) {
-        return doc;
-    }
-    var partsFilter1OnBey2 = beyMatchesPartsFilter(doc.bey2, bitChip1, over1, blade1, assist1, rachet1, bit1);
-    var partsFilter2OnBey1 = beyMatchesPartsFilter(doc.bey1, bitChip2, over2, blade2, assist2, rachet2, bit2);
-    if (partsFilter1OnBey2 && partsFilter2OnBey1) {
-        return invertVsRecordOrientation(doc);
-    }
-    return null;
 }
 
 function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1, bitChip2, over2, blade2, assist2, rachet2, bit2){

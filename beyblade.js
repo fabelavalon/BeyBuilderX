@@ -121,6 +121,18 @@ class BeyBlade {
         this.totalMatches =  this.getTotalWin() + this.getTotalLoss() + this.draws;
         return this.totalMatches;
     }
+    getWinPoints(){
+        return (this.winsBst * 2) + (this.winsKO * 2) + this.winsSO + (this.winsX * 3);
+    }
+    getLossPoints(){
+        return (this.loseBst * 2) + (this.loseKO * 2) + this.loseSO + (this.loseX * 3);
+    }
+    getPointChange(){
+        return (this.winsKO - this.loseKO) * 2
+            + (this.winsSO - this.loseSO)
+            + (this.winsBst - this.loseBst) * 2
+            + (this.winsX - this.loseX) * 3;
+    }
     findSpin(){
         this.spin = allBlades[this.blade].spin;
     }
@@ -200,6 +212,77 @@ class BeyBlade {
                     ( (this.system=="CX" || this.system=="CX2") ? allAssists[this.assist].id + " " : "" ) + // if CX, add assistBlade name + space
                     ( this.rachet==-1 ? "" : allRachets[this.rachet].id + " " ) + // if no ratchet, blank, else ratchet name + space
                     allBits[this.bit].id ;
+    }
+
+    /**
+     * Build a BeyBlade from a stored build, preserving win/loss fields.
+     * @param {object} build
+     * @returns {BeyBlade}
+     */
+    static fromBuild(build) {
+        if (!build || build.blade == null) {
+            return Object.assign(new BeyBlade(-1, -1, 0, -1, -1, 0), build || {});
+        }
+        var system = allBlades[build.blade].system;
+        if (system === "BX" || system === "UX") {
+            return Object.assign(new BeyBlade(-1, -1, build.blade, -1, build.rachet, build.bit), build);
+        }
+        if (system === "UX2") {
+            return Object.assign(new BeyBlade(-1, -1, build.blade, -1, -1, build.bit), build);
+        }
+        if (system === "CX") {
+            return Object.assign(new BeyBlade(build.bitChip, -1, build.blade, build.assist, build.rachet, build.bit), build);
+        }
+        if (system === "CX2") {
+            return Object.assign(new BeyBlade(build.bitChip, build.over, build.blade, build.assist, build.rachet, build.bit), build);
+        }
+        return Object.assign(new BeyBlade(build.bitChip, build.over, build.blade, build.assist, build.rachet, build.bit), build);
+    }
+
+    /**
+     * Does a build snapshot match the given parts filter? 
+     * null/undefined on a filter field = wildcard.
+     * @param {object} bey
+     * @param {{bitChip?: *, over?: *, blade?: *, assist?: *, rachet?: *, bit?: *}} parts
+     * @returns {boolean}
+     */
+    static matchesPartsFilter(bey, parts) {
+        if (!bey) {
+            return false;
+        }
+        if (parts.blade != null && bey.blade != parts.blade) {
+            return false;
+        }
+        if (parts.rachet != null && bey.rachet != parts.rachet) {
+            return false;
+        }
+        if (parts.bit != null && bey.bit != parts.bit) {
+            return false;
+        }
+        var bladeForSystem = parts.blade != null ? parts.blade : bey.blade;
+        var system = bladeForSystem != null && allBlades[bladeForSystem]
+            ? allBlades[bladeForSystem].system
+            : null;
+        if (parts.blade == null || system === "CX") {
+            if (parts.bitChip != null && bey.bitChip != parts.bitChip) {
+                return false;
+            }
+            if (parts.assist != null && bey.assist != parts.assist) {
+                return false;
+            }
+        }
+        if (parts.blade == null || system === "CX2") {
+            if (parts.bitChip != null && bey.bitChip != parts.bitChip) {
+                return false;
+            }
+            if (parts.assist != null && bey.assist != parts.assist) {
+                return false;
+            }
+            if (parts.over != null && bey.over != parts.over) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
