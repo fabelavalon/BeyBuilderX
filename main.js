@@ -140,6 +140,7 @@ var matchupHistUser = document.getElementById("matchupHistUser");
 var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
 var matchupHistCopyButton = document.getElementById("copyHistToClip");
+var matchupHistStadiumFilter = document.getElementById("matchupHistStadiumFilter");
 var clearHistButton = document.getElementById("clearHist");
 // window object for OBS overlay
 var scoreOverlayWindow = null;
@@ -349,6 +350,8 @@ function main(){
     loadStadium();
     stadiumSelectorListener();
     populateStadiumSelector();
+    populateMatchupHistStadiumFilter();
+    matchupHistStadiumFilterListener();
     loadOverlaySetting();
     overlaySettingListener();
     importDbSetup();
@@ -1683,17 +1686,55 @@ function showPartStats(partType, partID){
 // copy-to-clipboard text. Must be global for the onclick listener to access
 var historyClipboardHolder = "";
 
+function filterAndSortMatchupHistDocs(vsDocs, beyId, stadiumFilterId) {
+    var docs = vsDocs;
+    if (stadiumFilterId !== "all") {
+        docs = docs.filter(function (doc) {
+            return doc.stadiumId === stadiumFilterId;
+        });
+    }
+
+    var stadiumOrder = {};
+    for (var i = 0; i < stadiums.length; i++) {
+        stadiumOrder[stadiums[i].id] = i;
+    }
+
+    docs.sort(function (a, b) {
+        if (stadiumFilterId === "all") {
+            var orderA = stadiumOrder[a.stadiumId];
+            var orderB = stadiumOrder[b.stadiumId];
+            var stadiumOrderCompare = (orderA != null ? orderA : 999) - (orderB != null ? orderB : 999);
+            if (stadiumOrderCompare !== 0) {
+                return stadiumOrderCompare;
+            }
+        }
+        var nameA = vsStatsFromPerspective(a, beyId).opponent.name.toLowerCase();
+        var nameB = vsStatsFromPerspective(b, beyId).opponent.name.toLowerCase();
+        return nameA.localeCompare(nameB);
+    });
+
+    return docs;
+}
+
 //populates the match history popup with selected Beys matchup history
 function populateMatchHist(bey){
 
     console.log("called populateMatchHist(" + bey.name + ")");
 
-    // All stadiums for this bey
+    var stadiumFilterId = (matchupHistStadiumFilter && matchupHistStadiumFilter.value)
+        ? matchupHistStadiumFilter.value
+        : "all";
+    var stadiumLabel = stadiumFilterId === "all"
+        ? "(all stadiums)"
+        : "(" + getStadiumName(stadiumFilterId) + ")";
+
+    // All stadiums for this bey (filtered/sorted below)
     queryVsRecordsForBey(bey.id).then(function (vsDocs) {
+        vsDocs = filterAndSortMatchupHistDocs(vsDocs, bey.id, stadiumFilterId);
 
         matchupSpace.textContent = "";
         totalsSpace.textContent = "";
-        matchupBey.textContent = "Matchup History for " + bey.name + " (all stadiums)";
+        matchupBey.textContent = "Matchup History for " + bey.name + " " + stadiumLabel;
 
         // build a new BeyBlade object using parts, then overlay win/loss data from database
         if(((allBlades[bey.blade].system == "BX") || (allBlades[bey.blade].system == "UX"))){
@@ -1791,7 +1832,7 @@ function populateMatchHist(bey){
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
 
-        historyClipboardHolder = "Results for " + bey.name + " (all stadiums):"
+        historyClipboardHolder = "Results for " + bey.name + " " + stadiumLabel + ":"
         
         for(i = 0; i < vsDocs.length; i++){
             var vsDoc = vsDocs[i];
@@ -1801,14 +1842,16 @@ function populateMatchHist(bey){
 
                     console.log(historyClipboardHolder);
                     var fromBey = vsStatsFromPerspective(vsDoc, bey.id);
-                    var stadiumBit = " [" + getStadiumName(vsDoc.stadiumId) + "]";
+                    var stadiumLabel = stadiumFilterId === "all"
+                        ? " [" + getStadiumName(vsDoc.stadiumId) + "]"
+                        : "";
 
                     //title row
                     var titleRow = matchupSpace.insertRow(1);
                     var titleCell = titleRow.insertCell(0);
                     titleCell.colSpan=6;
                     titleCell.classList.add('text-center');
-                    titleCell.innerHTML = fromBey.opponent.name + stadiumBit;
+                    titleCell.innerHTML = fromBey.opponent.name + stadiumLabel;
                     titleCell.style = 'padding-top: 6px; border-top: 3px solid;';
                     //score
                     var row = matchupSpace.insertRow(2);
@@ -1831,7 +1874,7 @@ function populateMatchHist(bey){
                     cell5.innerHTML = fromBey.draws;
                     cell6.innerHTML = (fromBey.wx*3 + fromBey.wbst*2 + fromBey.wko*2 + fromBey.wso) + "/" + (fromBey.lx*3 + fromBey.lbst*2 + fromBey.lko*2 + fromBey.lso);
 
-                    historyClipboardHolder +=  "\n" + "vs " + fromBey.opponent.name + stadiumBit + ": " + totalMatches + " rounds, " + 
+                    historyClipboardHolder +=  "\n" + "vs " + fromBey.opponent.name + stadiumLabel + ": " + totalMatches + " rounds, " + 
                                         (round( ((fromBey.wso + fromBey.wbst + fromBey.wko + fromBey.wx)/totalMatches)*100 ,2)) + "% of rounds won, " + 
                                         (fromBey.wx*3 + fromBey.wbst*2 + fromBey.wko*2 + fromBey.wso) + " points earned " + 
                                         (fromBey.lx*3 + fromBey.lbst*2 + fromBey.lko*2 + fromBey.lso) + " points lost";
@@ -1896,18 +1939,18 @@ function beyMatchesPartsFilter(bey, bitChip, over, blade, assist, rachet, bit) {
 }
 
 /**
- * Orient a vsRecord so side-1 filters map to bey1 stats for display/aggregation.
+ * Orient a vsRecord so partsFilter1 maps to bey1 stats for display/aggregation.
  * Returns a shallow copy with possibly swapped bey1/bey2 and inverted scores.
  */
 function orientVsRecordForPartsQuery(doc, bitChip1, over1, blade1, assist1, rachet1, bit1, bitChip2, over2, blade2, assist2, rachet2, bit2) {
-    var side1OnBey1 = beyMatchesPartsFilter(doc.bey1, bitChip1, over1, blade1, assist1, rachet1, bit1);
-    var side2OnBey2 = beyMatchesPartsFilter(doc.bey2, bitChip2, over2, blade2, assist2, rachet2, bit2);
-    if (side1OnBey1 && side2OnBey2) {
+    var partsFilter1OnBey1 = beyMatchesPartsFilter(doc.bey1, bitChip1, over1, blade1, assist1, rachet1, bit1);
+    var partsFilter2OnBey2 = beyMatchesPartsFilter(doc.bey2, bitChip2, over2, blade2, assist2, rachet2, bit2);
+    if (partsFilter1OnBey1 && partsFilter2OnBey2) {
         return doc;
     }
-    var side1OnBey2 = beyMatchesPartsFilter(doc.bey2, bitChip1, over1, blade1, assist1, rachet1, bit1);
-    var side2OnBey1 = beyMatchesPartsFilter(doc.bey1, bitChip2, over2, blade2, assist2, rachet2, bit2);
-    if (side1OnBey2 && side2OnBey1) {
+    var partsFilter1OnBey2 = beyMatchesPartsFilter(doc.bey2, bitChip1, over1, blade1, assist1, rachet1, bit1);
+    var partsFilter2OnBey1 = beyMatchesPartsFilter(doc.bey1, bitChip2, over2, blade2, assist2, rachet2, bit2);
+    if (partsFilter1OnBey2 && partsFilter2OnBey1) {
         return invertVsRecordOrientation(doc);
     }
     return null;
@@ -1926,9 +1969,9 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         return;
     }
 
-    // All stadiums; parts filter needs a full scan (no parts index)
+    // get all docs
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allMatches) {
-        // Match either orientation: side1/side2 may sit on bey1 or bey2
+        // partsFilter1/partsFilter2 can match either bey slot; orientVsRecordForPartsQuery flips as needed
         var matches = allMatches.rows
             .filter(function (row) {
                 return row.doc && row.doc.type === "vsRecord" && row.doc.bey1 && row.doc.bey2;
@@ -2066,8 +2109,8 @@ function fillMatchupHist(history){
     var cell6 = row.insertCell();
     var cell7 = row.insertCell();
     var cell8 = row.insertCell();
-    var stadiumBit = "<br><small>" + getStadiumName(history.stadiumId) + "</small>";
-    cellVS.innerHTML = history.bey1.name+"<br>vs<br>"+history.bey2.name + stadiumBit;
+    var stadiumNameHtml = "<br><small>" + getStadiumName(history.stadiumId) + "</small>";
+    cellVS.innerHTML = history.bey1.name+"<br>vs<br>"+history.bey2.name + stadiumNameHtml;
     cell1.innerHTML = history.bey1.name;
     cell3.innerHTML = history.bey2.name;
     cell4.innerHTML = scores.wko + "/" + scores.lko;
@@ -2379,6 +2422,36 @@ function populateStadiumSelector() {
         stadiumSelector.appendChild(opt);
     }
     stadiumSelector.value = getSelectedStadiumId();
+}
+
+function populateMatchupHistStadiumFilter() {
+    if (!matchupHistStadiumFilter) {
+        return;
+    }
+    var selected = matchupHistStadiumFilter.value || "all";
+    matchupHistStadiumFilter.innerHTML = "";
+    var allOpt = document.createElement("option");
+    allOpt.value = "all";
+    allOpt.textContent = "All stadiums";
+    matchupHistStadiumFilter.appendChild(allOpt);
+    for (var i = 0; i < stadiums.length; i++) {
+        var opt = document.createElement("option");
+        opt.value = stadiums[i].id;
+        opt.textContent = stadiums[i].name;
+        matchupHistStadiumFilter.appendChild(opt);
+    }
+    matchupHistStadiumFilter.value = selected;
+}
+
+function matchupHistStadiumFilterListener() {
+    if (!matchupHistStadiumFilter) {
+        return;
+    }
+    matchupHistStadiumFilter.addEventListener("change", function () {
+        if (dbBey) {
+            populateMatchHist(dbBey);
+        }
+    });
 }
 
 function stadiumSelectorListener() {
