@@ -90,14 +90,6 @@ function vsRecordsDesignDoc_001() {
                         emit(doc.bey2Id, null);
                     }
                 }.toString()
-            },
-            // All stadiums for a sorted bey pair
-            by_bey_pair: {
-                map: function (doc) {
-                    if (doc.type === "vsRecord" && doc.bey1Id && doc.bey2Id) {
-                        emit([doc.bey1Id, doc.bey2Id], null);
-                    }
-                }.toString()
             }
         }
     };
@@ -133,7 +125,10 @@ registerMigration({
         }
         try {
             var design = await context.recordsDBX.get(VS_RECORDS_DESIGN_ID);
-            if (!design.views || !design.views.by_bey || !design.views.by_bey_pair) {
+            if (!design.views || !design.views.by_bey) {
+                return true;
+            }
+            if (design.views.by_bey_pair) {
                 return true;
             }
         } catch (err) {

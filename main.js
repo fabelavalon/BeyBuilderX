@@ -1,5 +1,5 @@
 /*==========================================================*
- * BeyBuilder v1.4 for Beyblade X                           *
+ * BeyBuilder v1.5 for Beyblade X                           *
  * Author: Fabel                                            *
  * Copyright 2023-2026                                      *
  *==========================================================*/
@@ -955,8 +955,8 @@ function updateRecords(beyA, beyB){
  * (technically, it can do more with the function)
  * returns promise from pouchdb
  * ex: increment wko (KO wins)
- * updateField(record1Id, d => d.wko++).then(doStuffFunc);
- * @param {string} id - beyblade id
+ * updateField(recordId, d => { d.scores.wko++; }).then(doStuffFunc);
+ * @param {string} id - vsRecord _id
  * @param {*} updater - provide your own function
  * @returns promise
  */
@@ -1019,8 +1019,8 @@ async function addToBeybladeUndoStack(doc) {
 }
 async function addToVsRecordUndoStack(doc) {
     console.log("adding to undo vs stack: " + doc._id);
-    cloneVsRecord = structuredClone(doc);
-    undoStackVsRecord.push( cloneVsRecord );
+    const cloneVsRecord = structuredClone(doc);
+    undoStackVsRecord.push(cloneVsRecord);
 }
 function clearUndoStack(){
     console.log("clear undo stack");
@@ -1396,21 +1396,41 @@ function displayRecords(){
     var draw = 0;
     var totalRound = 0;
 
+    function resetVsDisplay() {
+        record1.forEach(el => el.innerHTML = bey1.findNameHtml());
+        record2.forEach(el => el.innerHTML = bey2.findNameHtml());
+        ko1.forEach(el => el.textContent = "0");
+        so1.forEach(el => el.textContent = "0");
+        bst1.forEach(el => el.textContent = "0");
+        x1.forEach(el => el.textContent = "0");
+        wins1.forEach(el => el.textContent = "0");
+        points1.forEach(el => el.textContent = "0");
+        ko2.forEach(el => el.textContent = "0");
+        so2.forEach(el => el.textContent = "0");
+        bst2.forEach(el => el.textContent = "0");
+        x2.forEach(el => el.textContent = "0");
+        wins2.forEach(el => el.textContent = "0");
+        points2.forEach(el => el.textContent = "0");
+        draws.forEach(el => el.textContent = "0");
+        totalRounds.forEach(el => el.textContent = "Total: 0");
+        displayCopiedStats = "";
+    }
+
     console.log("fetching record ID " + vsId);
+    resetVsDisplay();
     recordsDBX.get(vsId, function(err, vsRecord){
-        doc = vsRecord;
-        if (err || doc==undefined) {
+        if (err || !vsRecord) {
             console.log("displayRecords() missing vsRecord:\n"+err);
             return;
         }
-        if (doc.title!=undefined) {
-            console.log("displayRecords() got:\n"+doc.title);
+        if (vsRecord.title != undefined) {
+            console.log("displayRecords() got:\n"+vsRecord.title);
         } else {
-            console.log("displayRecords() got:\n"+JSON.stringify(doc));
+            console.log("displayRecords() got:\n"+JSON.stringify(vsRecord));
         }
 
         // Stats are stored bey1-oriented; remap to bey1 / bey2 for the UI
-        var bey1Stats = vsStatsFromPerspective(doc, bey1.id);
+        var bey1Stats = vsStatsFromPerspective(vsRecord, bey1.id);
         
         record1.forEach(el => el.innerHTML = (bey1.findNameHtml()));
         ko1.forEach(el => el.textContent = bey1Stats.wko);
@@ -1446,7 +1466,7 @@ function displayRecords(){
         totalRounds.forEach(el => el.textContent = "Total: " + (bey1Stats.wx + bey1Stats.wbst + bey1Stats.wko + bey1Stats.wso + bey1Stats.lx + bey1Stats.lbst + bey1Stats.lko + bey1Stats.lso + bey1Stats.draws));
         totalRound = bey1Stats.wx + bey1Stats.wbst + bey1Stats.wko + bey1Stats.wso + bey1Stats.lx + bey1Stats.lbst + bey1Stats.lko + bey1Stats.lso + bey1Stats.draws;
 
-        var stadiumLabel = getStadiumName(doc.stadiumId);
+        var stadiumLabel = getStadiumName(vsRecord.stadiumId);
         displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
                         "Stadium: " + stadiumLabel + "\n" +
                         "Number of rounds: " + totalRound + "\n" +
@@ -2469,7 +2489,7 @@ function stadiumSelectorListener() {
     stadiumSelector.addEventListener("change", function () {
         saveStadium(stadiumSelector.value);
         if (bey1 && bey2) {
-            updateRecords(bey1, bey2);
+            displayRecords();
         }
     });
 }

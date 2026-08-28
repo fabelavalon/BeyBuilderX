@@ -43,6 +43,5 @@ Users can also restore manually from Settings. Export/import is the long-term ar
 
 Indexes: `_design/vsRecords`
 - `by_bey` - all stadiums for one bey (matchup history)
-- `by_bey_pair` - all stadiums for a sorted bey pair
 
 Live VS scoring uses `get(_id)` for the selected stadium only. Parts Records scans `allDocs` (all stadiums) because filters are by parts, not ids.
