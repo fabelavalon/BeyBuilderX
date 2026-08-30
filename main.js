@@ -30,6 +30,7 @@ var editBeybtn = document.createElement("button");
 var showMatchupbtn = document.createElement("button");
 // under the vs records
 var recordsSpace = document.getElementById("recordsSpace"); 
+var recordsActions = document.getElementById("recordsActions");
 var recordsCopybtn = document.createElement("button"); 
 var clearHistoryBtn = document.createElement("button"); 
 var overlayBtn = document.createElement("button"); 
@@ -69,10 +70,24 @@ var bitDropdown2 = document.getElementById("bitR2");
 // ... for the titles above win/lose buttons
 var bey1WinTitle = document.getElementById("bey1-button-title");
 var bey2WinTitle = document.getElementById("bey2-button-title");
+var bey1PanelHeading = document.getElementById("bey1-panel-heading");
+var bey2PanelHeading = document.getElementById("bey2-panel-heading");
+var bey1MatchMeta = document.getElementById("bey1MatchMeta");
+var bey2MatchMeta = document.getElementById("bey2MatchMeta");
+
+// HTML IDs for part selectors on main screen and parts records
+var dropdownIDs = {
+    1: { "bitChip":"bey1BitChip", "overBlade":"bey1OverBlade", "blade":"bey1Blade", "assistBlade":"bey1AssistBlade", "ratchet":"bey1Rachet", "bit":"bey1Bit" },
+    2: { "bitChip":"bey2BitChip", "overBlade":"bey2OverBlade", "blade":"bey2Blade", "assistBlade":"bey2AssistBlade", "ratchet":"bey2Rachet", "bit":"bey2Bit" },
+    3: { "bitChip":"bitChipR1", "overBlade":"overBladeR1", "blade":"bladeR1", "assistBlade":"assistR1", "ratchet":"rachetR1", "bit":"bitR1" },
+    4: { "bitChip":"bitChipR2", "overBlade":"overBladeR2", "blade":"bladeR2", "assistBlade":"assistR2", "ratchet":"rachetR2", "bit":"bitR2" }
+};
 
 //...for the dbList
 var selectedBey = document.getElementById("dbSelectList");
 const dbSelectList = document.getElementById("dbSelectList");
+const rosterSearch = document.getElementById("rosterSearch");
+let rosterCache = [];
 
 //import elements for the logging...
 //..dbBey stats
@@ -83,12 +98,18 @@ var dbWinPercent = document.getElementById("dbWinPercent");
 var dbPPW = document.getElementById("dbPPW");
 var dbPPL = document.getElementById("dbPPL");
 var dbPointDif = document.getElementById("dbPointDif");
-var dbBeyKO = document.getElementById("dbBeyKO");
-var dbBeySO = document.getElementById("dbBeySO");
-var dbBeyBst = document.getElementById("dbBeyBst");
-var dbBeyX = document.getElementById("dbBeyX");
+var dbSoW = document.getElementById("dbSoW");
+var dbSoL = document.getElementById("dbSoL");
+var dbBstW = document.getElementById("dbBstW");
+var dbBstL = document.getElementById("dbBstL");
+var dbKoW = document.getElementById("dbKoW");
+var dbKoL = document.getElementById("dbKoL");
+var dbXW = document.getElementById("dbXW");
+var dbXL = document.getElementById("dbXL");
 var dbBeyDraw = document.getElementById("dbBeyDraw");
 var dbBeySpace = document.getElementById("dbBeySpace");
+var dbCopyStatsBtn = document.getElementById("dbCopyStatsBtn");
+var rosterListCol = document.getElementById("rosterListCol");
 
 //bey1 stats
 var bey1Is = document.getElementById("bey1Is");
@@ -143,7 +164,9 @@ var winners = document.getElementById("winnerLog");
 var matchupSpace = document.getElementById("matchupSpace");
 var matchupSpaceUser = document.getElementById("matchupSpaceUser");
 var matchupBey = document.getElementById("matchupBey");
-var matchupBeyUser = document.getElementById("matchupBeyUser");
+var partsRecordsPreview = document.getElementById("partsRecordsPreview");
+var partsRecordsLookupBtn = document.getElementById("partsRecordsLookupBtn");
+var matchupHolder = document.getElementById("matchupHolder");
 var matchupHistUser = document.getElementById("matchupHistUser");
 var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
@@ -172,6 +195,318 @@ var stadiumSelector = document.getElementById("stadiumSelector");
 var bey1;
 var bey2;
 var dbBey;
+var matchRoundCount = 0;
+
+var ICON_COPY = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg>';
+var ICON_TRASH = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>';
+
+function updateBeyPanelHeading(whichBey, name) {
+    var heading = whichBey === 1 ? bey1PanelHeading : bey2PanelHeading;
+    var label = whichBey === 1 ? "Beyblade 1" : "Beyblade 2";
+    if (!heading) {
+        return;
+    }
+    if (name && name.length > 0) {
+        heading.textContent = label + ": " + name;
+    } else {
+        heading.textContent = label;
+    }
+}
+
+function totalRoundsFromBuild(build) {
+    if (!build) {
+        return 0;
+    }
+    return (build.winsSO || 0) + (build.loseSO || 0) +
+           (build.winsBst || 0) + (build.loseBst || 0) +
+           (build.winsKO || 0) + (build.loseKO || 0) +
+           (build.winsX || 0) + (build.loseX || 0) +
+           (build.draws || 0);
+}
+
+function formatBeyMatchMeta(totalRounds) {
+    if (totalRounds === 0) {
+        return "New build";
+    }
+    var label = totalRounds === 1 ? "round" : "rounds";
+    return "Known build · " + totalRounds + " " + label;
+}
+
+function setBeyMatchMeta(whichBey, text) {
+    var el = whichBey === 1 ? bey1MatchMeta : bey2MatchMeta;
+    if (el) {
+        el.textContent = text || "";
+    }
+}
+
+function buildBeyFromDropdowns(whichBey) {
+    var ids = dropdownIDs[whichBey];
+    if (!ids) {
+        return null;
+    }
+
+    var bladeVal = document.getElementById(ids.blade).value;
+    if (bladeVal === "random") {
+        return null;
+    }
+    var blade = allBlades[parseInt(bladeVal)].id;
+    var system = allBlades[blade].system;
+
+    var bitVal = document.getElementById(ids.bit).value;
+    if (bitVal === "random") {
+        return null;
+    }
+    var bit = allBits[parseInt(bitVal)].id;
+
+    var rachet = -1;
+    if (system !== "UX2" && allBits[bit].type !== "ratchetBit") {
+        var ratchetVal = document.getElementById(ids.ratchet).value;
+        if (ratchetVal === "random") {
+            return null;
+        }
+        rachet = allRachets[parseInt(ratchetVal)].id;
+    }
+
+    var bitChip = -1;
+    var over = -1;
+    var assist = -1;
+    if (system === "CX" || system === "CX2") {
+        var bitChipVal = document.getElementById(ids.bitChip).value;
+        if (bitChipVal === "random") {
+            return null;
+        }
+        bitChip = allBitChips[parseInt(bitChipVal)].id;
+
+        var assistVal = document.getElementById(ids.assistBlade).value;
+        if (assistVal === "random") {
+            return null;
+        }
+        assist = allAssists[parseInt(assistVal)].id;
+    }
+    if (system === "CX2") {
+        var overVal = document.getElementById(ids.overBlade).value;
+        if (overVal === "random") {
+            return null;
+        }
+        over = allOverBlades[parseInt(overVal)].id;
+    }
+
+    return new BeyBlade(bitChip, over, blade, assist, rachet, bit);
+}
+
+function previewBeyMatchMeta(whichBey) {
+    if (whichBey !== 1 && whichBey !== 2) {
+        return;
+    }
+    var bey = buildBeyFromDropdowns(whichBey);
+    if (!bey) {
+        setBeyMatchMeta(whichBey, "");
+        return;
+    }
+    var dbId = BeyBlade.fromBuild(bey).getDbId();
+    beyBladeDBX.get(dbId, function(err, doc) {
+        if (!err && doc && doc.build) {
+            setBeyMatchMeta(whichBey, formatBeyMatchMeta(totalRoundsFromBuild(doc.build)));
+        } else {
+            setBeyMatchMeta(whichBey, "New build");
+        }
+    });
+}
+
+function recomputeBeyPartsLayout(whichBey) {
+    if (whichBey !== 1 && whichBey !== 2) {
+        return;
+    }
+
+    var ids = dropdownIDs[whichBey];
+    var cxSection = document.getElementById(whichBey === 1 ? "bey1CxSection" : "bey2CxSection");
+    var overCell = document.getElementById(whichBey === 1 ? "bey1OverCell" : "bey2OverCell");
+    var ratchetCell = document.getElementById(whichBey === 1 ? "bey1RachetCell" : "bey2RachetCell");
+    if (!cxSection || !overCell || !ratchetCell) {
+        return;
+    }
+
+    var bladeVal = document.getElementById(ids.blade).value;
+    var showCx = false;
+    var showOver = false;
+    var showRatchet = true;
+
+    if (bladeVal !== "random") {
+        var bladeId = allBlades[parseInt(bladeVal)].id;
+        var system = allBlades[bladeId].system;
+        showCx = (system === "CX" || system === "CX2");
+        showOver = (system === "CX2");
+        showRatchet = (system !== "UX2");
+    }
+
+    var bitVal = document.getElementById(ids.bit).value;
+    if (bitVal !== "random" && allBits[parseInt(bitVal)].type === "ratchetBit") {
+        showRatchet = false;
+    }
+
+    cxSection.classList.toggle("hidden", !showCx);
+    overCell.classList.toggle("hidden", !showOver);
+    ratchetCell.classList.toggle("hidden", !showRatchet);
+}
+
+function beyPartSelectListener() {
+    [1, 2].forEach(function(whichBey) {
+        var ids = dropdownIDs[whichBey];
+        Object.keys(ids).forEach(function(partKey) {
+            var el = document.getElementById(ids[partKey]);
+            if (el) {
+                el.addEventListener("change", function() {
+                    previewBeyMatchMeta(whichBey);
+                });
+            }
+        });
+    });
+}
+
+function partsRecordsAllNone(bitChip1, over1, blade1, assist1, rachet1, bit1, bitChip2, over2, blade2, assist2, rachet2, bit2) {
+    return blade1 === "none" && rachet1 === "none" && bit1 === "none" &&
+        blade2 === "none" && rachet2 === "none" && bit2 === "none" &&
+        bitChip1 === "none" && assist1 === "none" && bitChip2 === "none" &&
+        assist2 === "none" && over1 === "none" && over2 === "none";
+}
+
+function formatPartsRecordLabel(bitChip1, over1, blade1, assist1, rachet1, bit1, bitChip2, over2, blade2, assist2, rachet2, bit2) {
+    var attackerName = "";
+    if (bitChip1 !== "none") {
+        attackerName += allBitChips[bitChip1].name;
+    }
+    if (over1 !== "none") {
+        attackerName += allOverBlades[over1].name;
+    }
+    if (blade1 !== "none") {
+        attackerName += allBlades[blade1].name + " ";
+    }
+    if (assist1 !== "none") {
+        attackerName += allAssists[assist1].name + " ";
+    }
+    if (rachet1 !== "none") {
+        attackerName += allRachets[rachet1].name + " ";
+    }
+    if (bit1 !== "none") {
+        attackerName += allBits[bit1].name + " ";
+    }
+
+    var defenderName = "";
+    if (bitChip2 !== "none") {
+        defenderName += allBitChips[bitChip2].name;
+    }
+    if (over2 !== "none") {
+        defenderName += allOverBlades[over2].name;
+    }
+    if (blade2 !== "none") {
+        defenderName += allBlades[blade2].name + " ";
+    }
+    if (assist2 !== "none") {
+        defenderName += allAssists[assist2].name + " ";
+    }
+    if (rachet2 !== "none") {
+        defenderName += allRachets[rachet2].name + " ";
+    }
+    if (bit2 !== "none") {
+        defenderName += allBits[bit2].name + " ";
+    }
+
+    attackerName = attackerName.trim();
+    defenderName = defenderName.trim();
+
+    if (attackerName && defenderName) {
+        return attackerName + " vs " + defenderName;
+    }
+    if (attackerName) {
+        return attackerName;
+    }
+    if (defenderName) {
+        return defenderName;
+    }
+    return "";
+}
+
+function setPartsRecordsResultsVisible(visible) {
+    if (!matchupHolder) {
+        return;
+    }
+    matchupHolder.classList.toggle("parts-records-results--empty", !visible);
+}
+
+function updatePartsRecordsPreview() {
+    if (!partsRecordsPreview || !partsRecordsLookupBtn) {
+        return;
+    }
+
+    var bitChip1 = bitChipDropdown1.value;
+    var over1 = overBladeDropdown1.value;
+    var blade1 = bladeDropdown1.value;
+    var assist1 = assistBladeDropdown1.value;
+    var rachet1 = rachetDropdown1.value;
+    var bit1 = bitDropdown1.value;
+    var bitChip2 = bitChipDropdown2.value;
+    var over2 = overBladeDropdown2.value;
+    var blade2 = bladeDropdown2.value;
+    var assist2 = assistBladeDropdown2.value;
+    var rachet2 = rachetDropdown2.value;
+    var bit2 = bitDropdown2.value;
+    var allNone = partsRecordsAllNone(
+        bitChip1, over1, blade1, assist1, rachet1, bit1,
+        bitChip2, over2, blade2, assist2, rachet2, bit2
+    );
+
+    if (allNone) {
+        partsRecordsPreview.textContent = "Pick parts above to compare";
+        partsRecordsLookupBtn.disabled = true;
+        setPartsRecordsResultsVisible(false);
+        return;
+    }
+
+    var label = formatPartsRecordLabel(
+        bitChip1, over1, blade1, assist1, rachet1, bit1,
+        bitChip2, over2, blade2, assist2, rachet2, bit2
+    );
+    partsRecordsPreview.textContent = label || "Selected parts";
+    partsRecordsLookupBtn.disabled = false;
+}
+
+function partsRecordsSelectListener() {
+    [3, 4].forEach(function(whichSet) {
+        var ids = dropdownIDs[whichSet];
+        Object.keys(ids).forEach(function(partKey) {
+            var el = document.getElementById(ids[partKey]);
+            if (el) {
+                el.addEventListener("change", updatePartsRecordsPreview);
+            }
+        });
+    });
+
+    if (partsRecordsLookupBtn) {
+        partsRecordsLookupBtn.addEventListener("click", function() {
+            populateMatchHistUser2(
+                bitChipDropdown1.value, overBladeDropdown1.value, bladeDropdown1.value,
+                assistBladeDropdown1.value, rachetDropdown1.value, bitDropdown1.value,
+                bitChipDropdown2.value, overBladeDropdown2.value, bladeDropdown2.value,
+                assistBladeDropdown2.value, rachetDropdown2.value, bitDropdown2.value
+            );
+        });
+    }
+}
+
+function winTypeShortLabel(winType) {
+    switch (winType) {
+        case "KO": return "Over";
+        case "SO": return "Spin";
+        case "burst": return "Burst";
+        case "x": return "X";
+        case "draw": return "Draw";
+        default: return winType;
+    }
+}
+
+function formatMatchLogLine(roundNumber, text) {
+    return "Round " + roundNumber + ": " + text;
+}
 
 //runs on launch, fills dropdowns and database list
 function main(){
@@ -355,6 +690,7 @@ function main(){
     // on click and other event listeners
     loadTheme();
     themeSwitchListener();
+    rosterSearchListener();
     loadStadium();
     stadiumSelectorListener();
     populateStadiumSelector();
@@ -363,6 +699,12 @@ function main(){
     loadOverlaySetting();
     overlaySettingListener();
     importDbSetup();
+    if (dbCopyStatsBtn) {
+        dbCopyStatsBtn.innerHTML = ICON_COPY;
+    }
+    beyPartSelectListener();
+    partsRecordsSelectListener();
+    updatePartsRecordsPreview();
 };
 
 //generate a beyblade based on the selections for the first set of drop downs
@@ -464,6 +806,7 @@ function generateBey1(){
         addBeyblade(bey1);
         error.textContent = "";
         bey1Is.textContent = "" + bey1.name;
+        updateBeyPanelHeading(1, bey1.name);
         showBeybladeStats(bey1, 1);
         createWinButtons();
         clearUndoStack();
@@ -570,6 +913,7 @@ function generateBey2(){
         addBeyblade(bey2);
         error.textContent = "";
         bey2Is.textContent = "" + bey2.name;
+        updateBeyPanelHeading(2, bey2.name);
         showBeybladeStats(bey2, 2);
         createWinButtons();
         clearUndoStack();
@@ -631,31 +975,13 @@ function choseWinner(beyNumber, winType) {
     asyncUpdateRecords(winnerBey, loserBey, winType);
 
     // convert short text to text description
-    var winText = "";
-    switch(winType) {
-        case "KO":
-            winText="Over Finish";
-            break;
-        case "SO":
-            winText="Spin Finish";
-            break;
-        case "burst":
-            winText="Burst Finish";
-            break;
-        case "x":
-            winText="Xtreme Finish";
-            break;
-        case "draw":
-            winText="Draw";
-            break;
-        default:
-            winText="Something went wrong, results not logged"
-    }
+    var winText = winTypeShortLabel(winType);
+    var nextRound = matchRoundCount + 1;
 
     if(winType=="draw" || beyNumber==0) {
-        winners.textContent = "It ended in a Draw!";
+        winners.textContent = formatMatchLogLine(nextRound, "Draw");
     } else {
-        winners.textContent = "The winner of this round is: " + winnerBey.name + " by "+ winText +"!";
+        winners.textContent = formatMatchLogLine(nextRound, winnerBey.name + " - " + winText);
     }
 
 }
@@ -751,20 +1077,65 @@ function editBey(wko, lko, wso, lso, wbst, lbst, wx, lx, dr){
             if(dr){
                 doc.build.draws = parseInt(dr);                
             }
-            beyBladeDBX.put(doc).then();
-            statEditor.reset();
-            showBeyblades();
-            dbBeyName.textContent = doc.build.name;
-            dbBeyStats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
-            dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-            dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
-            dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
-            dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
-            dbBeyDraw.textContent = "Draws: " + doc.build.draws;
-            dbBey = doc.build;
+            beyBladeDBX.put(doc).then(function() {
+                statEditor.reset();
+                showBeyblades();
+                renderDbBeyDetail(doc);
+            });
         }
     });
 
+}
+
+function renderDbBeyDetail(doc) {
+    var castDoc = BeyBlade.fromBuild(doc.build);
+    var winHolder = castDoc.getTotalWin();
+    var winPointHolder = castDoc.getWinPoints();
+    var lossHolder = castDoc.getTotalLoss();
+    var lossPointHolder = castDoc.getLossPoints();
+    var totalHolder = castDoc.getTotalMatch();
+    var avgPPW = round((winPointHolder / winHolder), 2);
+    var avgPPL = round((lossPointHolder / lossHolder), 2);
+    var totalPointChange = castDoc.getPointChange();
+    var totalMatches = doc.build.winsKO + doc.build.loseKO + doc.build.winsSO + doc.build.loseSO +
+        doc.build.winsBst + doc.build.loseBst + doc.build.winsX + doc.build.loseX + doc.build.draws;
+    var avgPointChangePerRound = totalPointChange / totalMatches;
+    var avgWinPercent = round((winHolder / totalHolder) * 100, 2);
+
+    if (isNaN(avgPPW)) { avgPPW = 0; }
+    if (isNaN(avgWinPercent)) { avgWinPercent = 0; }
+    if (isNaN(avgPPL)) { avgPPL = 0; }
+    if (isNaN(avgPointChangePerRound)) { avgPointChangePerRound = 0; }
+
+    dbBeyName.textContent = doc.build.name;
+    dbBeyWeight.textContent = round(doc.build.weight, 2) + "g";
+    dbBeyStats.textContent = "Spin " + doc.build.spin;
+    dbWinPercent.textContent = avgWinPercent + "%";
+    dbPPW.textContent = avgPPW;
+    dbPPL.textContent = avgPPL;
+    dbPointDif.textContent = round(avgPointChangePerRound, 2);
+    dbSoW.textContent = doc.build.winsSO;
+    dbSoL.textContent = doc.build.loseSO;
+    dbBstW.textContent = doc.build.winsBst;
+    dbBstL.textContent = doc.build.loseBst;
+    dbKoW.textContent = doc.build.winsKO;
+    dbKoL.textContent = doc.build.loseKO;
+    dbXW.textContent = doc.build.winsX;
+    dbXL.textContent = doc.build.loseX;
+    dbBeyDraw.textContent = doc.build.draws;
+    dbBey = castDoc;
+
+    dbCopiedStats = "Overall Results for " + doc.build.name + "\n" +
+        "Average Win%: " + avgWinPercent + "% \n" +
+        "Average Points Per Win: " + avgPPW + "\n" +
+        "Average Points Per Loss: " + avgPPL + "\n" +
+        "Average Points Per Round: " + round(avgPointChangePerRound, 2) + "\n" +
+        "Spin Finish Win/Loss: " + doc.build.winsSO + "W / " + doc.build.loseSO + "L \n" +
+        "Burst Finish Win/Loss: " + doc.build.winsBst + "W / " + doc.build.loseBst + "L \n" +
+        "Over Finish Win/Loss: " + doc.build.winsKO + "W / " + doc.build.loseKO + "L \n" +
+        "Xtreme Finish Win/Loss: " + doc.build.winsX + "W / " + doc.build.loseX + "L \n" +
+        "Draws: " + doc.build.draws + "\n" +
+        "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
 }
 
 //update vsRecords with win/loss
@@ -926,7 +1297,7 @@ async function undoRecord() {
             applyVs1._rev = currentVsRev1._rev;
             await recordsDBX.put(applyVs1);
 
-            winners.textContent = "Undid last round";
+            winners.textContent = "Undid round " + matchRoundCount;
         } else {
             console.log("nothing to undo (vs)");
             winners.textContent = "Nothing to undo";
@@ -942,50 +1313,128 @@ async function undoRecord() {
 // prevents double taps on touchscreen
 let undoDebounced = debounce(undoRecord);
 
-//fills the bey selection menu
-function showBeyblades() {
-    console.log("showBeyblades()");
-    var dbSelectList = document.getElementById("dbSelectList");
+const ROSTER_SEARCH_MIN = 10;
 
-    //clear the list so we dont just add more options
-    while (dbSelectList.options.length > 0) {                
+function updateRosterSearchVisibility() {
+    if (!rosterSearch) {
+        return;
+    }
+
+    var showSearch = rosterCache.length >= ROSTER_SEARCH_MIN;
+    rosterSearch.classList.toggle("hidden", !showSearch);
+    var label = rosterSearch.labels && rosterSearch.labels[0];
+    if (label) {
+        label.classList.toggle("hidden", !showSearch);
+    }
+    if (!showSearch && rosterSearch.value) {
+        rosterSearch.value = "";
+    }
+    return showSearch;
+}
+
+function renderRosterList(filterText) {
+    var showSearch = updateRosterSearchVisibility();
+    if (!showSearch) {
+        filterText = "";
+    }
+    var query = (filterText || "").trim().toLowerCase();
+    var selectedId = selectedBey.value;
+    var filtered = rosterCache.filter(function(item) {
+        return item.name.toLowerCase().includes(query);
+    });
+
+    // keep current selection in the list when a filter would hide it
+    if (selectedId && !filtered.some(function(item) { return item.id === selectedId; })) {
+        var selectedItem = rosterCache.find(function(item) { return item.id === selectedId; });
+        if (selectedItem) {
+            filtered = [selectedItem].concat(filtered);
+        }
+    }
+
+    while (dbSelectList.options.length > 0) {
         dbSelectList.remove(0);
     }
 
-    // add beys to list
+    for (var i = 0; i < filtered.length; i++) {
+        var option = document.createElement("option");
+        option.textContent = filtered[i].name;
+        option.value = filtered[i].id;
+        if (filtered[i].id === selectedId) {
+            option.selected = true;
+        }
+        dbSelectList.appendChild(option);
+    }
+}
+
+//fills the bey selection menu
+function showBeyblades() {
+    console.log("showBeyblades()");
+
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
-        doc.rows.sort(function(a, b){
-            return (''+a.doc.build.name).localeCompare(b.doc.build.name);
-        });
-        for(i = 0; i < doc.total_rows; i++){
-            if(!err){
-                // add option to list
-                var options = document.createElement("option");
-                options.textContent = doc.rows[i].doc.build.name;
-                options.value = doc.rows[i].doc._id;
-                dbSelectList.appendChild(options);
-            }
-            else{
-                //console.log(err);
-            }
-       }
+        if (err) {
+            rosterCache = [];
+            renderRosterList(rosterSearch ? rosterSearch.value : "");
+            return;
+        }
+
+        rosterCache = doc.rows
+            .map(function(row) {
+                return { id: row.doc._id, name: row.doc.build.name };
+            })
+            .sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
+
+        renderRosterList(rosterSearch ? rosterSearch.value : "");
     });
 }
 
+function rosterSearchListener() {
+    if (!rosterSearch) {
+        return;
+    }
+
+    var rosterSearchDebounced = debounce(function() {
+        renderRosterList(rosterSearch.value);
+    }, 200, false);
+
+    rosterSearch.addEventListener("input", rosterSearchDebounced);
+}
+
+function updateRosterLayout(showDetail) {
+    if (!rosterListCol || !dbBeySpace) {
+        return;
+    }
+    if (showDetail) {
+        rosterListCol.classList.add("col-sm-5", "col-xl-4");
+        rosterListCol.classList.remove("col-12");
+        dbBeySpace.classList.add("col-sm-7", "col-xl-8");
+    } else {
+        rosterListCol.classList.remove("col-sm-5", "col-xl-4");
+        rosterListCol.classList.add("col-12");
+        dbBeySpace.classList.remove("col-sm-7", "col-xl-8");
+    }
+}
+
 function clearDbStats(){
-    dbBeyIs.innerHTML = "";
-    dbBeyWeight.innerHTML = "";
-    dbBeyStats.innerHTML = "";
-    dbWinPercent.innerHTML = "";
-    dbPPW.innerHTML = "";
-    dbPPL.innerHTML = "";
-    dbPointDif.innerHTML = "";
-    dbBeySO.innerHTML = "";
-    dbBeyBst.innerHTML = "";
-    dbBeyKO.innerHTML = "";
-    dbBeyX.innerHTML = "";
-    dbBeyDraw.innerHTML = "";
+    dbBeyName.textContent = "";
+    dbBeyWeight.textContent = "";
+    dbBeyStats.textContent = "";
+    dbWinPercent.textContent = "";
+    dbPPW.textContent = "";
+    dbPPL.textContent = "";
+    dbPointDif.textContent = "";
+    dbSoW.textContent = "";
+    dbSoL.textContent = "";
+    dbBstW.textContent = "";
+    dbBstL.textContent = "";
+    dbKoW.textContent = "";
+    dbKoL.textContent = "";
+    dbXW.textContent = "";
+    dbXL.textContent = "";
+    dbBeyDraw.textContent = "";
     dbBeySpace.classList.add("hidden");
+    updateRosterLayout(false);
 }
 
 // DB stats to copy to clipboard. This must be global so the button listener function gets updated text
@@ -1017,56 +1466,9 @@ function setDbBey(){
 
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
-            var castDoc = BeyBlade.fromBuild(doc.build);
-
-            var winHolder = castDoc.getTotalWin();
-            var winPointHolder = castDoc.getWinPoints();
-            var lossHolder = castDoc.getTotalLoss();
-            var lossPointHolder = castDoc.getLossPoints();
-            var totalHolder = castDoc.getTotalMatch();
-            var avgPPW = round((winPointHolder/winHolder),2);
-            var avgPPL = round((lossPointHolder/lossHolder),2);
-            var totalPointChange = castDoc.getPointChange();
-            var totalMatches = doc.build.winsKO +doc.build.loseKO +doc.build.winsSO +doc.build.loseSO +doc.build.winsBst +doc.build.loseBst +doc.build.winsX+doc.build.loseX + doc.build.draws;
-            var avgPointChangePerRound = totalPointChange / totalMatches;
-            var avgWinPercent = round((winHolder/totalHolder)*100,2);
-
-            if (isNaN(avgPPW)){ avgPPW=0; }
-            if (isNaN(avgWinPercent)){ avgWinPercent=0; }
-            if (isNaN(avgPPL)){ avgPPL=0; }
-            if (isNaN(avgPointChangePerRound)){ avgPointChangePerRound=0; }
-
             dbBeySpace.classList.remove("hidden");
-
-            // fill in html
-            dbBeyName.textContent = doc.build.name;
-            dbBeyWeight.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
-            dbBeyStats.textContent = " Spin: " + doc.build.spin;
-            dbWinPercent.textContent = "Average Win%: " + avgWinPercent + "%";
-            dbPPW.textContent = "Average Points per Win: " + avgPPW;
-            dbPPL.textContent = "Average Points per Loss: " + avgPPL;
-            dbPointDif.textContent = "Average Points per Round: " + round(avgPointChangePerRound,2); 
-            dbBeyKO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
-            dbBeySO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
-            dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
-            dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
-            dbBeyDraw.textContent = "Draws: " + doc.build.draws;
-            dbBey = castDoc;
-
-            
-            // clipboard
-            dbCopiedStats =   "Overall Results for " + doc.build.name + "\n" +
-                                "Average Win%: " + avgWinPercent + "% \n" +
-                                "Average Points Per Win: " + avgPPW + "\n" +
-                                "Average Points Per Loss: " + avgPPL + "\n" +
-                                "Average Points Per Round: " + round(avgPointChangePerRound,2) + "\n" +
-                                "Spin Finish Win/Loss: " + doc.build.winsSO + "W / " + doc.build.loseSO + "L \n" +
-                                "Burst Finish Win/Loss: " + doc.build.winsBst + "W / " + doc.build.loseBst + "L \n" +
-                                "Over Finish Win/Loss: " + doc.build.winsKO + "W / " + doc.build.loseKO + "L \n" + 
-                                "Xtreme Finish Win/Loss: " + doc.build.winsX + "W / " + doc.build.loseX + "L \n" +
-                                "Draws: " + doc.build.draws + "\n" +
-                                "Copied from " + "https://fabelavalon.github.io/BeyBuilderX/";
-                        
+            updateRosterLayout(true);
+            renderDbBeyDetail(doc);
         }
         // else{
         //     console.log(err);
@@ -1088,6 +1490,10 @@ function showBeybladeStats(bey, whichBey) {
         bey1X.textContent = "";
         bey1Draw.textContent = "";
 
+        setBeyMatchMeta(1, "");
+        updateBeyPanelHeading(1, null);
+        updateBeyPanelHeading(2, null);
+
         bey2Is.textContent = "Beyblade 2 has not been selected.";
         bey2Stats.textContent = "";
         bey2SO.textContent = "";
@@ -1095,6 +1501,8 @@ function showBeybladeStats(bey, whichBey) {
         bey2KO.textContent = "";
         bey2X.textContent = "";
         bey2Draw.textContent = "";
+
+        setBeyMatchMeta(2, "");
 
         return;
     }
@@ -1109,12 +1517,14 @@ function showBeybladeStats(bey, whichBey) {
                 console.log(JSON.stringify(doc));
                 if(!err){
                     bey1Is.textContent = "BeyBlade 1 is: " + doc.build.name;
+                    updateBeyPanelHeading(1, doc.build.name);
                     bey1Stats.textContent = "Weight: " + round(doc.build.weight, 2) + " grams";
                     bey1SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey1Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
                     bey1KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey1X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey1Draw.textContent = "Draws: " + doc.build.draws;
+                    setBeyMatchMeta(1, formatBeyMatchMeta(totalRoundsFromBuild(doc.build)));
                 }
                 else {
                     //console.log(err);
@@ -1125,12 +1535,14 @@ function showBeybladeStats(bey, whichBey) {
             beyBladeDBX.get(bey.id, function(err, doc) {
                 if(!err){
                     bey2Is.textContent = "BeyBlade 2 is: " + doc.build.name;
+                    updateBeyPanelHeading(2, doc.build.name);
                     bey2Stats.textContent = "Weight: " + round(doc.build.weight,2) + " grams";
                     bey2SO.textContent = "Spin Win/Loss: " + doc.build.winsSO + " / " + doc.build.loseSO;
                     bey2Bst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
                     bey2KO.textContent = "Over Win/Loss: " + doc.build.winsKO + " / " + doc.build.loseKO;
                     bey2X.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
                     bey2Draw.textContent = "Draws: " + doc.build.draws;
+                    setBeyMatchMeta(2, formatBeyMatchMeta(totalRoundsFromBuild(doc.build)));
                 }
                 else{
                     //console.log(err);
@@ -1256,6 +1668,7 @@ function displayRecords(){
         draws.forEach(el => el.textContent = "0");
         totalRounds.forEach(el => el.textContent = "Total: 0");
         displayCopiedStats = "";
+        matchRoundCount = 0;
     }
 
     console.log("fetching record ID " + vsId);
@@ -1307,6 +1720,7 @@ function displayRecords(){
 
         totalRounds.forEach(el => el.textContent = "Total: " + (bey1Stats.wx + bey1Stats.wbst + bey1Stats.wko + bey1Stats.wso + bey1Stats.lx + bey1Stats.lbst + bey1Stats.lko + bey1Stats.lso + bey1Stats.draws));
         totalRound = bey1Stats.wx + bey1Stats.wbst + bey1Stats.wko + bey1Stats.wso + bey1Stats.lx + bey1Stats.lbst + bey1Stats.lko + bey1Stats.lso + bey1Stats.draws;
+        matchRoundCount = totalRound;
 
         var stadiumLabel = getStadiumName(vsRecord.stadiumId);
         displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
@@ -1330,23 +1744,27 @@ function displayRecords(){
         navigator.clipboard.writeText(displayCopiedStats);
     }
     if(!wasCopyMatchupToClipGenerated) {
-        //copy to clipboard
-        recordsCopybtn.innerHTML = "Copy Matchup to Clipboard";
+        recordsCopybtn.innerHTML = ICON_COPY;
         recordsCopybtn.classList.add("btn");
-        recordsCopybtn.classList.add("btn-primary");
+        recordsCopybtn.classList.add("btn-outline-secondary");
+        recordsCopybtn.classList.add("btn-icon");
+        recordsCopybtn.setAttribute("title", "Copy matchup to clipboard");
+        recordsCopybtn.setAttribute("aria-label", "Copy matchup to clipboard");
         recordsCopybtn.addEventListener("click", copyStatFunc);
-        recordsSpace.append(recordsCopybtn);
+        recordsActions.append(recordsCopybtn);
         wasCopyMatchupToClipGenerated = true;
     }
 
     if(!wasClearMatchupHistoryGenerated){
-        //clear matchup history, remove all matches between these 2 blades
-        clearHistoryBtn.innerHTML = "Clear Matchup History";
+        clearHistoryBtn.innerHTML = ICON_TRASH;
         clearHistoryBtn.classList.add("btn");
-        clearHistoryBtn.classList.add("btn-danger");
+        clearHistoryBtn.classList.add("btn-outline-danger");
+        clearHistoryBtn.classList.add("btn-icon");
+        clearHistoryBtn.setAttribute("title", "Clear matchup history");
+        clearHistoryBtn.setAttribute("aria-label", "Clear matchup history");
         clearHistoryBtn.setAttribute("data-bs-toggle", "modal");
         clearHistoryBtn.setAttribute("data-bs-target", "#areYouSure3");
-        recordsSpace.append(clearHistoryBtn);
+        recordsActions.append(clearHistoryBtn);
         wasClearMatchupHistoryGenerated = true;
     }
 
@@ -1749,14 +2167,14 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
 
     console.log("populateMatchHistUser2(" + bitChip1 + ", " + over1 + ", " + blade1 + ", " + assist1 + ", " + rachet1 + ", " + bit1 + ", " + bitChip2 + ", " + over1 + ", " + blade2 + ", " + assist2 + ", " + rachet2 + ", " + bit2 +")");
 
-    // overall stats
-    primeMatchupHistStatsTable(); // wipe overall stats
-
-    primeMatchupHistTable(); //table html
-    // if all parts are "none", return
-    if(blade1=="none" && rachet1=="none" && bit1=="none" && blade2=="none" && rachet2=="none" && bit2=="none" && bitChip1=="none" && assist1=="none" && bitChip2=="none" && assist2=="none" && over1=="none" && over2=="none"){
+    if (partsRecordsAllNone(bitChip1, over1, blade1, assist1, rachet1, bit1, bitChip2, over2, blade2, assist2, rachet2, bit2)) {
+        setPartsRecordsResultsVisible(false);
         return;
     }
+
+    setPartsRecordsResultsVisible(true);
+    primeMatchupHistStatsTable();
+    primeMatchupHistTable();
 
     // get all docs
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, allMatches) {
@@ -1823,25 +2241,10 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         matchupStatsAvgPoints.textContent = avgPointChangePerRound;
 
         // add parts to stats title
-        var statBeyName = ""
-        statBeyName += (bitChip1!="none" ? allBitChips[bitChip1].name : ""); // no space on Bit Chip, it combines with blade name
-        statBeyName += (over1!="none" ? allOverBlades[over1].name : "");
-        statBeyName += (blade1!="none" ? allBlades[blade1].name + " " : "");
-        statBeyName += (assist1!="none" ? allAssists[assist1].name + " " : "");
-        statBeyName += (rachet1!="none" ? allRachets[rachet1].name + " " : "");
-        statBeyName += (bit1!="none" ? allBits[bit1].name + " " : "");
-        // if bey2 parts are selected, title will be "X vs Y"
-        var defenderBeyName = "";
-        defenderBeyName += (bitChip2!="none" ? allBitChips[bitChip2].name : "");
-        statBeyName += (over2!="none" ? allOverBlades[over2].name : "");
-        defenderBeyName += (blade2!="none" ? allBlades[blade2].name + " " : "");
-        defenderBeyName += (assist2!="none" ? allAssists[assist2].name + " " : "");
-        console.log(rachet2);
-        defenderBeyName += (rachet2!="none" ? allRachets[rachet2].name + " " : "");
-        defenderBeyName += (bit2!="none" ? allBits[bit2].name + " " : "");
-        if(defenderBeyName.trim() != "") {
-            statBeyName += " vs " + defenderBeyName;
-        }
+        var statBeyName = formatPartsRecordLabel(
+            bitChip1, over1, blade1, assist1, rachet1, bit1,
+            bitChip2, over2, blade2, assist2, rachet2, bit2
+        );
         matchupStatsBeyTitle.textContent = statBeyName + " (all stadiums)";
 
     });
@@ -1869,8 +2272,6 @@ function primeMatchupHistTable(){
 
     console.log("called primeMatchupHistTable()");
 
-    // hide "parts not selected" text
-    matchupBeyUser.style.visibility = "hidden";
     // wipe table
     matchupHistUser.textContent = "";
 
@@ -2011,6 +2412,7 @@ function deleteAllBeys() {
     while (dbSelectList.options.length > 0) {                
         dbSelectList.remove(0);
     }
+    rosterCache = [];
     
     //clear individual beyblades
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
@@ -2073,21 +2475,11 @@ function round(num, places) {
 function disableDropdowns(partType, selection, whichBey){
     console.log("called disableDropdowns( " + partType + ", " + selection + ", " + whichBey + " )");
 
-    // HTML IDs for part selectors
-    dropdownIDs = {
-        // main VS screen
-        1: { "bitChip":"bey1BitChip", "overBlade":"bey1OverBlade", "blade":"bey1Blade", "assistBlade":"bey1AssistBlade", "ratchet":"bey1Rachet", "bit":"bey1Bit" },
-        2: { "bitChip":"bey2BitChip", "overBlade":"bey2OverBlade", "blade":"bey2Blade", "assistBlade":"bey2AssistBlade", "ratchet":"bey2Rachet", "bit":"bey2Bit" },
-        // part record modal
-        3: { "bitChip":"bitChipR1", "overBlade":"overBladeR1", "blade":"bladeR1", "assistBlade":"assistR1", "ratchet":"rachetR1", "bit":"bitR1" },
-        4: { "bitChip":"bitChipR2", "overBlade":"overBladeR2", "blade":"bladeR2", "assistBlade":"assistR2", "ratchet":"rachetR2", "bit":"bitR2" }
-    };
-
     disableParts = [];
     enableParts = [];
 
     // decide what parts to enable/disable
-    if(partType=="blade") {
+    if(partType=="blade" && selection !== "random" && selection !== "none") {
         console.log("checking blades");
         if(allBlades[selection].system == "CX"){
             //console.log("CX blade selected");
@@ -2110,7 +2502,7 @@ function disableDropdowns(partType, selection, whichBey){
             enableParts = ["ratchet"];
         }
     }
-    if(partType=="bit") {
+    if(partType=="bit" && selection !== "random" && selection !== "none") {
         console.log("checking bits");        
         if(allBits[selection].type == "ratchetBit"){
             //console.log("ratchet-bit selected");
@@ -2128,6 +2520,25 @@ function disableDropdowns(partType, selection, whichBey){
         document.getElementById( dropdownIDs[whichBey][partToEnable] ).disabled = false;
     }
 
+    // blade constraints win over bit changes (e.g. UX2 keeps ratchet disabled)
+    var bladeVal = document.getElementById(dropdownIDs[whichBey].blade).value;
+    if (bladeVal !== "random" && bladeVal !== "none") {
+        var bladeSelection = parseInt(bladeVal);
+        if (allBlades[bladeSelection].system == "UX2") {
+            document.getElementById(dropdownIDs[whichBey].ratchet).disabled = true;
+        }
+        if (allBlades[bladeSelection].system == "CX") {
+            document.getElementById(dropdownIDs[whichBey].overBlade).disabled = true;
+        }
+        if (allBlades[bladeSelection].system == "BX" || allBlades[bladeSelection].system == "UX") {
+            ["bitChip", "assistBlade", "overBlade"].forEach(function(part) {
+                document.getElementById(dropdownIDs[whichBey][part]).disabled = true;
+            });
+        }
+    }
+
+    recomputeBeyPartsLayout(whichBey);
+    previewBeyMatchMeta(whichBey);
 }
 
 // quick spin animation
@@ -2150,27 +2561,88 @@ function themeSwitchListener(){
     });
 }
 
+var THEME_MIGRATION = {
+    "default": "light",
+    "dark-purple": "dark",
+    "grey": "dark",
+    "wbo": "light"
+};
+
+function normalizeThemeName(themeName) {
+    if (themeName == null || themeName.trim().length === 0) {
+        return "light";
+    }
+    var key = themeName.toLowerCase();
+    return THEME_MIGRATION[key] || key;
+}
+
+function applyThemeCss(themeName) {
+    var resolved = normalizeThemeName(themeName);
+    themeLink.href = "./theme-" + resolved + ".css";
+    themeSelect.value = resolved;
+    var metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) {
+        if (resolved === "dark") {
+            metaTheme.content = "#1a1d27";
+        } else if (resolved === "none") {
+            metaTheme.content = "#0d6efd";
+        } else {
+            metaTheme.content = "#4f5fd0";
+        }
+    }
+}
+
+function saveThemeDoc(doc, callback) {
+    settings.put(doc, function(err, result) {
+        if (!err) {
+            selectedTheme = {
+                _id: result.id,
+                _rev: result.rev,
+                name: doc.name
+            };
+            if (callback) {
+                callback(null, selectedTheme);
+            }
+            return;
+        }
+        if (err.status === 409) {
+            settings.get("selectedTheme", function(getErr, fresh) {
+                if (getErr) {
+                    if (callback) {
+                        callback(getErr);
+                    }
+                    return;
+                }
+                fresh.name = doc.name;
+                saveThemeDoc(fresh, callback);
+            });
+            return;
+        }
+        if (callback) {
+            callback(err);
+        }
+    });
+}
+
 function saveTheme(themeName) {
     console.log('Current DB theme:');
     console.log(JSON.stringify(selectedTheme));
-    // init selectedTheme object for DB insertion
-    if(selectedTheme==null) {
+    if (selectedTheme == null) {
         selectedTheme = {
             _id: "selectedTheme",
-            name: "default"
+            name: "light"
         };
     }
-    if (themeName!=null && themeName.trim().length > 0) {
-        selectedTheme.name= themeSelect.value;
-    }
-    // save selected theme
-    settings.put(selectedTheme, function callback(err, result) {
+    var name = themeName != null && themeName.trim().length > 0
+        ? normalizeThemeName(themeSelect.value)
+        : normalizeThemeName(selectedTheme.name);
+    selectedTheme.name = name;
+    saveThemeDoc(selectedTheme, function(err) {
         if (!err) {
             console.log('Saved theme selection');
-            // load theme. This will set the CSS and update selectedTheme._rev
-            loadTheme();
+            applyThemeCss(name);
         }
-        else{
+        else {
             console.log(err);
         }
     });
@@ -2178,21 +2650,26 @@ function saveTheme(themeName) {
 
 function loadTheme(){
 
-    //console.log("called loadTheme()");
-
     settings.get("selectedTheme", function callback(err, result) {
         if (!err) {
-            selectedTheme=result;
+            selectedTheme = result;
             console.log('Loaded saved theme');
             console.log(JSON.stringify(result));
-            themeLink.href="./theme-"+selectedTheme.name.toLowerCase()+".css";
-            themeSelect.value=selectedTheme.name;
+            var resolved = normalizeThemeName(selectedTheme.name);
+            applyThemeCss(resolved);
+            if (resolved !== selectedTheme.name) {
+                selectedTheme.name = resolved;
+                saveThemeDoc(selectedTheme, function(saveErr) {
+                    if (saveErr) {
+                        console.log(saveErr);
+                    }
+                });
+            }
         }
-        else{
+        else {
             console.log(err);
-            if(err.status=404) {
-                console.log("No existing theme. Using default");
-                // calling saveTheme with no params will select the default theme and properly init the DB theme object
+            if (err.status === 404) {
+                console.log("No existing theme. Using light");
                 saveTheme();
             }
         }

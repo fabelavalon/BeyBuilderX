@@ -1,177 +1,793 @@
 /*=========================================================*
- *BeyBuilder X v1.0 for Beyblade X                         *
+ *BeyBuilder X layout styles                               *
  *Author: Fabel                                            *
- *Copyright 2023-2025                                      *
+ *Copyright 2023-2026                                      *
  *=========================================================*/
 
-/* win buttons */
-.win-button-title{
-    width:auto;
+/* ---- base layout ---- */
+
+body {
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.app-main {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1rem 2rem;
+}
+
+/* ---- header ---- */
+
+.app-header {
+    padding: 0.5rem 1rem;
     text-align: center;
 }
 
-/* VS record table */
-/* label on the left */
-.record-table-label{
-    width: 1%;
-    white-space: nowrap;
-    padding-left: 0.5em;
-}
-/* a flexbox to hold spans aligned left and aligned right */
-#wins2Container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-/* border is doubling-up when I put spans or divs inside td */
-#wins2Col {
-    border-top: none;
-    border-bottom: none;
-}
-#recordsSpace > table {
-    width:100%;
-}
-/* thick line under 1st and 3rd rows */
-#recordsSpace > table > tbody > tr:nth-child(1) {
-    border-bottom: 3px solid;
-}
-#recordsSpace > table > tbody > tr:nth-child(3) {
-    border-bottom: 3px solid;
+.header-logo {
+    height: auto;
+    max-height: 120px;
+    max-width: min(100%, 420px);
+    vertical-align: middle;
 }
 
-#bey1StatsTable > tbody > tr:nth-child(1) > th { 
-    width: 100%
-}
-/* TODO: no border on this table */
-#bey1StatsTable{
-    border: none;
-    width: 100%;
-}
-/* child selector + override is not working as intended */
-#bey1StatsTable > tbody > tr { 
-    border: none;
-    border-top: 0px;
-    border-bottom: 0px;
-}
-
-/*  line-break between spans */
-.blade-text {
-    white-space: nowrap;
+.header-version {
     display: inline-block;
+    vertical-align: bottom;
+    margin-left: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.7;
 }
 
-/* styling for drop downs */
-.select-basic{
-    padding: 3px;
-    margin: 3px;
+/* ---- panels ---- */
+
+.panel {
+    border: 1px solid;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
 }
 
-.select-list{
-    padding: 3px;
-    margin: 3px;
+.panel-body {
+    padding: 1rem;
 }
+
+.panel-heading {
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid;
+    text-transform: none;
+}
+
+.panel-details {
+    display: block;
+}
+
+.panel-details > summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+.panel-details > summary::-webkit-details-marker {
+    display: none;
+}
+
+.panel-details > summary::after {
+    content: "+";
+    float: right;
+    font-weight: 400;
+    opacity: 0.6;
+}
+
+.panel-details[open] > summary::after {
+    content: "-";
+}
+
+.panel-heading-bey1 {
+    border-left-width: 4px;
+    border-left-style: solid;
+}
+
+.panel-heading-bey2 {
+    border-left-width: 4px;
+    border-left-style: solid;
+}
+
+/* ---- bey part selectors ---- */
+
+.parts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.parts-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.parts-row-core .parts-cell,
+.parts-row-cx .parts-cell {
+    flex: 1 1 140px;
+    max-width: 220px;
+    min-width: 120px;
+}
+
+.parts-cx-section {
+    margin-top: 0.35rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.parts-cx-section.hidden {
+    display: none;
+}
+
+.parts-cx-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    margin: 0 0 0.35rem;
+    opacity: 0.6;
+}
+
+.parts-cell.hidden {
+    display: none;
+}
+
+.parts-cell {
+    flex: 1 1 140px;
+    max-width: 220px;
+    min-width: 120px;
+}
+
+.parts-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.15rem;
+    opacity: 0.75;
+    text-align: center;
+}
+
+.choose-bey-row {
+    margin-top: 0.75rem;
+}
+
+.bey-match-meta {
+    text-align: center;
+    font-size: 0.8rem;
+    margin: 0.35rem 0 0;
+    color: var(--color-text-muted);
+    min-height: 1.2em;
+}
+
+/* ---- match section ---- */
+
+.select-basic {
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.375rem;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 0.875rem;
+}
+
+.select-list {
+    width: 100%;
+    padding: 0.35rem;
+    border-radius: 0.375rem;
+    border-width: 1px;
+    border-style: solid;
+    font-size: 0.875rem;
+}
+
+.form-control {
+    border-radius: 0.375rem;
+}
+
+/* ---- buttons (layout) ---- */
+
+.btn-primary,
+.btn-danger,
+.btn-success,
+.btn-warning {
+    padding: 0.35rem 0.75rem;
+    margin: 0.2rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.btn-win {
+    width: 72px;
+    margin-bottom: 0.35rem;
+    padding: 0.3rem 0.4rem;
+}
+
+.btn-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    line-height: 1;
+    margin: 0;
+}
+
+.btn-icon svg {
+    display: block;
+}
+
+.match-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+
+/* ---- match section ---- */
 
 #vsContainer {
     visibility: hidden;
     display: none;
 }
 
-/* styling for delete buttons */
-.btn-danger, .btn-warning {
-    padding: 4px;
-    margin: 3px;
+.stadium-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
 }
 
-/* styling for basic buttons */
-.btn-primary, .btn-success {
-    padding: 4px;
-    margin: 3px;
+.stadium-row label {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
 }
 
-
-.hidden {
-    visibility: hidden;
+.stadium-row .select-basic {
+    flex: 1 1 180px;
+    max-width: 280px;
+    margin: 0;
 }
 
-/* vs win buttons */
-.btn-win {
-    width: 120px;
-    margin-bottom: 8px;
-}
-.btn-nowin {
-    width: 80px;
-    margin-bottom: 8px;
+.win-button-title {
+    width: auto;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
 }
 
-/* Matchup History table */
-#matchupSpace, #totalsSpace {
+.win-buttons-col {
+    padding: 0 0.5rem;
+}
+
+.match-log {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    min-height: 1.25rem;
+}
+
+.match-error {
+    text-align: center;
+    font-size: 0.875rem;
+    min-height: 1.25rem;
+}
+
+/* ---- records table ---- */
+
+#recordsSpace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem;
+}
+
+.records-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 0.75rem;
+}
+
+.records-actions .btn-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+}
+
+#recordsSpace > table,
+.records-table {
+    width: 100%;
+    max-width: 420px;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+#recordsSpace > table td,
+#recordsSpace > table th,
+.records-table td,
+.records-table th {
+    padding: 0.3rem 0.5rem;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.record-table-label {
+    width: 1%;
+    white-space: nowrap;
+    padding-left: 0.5em;
+    font-weight: 600;
+}
+
+#recordsSpace > table > tbody > tr:nth-child(1),
+#recordsSpace > table > tbody > tr:nth-child(3) {
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+}
+
+#wins2Container {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
 }
-#matchupHistUser {
-    width: 100%;
-}
-#matchupHolder {
-    padding-top: 10px;
-}
-#matchupHistStatsTable {
-    width: 100%;
-}
-.part-history-vs {
-    width: 45%;
-}
-.wide {
-    width: 100%
+
+#wins2Col {
+    border-top: none;
+    border-bottom: none;
 }
 
-/* settings modal */
-input[type='checkbox'] {
-    transform: scale(1.5);
-}
-#settings input[type='checkbox']{
-    margin-right: 24px;
+/* ---- roster / database section ---- */
+
+.roster-body {
+    display: flex;
+    flex-direction: column;
 }
 
-/* make modal headers and footers sticky */
+.roster-layout {
+    align-items: stretch;
+    min-height: 280px;
+}
+
+.roster-list-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.roster-list-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 280px;
+}
+
+.roster-search {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+.roster-list {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    margin: 0;
+}
+
+#dbBeySpace {
+    min-width: 0;
+}
+
+.db-bey-card {
+    border: 1px solid;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    height: 100%;
+}
+
+.db-bey-header {
+    margin-bottom: 0.75rem;
+}
+
+.db-bey-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.db-bey-meta {
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+
+.db-bey-meta-sep {
+    margin: 0 0.35rem;
+}
+
+.db-bey-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+@media (min-width: 576px) {
+    .db-bey-summary {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.db-summary-tile {
+    border: 1px solid;
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.5rem;
+    text-align: center;
+}
+
+.db-summary-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.75;
+    margin-bottom: 0.15rem;
+}
+
+.db-summary-value {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.db-finish-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+}
+
+.db-bey-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.db-bey-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+}
+
+.db-bey-actions-row .btn-sm {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.db-bey-actions-row .btn-icon {
+    flex: 0 0 auto;
+}
+
+#dbCopyStatsBtn {
+    margin-left: auto;
+}
+
+/* ---- modals ---- */
+
 .modal-header--sticky {
     position: sticky;
     top: 0;
     z-index: 1055;
-  }
-  
+}
+
 .modal-footer--sticky {
     position: sticky;
     bottom: 0;
-    z-index: 1055; 
+    z-index: 1055;
 }
 
-/* header */
-.header {
-    /* centering */
-    display: grid;
-    place-items: center;
-}
-.header-logo {
-    height: auto;
-    max-height: 225px;
-    margin-top: -45px;
-    max-width: 100%;
+.modal-footer {
+    font-size: 0.8rem;
 }
 
-/* page footer */
+.modal-body label {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.modal-body input[type="number"] {
+    width: 100%;
+    max-width: 200px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.parts-records-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.parts-records-intro {
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.85;
+}
+
+.parts-records-heading {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem;
+}
+
+.parts-records-note {
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.75;
+}
+
+.parts-records-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.parts-records-grid .parts-label {
+    text-align: start;
+    margin-bottom: -0.15rem;
+}
+
+.parts-records-panel {
+    border: 1px solid;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    height: 100%;
+}
+
+.parts-records-actions {
+    margin-top: 0.25rem;
+}
+
+.parts-records-preview {
+    text-align: center;
+    font-size: 0.8rem;
+    margin: 0 0 0.35rem;
+    color: var(--color-text-muted);
+    min-height: 1.2em;
+}
+
+.parts-records-results {
+    border: 1px solid;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+}
+
+.parts-records-results--empty {
+    display: none;
+}
+
+#matchupHistStatsTable {
+    margin: 0.75rem 0;
+}
+
+/* ---- matchup history tables ---- */
+
+#matchupSpace,
+#totalsSpace,
+#matchupHistUser,
+#matchupHistStatsTable {
+    width: 100%;
+}
+
+.wide {
+    width: 100%;
+}
+
+.part-history-vs {
+    width: 45%;
+}
+
+/* ---- settings ---- */
+
+.settings-group {
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.settings-group:last-child {
+    margin-bottom: 0;
+}
+
+.settings-group-heading {
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--color-surface-alt);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+}
+
+.settings-group--danger {
+    border-color: var(--color-danger);
+}
+
+.settings-group--danger .settings-group-heading {
+    color: var(--color-danger);
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.settings-row:last-child {
+    border-bottom: none;
+}
+
+.settings-row-text {
+    min-width: 0;
+}
+
+.settings-row-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.settings-row-desc {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 0.15rem;
+}
+
+.settings-row--block {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+}
+
+.settings-backup-detail {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin: 0.25rem 0 0;
+}
+
+.settings-control {
+    width: auto;
+    min-width: 10rem;
+    max-width: 12rem;
+    flex-shrink: 0;
+}
+
+.settings-file-input {
+    width: auto;
+    min-width: 10rem;
+    max-width: 14rem;
+    flex-shrink: 0;
+}
+
+.settings-switch {
+    flex-shrink: 0;
+    margin-bottom: 0;
+    padding-left: 2.5em;
+}
+
+/* ---- utility ---- */
+
+.hidden {
+    display: none;
+}
+
+.blade-text {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+/* ---- footer ---- */
 
 footer {
-    padding-left: 4px;
-    padding-right: 2px;
+    padding: 0.75rem 1rem;
+    margin-top: auto;
 }
 
-/* spin animation */
+footer .nav-link {
+    font-size: 0.875rem;
+}
+
+/* ---- spin animation ---- */
+
 .spinme {
     animation: bigspin 1s 1;
 }
+
 @keyframes bigspin {
-    100% { 
+    100% {
         transform: rotate(1440deg);
     }
+}
+
+/* ---- responsive ---- */
+
+@media (max-width: 767.98px) {
+    .app-main {
+        padding: 0.75rem 0.5rem 1.5rem;
+    }
+
+    .header-logo {
+        max-height: 90px;
+    }
+
+    #recordsSpace {
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .bey-layout-row {
+        align-items: stretch;
+    }
+}
+
+/* legacy table refs */
+#bey1StatsTable {
+    border: none;
+    width: 100%;
+}
+
+#bey1StatsTable > tbody > tr {
+    border: none;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+#bey1StatsTable > tbody > tr:nth-child(1) > th {
+    width: 100%;
 }

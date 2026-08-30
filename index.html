@@ -6,35 +6,32 @@
     *Copyright 2023-2026                                         *
     *============================================================*-->
 
-<html>
+<html lang="en">
 
 <head>
     <title>BeyBuilder X v1.5</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Beyblade X score tracker">
-    <meta name="theme-color" content="#6257c2">
+    <meta name="theme-color" content="#4f5fd0">
 
     <!-- icons -->
-    <!-- <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Chain_2.png"> -->
-    <link rel="icon" type="image/x-icon" href="./favicon.png"> <!-- filename matters, Chrome will prioritize "favicon" over other filenames -->
-    <!-- <link rel="icon" href="./favicon.ico" sizes="48x48"> -->
-    <!-- <link rel="icon" href="./favicon.svg" sizes="any" type="image/svg+xml"> -->
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
     <link rel="apple-touch-icon" href="./pwa/apple-touch-icon-180x180.png">
     <link rel="icon" type="image/x-icon" href="./images/BeyBuilder_Chain.png">
-    
+
     <!-- Open Graph link preview -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="BeyBuilder X - Beyblade X Score Tracker">
     <meta property="og:description" content="Track and analyze your Beyblade X match records">
     <meta property="og:image" content="https://fabelavalon.github.io/BeyBuilderX/images/BeyBuilder_Chain2.png">
     <meta property="og:url" content="https://fabelavalon.github.io/BeyBuilderX/">
-    
-    <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet"  />
-    <link href="./beybuilder.css" rel="stylesheet"  />
-    <link href="./theme-default.css" rel="stylesheet" id="theme"  />
+
+    <link href="./libraries/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="./beybuilder.css" rel="stylesheet" />
+    <link href="./theme-light.css" rel="stylesheet" id="theme" />
     <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
-    
+
     <!-- PWA -->
     <script src="./pwa/registerSW.js"></script>
 
@@ -42,646 +39,654 @@
 
 <body>
 
-    <!--Header space-->
-    <div class="container-fluid text-md-start text-center header" >
-        <span class="justify-content-center"><img src="./images/BeyBuilder_Logo2.png" class="header-logo"/>v1.5</span>
-    </div>
+    <header class="app-header">
+        <img src="./images/BeyBuilder_Logo2.png" class="header-logo" alt="BeyBuilder X logo" />
+        <span class="header-version">v1.5</span>
+    </header>
 
-    <div class="container-fluid border">
-        
-        <div class="row"> <!-- blade 1 selector and stats -->
-            <div class="col-md-9"> <!-- selectors -->
-                <div class="row">
-                  <div class="col-sm-4">
-                    <select id="bey1BitChip" class="select-basic form-select"><option value="random">Random Lock Chip</option></select>
-                  </div>
-                  <div class="col-sm-4">
-                    <select id="bey1OverBlade" class="select-basic form-select"><option value="random">Random Over Blade</option></select>
-                  </div>
-                    <div class="col-sm-4">
-                        <select id="bey1Blade" class="select-basic form-select" onchange="disableDropdowns('blade', this.value, 1)"><option value="random">Random Blade</option></select>
-                    </div>
-                    <!-- assist and ratchet row  -->
-                    <div class="col-1"></div><!-- spacer -->
-                    <div class="col-sm-4">
-                      <select id="bey1AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
-                    </div>
-                    <div class="col-2"></div><!-- spacer -->
-                    <div class="col-sm-4">
-                      <select id="bey1Rachet" class="select-basic form-select"><option value="random">Random Ratchet</option></select>
-                    </div>
+    <main class="app-main">
 
-                    <div class="col-1"></div><!-- spacer -->
-                </div>
-                <!-- bit row -->
-                <div class="row">
-                  <div class="col-4"></div><!-- spacer -->
-                  <div class="col-sm-4">
-                    <select id="bey1Bit" class="select-basic form-select" onchange="disableDropdowns('bit', this.value, 1)"><option value="random">Random Bit</option></select>
-                  </div>
-                  <div class="col-4"></div><!-- spacer -->
-                </div>
-                <div class="row">
-                  <div class="d-grid gap-2 col-md-4 mx-auto">
-                    <button onclick="generateBey1()" class="btn btn-primary">Choose Beyblade 1</button>
-                  </div>
-                </div>
-                <br> <!-- TODO: replace BR with vertical padding -->
-            </div>
-
-            
-            <div class="col-md-3"> <!-- stat block -->
-                <div class="row">
-                    <!--BeyBlade 1 stat space-->
-                    <div class="col border text-center">
-                          <!-- <div id="beyIsHeader">Beyblade 1</div> -->
-                          <span id="bey1Is">Beyblade 1 has not been selected.</span>
-                          <br>
-                          <span id="bey1Stats"></span>
-                          <br>
-                          <span id="bey1SO"></span>
-                          <br>
-                          <span id="bey1Bst"></span>
-                          <br>
-                          <span id="bey1KO"></span>
-                          <br>
-                          <span id="bey1X"></span>
-                          <br>
-                          <span id="bey1Draw"></span>
+        <!-- Beyblade 1 -->
+        <section class="panel">
+            <div class="panel-heading panel-heading-bey1" id="bey1-panel-heading">Beyblade 1</div>
+            <div class="panel-body">
+                <div class="parts-grid">
+                    <div class="parts-row parts-row-core">
+                        <div class="parts-cell">
+                            <label class="parts-label" for="bey1Blade">Blade</label>
+                            <select id="bey1Blade" class="select-basic form-select" title="Blade" onchange="disableDropdowns('blade', this.value, 1)"><option value="random">Random</option></select>
+                        </div>
+                        <div class="parts-cell" id="bey1RachetCell">
+                            <label class="parts-label" for="bey1Rachet">Ratchet</label>
+                            <select id="bey1Rachet" class="select-basic form-select" title="Ratchet"><option value="random">Random</option></select>
+                        </div>
+                        <div class="parts-cell">
+                            <label class="parts-label" for="bey1Bit">Bit</label>
+                            <select id="bey1Bit" class="select-basic form-select" title="Bit" onchange="disableDropdowns('bit', this.value, 1)"><option value="random">Random</option></select>
+                        </div>
+                    </div>
+                    <div class="parts-cx-section hidden" id="bey1CxSection">
+                        <p class="parts-cx-label">CX parts</p>
+                        <div class="parts-row parts-row-cx">
+                            <div class="parts-cell">
+                                <label class="parts-label" for="bey1BitChip">Lock</label>
+                                <select id="bey1BitChip" class="select-basic form-select" title="Lock Chip"><option value="random">Random</option></select>
+                            </div>
+                            <div class="parts-cell">
+                                <label class="parts-label" for="bey1AssistBlade">Assist</label>
+                                <select id="bey1AssistBlade" class="select-basic form-select" title="Assist Blade"><option value="random">Random</option></select>
+                            </div>
+                            <div class="parts-cell hidden" id="bey1OverCell">
+                                <label class="parts-label" for="bey1OverBlade">Over</label>
+                                <select id="bey1OverBlade" class="select-basic form-select" title="Over Blade"><option value="random">Random</option></select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
+                <div class="choose-bey-row d-grid col-md-4 mx-auto">
+                    <button onclick="generateBey1()" class="btn btn-primary">Choose</button>
+                    <p class="bey-match-meta" id="bey1MatchMeta" aria-live="polite"></p>
+                </div>
+                <div class="visually-hidden" aria-hidden="true">
+                    <span id="bey1Is">Beyblade 1 has not been selected.</span>
+                    <span id="bey1Stats"></span>
+                    <span id="bey1SO"></span>
+                    <span id="bey1Bst"></span>
+                    <span id="bey1KO"></span>
+                    <span id="bey1X"></span>
+                    <span id="bey1Draw"></span>
+                </div>
             </div>
-        </div><!--end blade 1-->
+        </section>
 
-        
-        <div class="row"> <!-- blade 2 selector and stats -->
-            <div class="col-md-9"> <!-- selectors -->
-                <div class="row">
-                  <div class="col-sm-4">
-                    <select id="bey2BitChip" class="select-basic form-select"><option value="random">Random Lock Chip</option></select>
-                   </div>
-                   <div class="col-sm-4">
-                    <select id="bey2OverBlade" class="select-basic form-select"><option value="random">Random Over Blade</option></select>
-                   </div>
-                    <div class="col-sm-4">
-                        <select id="bey2Blade" class="select-basic form-select" onchange="disableDropdowns('blade', this.value, 2)"><option value="random" >Random Blade</option></select>
+        <!-- Beyblade 2 -->
+        <section class="panel">
+            <div class="panel-heading panel-heading-bey2" id="bey2-panel-heading">Beyblade 2</div>
+            <div class="panel-body">
+                <div class="parts-grid">
+                    <div class="parts-row parts-row-core">
+                        <div class="parts-cell">
+                            <label class="parts-label" for="bey2Blade">Blade</label>
+                            <select id="bey2Blade" class="select-basic form-select" title="Blade" onchange="disableDropdowns('blade', this.value, 2)"><option value="random">Random</option></select>
+                        </div>
+                        <div class="parts-cell" id="bey2RachetCell">
+                            <label class="parts-label" for="bey2Rachet">Ratchet</label>
+                            <select id="bey2Rachet" class="select-basic form-select" title="Ratchet"><option value="random">Random</option></select>
+                        </div>
+                        <div class="parts-cell">
+                            <label class="parts-label" for="bey2Bit">Bit</label>
+                            <select id="bey2Bit" class="select-basic form-select" title="Bit" onchange="disableDropdowns('bit', this.value, 2)"><option value="random">Random</option></select>
+                        </div>
                     </div>
-                    
-                  <!-- assist and ratchet row  -->
-                  <div class="col-1"></div><!-- spacer -->
-                  <div class="col-sm-4">
-                      <select id="bey2AssistBlade" class="select-basic form-select"><option value="random">Random Assist Blade</option></select>
-                  </div>
-                  <div class="col-2"></div><!-- spacer -->
-                  <div class="col-sm-4">
-                      <select id="bey2Rachet" class="select-basic form-select"><option value="random">Random Ratchet</option></select>
-                  </div>
-                  <div class="col-1"></div><!-- spacer -->
-                </div>
-                <div class="row">
-                  <div class="col-4"></div><!-- spacer -->
-                  <div class="col-sm-4">
-                    <select id="bey2Bit" class="select-basic form-select" onchange="disableDropdowns('bit', this.value, 2)"><option value="random">Random Bit</option></select>
-                  </div>
-                  <div class="col-4"></div><!-- spacer -->
-                </div>
-                <div class="row">
-                  <div class="d-grid gap-2 col-md-4 mx-auto">
-                    <button onclick="generateBey2()" class="btn btn-primary">Choose Beyblade 2</button>
-                  </div>
-                </div>
-                <br> <!-- TODO: replace BR with vertical padding -->
-            </div>
-            
-            <div class="col-md-3"> <!-- stat block -->
-                <div class="row">
-                    <!--BeyBlade 2 stat space-->
-                    <div class="col border text-center">
-                        <!-- <div id="beyIsHeader">Beyblade 2</div> -->
-                        <span id="bey2Is">Beyblade 2 has not been selected.</span>
-                        <br>
-                        <span id="bey2Stats"></span>
-                        <br>
-                        <span id="bey2SO"></span>
-                        <br>
-                        <span id="bey2Bst"></span>
-                        <br>
-                        <span id="bey2KO"></span>
-                        <br>
-                        <span id="bey2X"></span>
-                        <br>
-                        <span id="bey2Draw"></span>
+                    <div class="parts-cx-section hidden" id="bey2CxSection">
+                        <p class="parts-cx-label">CX parts</p>
+                        <div class="parts-row parts-row-cx">
+                            <div class="parts-cell">
+                                <label class="parts-label" for="bey2BitChip">Lock</label>
+                                <select id="bey2BitChip" class="select-basic form-select" title="Lock Chip"><option value="random">Random</option></select>
+                            </div>
+                            <div class="parts-cell">
+                                <label class="parts-label" for="bey2AssistBlade">Assist</label>
+                                <select id="bey2AssistBlade" class="select-basic form-select" title="Assist Blade"><option value="random">Random</option></select>
+                            </div>
+                            <div class="parts-cell hidden" id="bey2OverCell">
+                                <label class="parts-label" for="bey2OverBlade">Over</label>
+                                <select id="bey2OverBlade" class="select-basic form-select" title="Over Blade"><option value="random">Random</option></select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div> <!-- end blade 2 -->
-
-    </div><!-- end selectors and stat blocks -->
-    
-    <div class="container-fluid border" id="vsContainer">
-
-      <div class="row"> <!-- win buttons on left, stat container on right -->
-
-        <div class="col-md-6" id="buttonContainer">
-
-          <div class="row mb-2">
-            <div class="col-2"></div><!-- spacer -->
-            <div class="col-md-8 text-center">
-              Select your Stadium:
-              <select id="stadiumSelector" class="select-basic form-select">
-                <!-- filled from stadiums.js -->
-              </select>
-            </div>
-            <div class="col-2"></div><!-- spacer -->
-          </div>
-
-          <!-- Bey 1 Win Buttons -->
-          <div class="row">
-            <div class="col-6"> <!-- on small size, place bey1 left and bey2 right -->
-              <p class="row win-button-title" id="bey1-button-title">
-                Bey 1:
-              </p>
-              <div class="row">
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(1, 'x')">Xtreme Finish</button></div>
-              </div>
-            </div>
-
-            <div class="col-6">
-              <p class="row win-button-title" id="bey2-button-title">
-                Bey 2:
-              </p>
-              <div class="row">
-                <!-- Bey 2 Win Buttons -->
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'SO')">Spin Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'burst')">Burst Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'KO')">Over Finish</button></div>
-                <div class="col-12 d-flex justify-content-center"><button class="btn btn-primary btn-win" onclick="choseWinnerDebounced(2, 'x')">Xtreme Finish</button></div>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Draw and Undo Buttons -->
-          <div class="row">
-            <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-primary btn-nowin" value="draw" onclick="choseWinnerDebounced(0, 'draw')">Draw</button>
-            </div>
-            <div class="col-12 d-flex justify-content-center">
-              <button class="btn btn-primary btn-nowin" value="undo" onclick="undoDebounced()">Undo</button>
-            </div>
-          </div>
-
-          <p id="winnerLog"></p>
-          <p id="error"></p>
-  
-        </div><!--end buttonContainer-->
-
-        <!--Records table for selected beys-->
-        <div class="col-md-6" id="recordsSpace">
-  
-          <table>
-            <tr>
-              <td class="text-end"></td>
-              <th class="text-end" name="record1">bey1</th>
-              <td class="text-center">vs</td>
-              <th name="record2">bey2</th>
-            </tr>
-            <tr>
-              <td class="text-end record-table-label">Wins:</td>
-              <td class="text-end" name="wins1">0</td>
-              <td class="text-center">/</td>
-              <td id="wins2Col">
-                <div id="wins2Container">
-                  <span name="wins2">0</span>
-                  <span name="vsTotalRounds">0</span>
+                <div class="choose-bey-row d-grid col-md-4 mx-auto">
+                    <button onclick="generateBey2()" class="btn btn-primary">Choose</button>
+                    <p class="bey-match-meta" id="bey2MatchMeta" aria-live="polite"></p>
                 </div>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-end record-table-label">Points:</td>
-              <td class="text-end" name="points1">0</td>
-              <td class="text-center">/</td>
-              <td class="text-start" name="points2">0</td>
-            </tr>
-            <tr>
-              <td class="text-end record-table-label">Spin:</td>
-              <td class="text-end" name="so1">0</td>
-              <td class="text-center">/</td>
-              <td class="text-start" name="so2">0</td>
-            </tr>
-            <tr>
-              <td class="text-end record-table-label">Burst:</td>
-              <td class="text-end" name="bst1">0</td>
-              <td class="text-center">/</td>
-              <td class="text-start" name="bst2">0</td>
-            </tr>
-            <tr>
-              <td class="text-end record-table-label">Over:</td>
-              <td class="text-end" name="ko1">0</td>
-              <td class="text-center">/</td>
-              <td class="text-start" name="ko2">0</td>
-            </tr>
-            <tr>
-              <td class="text-end record-table-label">Xtreme:</td>
-              <td class="text-end" name="x1">0</td>
-              <td class="text-center">/</td>
-              <td class="text-start" name="x2">0</td>
-            </tr>
-            <tr>
-              <td class="text-end record-table-label">Draws:</td>
-              <td></td>
-              <td class="text-center" name="draws">0</td>
-            </tr>
-          </table>
-  
-        </div><!--end recordSpace-->
-      </div>
-       
-    </div>
-
-    <div class="container-fluid border">
-        
-        <div class="row">
-          <div class="col">
-              <h5>All Beyblades in the system:</h5>
-          </div>
-        </div>
-
-        <!--beyblade selector from database of beys-->
-        <div class="row">
-          <div class="col-sm-6 col-xl-3 d-grid">
-              <select id="dbSelectList" class="select-list" size="10" onchange="setDbBey()"></select>
-              <br>
-              <!-- TODO: use separate rows for buttons -->
-              <button data-bs-toggle="modal" data-bs-target="#partsRecords" class="btn btn-primary">Check Parts Records</button>
-              <br>
-              <button data-bs-toggle="modal" data-bs-target="#areYouSure2" class="btn btn-danger">Clear Database</button>
-          </div>
-          <!--dbBey display area-->
-          <div class="col-sm-6 col-xl-3 text-center hidden" id="dbBeySpace">
-              <!-- TODO: labels and data separate-->
-              <br>
-              <span id="dbBeyIs"></span>
-              <br>
-              <span id="dbBeyWeight"></span>
-              <br>
-              <span id="dbBeyStats"></span>
-              <br>
-              <span id="dbWinPercent"></span> <!-- new rows start -->
-              <br>
-              <span id="dbPPW"></span>
-              <br>
-              <span id="dbPPL"></span>
-              <br>
-              <span id="dbPointDif"></span> <!-- new rows end -->
-              <br>
-              <span id="dbBeySO"></span>
-              <br>
-              <span id="dbBeyBst"></span>
-              <br>
-              <span id="dbBeyKO"></span>
-              <br>
-              <span id="dbBeyX"></span>
-              <br>
-              <span id="dbBeyDraw"></span>
-              <br>
-              <!-- buttons -->
-              <button class="btn btn-primary" onclick="copyStats()">Copy Stats to Clipboard</button>
-              <button class="btn btn-primary" onclick="dbSetBey(1)">Set as Bey 1</button>
-              <button class="btn btn-primary" onclick="dbSetBey(2)">Set as Bey 2</button>
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBeyPopup">Edit Bey Stats</button>
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#matchupHist" onclick="populateMatchHistOnclick()">Matchup History</button>
-              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#areYouSure">Delete Bey</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- matchup history popup -->
-      <div class="modal fade, modal-lg" id="matchupHist" tabindex="-1" aria-labelledby="matchupBey" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header modal-header--sticky">
-              <h5 class="modal-title" id="matchupBey"></h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <label for="matchupHistStadiumFilter">Stadium:</label>
-                <select id="matchupHistStadiumFilter" class="select-basic form-select mb-2">
-                  <!-- filled from stadiums.js -->
-                </select>
-                <table class="wide" id="totalsSpace"></table>
-                <br>
-                <table class="wide" id="matchupSpace"></table>
-            </div>
-            <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
-              <button type="button" class="btn btn-primary" id="copyHistToClip">Copy results to clipboard</button>
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- edit beyblade popup -->
-      <div class="modal fade" id="editBeyPopup" tabindex="-1" aria-labelledby="beyPopupLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="beyPopupLabel">Edit Bey Stats</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="statEditor">
-                    <label for="wko">Bey Wins by Over Finish:</label>
-                    <input type="number" id="wko" name="wko" value=""><br><br>
-                    <label for="lko">Bey Losses by KO:</label>
-                    <input type="number" id="lko" name="lko" value=""><br><br>
-
-                    <label for="wko">Bey Wins by Spin Finish:</label>
-                    <input type="number" id="wso" name="wso" value=""><br><br>
-                    <label for="lso">Bey Losses by Spin Out:</label>
-                    <input type="number" id="lso" name="lso" value=""><br><br>
-
-                    <label for="wbst">Bey Wins by Burst Finish:</label>
-                    <input type="number" id="wbst" name="wbst" value=""><br><br>
-                    <label for="lbst">Bey Losses by Burst Finish:</label>
-                    <input type="number" id="lbst" name="lbst" value=""><br><br>
-
-                    <label for="wx">Bey Wins by Xtreme Finish:</label>
-                    <input type="number" id="wx" name="wx" value=""><br><br>
-                    <label for="lx">Bey Losses by Xtreme Finish:</label>
-                    <input type="number" id="lx" name="lx" value=""><br><br>
-
-                    <label for="dr">Bey Draws:</label>
-                    <input type="number" id="dr" name="dr" value=""><br><br>
-                  </form>
-            </div>
-            <div class="modal-footer">
-                Note. You MUST reselect a beyblade from the list if you wish to change the same bey more than once.
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="statEditor.reset()">Close</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="editBey(wko.value, lko.value, wso.value, lso.value, wbst.value, lbst.value, wx.value, lx.value, dr.value)">Edit Bey Stats</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- part records popup -->
-      <div class="modal fade, modal-xl" id="partsRecords" tabindex="-1" aria-labelledby="partsSelection" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-
-            <div class="modal-header modal-header--sticky">
-              <h5 class="modal-title" id="partsSelction">Parts Records</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-6 border">
-                  Pick which combination of parts youd like to check the records for. Note: You do not need to choose a full build.
-                  <p>
-                  <select id="bitChipR1" class="select-basic"><option value="none">Select Lock Chip</option></select>
-                  <br>
-                  <select id="overBladeR1" class="select-basic"><option value="none">Select Over Blade</option></select>
-                  <br>
-                  <select id="bladeR1" class="select-basic" onchange="disableDropdowns('blade', this.value, 3)"><option value="none">Select Blade</option></select>
-                  <br>
-                  <select id="assistR1" class="select-basic"><option value="none">Select Assist Blade</option></select>
-                  <br>
-                  <select id="rachetR1" class="select-basic"><option value="none">Select Ratchet</option></select>
-                  <br>
-                  <select id="bitR1" class="select-basic" onchange="disableDropdowns('bit', this.value, 3)"><option value="none">Select Bit</option></select>
-                  <br>
+                <div class="visually-hidden" aria-hidden="true">
+                    <span id="bey2Is">Beyblade 2 has not been selected.</span>
+                    <span id="bey2Stats"></span>
+                    <span id="bey2SO"></span>
+                    <span id="bey2Bst"></span>
+                    <span id="bey2KO"></span>
+                    <span id="bey2X"></span>
+                    <span id="bey2Draw"></span>
                 </div>
-                <div class="col-md-6 border">
-                  Pick which part or combination of parts to check the records against. Note: At least one part must be selected.
-                  <p>
-                  <select id="bitChipR2" class="select-basic"><option value="none">Select Lock Chip</option></select>
-                  <br>
-                  <select id="overBladeR2" class="select-basic"><option value="none">Select Over Blade</option></select>
-                  <br>
-                  <select id="bladeR2" class="select-basic" onchange="disableDropdowns('blade', this.value, 4)"><option value="none">Select Blade</option></select>
-                  <br>
-                  <select id="assistR2" class="select-basic"><option value="none">Select Assist Blade</option></select>
-                  <br>
-                  <select id="rachetR2" class="select-basic"><option value="none">Select Ratchet</option></select>
-                  <br>
-                  <select id="bitR2" class="select-basic" onchange="disableDropdowns('bit', this.value, 4)"><option value="none">Select Bit</option></select>
-                  <br>
+            </div>
+        </section>
+
+        <!-- Match / VS -->
+        <section class="panel" id="vsContainer">
+            <div class="panel-heading">Match</div>
+            <div class="panel-body">
+                <div class="row g-3">
+
+                    <div class="col-md-6" id="buttonContainer">
+
+                        <div class="stadium-row">
+                            <label for="stadiumSelector">Stadium</label>
+                            <select id="stadiumSelector" class="select-basic form-select">
+                                <!-- filled from stadiums.js -->
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 win-buttons-col">
+                                <p class="win-button-title" id="bey1-button-title">Bey 1</p>
+                                <div class="d-flex flex-column align-items-center">
+                                    <button class="btn btn-primary btn-win" title="Spin Finish" onclick="choseWinnerDebounced(1, 'SO')">Spin</button>
+                                    <button class="btn btn-primary btn-win" title="Burst Finish" onclick="choseWinnerDebounced(1, 'burst')">Burst</button>
+                                    <button class="btn btn-primary btn-win" title="Over Finish" onclick="choseWinnerDebounced(1, 'KO')">Over</button>
+                                    <button class="btn btn-primary btn-win" title="Xtreme Finish" onclick="choseWinnerDebounced(1, 'x')">X</button>
+                                </div>
+                            </div>
+                            <div class="col-6 win-buttons-col">
+                                <p class="win-button-title" id="bey2-button-title">Bey 2</p>
+                                <div class="d-flex flex-column align-items-center">
+                                    <button class="btn btn-primary btn-win" title="Spin Finish" onclick="choseWinnerDebounced(2, 'SO')">Spin</button>
+                                    <button class="btn btn-primary btn-win" title="Burst Finish" onclick="choseWinnerDebounced(2, 'burst')">Burst</button>
+                                    <button class="btn btn-primary btn-win" title="Over Finish" onclick="choseWinnerDebounced(2, 'KO')">Over</button>
+                                    <button class="btn btn-primary btn-win" title="Xtreme Finish" onclick="choseWinnerDebounced(2, 'x')">X</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="match-actions">
+                            <button class="btn btn-outline-secondary btn-icon" title="Draw" aria-label="Draw" onclick="choseWinnerDebounced(0, 'draw')">=</button>
+                            <button class="btn btn-outline-secondary btn-icon" title="Undo last round" aria-label="Undo last round" onclick="undoDebounced()">&#8630;</button>
+                        </div>
+
+                        <p class="match-log" id="winnerLog"></p>
+                        <p class="match-error" id="error"></p>
+
+                    </div>
+
+                    <div class="col-md-6" id="recordsSpace">
+                        <table class="records-table">
+                            <tr>
+                                <td class="text-end"></td>
+                                <th class="text-end" name="record1">bey1</th>
+                                <td class="text-center">vs</td>
+                                <th name="record2">bey2</th>
+                            </tr>
+                            <tr>
+                                <td class="text-end record-table-label">Wins:</td>
+                                <td class="text-end" name="wins1">0</td>
+                                <td class="text-center">/</td>
+                                <td id="wins2Col">
+                                    <div id="wins2Container">
+                                        <span name="wins2">0</span>
+                                        <span name="vsTotalRounds">0</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-end record-table-label">Points:</td>
+                                <td class="text-end" name="points1">0</td>
+                                <td class="text-center">/</td>
+                                <td class="text-start" name="points2">0</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end record-table-label">Spin:</td>
+                                <td class="text-end" name="so1">0</td>
+                                <td class="text-center">/</td>
+                                <td class="text-start" name="so2">0</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end record-table-label">Burst:</td>
+                                <td class="text-end" name="bst1">0</td>
+                                <td class="text-center">/</td>
+                                <td class="text-start" name="bst2">0</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end record-table-label">Over:</td>
+                                <td class="text-end" name="ko1">0</td>
+                                <td class="text-center">/</td>
+                                <td class="text-start" name="ko2">0</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end record-table-label">Xtreme:</td>
+                                <td class="text-end" name="x1">0</td>
+                                <td class="text-center">/</td>
+                                <td class="text-start" name="x2">0</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end record-table-label">Draws:</td>
+                                <td></td>
+                                <td class="text-center" name="draws">0</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <div id="recordsActions" class="records-actions"></div>
+                    </div>
+
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12 border" id="matchupHolder">
-                  <button onclick="populateMatchHistUser2(bitChipR1.value, overBladeR1.value, bladeR1.value, assistR1.value, rachetR1.value, bitR1.value, bitChipR2.value, overBladeR2.value, bladeR2.value, assistR2.value, rachetR2.value, bitR2.value)" class="btn btn-primary">Show Part Stats</button>
-                  <br>
-                  <span id="matchupBeyUser">Parts have not been selected yet.</span>
-                  <br>
-                  <table class="wide" id="matchupHistStatsTable" style="display:none">
-                    <tr>
-                      <th class="text-center" colspan="12" id="matchupStatsBeyTitle"></th>
-                    </tr>
-                    <tr>
-                      <th class="text-center" colspan="3">Win %</th>
-                      <th class="text-center" colspan="3">Points Per Win</th>
-                      <th class="text-center" colspan="3">Points Per Loss</th>
-                      <th class="text-center" colspan="3">Avg Points Per Round</th>
-                    </tr>
-                    <tr>
-                      <td class="text-center" colspan="3" id="matchupStatsOverall"   ></td>
-                      <td class="text-center" colspan="3" id="matchupStatsPerWin"    ></td>
-                      <td class="text-center" colspan="3" id="matchupStatsPerLoss"   ></td>
-                      <td class="text-center" colspan="3" id="matchupStatsAvgPoints" ></td>
-                    </tr>
+            </div>
+        </section>
 
-                  </table>
-                  <br>
-                  <table class="wide text-center" id="matchupHistUser"></table>
-                  <table style="display:none">
-                    <!-- hidden header template for copying in JS -->
-                    <tr id="matchupHistUserHeader" style="display:none">
-                      <td class="d-table-cell d-lg-none part-history-vs"></td>
-                      <td class="d-none d-lg-table-cell">Selected Bey</td>
-                      <td class="d-none d-lg-table-cell">Opposing Bey</td>
-                      <td class="d-table-cell d-lg-none">Over</td>
-                      <td class="d-table-cell d-lg-none">Spin</td>
-                      <td class="d-table-cell d-lg-none">Burst</td>
-                      <td class="d-table-cell d-lg-none">Extreme</td>
-                      <td class="d-none d-lg-table-cell">Over Win/Loss</td>
-                      <td class="d-none d-lg-table-cell">Spin Win/Loss</td>
-                      <td class="d-none d-lg-table-cell">Burst Win/Loss</td>
-                      <td class="d-none d-lg-table-cell">Extreme Win/Loss</td>
-                      <td class="d-table-cell">Draw</td>
-                    </tr>
-                  </table>
+        <!-- Roster -->
+        <details class="panel panel-details" open>
+            <summary class="panel-heading">Roster</summary>
+            <div class="panel-body roster-body">
+                <div class="row g-3 roster-layout">
+                    <div class="col-12 roster-list-col" id="rosterListCol">
+                        <div class="roster-list-wrap">
+                            <label class="visually-hidden" for="rosterSearch">Search roster</label>
+                            <input type="search" id="rosterSearch" class="form-control roster-search" placeholder="Search roster..." autocomplete="off" enterkeyhint="search">
+                            <select id="dbSelectList" class="select-list roster-list" size="8" onchange="setDbBey()"></select>
+                        </div>
+                    </div>
+                    <div class="hidden" id="dbBeySpace">
+                        <div class="db-bey-card">
+                            <header class="db-bey-header">
+                                <h3 class="db-bey-title" id="dbBeyIs"></h3>
+                                <p class="db-bey-meta">
+                                    <span id="dbBeyWeight"></span>
+                                    <span class="db-bey-meta-sep" aria-hidden="true">&middot;</span>
+                                    <span id="dbBeyStats"></span>
+                                </p>
+                            </header>
+
+                            <div class="db-bey-summary">
+                                <div class="db-summary-tile">
+                                    <span class="db-summary-label">Win %</span>
+                                    <span class="db-summary-value" id="dbWinPercent"></span>
+                                </div>
+                                <div class="db-summary-tile">
+                                    <span class="db-summary-label">Pts / Win</span>
+                                    <span class="db-summary-value" id="dbPPW"></span>
+                                </div>
+                                <div class="db-summary-tile">
+                                    <span class="db-summary-label">Pts / Loss</span>
+                                    <span class="db-summary-value" id="dbPPL"></span>
+                                </div>
+                                <div class="db-summary-tile">
+                                    <span class="db-summary-label">Pts / Round</span>
+                                    <span class="db-summary-value" id="dbPointDif"></span>
+                                </div>
+                            </div>
+
+                            <table class="db-finish-table records-table">
+                                <tr>
+                                    <td class="record-table-label"></td>
+                                    <th class="text-end">W</th>
+                                    <th class="text-end">L</th>
+                                </tr>
+                                <tr>
+                                    <td class="record-table-label">Spin</td>
+                                    <td class="text-end" id="dbSoW"></td>
+                                    <td class="text-end" id="dbSoL"></td>
+                                </tr>
+                                <tr>
+                                    <td class="record-table-label">Burst</td>
+                                    <td class="text-end" id="dbBstW"></td>
+                                    <td class="text-end" id="dbBstL"></td>
+                                </tr>
+                                <tr>
+                                    <td class="record-table-label">Over</td>
+                                    <td class="text-end" id="dbKoW"></td>
+                                    <td class="text-end" id="dbKoL"></td>
+                                </tr>
+                                <tr>
+                                    <td class="record-table-label">X</td>
+                                    <td class="text-end" id="dbXW"></td>
+                                    <td class="text-end" id="dbXL"></td>
+                                </tr>
+                                <tr>
+                                    <td class="record-table-label">Draws</td>
+                                    <td class="text-center" colspan="2" id="dbBeyDraw"></td>
+                                </tr>
+                            </table>
+
+                            <div class="db-bey-actions">
+                                <div class="db-bey-actions-row">
+                                    <button class="btn btn-primary btn-sm" onclick="dbSetBey(1)">Set Bey 1</button>
+                                    <button class="btn btn-primary btn-sm" onclick="dbSetBey(2)">Set Bey 2</button>
+                                    <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editBeyPopup">Edit</button>
+                                    <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#areYouSure">Delete</button>
+                                </div>
+                                <div class="db-bey-actions-row">
+                                    <button class="btn btn-outline-secondary btn-icon btn-sm" onclick="copyStats()" title="Copy stats to clipboard" aria-label="Copy stats to clipboard" id="dbCopyStatsBtn"></button>
+                                    <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#matchupHist" onclick="populateMatchHistOnclick()">History</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
+        </details>
 
-            <div class="modal-footer modal-footer--sticky">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- delete beyblade popup -->
-      <div class="modal fade" id="areYouSure" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-                <h5 class="modal-title text-center" id="exampleModalLabel">Are You Sure?</h5>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteBey()">Yes, Delete this BeyBlade</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- delete database popup -->
-      <div class="modal fade" id="areYouSure2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-                <h5 class="modal-title text-center" id="exampleModalLabel2">Are You Sure?</h5>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteAllBeys()">Yes, Clear the ENTIRE databeyse</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- clear current matchup popup -->
-      <div class="modal fade" id="areYouSure3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-                <h5 class="modal-title text-center" id="exampleModalLabel3">Are You Sure?</h5>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="clearMatchupHistory()">Yes, Clear the current mathcup</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- import database confirmation popup -->
-      <div class="modal fade" id="areYouSureImport" tabindex="-1" aria-labelledby="importConfirmLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-                <h5 class="modal-title text-center" id="importConfirmLabel">Are You Sure?</h5>
-                <p></p>
-                <p>Importing a database will <b>overwrite</b> your current database. We recommended you export your current database first.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="openSettings()">Nevermind</button>
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="importDatabase()">Yes, Import</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- restore automatic backup confirmation -->
-      <div class="modal fade" id="areYouSureRestoreBackup" tabindex="-1" aria-labelledby="restoreBackupConfirmLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-                <h5 class="modal-title text-center" id="restoreBackupConfirmLabel">Are You Sure?</h5>
-                <p></p>
-                <p id="restoreBackupConfirmMsg"></p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="openSettings()">Nevermind</button>
-              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onclick="confirmRestoreMigrationBackup()">Yes, Restore backup</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- pick theme, swap css file -->
-      <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="settings-body" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-                <h4 class="modal-title" id="settings-body">Settings</h4>
-
-                <h5 class="">Select a theme</h5>
-                <select id="themeSelect" class="select-basic form-select">
-                  <option value="default">Default</option>
-                  <option value="dark-purple">Dark Purple</option>
-                  <option value="grey">Grey</option>
-                  <option value="wbo">World Beyblade Organization</option>
-                  <option value="none">None</option>
-                </select>
-
-                <br>
-                <span class="d-flex justify-content-between">
-                  <h5>Enable stream overlay buttons?</h5>
-                  <input type="checkbox" id="enableOverlayBtnsCheckbox">
-                </span>
-
-                
-                <br>
-                <br>
-                <div id="migrationBackupSection" class="d-none">
-                  <h5>Automatic backup</h5>
-                  <p class="small text-muted"><strong>When:</strong> <span id="migrationBackupCreatedAt"></span></p>
-                  <p class="small text-muted"><strong>Why:</strong> <span id="migrationBackupInfo"></span></p>
-                  <button type="button" class="btn btn-danger" onclick="restoreMigrationBackupFromSettings()">Restore automatic backup</button>
-                  <br>
-                  <br>
+        <!-- Parts Records -->
+        <details class="panel panel-details">
+            <summary class="panel-heading">Parts Records</summary>
+            <div class="panel-body parts-records-body">
+                <p class="parts-records-intro">Pick part combinations to compare records. A full build is not required on either side.</p>
+                <div class="row g-3">
+                    <div class="col-md-6 parts-records-panel">
+                        <h6 class="parts-records-heading">Selected parts</h6>
+                        <p class="parts-records-note">Any number of parts.</p>
+                        <div class="parts-records-grid">
+                            <label class="parts-label" for="bitChipR1">Lock</label>
+                            <select id="bitChipR1" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="overBladeR1">Over</label>
+                            <select id="overBladeR1" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="bladeR1">Blade</label>
+                            <select id="bladeR1" class="select-basic" onchange="disableDropdowns('blade', this.value, 3)"><option value="none">None</option></select>
+                            <label class="parts-label" for="assistR1">Assist</label>
+                            <select id="assistR1" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="rachetR1">Ratchet</label>
+                            <select id="rachetR1" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="bitR1">Bit</label>
+                            <select id="bitR1" class="select-basic" onchange="disableDropdowns('bit', this.value, 3)"><option value="none">None</option></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 parts-records-panel">
+                        <h6 class="parts-records-heading">Opposing parts</h6>
+                        <p class="parts-records-note">At least one part must be selected.</p>
+                        <div class="parts-records-grid">
+                            <label class="parts-label" for="bitChipR2">Lock</label>
+                            <select id="bitChipR2" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="overBladeR2">Over</label>
+                            <select id="overBladeR2" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="bladeR2">Blade</label>
+                            <select id="bladeR2" class="select-basic" onchange="disableDropdowns('blade', this.value, 4)"><option value="none">None</option></select>
+                            <label class="parts-label" for="assistR2">Assist</label>
+                            <select id="assistR2" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="rachetR2">Ratchet</label>
+                            <select id="rachetR2" class="select-basic"><option value="none">None</option></select>
+                            <label class="parts-label" for="bitR2">Bit</label>
+                            <select id="bitR2" class="select-basic" onchange="disableDropdowns('bit', this.value, 4)"><option value="none">None</option></select>
+                        </div>
+                    </div>
                 </div>
-                <h5>Export Database</h5>
-                <button type="button" class="btn btn-primary" onclick="exportDb()">Export local database</button>
+                <div class="parts-records-actions d-grid col-md-6 col-lg-5 mx-auto">
+                    <p class="parts-records-preview" id="partsRecordsPreview" aria-live="polite">Pick parts above to compare</p>
+                    <button type="button" id="partsRecordsLookupBtn" class="btn btn-primary" disabled>Show Part Stats</button>
+                </div>
+                <div class="parts-records-results parts-records-results--empty" id="matchupHolder">
+                    <table class="wide" id="matchupHistStatsTable" style="display:none">
+                        <tr>
+                            <th class="text-center" colspan="12" id="matchupStatsBeyTitle"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center" colspan="3">Win %</th>
+                            <th class="text-center" colspan="3">Points Per Win</th>
+                            <th class="text-center" colspan="3">Points Per Loss</th>
+                            <th class="text-center" colspan="3">Avg Points Per Round</th>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="3" id="matchupStatsOverall"></td>
+                            <td class="text-center" colspan="3" id="matchupStatsPerWin"></td>
+                            <td class="text-center" colspan="3" id="matchupStatsPerLoss"></td>
+                            <td class="text-center" colspan="3" id="matchupStatsAvgPoints"></td>
+                        </tr>
+                    </table>
+                    <table class="wide text-center" id="matchupHistUser"></table>
+                    <table class="visually-hidden" aria-hidden="true">
+                        <tr id="matchupHistUserHeader">
+                            <td class="d-table-cell d-lg-none part-history-vs"></td>
+                            <td class="d-none d-lg-table-cell">Selected Bey</td>
+                            <td class="d-none d-lg-table-cell">Opposing Bey</td>
+                            <td class="d-table-cell d-lg-none">Over</td>
+                            <td class="d-table-cell d-lg-none">Spin</td>
+                            <td class="d-table-cell d-lg-none">Burst</td>
+                            <td class="d-table-cell d-lg-none">Extreme</td>
+                            <td class="d-none d-lg-table-cell">Over Win/Loss</td>
+                            <td class="d-none d-lg-table-cell">Spin Win/Loss</td>
+                            <td class="d-none d-lg-table-cell">Burst Win/Loss</td>
+                            <td class="d-none d-lg-table-cell">Extreme Win/Loss</td>
+                            <td class="d-table-cell">Draw</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </details>
 
-                <br>
-                <br>
-                <!-- <button type="button" class="btn btn-primary" onclick="importDb()">Import database</button> -->
+    </main>
 
-                <h5>Import Database</h5>
-                <!-- <form id="importDbForm"> -->
-                  <div class="form-group">
-                    <label for="importDbFile">Import database from JSON file:</label>
-                    <input class="form-control" type="file" id="importDbFile" name="importDbFile" accept=".json">
+    <!-- matchup history popup -->
+    <div class="modal fade modal-lg" id="matchupHist" tabindex="-1" aria-labelledby="matchupBey" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header--sticky">
+                    <h5 class="modal-title" id="matchupBey"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="matchupHistStadiumFilter">Stadium:</label>
+                    <select id="matchupHistStadiumFilter" class="select-basic form-select mb-2">
+                        <!-- filled from stadiums.js -->
+                    </select>
+                    <table class="wide" id="totalsSpace"></table>
                     <br>
-                    <!-- <button class="btn btn-primary" type="button" id="importDbButton">Import database</button> -->
-  
-                  </div>
-                <!-- </form> -->
-
+                    <table class="wide" id="matchupSpace"></table>
+                </div>
+                <div class="modal-footer modal-footer--sticky">If you are not seeing a Matchup History against a Bey you know you've fought, The Match History feature was added after those two beys fought. Simply pick them as Bey1 and 2 again, though old matches will not be recorded.
+                    <button type="button" class="btn btn-primary" id="copyHistToClip">Copy results to clipboard</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
-      <!-- error message modal  -->
-      <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorLabel" aria-hidden="true">
+    <!-- edit beyblade popup -->
+    <div class="modal fade" id="editBeyPopup" tabindex="-1" aria-labelledby="beyPopupLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="errorLabel">Error</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="beyPopupLabel">Edit Bey Stats</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="statEditor">
+                        <label for="wko">Bey Wins by Over Finish:</label>
+                        <input type="number" id="wko" name="wko" value=""><br><br>
+                        <label for="lko">Bey Losses by KO:</label>
+                        <input type="number" id="lko" name="lko" value=""><br><br>
+
+                        <label for="wso">Bey Wins by Spin Finish:</label>
+                        <input type="number" id="wso" name="wso" value=""><br><br>
+                        <label for="lso">Bey Losses by Spin Out:</label>
+                        <input type="number" id="lso" name="lso" value=""><br><br>
+
+                        <label for="wbst">Bey Wins by Burst Finish:</label>
+                        <input type="number" id="wbst" name="wbst" value=""><br><br>
+                        <label for="lbst">Bey Losses by Burst Finish:</label>
+                        <input type="number" id="lbst" name="lbst" value=""><br><br>
+
+                        <label for="wx">Bey Wins by Xtreme Finish:</label>
+                        <input type="number" id="wx" name="wx" value=""><br><br>
+                        <label for="lx">Bey Losses by Xtreme Finish:</label>
+                        <input type="number" id="lx" name="lx" value=""><br><br>
+
+                        <label for="dr">Bey Draws:</label>
+                        <input type="number" id="dr" name="dr" value=""><br><br>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    Note. You MUST reselect a beyblade from the list if you wish to change the same bey more than once.
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="statEditor.reset()">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="editBey(wko.value, lko.value, wso.value, lso.value, wbst.value, lbst.value, wx.value, lx.value, dr.value)">Edit Bey Stats</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <span id="errorMsg"></span>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+
+    <!-- delete beyblade popup -->
+    <div class="modal fade" id="areYouSure" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Are You Sure?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteBey()">Yes, Delete this BeyBlade</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete database popup -->
+    <div class="modal fade" id="areYouSure2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title text-center" id="exampleModalLabel2">Are You Sure?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deleteAllBeys()">Yes, Clear the ENTIRE databeyse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- clear current matchup popup -->
+    <div class="modal fade" id="areYouSure3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title text-center" id="exampleModalLabel3">Are You Sure?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="clearMatchupHistory()">Yes, Clear the current mathcup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- import database confirmation popup -->
+    <div class="modal fade" id="areYouSureImport" tabindex="-1" aria-labelledby="importConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title text-center" id="importConfirmLabel">Are You Sure?</h5>
+                    <p></p>
+                    <p>Importing a database will <b>overwrite</b> your current database. We recommended you export your current database first.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="openSettings()">Nevermind</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="importDatabase()">Yes, Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- restore automatic backup confirmation -->
+    <div class="modal fade" id="areYouSureRestoreBackup" tabindex="-1" aria-labelledby="restoreBackupConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title text-center" id="restoreBackupConfirmLabel">Are You Sure?</h5>
+                    <p></p>
+                    <p id="restoreBackupConfirmMsg"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="openSettings()">Nevermind</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onclick="confirmRestoreMigrationBackup()">Yes, Restore backup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- settings -->
+    <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="settings-body" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settings-body">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-group">
+                        <div class="settings-group-heading">Appearance</div>
+                        <div class="settings-row">
+                            <div class="settings-row-text">
+                                <div class="settings-row-label">Theme</div>
+                            </div>
+                            <select id="themeSelect" class="select-basic form-select form-select-sm settings-control" aria-label="Theme">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="none">None (Bootstrap)</option>
+                            </select>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-row-text">
+                                <div class="settings-row-label">Stream overlay buttons</div>
+                                <div class="settings-row-desc">Show overlay controls for OBS streaming</div>
+                            </div>
+                            <div class="form-check form-switch settings-switch">
+                                <input type="checkbox" class="form-check-input" id="enableOverlayBtnsCheckbox" aria-label="Enable stream overlay buttons">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-group-heading">Data</div>
+                        <div class="settings-row">
+                            <div class="settings-row-text">
+                                <div class="settings-row-label">Export</div>
+                                <div class="settings-row-desc">Download your local database as JSON</div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="exportDb()">Export</button>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-row-text">
+                                <div class="settings-row-label">Import</div>
+                                <div class="settings-row-desc">Restore from a JSON backup file</div>
+                            </div>
+                            <input class="form-control form-control-sm settings-file-input" type="file" id="importDbFile" name="importDbFile" accept=".json" aria-label="Import database file">
+                        </div>
+                        <div id="migrationBackupSection" class="settings-row settings-row--block d-none">
+                            <div class="settings-row-text">
+                                <div class="settings-row-label">Automatic backup</div>
+                                <p class="settings-backup-detail"><strong>When:</strong> <span id="migrationBackupCreatedAt"></span></p>
+                                <p class="settings-backup-detail"><strong>Why:</strong> <span id="migrationBackupInfo"></span></p>
+                            </div>
+                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="restoreMigrationBackupFromSettings()">Restore backup</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-group settings-group--danger">
+                        <div class="settings-group-heading">Danger zone</div>
+                        <div class="settings-row">
+                            <div class="settings-row-text">
+                                <div class="settings-row-label">Clear database</div>
+                                <div class="settings-row-desc">Permanently delete all beys, records, and settings</div>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#areYouSure2">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- error message modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span id="errorMsg"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="d-flex flex-wrap justify-content-between align-items-center border-top">
+        <p class="col-md-4 mb-0 px-2">© Fabel'd Beyblades</p>
+        <ul class="nav col-md-4 justify-content-end overflow-hidden">
+            <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX" target="_blank" rel="noopener" class="nav-link px-3">Source code</a></li>
+            <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#settings" class="nav-link px-3">Settings</a></li>
+            <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3">About</a></li>
+        </ul>
+    </footer>
 
     <!--import scripts-->
     <script src="./libraries/pouchdb-7.3.1.js"></script>
@@ -690,36 +695,14 @@
     <script src="./stadiums.js"></script>
     <script src="./beyblade.js"></script>
     <script src="./vsRecords.js"></script>
-    <!-- migrate old data -->
     <script src="./migrations/backup.js"></script>
     <script src="./migrations/migrate.js"></script>
     <script src="./migrations/versions/001_stadium_vs_records.js"></script>
-
     <script src="./main.js?v3"></script>
-
-    <!--
-        TODO:
-        ui cleanup
-        make an actual website
-
-        Known Issues:
-        editing a bey doesnt allow for multiple edits without reselecting a bey from the list
-    -->
 
 </body>
 
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
-  <p class="col-md-4 mb-0 px-2">© Fabel'd Beyblades</p>
-
-  <ul class="nav col-md-4 justify-content-end overflow-hidden">
-    <li class="nav-item"><a href="https://github.com/fabelavalon/BeyBuilderX"  target="_blank" rel="noopener" class="nav-link px-3">Source code</a></li>
-    <li class="nav-item"><a role="button" data-bs-toggle="modal" data-bs-target="#settings" class="nav-link px-3">Settings</a></li>
-    <li class="nav-item"><a onclick="spinMe(this);" role="button" class="nav-link px-3">About</a></li>
-  </ul>
-</footer>
-
 </html>
-
 
 <!-- score tracker popup -->
 <template id="score-overlay-template">
@@ -735,36 +718,35 @@
   <script src="./libraries/bootstrap/bootstrap.bundle.js"></script>
 </head>
 <body>
-  <!--Records table for selected beys-->
   <div class="col-lg-12 text-center overlay-score-box text-black-outline">
     <p class="results-title">Results:</p>
     <div class="" id="overlay-result-first">
       <p class="overlay-bey-name overlay-bey-name-1" id="record1" name="record1">bey1</p>
-      OS: 
+      OS:
       <span class="score-number" name="so1">0</span>
-      Burst: 
+      Burst:
       <span class="score-number" name="bst1">0</span>
-      KO: 
+      KO:
       <span class="score-number" name="ko1">0</span>
-      X: 
+      X:
       <span class="score-number" name="x1">0</span>
     </div>
 
     <div id="overlay-result-second">
       <p class="overlay-bey-name overlay-bey-name-2" id="record2" name="record2">bey2</p>
-      OS: 
+      OS:
       <span class="score-number" name="so2">0</span>
-      Burst: 
+      Burst:
       <span class="score-number" name="bst2">0</span>
-      KO: 
+      KO:
       <span class="score-number" name="ko2">0</span>
-      X: 
+      X:
       <span class="score-number" name="x2">0</span>
     </div>
 
-    <p class="draws-line">Draws: <span class ="score-number" id="draws" name="draws">0</span></p>
-    
-  </div><!--end recordSpace-->
+    <p class="draws-line">Draws: <span class="score-number" id="draws" name="draws">0</span></p>
+
+  </div>
 </body>
 </html>
 </template>

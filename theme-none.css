@@ -1,15 +1,65 @@
-/* just bootstrap */
+/* BeyBuilder X - None theme (Bootstrap defaults) */
 
-.nav-link {
-    color: #000000;
+:root {
+    /* required by beybuilder.css layout */
+    --color-border: var(--bs-border-color);
+    --color-text-muted: #6c757d;
+
+    --meta-theme-color: var(--bs-primary);
+
+    --color-accent-bey1: var(--bs-primary);
+    --color-accent-bey2: var(--bs-danger);
 }
 
-
-/* default table border, sans color */
-td, tr {
-    border-bottom: 1px solid;
-    border-top: 1px solid;
+.panel-heading-bey1 {
+    border-left-color: var(--color-accent-bey1);
 }
-table{
-    border: 1px solid;
+
+.panel-heading-bey2 {
+    border-left-color: var(--color-accent-bey2);
+}
+
+/* border colors for elements that declare border width without color */
+.panel,
+.panel-heading,
+.db-bey-card,
+.db-summary-tile,
+.parts-records-panel,
+.parts-records-results,
+table,
+td,
+th,
+tr {
+    border-color: var(--bs-border-color);
+}
+
+#recordsSpace > table > tbody > tr:nth-child(1),
+#recordsSpace > table > tbody > tr:nth-child(3) {
+    border-bottom-color: var(--bs-gray-400);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--bs-border-color);
+}
+
+.modal-header--sticky,
+.modal-footer--sticky {
+    background-color: inherit;
+}
+
+.modal-body input[type="number"] {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-border-color);
+}
+
+.modal-body input[type="number"]:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    outline: 0;
+}
+
+#error {
+    color: var(--bs-danger);
 }
