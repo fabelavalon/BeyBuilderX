@@ -101,6 +101,14 @@ body {
     border-left-style: solid;
 }
 
+.bey-layout-row {
+    margin-bottom: 1rem;
+}
+
+.bey-layout-row .panel {
+    margin-bottom: 0;
+}
+
 /* ---- bey part selectors ---- */
 
 .parts-grid {
@@ -770,7 +778,7 @@ footer .nav-link {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 576px) {
     .bey-layout-row {
         align-items: stretch;
     }
