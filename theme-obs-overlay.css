@@ -1,0 +1,66 @@
+/*=========================================================*
+ *BeyBuilder X v1.5 for Beyblade X                         *
+ *Author: Maave                                            *
+ *Copyright 2026                                           *
+ *=========================================================*/
+
+/* backgrounds and text color */
+html, body {
+    background-color: #6257c2;
+    color: #fff;
+    font-weight: 600;
+}
+
+.text-black-outline {
+    /* outline color */
+    color: black;
+    /* inside font color */
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke: 0.52rem;
+    font-size: 2.15rem;
+    paint-order: stroke fill; /* draw outline around text, then fill inside */
+}
+
+/* flexbox lets us re-order */
+.overlay-score-box {
+    display: flex;
+    flex-direction: column;
+}
+/* default order */
+#overlay-results-second, #overlay-results-first, .results-title {
+    order: 1;
+}
+/* add this class to move element down */
+.order-two {
+    order: 2;
+}
+/* "draws" text always at the bottom */
+.draws-line {
+    order: 99;
+}
+
+p {
+    margin-bottom: 0.3rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+.results-title {
+    font-size: 1.5rem; /* default 1 rem */
+    display: none;
+}
+.score-number {
+    /* color: orangered; */ 
+    -webkit-text-fill-color: orangered;
+}
+
+/* make sure tables and table elements have the proper borders */
+td, tr {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-color: #fff;
+}
+
+table{
+    border: 1px solid #fff;
+}

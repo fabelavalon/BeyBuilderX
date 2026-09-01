@@ -18,13 +18,19 @@ var allRachets = rachets;
 var allBits = bits;
 
 //create the elements for the buttons that will get generated via this script
-var copyStatsbtn = document.createElement("button"); //NEW
+var copyStatsbtn = document.createElement("button"); 
 var bey1Statbtn = document.createElement("button");
 var bey2Statbtn = document.createElement("button");
 var showAllBeysbtn = document.createElement("button");
 var removeBeybtn = document.createElement("button");
 var editBeybtn = document.createElement("button");
 var showMatchupbtn = document.createElement("button");
+// under the vs records
+var recordsSpace = document.getElementById("recordsSpace"); 
+var recordsCopybtn = document.createElement("button"); 
+var clearHistoryBtn = document.createElement("button"); 
+var overlayBtn = document.createElement("button"); 
+var overlaySwapBeysBtn = document.createElement("button"); 
 
 //import the elements for the dropdowns...
 //...for bey1
@@ -89,14 +95,6 @@ var bey1SO = document.getElementById("bey1SO");
 var bey1Bst = document.getElementById("bey1Bst");
 var bey1X = document.getElementById("bey1X");
 var bey1Draw = document.getElementById("bey1Draw");
-//unfinished maave block
-var bey1title = document.getElementById("bey1title");
-var bey1draws = document.getElementById("bey1weight");
-var bey1weight = document.getElementById("bey1draws");
-var bey1spin = document.getElementById("bey1spin");
-var bey1over = document.getElementById("bey1over");
-var bey1burst = document.getElementById("bey1burst");
-var bey1xtreme = document.getElementById("bey1xtreme");
 
 //bey2 stats
 var bey2Is = document.getElementById("bey2Is");
@@ -124,6 +122,8 @@ const fileInput = document.getElementById('importDbFile');
 //theme switcher
 var themeSelect = document.getElementById("themeSelect");
 var themeLink = document.getElementById("theme");
+// checkbox to enable OBS overlay button
+const enableOverlayBtnsCheckbox = document.getElementById("enableOverlayBtnsCheckbox");
 
 // error modal
 const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
@@ -141,12 +141,19 @@ var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
 var matchupHistCopyButton = document.getElementById("copyHistToClip");
 var clearHistButton = document.getElementById("clearHist");
+// window object for OBS overlay
+var scoreOverlayWindow = null;
 
-
-//used so we dont generate more buttons\
+//used so we dont generate more buttons
 var wasCopyMatchupToClipGenerated = false;
 var wasClearMatchupHistoryGenerated = false;
 var wasCopyFullHistToClipGenerated = false;
+var wasOverlayGenerated = false;
+var wasSwapGenerated = false;
+
+// settings, pouchDB json objects
+var selectedTheme; // pouchDB json with string "name"
+var overlaySetting; // pouchDB json with boolean "value"
 
 //global beyblade variables
 var bey1;
@@ -340,6 +347,8 @@ function main(){
     // on click and other event listeners
     loadTheme();
     themeSwitchListener();
+    loadOverlaySetting();
+    overlaySettingListener();
     importDbSetup();
 };
 
@@ -578,8 +587,8 @@ function createWinButtons(){
         .then(displayRecords);
 
         // titles above win buttons
-        bey1WinTitle.textContent = bey1.name;
-        bey2WinTitle.textContent = bey2.name;
+        bey1WinTitle.innerHTML = bey1.findNameHtml();
+        bey2WinTitle.innerHTML = bey2.findNameHtml();
     }
 }
 function clearVsButtons(){
@@ -1336,17 +1345,18 @@ function setDbBey(){
     beyBladeDBX.get(selectedBey.value, function(err, doc) {
         if(!err){
             // convert to BeyBlade object, so we can access methods like getTotalWin()
+            var castDoc;
             if((allBlades[doc.build.blade].system == "BX") || (allBlades[doc.build.blade].system == "UX")){
                 // build a new BeyBlade object using parts, then overlay win/loss data from database
-                var castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, doc.build.rachet, doc.build.bit), doc.build );
             }
             else if(allBlades[doc.build.blade].system == "UX2"){
-                var castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, -1, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(-1, -1, doc.build.blade, -1, -1, doc.build.bit), doc.build );
             }
             else if(allBlades[doc.build.blade].system == "CX"){
-                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip, -1, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(doc.build.bitChip, -1, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
             }else if(allBlades[doc.build.blade].system == "CX2"){
-                var castDoc = Object.assign( new BeyBlade(doc.build.bitChip, doc.build.over, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
+                castDoc = Object.assign( new BeyBlade(doc.build.bitChip, doc.build.over, doc.build.blade, doc.build.assist, doc.build.rachet, doc.build.bit), doc.build );
             }
 
             //TODO: move some calculation into Beyblade class, like getWinPoints, getLosePoints, etc
@@ -1382,7 +1392,8 @@ function setDbBey(){
             dbBeyBst.textContent = "Burst Win/Loss: " + doc.build.winsBst + " / " + doc.build.loseBst;
             dbBeyX.textContent = "Xtreme Win/Loss: " + doc.build.winsX + " / " + doc.build.loseX;
             dbBeyDraw.textContent = "Draws: " + doc.build.draws;
-            dbBey = doc.build;
+            dbBey = castDoc;
+
             
             // clipboard
             dbCopiedStats =   "Overall Results for " + doc.build.name + "\n" +
@@ -1477,36 +1488,81 @@ var displayCopiedStats = "";
 //fill matchup table on main screen when both beys are chosen
 function displayRecords(){
 
-    //console.log("called displayRecords()");
+    console.log("called displayRecords()");
     if(!bey1 || !bey2) {
         console.log("beys not set");
         return;
     }
 
-    var record1 = document.getElementById("record1");
-    var wins1 = document.getElementById("wins1");
-    var points1 = document.getElementById("points1");
-    var ko1 = document.getElementById("ko1");
-    var so1 = document.getElementById("so1");
-    var bst1 = document.getElementById("bst1");
-    var x1 = document.getElementById("x1");
-    
-    var record2 = document.getElementById("record2");
-    var wins2 = document.getElementById("wins2");
-    var points2 = document.getElementById("points2");
-    var ko2 = document.getElementById("ko2");
-    var so2 = document.getElementById("so2");
-    var bst2 = document.getElementById("bst2");
-    var x2 = document.getElementById("x2");
+    // element collections (include overlay window elements when present)
+    var record1 = new Set([
+        ...document.getElementsByName("record1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("record1") ?? [])
+    ]);
+    var wins1 = new Set([
+        ...document.getElementsByName("wins1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("wins1") ?? [])
+    ]);
+    var points1 = new Set([
+        ...document.getElementsByName("points1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("points1") ?? [])
+    ]);
+    var ko1 = new Set([
+        ...document.getElementsByName("ko1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("ko1") ?? [])
+    ]);
+    var so1 = new Set([
+        ...document.getElementsByName("so1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("so1") ?? [])
+    ]);
+    var bst1 = new Set([
+        ...document.getElementsByName("bst1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("bst1") ?? [])
+    ]);
+    var x1 = new Set([
+        ...document.getElementsByName("x1"),
+        ...(scoreOverlayWindow?.document.getElementsByName("x1") ?? [])
+    ]);
 
-    var draws = document.getElementById("draws");
-    var totalRounds = document.getElementById("vsTotalRounds");
+    var record2 = new Set([
+        ...document.getElementsByName("record2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("record2") ?? [])
+    ]);
+    var wins2 = new Set([
+        ...document.getElementsByName("wins2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("wins2") ?? [])
+    ]);
+    var points2 = new Set([
+        ...document.getElementsByName("points2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("points2") ?? [])
+    ]);
+    var ko2 = new Set([
+        ...document.getElementsByName("ko2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("ko2") ?? [])
+    ]);
+    var so2 = new Set([
+        ...document.getElementsByName("so2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("so2") ?? [])
+    ]);
+    var bst2 = new Set([
+        ...document.getElementsByName("bst2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("bst2") ?? [])
+    ]);
+    var x2 = new Set([
+        ...document.getElementsByName("x2"),
+        ...(scoreOverlayWindow?.document.getElementsByName("x2") ?? [])
+    ]);
+
+    var draws = new Set([
+        ...document.getElementsByName("draws"),
+        ...(scoreOverlayWindow?.document.getElementsByName("draws") ?? [])
+    ]);
+    var totalRounds = new Set([
+        ...document.getElementsByName("vsTotalRounds"),
+        ...(scoreOverlayWindow?.document.getElementsByName("vsTotalRounds") ?? [])
+    ]);
 
     var vsId = bey1.id + " " + bey2.id;
-
-    var recordsSpace = document.getElementById("recordsSpace"); //NEW
-    var recordsCopybtn = document.createElement("button"); //NEW
-    var clearHistoryBtn = document.createElement("button"); //NEW
 
     var bey1SO = 0;
     var bey1Bst = 0;
@@ -1538,38 +1594,39 @@ function displayRecords(){
         } else {
             console.log("displayRecords() got:\n"+JSON.stringify(doc));
         }
-        record1.innerHTML = noBreakRatchetText(bey1.name);
-        ko1.textContent = doc.wko;
+        
+        record1.forEach(el => el.innerHTML = (bey1.findNameHtml()));
+        ko1.forEach(el => el.textContent = doc.wko);
         bey1KO = doc.wko;
-        so1.textContent = doc.wso;
+        so1.forEach(el => el.textContent = doc.wso);
         bey1SO = doc.wso
-        bst1.textContent = doc.wbst;
+        bst1.forEach(el => el.textContent = doc.wbst);
         bey1Bst = doc.wbst;
-        x1.textContent = doc.wx;
+        x1.forEach(el => el.textContent = doc.wx);
         bey1X = doc.wx;
-        wins1.textContent = doc.wx + doc.wbst + doc.wko + doc.wso;
+        wins1.forEach(el => el.textContent = doc.wx + doc.wbst + doc.wko + doc.wso);
         bey1Total = doc.wx + doc.wbst + doc.wko + doc.wso;
-        points1.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
+        points1.forEach(el => el.textContent = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso);
         bey1Points = doc.wx*3 + doc.wbst*2 + doc.wko*2 + doc.wso;
 
-        record2.innerHTML = noBreakRatchetText(bey2.name);
-        ko2.textContent = doc.lko;
+        record2.forEach(el => el.innerHTML = bey2.findNameHtml());
+        ko2.forEach(el => el.textContent = doc.lko);
         bey2KO = doc.lko;
-        so2.textContent = doc.lso;
+        so2.forEach(el => el.textContent = doc.lso);
         bey2SO = doc.lso
-        bst2.textContent =  doc.lbst;
+        bst2.forEach(el => el.textContent =  doc.lbst);
         bey2Bst = doc.lbst;
-        x2.textContent =  doc.lx;
+        x2.forEach(el => el.textContent =  doc.lx);
         bey2X = doc.lx;
-        wins2.textContent = doc.lx + doc.lbst + doc.lko + doc.lso;
+        wins2.forEach(el => el.textContent = doc.lx + doc.lbst + doc.lko + doc.lso);
         bey2Total = doc.lx + doc.lbst + doc.lko + doc.lso
-        points2.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
+        points2.forEach(el => el.textContent = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso);
         bey2Points = doc.lx*3 + doc.lbst*2 + doc.lko*2 + doc.lso;
 
-        draws.textContent = doc.draws;
+        draws.forEach(el => el.textContent =  doc.draws);
         draw = doc.draws;
 
-        totalRounds.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws);
+        totalRounds.forEach(el => el.textContent = "Total: " + (doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws));
         totalRound = doc.wx + doc.wbst + doc.wko + doc.wso + doc.lx + doc.lbst + doc.lko + doc.lso + doc.draws;
 
         displayCopiedStats =   "Results for " + bey1.name + " VS " + bey2.name + "\n" +
@@ -1602,7 +1659,7 @@ function displayRecords(){
     }
 
     if(!wasClearMatchupHistoryGenerated){
-        //copy to clipboard
+        //clear matchup history, remove all matches between these 2 blades
         clearHistoryBtn.innerHTML = "Clear Matchup History";
         clearHistoryBtn.classList.add("btn");
         clearHistoryBtn.classList.add("btn-danger");
@@ -1610,7 +1667,32 @@ function displayRecords(){
         clearHistoryBtn.setAttribute("data-bs-target", "#areYouSure3");
         recordsSpace.append(clearHistoryBtn);
         wasClearMatchupHistoryGenerated = true;
-        
+    }
+
+
+    if(!wasOverlayGenerated  && enableOverlayBtnsCheckbox.checked){
+        // pop-out modal for score and buttons
+        overlayBtn.innerHTML = "Overlay";
+        overlayBtn.classList.add("btn");
+        overlayBtn.classList.add("btn-primary");
+        // overlayBtn.setAttribute("data-bs-toggle", "modal");
+        // overlayBtn.setAttribute("data-bs-target", "#overlay");
+        overlayBtn.onclick = createBrowserPopup;
+        recordsSpace.append(overlayBtn);
+        wasOverlayGenerated = true;
+
+    }
+    if ( !wasSwapGenerated && scoreOverlayWindow && !scoreOverlayWindow.closed && enableOverlayBtnsCheckbox.checked ) {
+        const overlaySwapHtml = ` <span class="d-none">&circlearrowleft;</span>`;
+        // swap bey 1 and bey 2 score display on the popup
+        overlaySwapBeysBtn.innerHTML = "Swap on Overlay"+overlaySwapHtml;
+        overlaySwapBeysBtn.classList.add("btn");
+        overlaySwapBeysBtn.classList.add("btn-primary");
+        overlaySwapBeysBtn.setAttribute("data-bs-toggle", "modal");
+        overlaySwapBeysBtn.setAttribute("data-bs-target", "#overlay");
+        overlaySwapBeysBtn.onclick = swapOverlayBeys;
+        recordsSpace.append(overlaySwapBeysBtn);
+        wasSwapGenerated = true;
     }
 
 }
@@ -1682,26 +1764,6 @@ function nullifyBeybladeScores(primaryBeyId, nullifyBeyId, nullifyBoth=true){
     }
 }
 
-
-/**
- * Disable text-wrapping on the ratchet
- * @param {String} beyName 
- * @returns 
- */
-function noBreakRatchetText(beyName) {
-
-    //console.log("called noBreakRatchetText(" + beyName + ")");
-
-    // split bey name into parts
-    var newBeyName = beyName;
-    var beynameArray = newBeyName.split(" ");
-    var beynameEnd = beynameArray[beynameArray.length-1];
-    //console.log("end: " + beynameEnd);
-    var beynameEndNoBr = "<nobr>" + beynameEnd + "</nobr>";
-    newBeyName = newBeyName.replace(beynameEnd, beynameEndNoBr);
-    
-    return newBeyName;
-}
 
 //displays part win/loss records when a user chooses to see them
 function showPartStats(partType, partID){
@@ -2404,8 +2466,8 @@ function disableDropdowns(partType, selection, whichBey){
         }
     }
     if(partType=="bit") {
-        console.log("checking bits");
-        if(allBits[selection].type == "ratchetBit" || allBlades[blade.value].system == "UX2"){
+        console.log("checking bits");        
+        if(allBits[selection].type == "ratchetBit"){
             //console.log("ratchet-bit selected");
             disableParts = ["ratchet"];
         } else {
@@ -2434,8 +2496,6 @@ function spinMe(me){
     }, { once: true });
 }
 
-//theme object, will be a pouchDB object
-var selectedTheme;
 function themeSwitchListener(){
 
     console.log("called themeSwitchListener()");
@@ -2489,6 +2549,65 @@ function loadTheme(){
                 console.log("No existing theme. Using default");
                 // calling saveTheme with no params will select the default theme and properly init the DB theme object
                 saveTheme();
+            }
+        }
+    });
+}
+
+// setting for showing/hiding Overlay button
+function overlaySettingListener(){
+
+    console.log("called overlaySettingListener()");
+
+    enableOverlayBtnsCheckbox.addEventListener('change', function() {
+        saveOverlaySetting(enableOverlayBtnsCheckbox.checked);
+    });
+}
+
+function saveOverlaySetting(shouldShowOverlayBtnBoolean) {
+    console.log('Selected overlay status: ' + shouldShowOverlayBtnBoolean);
+
+    // init shouldShowOverlayBtn object for DB insertion
+    if(overlaySetting==null) {
+        console.log("creating overlay setting json var");
+        overlaySetting = {
+            _id: "shouldShowOverlayBtn",
+            value: shouldShowOverlayBtnBoolean
+        };
+    } else {
+        overlaySetting.value = shouldShowOverlayBtnBoolean;
+    }
+    // save
+    settings.put(overlaySetting, function callback(err, result) {
+        console.log("saving, result: "+JSON.stringify(result));
+        if (!err) {
+            console.log('Saved theme selection');
+            // load theme. This will set the CSS and update overlaySetting._rev
+            loadOverlaySetting();
+        }
+        else{
+            console.log(err);
+        }
+    });
+}
+
+function loadOverlaySetting(){
+    console.log("called loadOverlaySetting()");
+
+    settings.get("shouldShowOverlayBtn", function callback(err, result) {
+        if (!err) {
+            overlaySetting=result;
+            console.log('Loaded overlay setting');
+            console.log("overlay setting load result: " + JSON.stringify(result));
+            enableOverlayBtnsCheckbox.checked=overlaySetting.value; // checkbox in settings 
+            displayRecords();
+        }
+        else{
+            console.log(err);
+            if(err.status=404) {
+                console.log("No existing overlay setting. Using default");
+                // calling saveTheme with no params will select the default theme and properly init the DB theme object
+                //saveTheme();
             }
         }
     });
@@ -2558,6 +2677,39 @@ async function exportDb() {
     document.body.removeChild(tmpElement);
     URL.revokeObjectURL(url);
 }
+
+/* score-board popup window for OBS overlay
+*/
+//function createBrowserPopup() {
+const createBrowserPopup = async () => {
+    // if window exists, don't create another / write again
+    if ( scoreOverlayWindow && !scoreOverlayWindow.closed ) {
+        console.log("popup already open");
+        return;
+    }
+    // HTML is stored on main page
+    const html = document.getElementById("score-overlay-template").innerHTML;
+    // opening a blank popup gives us DOM control, avoiding same-origin issues when loading HTML with file://
+    scoreOverlayWindow = window.open("", 
+        "msgWindow", 
+        "width=1000,height=700,top=200,left=200"  // forces a new window, set size, move away from corner
+    );
+    scoreOverlayWindow.document.write(html);
+    // wait a few milliseconds for the page to open, needs at least 50ms
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+    await delay(100);
+    // load bey names and records onto popup
+    displayRecords();
+}
+function swapOverlayBeys() {
+    // these are in a flexbox, with default style "order: 1", so simply set style "order: 2"
+    const pResult1 = scoreOverlayWindow.document.getElementById("overlay-result-first");
+    pResult1.classList.toggle("order-two");
+    // show the circular arrow when display is swapped
+    overlaySwapBeysBtn.children[0].classList.toggle("d-none");
+}
+
+/* settings, import, export  */
 
 async function importDbSetup(){
     fileInput.addEventListener('change', () => {
