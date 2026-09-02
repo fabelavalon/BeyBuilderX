@@ -355,9 +355,9 @@ function main(){
     // on click and other event listeners
     loadTheme();
     themeSwitchListener();
+    populateStadiumSelector();
     loadStadium();
     stadiumSelectorListener();
-    populateStadiumSelector();
     populateMatchupHistStadiumFilter();
     matchupHistStadiumFilterListener();
     loadOverlaySetting();
@@ -2305,6 +2305,12 @@ function saveStadium(stadiumId) {
     });
 }
 
+function reloadUserSettings() {
+    loadTheme();
+    loadStadium();
+    loadOverlaySetting();
+}
+
 function loadStadium() {
     settings.get("selectedStadium", function callback(err, result) {
         if (!err) {
@@ -2376,7 +2382,7 @@ function loadOverlaySetting(){
         }
         else{
             console.log(err);
-            if(err.status=404) {
+            if(err.status==404) {
                 console.log("No existing overlay setting. Using default");
                 // calling saveTheme with no params will select the default theme and properly init the DB theme object
                 //saveTheme();
@@ -2505,11 +2511,12 @@ async function confirmRestoreMigrationBackup() {
     try {
         var dbs = await restoreMigrationBackup();
         assignDatabaseGlobals(dbs);
+        reloadUserSettings();
         showBeyblades();
         clearDbStats();
         clearVsButtons();
         await updateMigrationBackupSettings();
-        settingsModal.hide();
+        restoreBackupModal.hide();
         spinMe(dbSelectList);
     } catch (error) {
         console.error("Restore backup failed:", error);
@@ -2601,6 +2608,7 @@ async function importDatabase() {
             );
 
             // refresh UI
+            reloadUserSettings();
             showBeyblades();
             // clear selected db bey
             clearDbStats();
@@ -2617,6 +2625,7 @@ async function importDatabase() {
                 try {
                     var restored = await restoreMigrationBackup();
                     assignDatabaseGlobals(restored);
+                    reloadUserSettings();
                 } catch (restoreError) {
                     console.error("Import restore failed:", restoreError);
                     showErrorModal(
