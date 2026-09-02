@@ -156,23 +156,12 @@ await assert.rejects(
 const ver = await settings.get("dbVersion");
 assert.strictEqual(ver.revision, "001");
 
-// Idempotent re-apply when already at 001
+// No-op when already at 001
 const rev2 = await sandbox.runMigrations({ settings, recordsDBX, beyBladeDBX });
 assert.strictEqual(rev2, "001");
 assert.deepStrictEqual(
     recordsDBX.keys().filter((k) => !k.startsWith("_design/")),
     [expectedBC, expectedZA].sort()
 );
-
-let reapplyAllDocsCalls = 0;
-const baseAllDocs = recordsDBX.allDocs.bind(recordsDBX);
-recordsDBX.allDocs = async function (opts) {
-    if (opts && opts.include_docs) {
-        reapplyAllDocsCalls++;
-    }
-    return baseAllDocs(opts);
-};
-await sandbox.runMigrations({ settings, recordsDBX, beyBladeDBX });
-assert.strictEqual(reapplyAllDocsCalls, 1, "healthy head checks legacy docs once");
 
 console.log("migration_001_stadium.test.js: ok");

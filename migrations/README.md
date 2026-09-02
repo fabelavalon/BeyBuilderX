@@ -26,7 +26,6 @@ Users can also restore manually from Settings. Export/import is the long-term ar
 
 - Keep migration files self-contained. Do not call helpers from `main.js`. Avoid collisions in function names by appending ID like `_001`.
 - Migrations are forward-only. To roll back, import an export or restore the automatic snapshot.
-- Optional `reapplyIf(context)` on a revision: if already at that head but schema is incomplete, `upgrade` runs again (used when amending an unreleased migration).
 
 ## vsRecord shape (revision 001+)
 
