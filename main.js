@@ -1588,7 +1588,7 @@ function populateMatchHist(bey){
         ? matchupHistStadiumFilter.value
         : "all";
     var stadiumLabel = stadiumFilterId === "all"
-        ? "(all stadiums)"
+        ? "(All Stadiums)"
         : "(" + getStadiumName(stadiumFilterId) + ")";
 
     // All stadiums for this bey (filtered/sorted below)
@@ -1874,7 +1874,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         if(defenderBeyName.trim() != "") {
             statBeyName += " vs " + defenderBeyName;
         }
-        matchupStatsBeyTitle.textContent = statBeyName + " (all stadiums)";
+        matchupStatsBeyTitle.textContent = statBeyName + " (All Stadiums)";
 
     });
 
