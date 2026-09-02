@@ -18,6 +18,7 @@ const PRECACHE_URLS = [
   'theme-grey.css',
   'theme-none.css',
   'theme-wbo.css',
+  'theme-obs-overlay.css',
   // images
   'images/BeyBuilder_Logo2.png',
   'favicon.png',

@@ -1618,7 +1618,7 @@ function populateMatchHist(bey){
             lossHolder = 0;
             lossPointHolder = 0;
             drawsHolder = 0;
-            // loop through stadiums
+            // loop through matchups for selected stadium
             for (var vi = 0; vi < vsDocs.length; vi++) {
                 var filteredStats = vsStatsFromPerspective(vsDocs[vi], bey.id);
                 winHolder += filteredStats.wko + filteredStats.wso + filteredStats.wbst + filteredStats.wx;
@@ -1865,7 +1865,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         // if bey2 parts are selected, title will be "X vs Y"
         var defenderBeyName = "";
         defenderBeyName += (bitChip2!="none" ? allBitChips[bitChip2].name : "");
-        statBeyName += (over2!="none" ? allOverBlades[over2].name : "");
+        defenderBeyName += (over2!="none" ? allOverBlades[over2].name : "");
         defenderBeyName += (blade2!="none" ? allBlades[blade2].name + " " : "");
         defenderBeyName += (assist2!="none" ? allAssists[assist2].name + " " : "");
         console.log(rachet2);
@@ -2222,7 +2222,7 @@ function loadTheme(){
         }
         else{
             console.log(err);
-            if(err.status=404) {
+            if(err.status==404) {
                 console.log("No existing theme. Using default");
                 // calling saveTheme with no params will select the default theme and properly init the DB theme object
                 saveTheme();
