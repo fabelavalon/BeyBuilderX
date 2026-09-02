@@ -1599,23 +1599,54 @@ function populateMatchHist(bey){
         totalsSpace.textContent = "";
         matchupBey.textContent = "Matchup History for " + bey.name + " " + stadiumLabel;
 
-        var castDoc = BeyBlade.fromBuild(bey);
+        var winHolder;
+        var winPointHolder;
+        var lossHolder;
+        var lossPointHolder;
+        var drawsHolder;
+        var totalHolder;
+        var totalPointChange;
+        var totalMatches;
+        var avgPPW;
+        var avgPPL;
+        var avgPointChangePerRound;
+        var avgWinPercent;
 
-        // prepare string version that can be copied to clipboard
-        historyClipboardHolder = "Results for " + bey.name + ":";
+        if (stadiumFilterId !== "all") {
+            winHolder = 0;
+            winPointHolder = 0;
+            lossHolder = 0;
+            lossPointHolder = 0;
+            drawsHolder = 0;
+            // loop through stadiums
+            for (var vi = 0; vi < vsDocs.length; vi++) {
+                var filteredStats = vsStatsFromPerspective(vsDocs[vi], bey.id);
+                winHolder += filteredStats.wko + filteredStats.wso + filteredStats.wbst + filteredStats.wx;
+                lossHolder += filteredStats.lko + filteredStats.lso + filteredStats.lbst + filteredStats.lx;
+                drawsHolder += filteredStats.draws;
+                winPointHolder += filteredStats.wko * 2 + filteredStats.wso + filteredStats.wbst * 2 + filteredStats.wx * 3;
+                lossPointHolder += filteredStats.lko * 2 + filteredStats.lso + filteredStats.lbst * 2 + filteredStats.lx * 3;
+            }
+            totalHolder = winHolder + lossHolder + drawsHolder;
+            totalPointChange = winPointHolder - lossPointHolder;
+            totalMatches = totalHolder;
+        } else {
+            var castDoc = BeyBlade.fromBuild(bey);
+            winHolder = castDoc.getTotalWin();
+            winPointHolder = castDoc.getWinPoints();
+            lossHolder = castDoc.getTotalLoss();
+            lossPointHolder = castDoc.getLossPoints();
+            drawsHolder = castDoc.draws;
+            //var totalHolder = winHolder + lossHolder + drawsHolder;
+            totalHolder = castDoc.getTotalMatch();
+            totalPointChange = castDoc.getPointChange();
+            totalMatches = bey.winsKO + bey.loseKO + bey.winsSO + bey.loseSO + bey.winsBst + bey.loseBst + bey.winsX + bey.loseX + bey.draws;
+        }
 
-        var winHolder = castDoc.getTotalWin();
-        var winPointHolder = castDoc.getWinPoints();
-        var lossHolder = castDoc.getTotalLoss();
-        var lossPointHolder = castDoc.getLossPoints();
-        //var totalHolder = winHolder + lossHolder + doc.build.draws;
-        var totalHolder = castDoc.getTotalMatch();
-        var avgPPW = round((winPointHolder/winHolder),2);
-        var avgPPL = round((lossPointHolder/lossHolder),2);
-        var totalPointChange = castDoc.getPointChange();
-        var totalMatches = bey.winsKO + bey.loseKO + bey.winsSO + bey.loseSO + bey.winsBst + bey.loseBst + bey.winsX+ bey.loseX + bey.draws;
-        var avgPointChangePerRound = totalPointChange / totalMatches;
-        var avgWinPercent = round((winHolder/totalHolder)*100,2);
+        avgPPW = round((winPointHolder / winHolder), 2);
+        avgPPL = round((lossPointHolder / lossHolder), 2);
+        avgPointChangePerRound = totalPointChange / totalMatches;
+        avgWinPercent = round((winHolder / totalHolder) * 100, 2);
 
         //set value to 0 if it comes back NaN
         if (isNaN(avgPPW)){ avgPPW=0; }
@@ -1677,6 +1708,7 @@ function populateMatchHist(bey){
         cell5.innerHTML = "Draws";
         cell6.innerHTML = "Points";
 
+        // prepare string version that can be copied to clipboard
         historyClipboardHolder = "Results for " + bey.name + " " + stadiumLabel + ":"
         
         for(i = 0; i < vsDocs.length; i++){
@@ -2563,13 +2595,10 @@ async function importDatabase() {
             console.log("Database imported successfully");
 
             // Upgrade imported dump to current schema
-            await runMigrations({
-                settings: settings,
-                recordsDBX: recordsDBX,
-                beyBladeDBX: beyBladeDBX,
-                createBackup: migrationCreateBackup,
-                restoreBackup: migrationRestoreBackup
-            });
+            await runMigrations(
+                { settings: settings, recordsDBX: recordsDBX, beyBladeDBX: beyBladeDBX },
+                { createBackup: migrationCreateBackup, restoreBackup: migrationRestoreBackup }
+            );
 
             // refresh UI
             showBeyblades();
@@ -2642,13 +2671,10 @@ function buildMigrationFailureMessage(err, dataRestored) {
 async function startApp() {
     migrationBackupWasCreated = false;
     try {
-        await runMigrations({
-            settings: settings,
-            recordsDBX: recordsDBX,
-            beyBladeDBX: beyBladeDBX,
-            createBackup: migrationCreateBackup,
-            restoreBackup: migrationRestoreBackup
-        });
+        await runMigrations(
+            { settings: settings, recordsDBX: recordsDBX, beyBladeDBX: beyBladeDBX },
+            { createBackup: migrationCreateBackup, restoreBackup: migrationRestoreBackup }
+        );
     } catch (err) {
         console.error("DB migration failed:", err);
         showErrorModal(buildMigrationFailureMessage(err, migrationBackupWasCreated));
