@@ -957,7 +957,7 @@ function showBeyblades() {
         doc.rows.sort(function(a, b){
             return (''+a.doc.build.name).localeCompare(b.doc.build.name);
         });
-        for(i = 0; i < doc.total_rows; i++){
+        for (var i = 0; i < doc.total_rows; i++){
             if(!err){
                 // add option to list
                 var options = document.createElement("option");
@@ -1472,7 +1472,7 @@ function showPartStats(partType, partID){
 
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
 
-        for(i = 0; i < doc.total_rows; i++){
+        for (var i = 0; i < doc.total_rows; i++){
 
             switch(partType) {
                 case "blade":
@@ -1619,8 +1619,8 @@ function populateMatchHist(bey){
             lossPointHolder = 0;
             drawsHolder = 0;
             // loop through matchups for selected stadium
-            for (var vi = 0; vi < vsDocs.length; vi++) {
-                var filteredStats = vsStatsFromPerspective(vsDocs[vi], bey.id);
+            for (var i = 0; i < vsDocs.length; i++) {
+                var filteredStats = vsStatsFromPerspective(vsDocs[i], bey.id);
                 winHolder += filteredStats.wko + filteredStats.wso + filteredStats.wbst + filteredStats.wx;
                 lossHolder += filteredStats.lko + filteredStats.lso + filteredStats.lbst + filteredStats.lx;
                 drawsHolder += filteredStats.draws;
@@ -1711,7 +1711,7 @@ function populateMatchHist(bey){
         // prepare string version that can be copied to clipboard
         historyClipboardHolder = "Results for " + bey.name + " " + stadiumLabel + ":"
         
-        for(i = 0; i < vsDocs.length; i++){
+        for (var i = 0; i < vsDocs.length; i++){
             var vsDoc = vsDocs[i];
             var scores = vsDoc.scores;
             var totalMatches = scores.wx + scores.wbst + scores.wko + scores.wso + scores.lx + scores.lbst + scores.lko + scores.lso + scores.draws;
@@ -1980,7 +1980,7 @@ function deleteBey(){
             return;
         }
 
-        for(i = 0; i < allRecords.total_rows; i++){
+        for (var i = 0; i < allRecords.total_rows; i++){
             var vsDoc = allRecords.rows[i].doc;
             if (!vsDoc || vsDoc.type !== "vsRecord") {
                 continue;
@@ -2046,7 +2046,7 @@ function deleteAllBeys() {
     
     //clear individual beyblades
     beyBladeDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
-        for(i = 0; i < doc.total_rows; i++){
+        for (var i = 0; i < doc.total_rows; i++){
             if(!err){
                 console.log("clearing beys");
                 beyBladeDBX.remove(doc.rows[i].doc, function(err, doc){
@@ -2063,7 +2063,7 @@ function deleteAllBeys() {
 
     //clear records
     recordsDBX.allDocs({include_docs: true, descending: true}, function(err, doc) {
-        for(i = 0; i < doc.total_rows; i++){
+        for (var i = 0; i < doc.total_rows; i++){
             if(!err){
                 console.log("clearing records");
                 recordsDBX.remove(doc.rows[i].doc, function(err, doc){
