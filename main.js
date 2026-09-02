@@ -149,6 +149,7 @@ var matchupHistStatsTable = document.getElementById("matchupHistStatsTable");
 var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
 var matchupHistCopyButton = document.getElementById("copyHistToClip");
 var matchupHistStadiumFilter = document.getElementById("matchupHistStadiumFilter");
+var partsRecordsStadiumFilter = document.getElementById("partsRecordsStadiumFilter");
 var clearHistButton = document.getElementById("clearHist");
 // window object for OBS overlay
 var scoreOverlayWindow = null;
@@ -358,8 +359,10 @@ function main(){
     populateStadiumSelector();
     loadStadium();
     stadiumSelectorListener();
-    populateMatchupHistStadiumFilter();
+    populateStadiumFilterSelect(matchupHistStadiumFilter);
+    populateStadiumFilterSelect(partsRecordsStadiumFilter);
     matchupHistStadiumFilterListener();
+    partsRecordsStadiumFilterListener();
     loadOverlaySetting();
     overlaySettingListener();
     importDbSetup();
@@ -1781,6 +1784,13 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
 
     console.log("populateMatchHistUser2(" + bitChip1 + ", " + over1 + ", " + blade1 + ", " + assist1 + ", " + rachet1 + ", " + bit1 + ", " + bitChip2 + ", " + over1 + ", " + blade2 + ", " + assist2 + ", " + rachet2 + ", " + bit2 +")");
 
+    var stadiumFilterId = (partsRecordsStadiumFilter && partsRecordsStadiumFilter.value)
+        ? partsRecordsStadiumFilter.value
+        : "all";
+    var stadiumLabel = stadiumFilterId === "all"
+        ? "(All Stadiums)"
+        : "(" + getStadiumName(stadiumFilterId) + ")";
+
     // overall stats
     primeMatchupHistStatsTable(); // wipe overall stats
 
@@ -1795,7 +1805,8 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         // partsFilter1/partsFilter2 can match either bey slot; orientVsRecordForPartsQuery flips as needed
         var matches = allMatches.rows
             .filter(function (row) {
-                return row.doc && row.doc.type === "vsRecord" && row.doc.bey1 && row.doc.bey2;
+                return row.doc && row.doc.type === "vsRecord" && row.doc.bey1 && row.doc.bey2
+                    && (stadiumFilterId === "all" || row.doc.stadiumId === stadiumFilterId);
             })
             .map(function (row) {
                 var oriented = orientVsRecordForPartsQuery(
@@ -1815,7 +1826,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
             draws = s.draws;
             totalMatches = winHolder + lossHolder + draws;
             if(totalMatches>0) {
-                fillMatchupHist(match.doc);
+                fillMatchupHist(match.doc, stadiumFilterId);
             }
         });
 
@@ -1874,7 +1885,7 @@ function populateMatchHistUser2(bitChip1, over1, blade1, assist1, rachet1, bit1,
         if(defenderBeyName.trim() != "") {
             statBeyName += " vs " + defenderBeyName;
         }
-        matchupStatsBeyTitle.textContent = statBeyName + " (All Stadiums)";
+        matchupStatsBeyTitle.textContent = statBeyName + " " + stadiumLabel;
 
     });
 
@@ -1913,10 +1924,11 @@ function primeMatchupHistTable(){
 }
 
 // add one line to parts history table
-function fillMatchupHist(history){
+function fillMatchupHist(history, stadiumFilterId){
 
     console.log("called fillMatchupHistory()");
     var scores = history.scores;
+    var showStadiumInRow = !stadiumFilterId || stadiumFilterId === "all";
     
     var row = matchupHistUser.insertRow(1);
     var cellVS = row.insertCell(); 
@@ -1930,7 +1942,9 @@ function fillMatchupHist(history){
     var cell6 = row.insertCell();
     var cell7 = row.insertCell();
     var cell8 = row.insertCell();
-    var stadiumNameHtml = "<br><small>" + getStadiumName(history.stadiumId) + "</small>";
+    var stadiumNameHtml = showStadiumInRow
+        ? "<br><small>" + getStadiumName(history.stadiumId) + "</small>"
+        : "";
     cellVS.innerHTML = history.bey1.name+"<br>vs<br>"+history.bey2.name + stadiumNameHtml;
     cell1.innerHTML = history.bey1.name;
     cell3.innerHTML = history.bey2.name;
@@ -2245,23 +2259,23 @@ function populateStadiumSelector() {
     stadiumSelector.value = getSelectedStadiumId();
 }
 
-function populateMatchupHistStadiumFilter() {
-    if (!matchupHistStadiumFilter) {
+function populateStadiumFilterSelect(selectEl) {
+    if (!selectEl) {
         return;
     }
-    var selected = matchupHistStadiumFilter.value || "all";
-    matchupHistStadiumFilter.innerHTML = "";
+    var selected = selectEl.value || "all";
+    selectEl.innerHTML = "";
     var allOpt = document.createElement("option");
     allOpt.value = "all";
     allOpt.textContent = "All stadiums";
-    matchupHistStadiumFilter.appendChild(allOpt);
+    selectEl.appendChild(allOpt);
     for (var i = 0; i < stadiums.length; i++) {
         var opt = document.createElement("option");
         opt.value = stadiums[i].id;
         opt.textContent = stadiums[i].name;
-        matchupHistStadiumFilter.appendChild(opt);
+        selectEl.appendChild(opt);
     }
-    matchupHistStadiumFilter.value = selected;
+    selectEl.value = selected;
 }
 
 function matchupHistStadiumFilterListener() {
@@ -2272,6 +2286,18 @@ function matchupHistStadiumFilterListener() {
         if (dbBey) {
             populateMatchHist(dbBey);
         }
+    });
+}
+
+function partsRecordsStadiumFilterListener() {
+    if (!partsRecordsStadiumFilter) {
+        return;
+    }
+    partsRecordsStadiumFilter.addEventListener("change", function () {
+        populateMatchHistUser2(
+            bitChipR1.value, overBladeR1.value, bladeR1.value, assistR1.value, rachetR1.value, bitR1.value,
+            bitChipR2.value, overBladeR2.value, bladeR2.value, assistR2.value, rachetR2.value, bitR2.value
+        );
     });
 }
 
