@@ -1687,7 +1687,7 @@ function populateMatchHist(bey){
 
                     console.log(historyClipboardHolder);
                     var fromBey = vsStatsFromPerspective(vsDoc, bey.id);
-                    var stadiumLabel = stadiumFilterId === "all"
+                    var matchupStadiumLabel = stadiumFilterId === "all"
                         ? " [" + getStadiumName(vsDoc.stadiumId) + "]"
                         : "";
 
@@ -1696,7 +1696,7 @@ function populateMatchHist(bey){
                     var titleCell = titleRow.insertCell(0);
                     titleCell.colSpan=6;
                     titleCell.classList.add('text-center');
-                    titleCell.innerHTML = fromBey.opponent.name + stadiumLabel;
+                    titleCell.innerHTML = fromBey.opponent.name + matchupStadiumLabel;
                     titleCell.style = 'padding-top: 6px; border-top: 3px solid;';
                     //score
                     var row = matchupSpace.insertRow(2);
@@ -1719,7 +1719,7 @@ function populateMatchHist(bey){
                     cell5.innerHTML = fromBey.draws;
                     cell6.innerHTML = (fromBey.wx*3 + fromBey.wbst*2 + fromBey.wko*2 + fromBey.wso) + "/" + (fromBey.lx*3 + fromBey.lbst*2 + fromBey.lko*2 + fromBey.lso);
 
-                    historyClipboardHolder +=  "\n" + "vs " + fromBey.opponent.name + stadiumLabel + ": " + totalMatches + " rounds, " + 
+                    historyClipboardHolder +=  "\n" + "vs " + fromBey.opponent.name + matchupStadiumLabel + ": " + totalMatches + " rounds, " + 
                                         (round( ((fromBey.wso + fromBey.wbst + fromBey.wko + fromBey.wx)/totalMatches)*100 ,2)) + "% of rounds won, " + 
                                         (fromBey.wx*3 + fromBey.wbst*2 + fromBey.wko*2 + fromBey.wso) + " points earned " + 
                                         (fromBey.lx*3 + fromBey.lbst*2 + fromBey.lko*2 + fromBey.lso) + " points lost";
