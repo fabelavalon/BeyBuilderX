@@ -114,30 +114,6 @@ registerMigration({
     message: "vsRecords: dedupe, stadium id, bey1Id_bey2Id_stadiumId",
 
     /**
-     * Re-run upgrade when already at 001 but legacy docs remain (schema amend).
-     */
-    async reapplyIf(context) {
-        try {
-            var design = await context.recordsDBX.get(VS_RECORDS_DESIGN_ID);
-            if (!design.views || !design.views.by_bey) {
-                return true;
-            }
-        } catch (err) {
-            if (err.name === "not_found" || err.status === 404) {
-                return true;
-            }
-            throw err;
-        }
-        var result = await context.recordsDBX.allDocs({ include_docs: true });
-        for (var i = 0; i < result.rows.length; i++) {
-            if (isLegacyVsRecord_001(result.rows[i].doc)) {
-                return true;
-            }
-        }
-        return false;
-    },
-
-    /**
      * @param {{recordsDBX: PouchDB.Database}} context
      */
     async upgrade(context) {
