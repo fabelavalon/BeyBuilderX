@@ -117,18 +117,9 @@ registerMigration({
      * Re-run upgrade when already at 001 but legacy docs remain (schema amend).
      */
     async reapplyIf(context) {
-        var result = await context.recordsDBX.allDocs({ include_docs: true });
-        for (var i = 0; i < result.rows.length; i++) {
-            if (isLegacyVsRecord_001(result.rows[i].doc)) {
-                return true;
-            }
-        }
         try {
             var design = await context.recordsDBX.get(VS_RECORDS_DESIGN_ID);
             if (!design.views || !design.views.by_bey) {
-                return true;
-            }
-            if (design.views.by_bey_pair) {
                 return true;
             }
         } catch (err) {
@@ -136,6 +127,12 @@ registerMigration({
                 return true;
             }
             throw err;
+        }
+        var result = await context.recordsDBX.allDocs({ include_docs: true });
+        for (var i = 0; i < result.rows.length; i++) {
+            if (isLegacyVsRecord_001(result.rows[i].doc)) {
+                return true;
+            }
         }
         return false;
     },

@@ -107,11 +107,6 @@ async function runMigrations(dbs, opts) {
 
     console.log("DB migration: current=" + current + " target=" + target);
 
-    if (current === target) {
-        console.log("DB migration: already at target revision");
-        return current;
-    }
-
     var currentIndex = current === null ? -1 : chain.findIndex(m => m.revision === current);
     if (current !== null && currentIndex === -1) {
         throw new Error("Unknown DB revision in settings: " + current);

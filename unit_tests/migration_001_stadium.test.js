@@ -164,4 +164,15 @@ assert.deepStrictEqual(
     [expectedBC, expectedZA].sort()
 );
 
+let reapplyAllDocsCalls = 0;
+const baseAllDocs = recordsDBX.allDocs.bind(recordsDBX);
+recordsDBX.allDocs = async function (opts) {
+    if (opts && opts.include_docs) {
+        reapplyAllDocsCalls++;
+    }
+    return baseAllDocs(opts);
+};
+await sandbox.runMigrations({ settings, recordsDBX, beyBladeDBX });
+assert.strictEqual(reapplyAllDocsCalls, 1, "healthy head checks legacy docs once");
+
 console.log("migration_001_stadium.test.js: ok");
