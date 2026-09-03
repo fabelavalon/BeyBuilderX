@@ -2513,6 +2513,11 @@ async function confirmRestoreMigrationBackup() {
     try {
         var dbs = await restoreMigrationBackup();
         assignDatabaseGlobals(dbs);
+        // migrate if old data
+        await runMigrations(
+            { settings: settings, recordsDBX: recordsDBX, beyBladeDBX: beyBladeDBX },
+            { createBackup: migrationCreateBackup, restoreBackup: migrationRestoreBackup }
+        );
         reloadUserSettings();
         showBeyblades();
         clearDbStats();
