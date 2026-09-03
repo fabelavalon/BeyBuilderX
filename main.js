@@ -124,9 +124,12 @@ document.getElementById('settings').addEventListener('show.bs.modal', function (
     updateBackupSettings();
 });
 const importModal = new bootstrap.Modal(document.getElementById('areYouSureImport'));
+const importConfirmBtn = document.getElementById('importConfirmBtn');
+const importNevermindBtn = document.getElementById('importNevermindBtn');
 const restoreBackupModal = new bootstrap.Modal(document.getElementById('areYouSureRestoreBackup'));
 const restoreBackupConfirmMsg = document.getElementById('restoreBackupConfirmMsg');
 const fileInput = document.getElementById('importDbFile');
+var importInProgress = false;
 
 //theme switcher
 var themeSelect = document.getElementById("themeSelect");
@@ -2438,13 +2441,12 @@ async function openSettings(){
 // #region Import / export / restore
 
 /** Reload lists and clear bey/vs UI after live DBs were replaced or restored. */
-function refreshUiAfterDbUpdate(options) {
-    options = options || {};
+function refreshUiAfterDbUpdate(spinDbSelect=false) {
     reloadUserSettings();
     showBeyblades();
     clearDbStats();
     clearVsButtons();
-    if (options.spinDbSelect) {
+    if (spinDbSelect) {
         spinMe(dbSelectList);
     }
 }
@@ -2575,7 +2577,7 @@ async function confirmRestoreBackup() {
             { settings: settings, recordsDBX: recordsDBX, beyBladeDBX: beyBladeDBX },
             { createBackup: createBackup, restoreBackup: restoreBackupToLive }
         );
-        refreshUiAfterDbUpdate({ spinDbSelect: true });
+        refreshUiAfterDbUpdate(true);
         await updateBackupSettings();
         restoreBackupModal.hide();
     } catch (error) {
@@ -2596,9 +2598,25 @@ async function importDbSetup(){
         importModal.show();        
     }
     );
+    // block dismiss while import is running
+    document.getElementById('areYouSureImport').addEventListener('hide.bs.modal', function (event) {
+        if (importInProgress) {
+            event.preventDefault();
+        }
+    });
+}
+
+function setImportInProgress(inProgress) {
+    importInProgress = inProgress;
+    importConfirmBtn.disabled = inProgress;
+    importConfirmBtn.textContent = inProgress ? "Importing..." : "Yes, Import";
+    importConfirmBtn.classList.toggle("spinme-loop", inProgress);
+
+    importNevermindBtn.disabled = inProgress;
 }
 
 function finishImportAttempt() {
+    setImportInProgress(false);
     importModal.hide();
     fileInput.value = "";
 }
@@ -2609,11 +2627,17 @@ async function importDatabase() {
         console.error("No file selected");
         return;
     }
+    if (importInProgress) {
+        return;
+    }
+
+    setImportInProgress(true);
 
     const reader = new FileReader();
     reader.onload = async (event) => {
         // whether this attempt saved a pre-import snapshot (don't rely on getBackupInfo; later steps may overwrite it)
         var importBackupCreated = false;
+        var importSucceeded = false;
         try {
             const data = JSON.parse(event.target.result);
             // Validate structure
@@ -2659,7 +2683,7 @@ async function importDatabase() {
                 { createBackup: createBackup, restoreBackup: restoreBackupToLive }
             );
 
-            refreshUiAfterDbUpdate({ spinDbSelect: true });
+            importSucceeded = true;
         } catch (error) {
             console.error("Error importing database:", error);
             if (importBackupCreated) {
@@ -2679,7 +2703,16 @@ async function importDatabase() {
             }
         } finally {
             finishImportAttempt();
+            // spin after modal closes
+            if (importSucceeded) {
+                refreshUiAfterDbUpdate(true);
+            }
         }
+    };
+    reader.onerror = function () {
+        console.error("Error reading import file:", reader.error);
+        finishImportAttempt();
+        showErrorModal("Error reading import file.");
     };
 
     reader.readAsText(file);
