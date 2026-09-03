@@ -602,7 +602,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="openSettings()">Nevermind</button>
-              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onclick="confirmRestoreMigrationBackup()">Yes, Restore backup</button>
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" onclick="confirmRestoreBackup()">Yes, Restore backup</button>
             </div>
           </div>
         </div>
@@ -633,11 +633,14 @@
                 
                 <br>
                 <br>
-                <div id="migrationBackupSection" class="d-none">
+                <div id="backupSection" class="d-none">
                   <h5>Automatic backup</h5>
-                  <p class="small text-muted"><strong>When:</strong> <span id="migrationBackupCreatedAt"></span></p>
-                  <p class="small text-muted"><strong>Why:</strong> <span id="migrationBackupInfo"></span></p>
-                  <button type="button" class="btn btn-danger" onclick="restoreMigrationBackupFromSettings()">Restore automatic backup</button>
+                  <p class="small text-muted"><strong>When:</strong> <span id="backupCreatedAt"></span></p>
+                  <p class="small text-muted"><strong>Why:</strong> <span id="backupInfo"></span></p>
+                  <button type="button" class="btn btn-primary" onclick="exportBackup()">Export backup data</button>
+                  <br>
+                  <br>
+                  <button type="button" class="btn btn-danger" onclick="restoreBackupConfirm()">Restore automatic backup</button>
                   <br>
                   <br>
                 </div>
@@ -662,6 +665,26 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- migration failure modal  -->
+      <div class="modal fade" id="migrationFailureModal" tabindex="-1" aria-labelledby="migrationFailureLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="migrationFailureLabel">Database update failed</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span id="migrationFailureMsg"></span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="exportBackup()">Export backup</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="openSettings()">Open Settings</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
