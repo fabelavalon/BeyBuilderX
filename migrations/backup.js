@@ -1,10 +1,10 @@
 /*==========================================================*
- * Automatic pre-migration / pre-import database backup     *
- * One rolling snapshot in a dedicated PouchDB              *
+ * Rolling database backup                                  *
+ * Saved before upgrade or import; one snapshot in PouchDB  *
  *==========================================================*/
 
-var MIGRATION_BACKUP_DB_NAME = "BeyBuilderX_migration_backup";
-var MIGRATION_BACKUP_DOC_ID = "snapshot";
+var BACKUP_DB_NAME = "BeyBuilderX_migration_backup";
+var BACKUP_DOC_ID = "snapshot";
 
 /**
  * @param {PouchDB.Database} db
@@ -45,7 +45,7 @@ async function databasesHaveUserData(dbs) {
  * @param {string} isoCreatedAt
  * @returns {string}
  */
-function formatMigrationBackupCreatedAt(isoCreatedAt) {
+function formatBackupCreatedAt(isoCreatedAt) {
     if (!isoCreatedAt) {
         return "Unknown time";
     }
@@ -60,12 +60,12 @@ function formatMigrationBackupCreatedAt(isoCreatedAt) {
  * @param {{beyBladeDBX: PouchDB.Database, recordsDBX: PouchDB.Database, settings: PouchDB.Database}} dbs
  * @param {{from: string|null, to: string|null, reason: string}} meta
  */
-async function saveMigrationBackup(dbs, meta) {
-    var backupDb = new PouchDB(MIGRATION_BACKUP_DB_NAME);
+async function saveBackup(dbs, meta) {
+    var backupDb = new PouchDB(BACKUP_DB_NAME);
     var data = await dumpDatabases(dbs);
     var createdAt = new Date().toISOString();
     var doc = {
-        _id: MIGRATION_BACKUP_DOC_ID,
+        _id: BACKUP_DOC_ID,
         createdAt: createdAt,
         fromRevision: meta.from,
         toRevision: meta.to,
@@ -76,7 +76,7 @@ async function saveMigrationBackup(dbs, meta) {
     };
 
     try {
-        var existing = await backupDb.get(MIGRATION_BACKUP_DOC_ID);
+        var existing = await backupDb.get(BACKUP_DOC_ID);
         doc._rev = existing._rev;
     } catch (err) {
         if (err.name !== "not_found" && err.status !== 404) {
@@ -85,19 +85,19 @@ async function saveMigrationBackup(dbs, meta) {
     }
 
     await backupDb.put(doc);
-    console.log("Migration backup saved (" + meta.reason + ") at " + formatMigrationBackupCreatedAt(createdAt));
+    console.log("Backup saved (" + meta.reason + ") at " + formatBackupCreatedAt(createdAt));
 }
 
 /**
  * @returns {Promise<{createdAt: string, createdAtLabel: string, fromRevision: string|null, toRevision: string|null, reason: string}|null>}
  */
-async function getMigrationBackupInfo() {
-    var backupDb = new PouchDB(MIGRATION_BACKUP_DB_NAME);
+async function getBackupInfo() {
+    var backupDb = new PouchDB(BACKUP_DB_NAME);
     try {
-        var doc = await backupDb.get(MIGRATION_BACKUP_DOC_ID);
+        var doc = await backupDb.get(BACKUP_DOC_ID);
         return {
             createdAt: doc.createdAt || null,
-            createdAtLabel: formatMigrationBackupCreatedAt(doc.createdAt),
+            createdAtLabel: formatBackupCreatedAt(doc.createdAt),
             fromRevision: doc.fromRevision,
             toRevision: doc.toRevision,
             reason: doc.reason
@@ -111,12 +111,30 @@ async function getMigrationBackupInfo() {
 }
 
 /**
+ * @returns {Promise<{beyBladeDBX: object[], recordsDBX: object[], settings: object[]}>}
+ */
+async function getBackupExportData() {
+    var backupDb = new PouchDB(BACKUP_DB_NAME);
+    var snapshot = await backupDb.get(BACKUP_DOC_ID);
+
+    if (!snapshot.beyBladeDBX || !snapshot.recordsDBX || !snapshot.settings) {
+        throw new Error("Backup snapshot is missing database data");
+    }
+
+    return {
+        beyBladeDBX: snapshot.beyBladeDBX,
+        recordsDBX: snapshot.recordsDBX,
+        settings: snapshot.settings
+    };
+}
+
+/**
  * Destroy live DBs and restore from the rolling backup snapshot.
  * @returns {Promise<{beyBladeDBX: PouchDB.Database, recordsDBX: PouchDB.Database, settings: PouchDB.Database}>}
  */
-async function restoreMigrationBackup() {
-    var backupDb = new PouchDB(MIGRATION_BACKUP_DB_NAME);
-    var snapshot = await backupDb.get(MIGRATION_BACKUP_DOC_ID);
+async function restoreBackup() {
+    var backupDb = new PouchDB(BACKUP_DB_NAME);
+    var snapshot = await backupDb.get(BACKUP_DOC_ID);
 
     if (!snapshot.beyBladeDBX || !snapshot.recordsDBX || !snapshot.settings) {
         throw new Error("Backup snapshot is missing database data");
@@ -144,7 +162,7 @@ async function restoreMigrationBackup() {
         await liveSettings.bulkDocs(snapshot.settings);
     }
 
-    console.log("Migration backup restored");
+    console.log("Backup restored");
     return {
         beyBladeDBX: liveBey,
         recordsDBX: liveRecords,
