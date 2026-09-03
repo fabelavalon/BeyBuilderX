@@ -150,7 +150,6 @@ var matchupStatsBeyTitle = document.getElementById("matchupStatsBeyTitle");
 var matchupHistCopyButton = document.getElementById("copyHistToClip");
 var matchupHistStadiumFilter = document.getElementById("matchupHistStadiumFilter");
 var partsRecordsStadiumFilter = document.getElementById("partsRecordsStadiumFilter");
-var clearHistButton = document.getElementById("clearHist");
 // window object for OBS overlay
 var scoreOverlayWindow = null;
 
@@ -2000,46 +1999,38 @@ function deleteBey(){
                 continue;
             }
 
-            // find records where bey1 == selectedBey, delete them
-            if( vsDoc.bey1Id == selectedBey.value ){
-                recordsDBX.remove(vsDoc, function(err, errDoc){
-                    if(err){
-                        console.log(err);
-                    }
-                });
+            // skip records that don't involve the deleted bey
+            if (vsDoc.bey1Id != selectedBey.value && vsDoc.bey2Id != selectedBey.value) {
+                continue;
             }
 
-            // find vs records where bey2 == selectedBey
-            if( vsDoc.bey2Id == selectedBey.value ){
-                var thisRecord = structuredClone(vsDoc);
-                var thisScores = thisRecord.scores;
-                beyBladeDBX.get(vsDoc.bey1Id, function(err, beyblade) {
-                    if(!err){
-                        beyblade.build.winsKO  -= thisScores.wko;
-                        beyblade.build.loseKO  -= thisScores.lko;
-                        beyblade.build.winsSO  -= thisScores.wso;
-                        beyblade.build.loseSO  -= thisScores.lso;
-                        beyblade.build.winsBst -= thisScores.wbst;
-                        beyblade.build.loseBst -= thisScores.lbst;
-                        beyblade.build.winsX   -= thisScores.wx;
-                        beyblade.build.loseX   -= thisScores.lx;
-                        beyblade.build.draws   -= thisScores.draws;
+            // adjust the other bey's global win/loss (perspective handles bey1 vs bey2 slot)
+            var survivorId = vsDoc.bey1Id == selectedBey.value ? vsDoc.bey2Id : vsDoc.bey1Id;
+            var survivorStats = vsStatsFromPerspective(vsDoc, survivorId);
+            beyBladeDBX.get(survivorId, function(err, beyblade) {
+                if (!err) {
+                    // subtract this matchup from the survivor's totals, then resubmit
+                    beyblade.build.winsKO  -= survivorStats.wko;
+                    beyblade.build.loseKO  -= survivorStats.lko;
+                    beyblade.build.winsSO  -= survivorStats.wso;
+                    beyblade.build.loseSO  -= survivorStats.lso;
+                    beyblade.build.winsBst -= survivorStats.wbst;
+                    beyblade.build.loseBst -= survivorStats.lbst;
+                    beyblade.build.winsX   -= survivorStats.wx;
+                    beyblade.build.loseX   -= survivorStats.lx;
+                    beyblade.build.draws   -= survivorStats.draws;
+                    beyBladeDBX.put(beyblade).then(refreshUI);
+                } else {
+                    console.log(err);
+                }
+            });
 
-                        console.log("after edit " + JSON.stringify(beyblade));
-                        beyBladeDBX.put(beyblade).then(refreshUI);
-                    }
-                    else{
-                        console.log(err);
-                    }
-                });
-
-                recordsDBX.remove(vsDoc, function(err, errDoc){
-                    if(err){
-                        console.log(err);
-                    }
-                });
-
-            }
+            // remove vs record (all stadiums for this pair)
+            recordsDBX.remove(vsDoc, function(err, errDoc){
+                if(err){
+                    console.log(err);
+                }
+            });
         }
     });
 
