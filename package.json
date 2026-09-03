@@ -4,14 +4,15 @@
   "version": "1.4.0",
   "type": "module",
   "devDependencies": {
-    "http-server": "^14.1.1",
+    "@eslint/js": "^9.35.0",
     "eslint": "^9.35.0",
-    
-    "@eslint/js": "^9.35.0"
+    "globals": "^17.12.0",
+    "http-server": "^14.1.1"
   },
   "scripts": {
     "start": "cd ../ && npx http-server -p 8080 -c-1 --base-dir /BeyBuilderX/",
-    "test": "node unit_tests/migration_001_stadium.test.js"
+    "test": "node unit_tests/migration_001_stadium.test.js",
+    "lint": "eslint --config .config/eslint.config.js ."
   },
   "scriptsComments": {
     "start": "Runs local server for PWA testing, using the same /BeyBuilderX/ path as Github hosting",
