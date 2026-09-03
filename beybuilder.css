@@ -170,6 +170,9 @@ footer {
 .spinme {
     animation: bigspin 1s 1;
 }
+.spinme-loop {
+    animation: bigspin 1s linear infinite;
+}
 @keyframes bigspin {
     100% { 
         transform: rotate(1440deg);
