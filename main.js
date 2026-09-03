@@ -240,10 +240,10 @@ function main(){
     allOverBladesSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Over Blades
     for (let i = 0; i < allOverBladesSorted.length; i++) {
-        var options = document.createElement("option");
-        var option2 = document.createElement("option");
-        var option3 = document.createElement("option");
-        var option4 = document.createElement("option");
+        let options = document.createElement("option");
+        let option2 = document.createElement("option");
+        let option3 = document.createElement("option");
+        let option4 = document.createElement("option");
         options.textContent = allOverBladesSorted[i].name;
         options.value = allOverBladesSorted[i].id;
         option2.textContent = allOverBladesSorted[i].name;
@@ -264,10 +264,10 @@ function main(){
     allBladesSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Blades
     for (let i = 0; i < allBladesSorted.length; i++) {
-        var options = document.createElement("option");
-        var option2 = document.createElement("option");
-        var option3 = document.createElement("option");
-        var option4 = document.createElement("option");
+        let options = document.createElement("option");
+        let option2 = document.createElement("option");
+        let option3 = document.createElement("option");
+        let option4 = document.createElement("option");
         options.textContent = allBladesSorted[i].name;
         options.value = allBladesSorted[i].id;
         option2.textContent = allBladesSorted[i].name;
@@ -288,10 +288,10 @@ function main(){
     allAssistsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Assit Blades
     for (let i = 0; i < allAssistsSorted.length; i++) {
-        var options = document.createElement("option");
-        var option2 = document.createElement("option");
-        var option3 = document.createElement("option");
-        var option4 = document.createElement("option");
+        let options = document.createElement("option");
+        let option2 = document.createElement("option");
+        let option3 = document.createElement("option");
+        let option4 = document.createElement("option");
         options.textContent = allAssistsSorted[i].name;
         options.value = allAssistsSorted[i].id;
         option2.textContent = allAssistsSorted[i].name;
@@ -312,10 +312,10 @@ function main(){
     allRachetsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the rachets
     for (let i = 0; i < allRachetsSorted.length; i++) {
-        var options = document.createElement("option");
-        var option2 = document.createElement("option");
-        var option3 = document.createElement("option");
-        var option4 = document.createElement("option");
+        let options = document.createElement("option");
+        let option2 = document.createElement("option");
+        let option3 = document.createElement("option");
+        let option4 = document.createElement("option");
         options.textContent = allRachetsSorted[i].name;
         options.value = allRachetsSorted[i].id;
         option2.textContent = allRachetsSorted[i].name;
@@ -336,10 +336,10 @@ function main(){
     allBitsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the bits  
     for (let i = 0; i < allBitsSorted.length; i++) {
-        var options = document.createElement("option");
-        var option2 = document.createElement("option");
-        var option3 = document.createElement("option");
-        var option4 = document.createElement("option");
+        let options = document.createElement("option");
+        let option2 = document.createElement("option");
+        let option3 = document.createElement("option");
+        let option4 = document.createElement("option");
         options.textContent = allBitsSorted[i].name;
         options.value = allBitsSorted[i].id;
         option2.textContent = allBitsSorted[i].name;
@@ -1720,32 +1720,32 @@ function populateMatchHist(bey){
         historyClipboardHolder = "Results for " + bey.name + " " + stadiumLabel + ":"
         
         for (let i = 0; i < vsDocs.length; i++){
-            var vsDoc = vsDocs[i];
-            var scores = vsDoc.scores;
-            var totalMatches = scores.wx + scores.wbst + scores.wko + scores.wso + scores.lx + scores.lbst + scores.lko + scores.lso + scores.draws;
+            let vsDoc = vsDocs[i];
+            let scores = vsDoc.scores;
+            let totalMatches = scores.wx + scores.wbst + scores.wko + scores.wso + scores.lx + scores.lbst + scores.lko + scores.lso + scores.draws;
             if(totalMatches>0){
 
                     console.log(historyClipboardHolder);
-                    var fromBey = vsStatsFromPerspective(vsDoc, bey.id);
-                    var matchupStadiumLabel = stadiumFilterId === "all"
+                    let fromBey = vsStatsFromPerspective(vsDoc, bey.id);
+                    let matchupStadiumLabel = stadiumFilterId === "all"
                         ? " [" + getStadiumName(vsDoc.stadiumId) + "]"
                         : "";
 
                     //title row
-                    var titleRow = matchupSpace.insertRow(1);
-                    var titleCell = titleRow.insertCell(0);
+                    let titleRow = matchupSpace.insertRow(1);
+                    let titleCell = titleRow.insertCell(0);
                     titleCell.colSpan=6;
                     titleCell.classList.add('text-center');
                     titleCell.innerHTML = fromBey.opponent.name + matchupStadiumLabel;
                     titleCell.style = 'padding-top: 6px; border-top: 3px solid;';
                     //score
-                    var row = matchupSpace.insertRow(2);
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
-                    var cell4 = row.insertCell(3);
-                    var cell5 = row.insertCell(4);
-                    var cell6 = row.insertCell(5);
+                    let row = matchupSpace.insertRow(2);
+                    let cell1 = row.insertCell(0);
+                    let cell2 = row.insertCell(1);
+                    let cell3 = row.insertCell(2);
+                    let cell4 = row.insertCell(3);
+                    let cell5 = row.insertCell(4);
+                    let cell6 = row.insertCell(5);
                     cell1.classList.add('text-center');
                     cell2.classList.add('text-center');
                     cell3.classList.add('text-center');
