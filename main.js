@@ -239,7 +239,7 @@ function main(){
     allOverBladesSorted = structuredClone(allOverBlades); // JS deep copy crap
     allOverBladesSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Over Blades
-    for (var i = 0; i < allOverBladesSorted.length; i++) {
+    for (let i = 0; i < allOverBladesSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
@@ -263,7 +263,7 @@ function main(){
     allBladesSorted = structuredClone(allBlades); // JS deep copy crap
     allBladesSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Blades
-    for (var i = 0; i < allBladesSorted.length; i++) {
+    for (let i = 0; i < allBladesSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
@@ -287,7 +287,7 @@ function main(){
     allAssistsSorted = structuredClone(allAssists); // JS deep copy crap
     allAssistsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the Assit Blades
-    for (var i = 0; i < allAssistsSorted.length; i++) {
+    for (let i = 0; i < allAssistsSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
@@ -311,7 +311,7 @@ function main(){
     allRachetsSorted = structuredClone(allRachets);
     allRachetsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the rachets
-    for (var i = 0; i < allRachetsSorted.length; i++) {
+    for (let i = 0; i < allRachetsSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
@@ -335,7 +335,7 @@ function main(){
     allBitsSorted = structuredClone(allBits);
     allBitsSorted.sort((a, b) => a.name.localeCompare(b.name));
     //...the bits  
-    for (var i = 0; i < allBitsSorted.length; i++) {
+    for (let i = 0; i < allBitsSorted.length; i++) {
         var options = document.createElement("option");
         var option2 = document.createElement("option");
         var option3 = document.createElement("option");
@@ -1719,7 +1719,7 @@ function populateMatchHist(bey){
         // prepare string version that can be copied to clipboard
         historyClipboardHolder = "Results for " + bey.name + " " + stadiumLabel + ":"
         
-        for (var i = 0; i < vsDocs.length; i++){
+        for (let i = 0; i < vsDocs.length; i++){
             var vsDoc = vsDocs[i];
             var scores = vsDoc.scores;
             var totalMatches = scores.wx + scores.wbst + scores.wko + scores.wso + scores.lx + scores.lbst + scores.lko + scores.lso + scores.draws;
