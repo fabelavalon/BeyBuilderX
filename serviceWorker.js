@@ -1,11 +1,16 @@
-const CACHE_NAME = 'beybuilderx-cache-v1';
+const CACHE_NAME = 'beybuilderx-cache-v2';
 const PRECACHE_URLS = [
   'pwa/registerSW.js',
   // main application
   'index.html',
   'main.js',
   'parts.js',
+  'stadiums.js',
   'beyblade.js',
+  'vsRecords.js',
+  'migrations/backup.js',
+  'migrations/migrate.js',
+  'migrations/versions/001_stadium_vs_records.js',
   // themes
   'beybuilder.css',
   'theme-dark-purple.css',
@@ -13,6 +18,7 @@ const PRECACHE_URLS = [
   'theme-grey.css',
   'theme-none.css',
   'theme-wbo.css',
+  'theme-obs-overlay.css',
   // images
   'images/BeyBuilder_Logo2.png',
   'favicon.png',

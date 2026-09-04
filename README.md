@@ -18,12 +18,21 @@ BeyBuilder is a Beyblade stat tracker and random build generator for Beyblade X
 - Select a bey from the list and press the "Set as Bey#" button to start tracking for that bey
 - "Clear Database" will delete EVERY BEY IN YOUR HISTORY. It will prompt. Proceed with caution.
 
+# Install PWA / offline HTML
+
+The app will work entirely offline if you prepare it ahead of time. In Chrome you can "Install app" to add an icon to your homescreen and cache it for offline use. 
+
+You can also download the repo and open `index.html`. However this local HTML file uses a separate database from the online version.
+
 # Where is the database stored?
 
-- In FireFox: In the Indexed DB section of the Storage tab of the F12 menu
-- In Chrome: In the Indexed DB section of the Application tab of the F12 menu
+App data is stored in your web browser. Each device / browser will have its own data. "Delete browsing data" will delete your all your data!
+
+- In FireFox: Developer Tools (F12) > Storage tab > Indexed DB
+- In Chrome: Developer Tools (F12) > Application tab > Indexed DB
 - Deleting the beyblades record will clear your created beyblades database
 - Deleting the records record will clear your match records, but not your total win/loss
+- Data can be exported and imported in BeyBuilder's Settings menu
 
 # ToDo
 

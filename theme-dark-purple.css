@@ -12,6 +12,9 @@ body {
     background-color: #20083a;
     color: #fff;
 }
+.text-muted {
+    color: #9a8ab5 !important;
+}
 .modal-content {
     background-color: #20083a;
 }

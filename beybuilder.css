@@ -79,7 +79,7 @@
 }
 
 /* styling for delete buttons */
-.btn-danger {
+.btn-danger, .btn-warning {
     padding: 4px;
     margin: 3px;
 }
@@ -169,6 +169,9 @@ footer {
 /* spin animation */
 .spinme {
     animation: bigspin 1s 1;
+}
+.spinme-loop {
+    animation: bigspin 1s linear infinite;
 }
 @keyframes bigspin {
     100% { 
