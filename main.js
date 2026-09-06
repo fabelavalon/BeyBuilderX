@@ -2563,7 +2563,6 @@ function themeSwitchListener(){
 
 var THEME_MIGRATION = {
     "default": "light",
-    "dark-purple": "dark",
     "grey": "dark",
     "wbo": "light"
 };
@@ -2584,6 +2583,8 @@ function applyThemeCss(themeName) {
     if (metaTheme) {
         if (resolved === "dark") {
             metaTheme.content = "#1a1d27";
+        } else if (resolved === "dark-purple") {
+            metaTheme.content = "#20083a";
         } else if (resolved === "none") {
             metaTheme.content = "#0d6efd";
         } else {
