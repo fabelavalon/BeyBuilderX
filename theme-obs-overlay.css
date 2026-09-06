@@ -1,5 +1,5 @@
 /*=========================================================*
- *BeyBuilder X v1.5 for Beyblade X                         *
+ *BeyBuilder X v2.0 for Beyblade X                         *
  *Author: Maave                                            *
  *Copyright 2026                                           *
  *=========================================================*/
@@ -9,6 +9,9 @@ html, body {
     background-color: #6257c2;
     color: #fff;
     font-weight: 600;
+}
+.text-muted {
+    color: #c4bce8 !important;
 }
 
 .text-black-outline {

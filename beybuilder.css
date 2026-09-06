@@ -1,5 +1,5 @@
 /*=========================================================*
- *BeyBuilder X v1.0 for Beyblade X                         *
+ *BeyBuilder X v2.0 for Beyblade X                         *
  *Author: Fabel                                            *
  *Copyright 2023-2025                                      *
  *=========================================================*/
@@ -73,13 +73,26 @@
     margin: 3px;
 }
 
+/* overlay spinner while automatic DB migration runs */
+.db-select-migration-spinner {
+    position: absolute;
+    /* match .select-list margin so overlay covers the select */
+    inset: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    z-index: 2;
+    pointer-events: all;
+}
+
 #vsContainer {
     visibility: hidden;
     display: none;
 }
 
 /* styling for delete buttons */
-.btn-danger {
+.btn-danger, .btn-warning {
     padding: 4px;
     margin: 3px;
 }
@@ -169,6 +182,9 @@ footer {
 /* spin animation */
 .spinme {
     animation: bigspin 1s 1;
+}
+.spinme-loop {
+    animation: bigspin 1s linear infinite;
 }
 @keyframes bigspin {
     100% { 

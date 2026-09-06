@@ -1,5 +1,5 @@
 /*=========================================================*
- *BeyBuilder X v1.0 for Beyblade X                         *
+ *BeyBuilder X v2.0 for Beyblade X                         *
  *Author: Fabel                                            *
  *Copyright 2023                                           *
  *=========================================================*/
@@ -11,6 +11,9 @@ html {
 body {
     background-color: #20083a;
     color: #fff;
+}
+.text-muted {
+    color: #9a8ab5 !important;
 }
 .modal-content {
     background-color: #20083a;
