@@ -2545,6 +2545,7 @@ async function restoreBackupToLive(context) {
     backupWasRestored = true;
 }
 
+// populate "reason for" and "time of" backup
 async function updateBackupSettings() {
     var section = document.getElementById("backupSection");
     var createdAtEl = document.getElementById("backupCreatedAt");
@@ -2629,6 +2630,7 @@ async function importDatabase() {
         return;
     }
     if (importInProgress) {
+        console.log("import already in progress");
         return;
     }
 
@@ -2727,18 +2729,15 @@ async function showErrorModal(errMsg) {
     errorModal.show();
 }
 
-function buildMigrationFailureMessage(err, dataRestored) {
+function showMigrationFailureModal(err, dataRestored) {
     var msg = "Export your backup data and send the file with a bug report before using the app.";
     if (dataRestored) {
         msg += "<p></p>Your live database was put back from the backup.";
-        msg += " Use <strong>Export backup</strong> for the copy from before the failed update.";
+        msg += " Use <strong>Export backup</strong> to download the copy from before the failed update.";
     }
     msg += "<p></p>" + (err && err.message ? err.message : err);
-    return msg;
-}
 
-function showMigrationFailureModal(err, dataRestored) {
-    migrationFailureModalMsg.innerHTML = buildMigrationFailureMessage(err, dataRestored);
+    migrationFailureModalMsg.innerHTML = msg;
     migrationFailureModal.show();
 }
 
