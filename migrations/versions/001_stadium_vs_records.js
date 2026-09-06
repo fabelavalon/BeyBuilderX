@@ -132,7 +132,7 @@ registerMigration({
         var created = 0;
         var deleted = 0;
 
-        // --- Phase 1: legacy dual / space-id docs → new stadium format ---
+        // --- Phase 1: legacy dual / space-id docs -> new stadium format ---
         for (var j = 0; j < docs.length; j++) {
             var doc = docs[j];
             if (!isLegacyVsRecord_001(doc)) {
@@ -173,7 +173,7 @@ registerMigration({
                     sourceScores = invertScores_001(scoresFromLegacy_001(canonical));
                 }
             } else if (duplicate) {
-                // duplicate is reverse orientation → invert into alphabetical
+                // duplicate is reverse orientation -> invert into alphabetical
                 sourceScores = invertScores_001(scoresFromLegacy_001(duplicate));
                 beyFirst = duplicate.defender;
                 beySecond = duplicate.challenger;

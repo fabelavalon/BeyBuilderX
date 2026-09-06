@@ -91,10 +91,11 @@ async function setDbVersion(settingsDb, revision, existingDoc) {
 /**
  * Run pending upgrades against live DBs.
  * @param {{settings: PouchDB.Database, recordsDBX: PouchDB.Database, beyBladeDBX: PouchDB.Database}} dbs
- * @param {{target?: string|null, createBackup?: Function, restoreBackup?: Function}} [opts]
+ * @param {{target?: string|null, createBackup?: Function, restoreBackup?: Function, onUpgradeStart?: Function}} [opts]
  *   - target: revision to migrate to; omit for head (upgrades only)
  *   - createBackup(context, meta): optional; return true if snapshot was saved
  *   - restoreBackup(context): optional; restore after failed upgrade
+ *   - onUpgradeStart(): optional; called once when an upgrade will run (not on no-op)
  */
 async function runMigrations(dbs, opts) {
     opts = opts || {};
@@ -128,6 +129,10 @@ async function runMigrations(dbs, opts) {
 
     // Upgrade
     if (targetIndex > currentIndex) {
+        if (typeof opts.onUpgradeStart === "function") {
+            opts.onUpgradeStart();
+        }
+
         var backupCreated = false;
         if (typeof opts.createBackup === "function") {
             backupCreated = await opts.createBackup(context, {

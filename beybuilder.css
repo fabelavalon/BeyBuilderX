@@ -73,6 +73,19 @@
     margin: 3px;
 }
 
+/* overlay spinner while automatic DB migration runs */
+.db-select-migration-spinner {
+    position: absolute;
+    /* match .select-list margin so overlay covers the select */
+    inset: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    z-index: 2;
+    pointer-events: all;
+}
+
 #vsContainer {
     visibility: hidden;
     display: none;

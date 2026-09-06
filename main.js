@@ -74,6 +74,7 @@ var bey2WinTitle = document.getElementById("bey2-button-title");
 //...for the dbList
 var selectedBey = document.getElementById("dbSelectList");
 const dbSelectList = document.getElementById("dbSelectList");
+const dbSelectMigrationSpinner = document.getElementById("dbSelectMigrationSpinner");
 
 //import elements for the logging...
 //..dbBey stats
@@ -2752,11 +2753,18 @@ async function startApp() {
     try {
         await runMigrations(
             { settings: settings, recordsDBX: recordsDBX, beyBladeDBX: beyBladeDBX },
-            { createBackup: createBackup, restoreBackup: restoreBackupToLive }
+            {
+                createBackup: createBackup,
+                restoreBackup: restoreBackupToLive,
+                // spinner over dbSelectList while automatic migration converts records
+                onUpgradeStart: function () { dbSelectMigrationSpinner.classList.remove("d-none"); }
+            }
         );
     } catch (err) {
         console.error("DB migration failed:", err);
         showMigrationFailureModal(err, backupWasRestored);
+    } finally {
+        dbSelectMigrationSpinner.classList.add("d-none");
     }
     main();
 }
