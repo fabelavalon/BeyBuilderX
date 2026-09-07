@@ -2090,6 +2090,15 @@ function deleteAllBeys() {
        }
     });
 
+    // reset migration stamp so switching branches cannot leave an unknown revision
+    settings.get(DB_VERSION_DOC_ID).then(function (doc) {
+        return settings.remove(doc);
+    }).catch(function (err) {
+        if (err.name !== "not_found" && err.status !== 404) {
+            console.log(err);
+        }
+    });
+
 }
 
 //turns out JavaScript doesn't have a random number function that just gives an int
