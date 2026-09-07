@@ -150,7 +150,7 @@ class BeyBlade {
             ratchetNameInclSpaces += allRachets[this.rachet].name + " ";
         }
 
-        if((this.system == "BX") || (this.system == "UX")){
+        if((this.system == "BX") || (this.system == "BX2") || (this.system == "UX")){
             newName = allBlades[this.blade].name + ratchetNameInclSpaces + allBits[this.bit].name;
         }
         else if(this.system == "UX2"){
@@ -180,7 +180,7 @@ class BeyBlade {
             ratchetNameInclSpaces += allRachets[this.rachet].name + " ";
         }
 
-        if((this.system == "BX") || (this.system == "UX")){
+        if((this.system == "BX") || (this.system == "BX2") || (this.system == "UX")){
             bladeText = allBlades[this.blade].name;
             tailText = ratchetNameInclSpaces + allBits[this.bit].name;
         }
@@ -224,7 +224,7 @@ class BeyBlade {
             return Object.assign(new BeyBlade(-1, -1, 0, -1, -1, 0), build || {});
         }
         var system = allBlades[build.blade].system;
-        if (system === "BX" || system === "UX") {
+        if (system === "BX" || system === "BX2" || system === "UX") {
             return Object.assign(new BeyBlade(-1, -1, build.blade, -1, build.rachet, build.bit), build);
         }
         if (system === "UX2") {
