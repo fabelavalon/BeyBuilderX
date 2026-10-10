@@ -48,6 +48,7 @@ var overBlades = [
     {"name":"Outer",     "spin":"right", "system":"CX2", "type":"standard",    "weight":3.65, "height":0, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":4},
     {"name":"I",         "spin":"right", "system":"CX2", "type":"standard",    "weight":3.58, "height":0, "abbv":"I", "wins":0, "losses":0, "draws":0, "id":5},
     {"name":"Tough",     "spin":"right", "system":"CX2", "type":"standard",    "weight":4.39, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":6},
+    //{"name":"Weight",    "spin":"right", "system":"CX2", "type":"standard",    "weight":4.39, "height":0, "abbv":"W", "wins":0, "losses":0, "draws":0, "id":6},
 
 ]
 
@@ -185,6 +186,11 @@ var blades = [
     {"name":"Hurricane",         "spin":"right", "system":"CX2", "weight":24.32, "height":0, "abbv":"Hr",    "wins":0, "losses":0, "draws":0, "id":129}, 
     {"name":"Hulk",              "spin":"right", "system":"BX",  "weight":33.00, "height":0, "abbv":"Hl",    "wins":0, "losses":0, "draws":0, "id":130}, 
     {"name":"Tread",             "spin":"right", "system":"CX2", "weight":29.97, "height":0, "abbv":"Tr",    "wins":0, "losses":0, "draws":0, "id":131}, 
+    {"name":"WizardArrow v2",    "spin":"right", "system":"BX",  "weight":36.30, "height":0, "abbv":"WzAr2", "wins":0, "losses":0, "draws":0, "id":132}, 
+    {"name":"KnightShieldv2",    "spin":"right", "system":"BX",  "weight":36.40, "height":0, "abbv":"KnSh2", "wins":0, "losses":0, "draws":0, "id":133}, 
+    {"name":"LusterDragoon",     "spin":"left",  "system":"BX2", "weight":42.88, "height":0, "abbv":"LsDg",  "wins":0, "losses":0, "draws":0, "id":134}, 
+    //{"name":"Force",             "spin":"right", "system":"CX2", "weight":29.97, "height":0, "abbv":"Fr",    "wins":0, "losses":0, "draws":0, "id":135}, 
+    //{"name":"HellsScythe v2",    "spin":"right", "system":"BX",  "weight":29.97, "height":0, "abbv":"HlSc2", "wins":0, "losses":0, "draws":0, "id":136}, 
 
 ];
 
@@ -252,6 +258,7 @@ var rachets = [
     {"name":"1-50", "weight":5.68,  "height":5,   "abbv":"1-50", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":33},
     {"name":"8-70", "weight":7.76,  "height":7,   "abbv":"8-70", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":34},
     {"name":"5-50", "weight":6.20,  "height":5,   "abbv":"5-50", "type":"ratchet", "wins":0, "losses":0, "draws":0, "id":35},
+    //{"name":"M-65", "weight":6.20,  "height":6.5, "abbv":"M-65", "type":"simple",  "wins":0, "losses":0, "draws":0, "id":36},
 
 ];
 
@@ -310,5 +317,7 @@ var bits = [
     {"name":"Disk Spike",   "weight":3.09,  "height":2,   "abbv":"DS", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":50},
     {"name":"Narrow",       "weight":1.88,  "height":2,   "abbv":"Nr", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":51},
     {"name":"Low Point",    "weight":2.07,  "height":1,   "abbv":"LP", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":52},
+    {"name":"Low Cyclone",  "weight":2.00,  "height":1,   "abbv":"LC", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":53},
+    //{"name":"Metal Taper",  "weight":2.91,  "height":2,   "abbv":"MT", "type":"bit",        "wins":0, "losses":0, "draws":0, "id":54},
 
 ];
