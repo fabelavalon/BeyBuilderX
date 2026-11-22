@@ -48,7 +48,7 @@ var overBlades = [
     {"name":"Outer",     "spin":"right", "system":"CX2", "type":"standard",    "weight":3.65, "height":0, "abbv":"O", "wins":0, "losses":0, "draws":0, "id":4},
     {"name":"I",         "spin":"right", "system":"CX2", "type":"standard",    "weight":3.58, "height":0, "abbv":"I", "wins":0, "losses":0, "draws":0, "id":5},
     {"name":"Tough",     "spin":"right", "system":"CX2", "type":"standard",    "weight":4.39, "height":0, "abbv":"T", "wins":0, "losses":0, "draws":0, "id":6},
-    {"name":"Weight",    "spin":"right", "system":"CX2", "type":"standard",    "weight":8.77, "height":0, "abbv":"W", "wins":0, "losses":0, "draws":0, "id":6},
+    {"name":"Weight",    "spin":"right", "system":"CX2", "type":"standard",    "weight":8.77, "height":0, "abbv":"W", "wins":0, "losses":0, "draws":0, "id":7},
 
 ]
 
