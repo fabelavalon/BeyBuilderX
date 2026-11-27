@@ -1,5 +1,5 @@
 /* BeyBuilder X - Classic dark purple / indigo
- * Flat layout: full width, square corners, thin white separators
+ * Indieweb / old-web: flat grid, abutting 1px white rules, filled buttons
  */
 
 :root {
@@ -10,7 +10,7 @@
     --color-border-strong: #ffffff;
 
     --color-text: #ffffff;
-    --color-text-muted: #9a8ab5;
+    --color-text-muted: #d4d4d4;
     --color-text-on-primary: #ffffff;
 
     --color-primary: #5782c2;
@@ -57,15 +57,17 @@
     --color-accent-bey1: #67becf;
     --color-accent-bey2: #9857c2;
 
-    /* square corners everywhere (Bootstrap + layout) */
+    /* square / near-square */
     --bs-border-radius: 0;
     --bs-border-radius-sm: 0;
     --bs-border-radius-lg: 0;
     --bs-border-radius-xl: 0;
     --bs-border-radius-2xl: 0;
     --bs-border-radius-pill: 0;
-    --bs-btn-border-radius: 0;
+    --bs-btn-border-radius: 3px;
     --bs-modal-border-radius: 0;
+
+    --btn-control-height: 2rem;
 }
 
 .panel-heading-bey1 {
@@ -86,21 +88,53 @@ body {
     font-weight: 600;
 }
 
+/* muted only where asked; leave opacity-based soft text alone */
 .text-muted {
-    color: var(--color-text-muted) !important;
+    color: var(--color-text) !important;
 }
 
-/* ---- classic flat layout overrides ---- */
+.bey-match-meta,
+.settings-row-desc {
+    color: #d4d4d4 !important;
+}
+
+/* ---- flat grid layout: no floating tiles ---- */
 
 .app-main {
     max-width: none;
     margin: 0;
-    padding: 0.35rem 0.5rem 1rem;
+    padding: 0;
 }
 
 .app-header {
-    padding: 0.35rem 0.5rem;
+    padding: 0.25rem 0.5rem;
     box-shadow: none;
+    border-bottom: 1px solid var(--color-border);
+}
+
+footer {
+    padding: 0.35rem 0.5rem;
+    margin-top: 0;
+    border-top: 1px solid var(--color-border);
+}
+
+/* kill bootstrap row gutters so panel borders touch */
+.app-main .row,
+.roster-layout,
+.bey-layout-row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.bey-layout-row {
+    margin-bottom: 0;
+}
+
+.bey-selector-col {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 .panel,
@@ -108,25 +142,36 @@ body {
 .select-basic,
 .select-list,
 .form-control,
-.btn,
-.btn-primary,
-.btn-danger,
-.btn-success,
-.btn-warning,
-.btn-outline-secondary,
-.btn-outline-danger,
 .modal-content,
 .modal-body input[type="number"],
 .db-bey-card,
 .db-summary-tile,
 .parts-records-panel,
-.parts-records-results {
+.parts-records-results,
+.settings-group {
     border-radius: 0 !important;
 }
 
 .panel {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     box-shadow: none;
+    border: 1px solid var(--color-border);
+    border-color: var(--color-border);
+}
+
+/* collapse stacked section borders → one 1px rule */
+.app-main > .panel + .panel,
+.app-main > .bey-layout-row + .panel,
+.app-main > .panel + .bey-layout-row,
+.app-main > .bey-layout-row + .bey-layout-row {
+    margin-top: -1px;
+}
+
+/* side-by-side bey panels share one vertical rule */
+@media (min-width: 576px) {
+    .bey-selector-col + .bey-selector-col .panel {
+        margin-left: -1px;
+    }
 }
 
 .panel-body {
@@ -134,14 +179,10 @@ body {
 }
 
 .panel-heading {
-    padding: 0.4rem 0.5rem;
-}
-
-.btn-primary,
-.btn-danger,
-.btn-success,
-.btn-warning {
-    margin: 0.1rem;
+    padding: 0.35rem 0.5rem;
+    background-color: var(--color-surface-alt);
+    border-color: var(--color-border);
+    color: var(--color-text);
 }
 
 /* surfaces */
@@ -168,16 +209,6 @@ footer {
     border-color: var(--color-border) !important;
 }
 
-.panel {
-    border-color: var(--color-border);
-}
-
-.panel-heading {
-    background-color: var(--color-surface-alt);
-    border-color: var(--color-border);
-    color: var(--color-text);
-}
-
 .modal-content {
     border-color: var(--color-border);
     box-shadow: none;
@@ -201,13 +232,115 @@ footer {
     color: var(--color-nav-link-hover);
 }
 
-/* form controls */
+/* ---- roster / db detail ---- */
+
+.roster-body {
+    padding: 0;
+}
+
+.roster-list-wrap {
+    height: 100%;
+}
+
+.roster-search {
+    border-radius: 0 !important;
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+/* separator only when detail pane is open beside the list */
+#rosterListCol:has(+ #dbBeySpace:not(.hidden)) {
+    border-right: 1px solid var(--color-border);
+}
+
+@media (max-width: 575.98px) {
+    #rosterListCol:has(+ #dbBeySpace:not(.hidden)) {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+}
+
+/* card is inside the panel — no extra outline */
+.db-bey-card {
+    border: none !important;
+    background-color: transparent;
+    padding: 0.5rem;
+    height: 100%;
+}
+
+.db-bey-header {
+    margin-bottom: 0.5rem;
+}
+
+.db-bey-summary {
+    gap: 0;
+    margin-bottom: 0;
+}
+
+.db-summary-tile {
+    border: 1px solid var(--color-border);
+    background-color: var(--color-stat-bg);
+    margin: 0 -1px -1px 0;
+    border-radius: 0 !important;
+}
+
+.db-finish-table {
+    margin-bottom: 0.5rem;
+    margin-top: -1px;
+}
+
+.db-bey-actions {
+    gap: 0.35rem;
+}
+
+.db-bey-actions-row {
+    gap: 0.25rem;
+}
+
+/* parts records: abutting cells */
+.parts-records-body {
+    gap: 0;
+}
+
+.parts-records-panel,
+.parts-records-results {
+    border-color: var(--color-border);
+    background-color: var(--color-surface-alt);
+    border-radius: 0 !important;
+}
+
+.parts-records-body .row > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media (min-width: 768px) {
+    .parts-records-body .row > [class*="col-"] + [class*="col-"] .parts-records-panel {
+        margin-left: -1px;
+    }
+}
+
+.settings-group {
+    margin-bottom: 0;
+    border-radius: 0 !important;
+}
+
+.settings-group + .settings-group {
+    margin-top: -1px;
+}
+
+.settings-group-heading {
+    color: var(--color-text);
+}
+
+/* ---- form controls ---- */
+
 .select-basic,
 .form-control {
     color: var(--color-text);
     background-color: var(--color-input-bg);
     border-color: var(--color-input-border);
     font-weight: 600;
+    border-radius: 0 !important;
 }
 
 .select-basic:not([disabled]):hover,
@@ -235,6 +368,7 @@ select:disabled,
     background-color: var(--color-input-bg);
     border-color: var(--color-input-border);
     font-weight: 600;
+    border-radius: 0 !important;
 }
 
 .select-list:hover {
@@ -246,123 +380,126 @@ select:disabled,
     color: var(--color-text-on-primary);
 }
 
-/* buttons */
-.btn-primary {
-    color: var(--color-text-on-primary);
-    background-color: var(--color-primary);
-    border-color: #59298c;
-    font-weight: 600;
+/* ---- buttons: filled, no border, uniform height ---- */
+
+.btn,
+.btn-primary,
+.btn-danger,
+.btn-success,
+.btn-warning,
+.btn-outline-secondary,
+.btn-outline-danger,
+.btn-outline-primary,
+.btn-sm,
+.btn-icon,
+.btn-icon.btn-sm {
+    margin: 0;
+    border: none !important;
+    border-radius: 3px !important;
+    box-shadow: none !important;
 }
 
-.btn-primary:hover {
+.btn-icon,
+.btn-icon.btn-sm {
+    padding: 0;
+}
+
+.btn-win {
+    width: 72px;
+    margin-bottom: 0.25rem;
+}
+
+.records-actions > .btn {
+    margin-bottom: 0.25rem;
+}
+
+.btn-primary,
+.btn-outline-secondary,
+.btn-outline-primary {
+    color: var(--color-text-on-primary);
+    background-color: var(--color-primary);
+}
+
+.btn-primary:hover,
+.btn-outline-secondary:hover,
+.btn-outline-primary:hover {
     color: var(--color-text-on-primary);
     background-color: var(--color-primary-hover);
-    border-color: #67becf;
 }
 
 .btn-primary:focus,
-.btn-primary.focus {
-    box-shadow: 0 0 0 0.2rem var(--color-primary-hover);
+.btn-primary.focus,
+.btn-outline-secondary:focus,
+.btn-outline-secondary.focus,
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+    box-shadow: 0 0 0 0.2rem var(--color-focus-ring) !important;
 }
 
-.btn-primary:focus-visible {
+.btn-primary:focus-visible,
+.btn-outline-secondary:focus-visible,
+.btn-outline-primary:focus-visible {
     background-color: var(--color-primary-hover);
-    box-shadow: 0 0 0 0.2rem #59298c;
 }
 
 .btn-primary.disabled,
-.btn-primary:disabled {
+.btn-primary:disabled,
+.btn-outline-secondary:disabled,
+.btn-outline-primary:disabled {
     color: var(--color-btn-disabled-text);
     background-color: var(--color-btn-disabled-bg);
-    border-color: var(--color-btn-disabled-border);
 }
 
 .btn-primary:not(:disabled):not(.disabled):active,
-.btn-primary:not(:disabled):not(.disabled).active {
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-outline-secondary:not(:disabled):not(.disabled):active,
+.btn-outline-primary:not(:disabled):not(.disabled):active {
     color: #000000;
     background-color: var(--color-btn-active-bg);
-    border-color: var(--color-btn-active-border);
 }
 
-.btn-danger {
-    color: var(--color-text-on-primary);
-    background-color: var(--color-primary);
-    border-color: #59298c;
-    font-weight: 600;
-}
-
-.btn-danger:hover {
+.btn-danger,
+.btn-outline-danger {
     color: var(--color-text-on-primary);
     background-color: var(--color-danger);
-    border-color: #67becf;
+}
+
+.btn-danger:hover,
+.btn-outline-danger:hover {
+    color: var(--color-text-on-primary);
+    background-color: var(--color-danger-hover);
 }
 
 .btn-danger:focus,
-.btn-danger.focus {
-    box-shadow: 0 0 0 0.2rem var(--color-danger);
+.btn-danger.focus,
+.btn-outline-danger:focus,
+.btn-outline-danger.focus {
+    box-shadow: 0 0 0 0.2rem rgba(140, 41, 48, 0.45) !important;
 }
 
 .btn-success {
-    color: #000000;
-    background-color: #67becf;
-    border-color: #59298c;
+    color: var(--color-text-on-primary);
+    background-color: var(--color-success);
 }
 
 .btn-success:hover {
     color: var(--color-text-on-primary);
-    background-color: var(--color-success);
-    border-color: #67becf;
+    background-color: var(--color-success-hover);
 }
 
 .btn-success:focus,
 .btn-success.focus {
-    box-shadow: 0 0 0 0.2rem var(--color-success);
+    box-shadow: 0 0 0 0.2rem rgba(53, 170, 70, 0.45) !important;
 }
 
 .btn-warning {
     color: var(--color-text-on-primary);
     background-color: var(--color-warning);
-    border-color: var(--color-warning);
 }
 
 .btn-warning:hover {
     color: var(--color-text-on-primary);
     background-color: var(--color-warning-hover);
-    border-color: var(--color-warning-hover);
-}
-
-.btn-outline-secondary {
-    color: var(--color-text-muted);
-    border-color: var(--color-border);
-    background-color: transparent;
-}
-
-.btn-outline-secondary:hover {
-    color: var(--color-text);
-    background-color: var(--color-surface-alt);
-    border-color: var(--color-border);
-}
-
-.btn-outline-secondary:focus,
-.btn-outline-secondary.focus {
-    box-shadow: 0 0 0 0.2rem var(--color-focus-ring);
-}
-
-.btn-outline-danger {
-    color: #ff8a8a;
-    border-color: var(--color-danger);
-    background-color: transparent;
-}
-
-.btn-outline-danger:hover {
-    color: var(--color-text-on-primary);
-    background-color: var(--color-danger);
-    border-color: var(--color-danger);
-}
-
-.btn-outline-danger:focus,
-.btn-outline-danger.focus {
-    box-shadow: 0 0 0 0.2rem rgba(140, 41, 48, 0.45);
 }
 
 .btn-close {
@@ -373,7 +510,8 @@ select:disabled,
     background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238c2930'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
 }
 
-/* tables — thin white separators */
+/* ---- tables ---- */
+
 table {
     border: 1px solid var(--color-border);
 }
@@ -392,28 +530,9 @@ td, tr {
     border-bottom-color: var(--color-border-strong);
 }
 
-.records-table th[name="record1"],
-.records-table th[name="record2"] {
+.records-table tr:has(th[name="record1"]),
+.records-table tr:has(th[name="record2"]) {
     background-color: var(--color-table-header);
-}
-
-.db-bey-card,
-.db-summary-tile {
-    border-color: var(--color-border);
-}
-
-.db-bey-card {
-    background-color: var(--color-surface);
-}
-
-.db-summary-tile {
-    background-color: var(--color-stat-bg);
-}
-
-.parts-records-panel,
-.parts-records-results {
-    border-color: var(--color-border);
-    background-color: var(--color-surface-alt);
 }
 
 .modal-body input[type="number"] {

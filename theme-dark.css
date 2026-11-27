@@ -317,8 +317,8 @@ td, th, tr {
     border-bottom-color: var(--color-border-strong);
 }
 
-.records-table th[name="record1"],
-.records-table th[name="record2"] {
+.records-table tr:has(th[name="record1"]),
+.records-table tr:has(th[name="record2"]) {
     background-color: var(--color-table-header);
 }
 
