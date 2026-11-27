@@ -219,6 +219,19 @@ footer {
     border-color: var(--color-border);
 }
 
+/* theme zeros btn margin; restore modal footer spacing */
+.modal-footer {
+    gap: 0.5rem;
+}
+
+.modal-footer > .btn,
+.modal-footer > .btn-primary,
+.modal-footer > .btn-danger,
+.modal-footer > .btn-success,
+.modal-footer > .btn-warning {
+    margin: 0.25rem;
+}
+
 .modal-header--sticky,
 .modal-footer--sticky {
     background-color: inherit;
