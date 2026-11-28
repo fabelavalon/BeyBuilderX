@@ -330,14 +330,38 @@ body {
     min-height: 1.25rem;
 }
 
-/* ---- records table ---- */
+/* ---- match panel / records table ---- */
+
+#vsContainer > .panel-body {
+    padding: 0;
+}
+
+/* g-3 negative margins overhang by 8px when panel-body padding is 0 */
+#vsContainer > .panel-body > .row {
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#vsContainer > .panel-body > .row > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#buttonContainer {
+    padding: 0.5rem;
+    min-width: 0;
+}
 
 #recordsSpace {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
-    padding: 0.5rem;
+    padding: 0;
+    height: stretch;
+    min-width: 0; /* bootstrap col: allow shrink below bey-name intrinsic width */
 }
 
 .records-actions {
@@ -345,18 +369,27 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 1.5rem;
     width: 100%;
-    max-width: 420px;
-    margin-top: 0.75rem;
+    margin: 0;
 }
 
 .records-actions .btn-icon {
     width: var(--btn-control-height);
     height: var(--btn-control-height);
+    flex: 0 0 auto;
 }
 
-#recordsSpace > table,
+#recordsSpace > .records-table {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    border-bottom: none;
+}
+
 .records-table {
     width: 100%;
     max-width: 420px;
@@ -364,20 +397,57 @@ body {
     font-size: 0.875rem;
 }
 
+/* label | bey1 | vs | bey2 — bey cols share remaining space equally */
+#recordsSpace > .records-table .records-col-label {
+    width: 4.25rem;
+}
+
+#recordsSpace > .records-table .records-col-vs {
+    width: 1.75rem;
+}
+
 #recordsSpace > table td,
 #recordsSpace > table th,
 .records-table td,
 .records-table th {
-    padding: 0.3rem 0.5rem;
+    padding: 0.3rem 0.35rem;
     border-top: 1px solid;
     border-bottom: 1px solid;
 }
 
+#recordsSpace > .records-table .records-actions-row > * {
+    border-bottom: none;
+    vertical-align: middle;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
 .record-table-label {
-    width: 1%;
     white-space: nowrap;
     padding-left: 0.5em;
     font-weight: 600;
+    text-align: end;
+}
+
+#recordsSpace > .records-table th[name="record1"],
+#recordsSpace > .records-table th[name="record2"] {
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+#recordsSpace > .records-table th[name="record1"] {
+    text-align: end;
+}
+
+#recordsSpace > .records-table th[name="record2"] {
+    text-align: start;
+}
+
+#recordsSpace > .records-table .records-vs,
+#recordsSpace > .records-table td:nth-child(3) {
+    text-align: center;
+    padding-left: 0.15rem;
+    padding-right: 0.15rem;
 }
 
 #recordsSpace > table > tbody > tr:nth-child(1),
@@ -389,7 +459,18 @@ body {
 #wins2Container {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     width: 100%;
+    gap: 0.35rem;
+}
+
+#wins2Container [name="wins2"] {
+    flex: 0 0 auto;
+}
+
+#wins2Container [name="vsTotalRounds"] {
+    flex: 0 0 auto;
+    margin-left: auto;
 }
 
 #wins2Col {

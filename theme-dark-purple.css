@@ -543,6 +543,35 @@ td, tr {
     border-bottom-color: var(--color-border-strong);
 }
 
+/* flush with match panel — panel already supplies outer rules */
+#vsContainer > .panel-body {
+    padding: 0;
+}
+
+#recordsSpace > .records-table {
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    border-left: 1px solid var(--color-border);
+    max-width: none;
+    height: 100%;
+}
+
+#recordsSpace > .records-table .records-actions-row > * {
+    border-bottom: none;
+}
+
+@media (max-width: 767.98px) {
+    #recordsSpace {
+        margin-top: 0;
+    }
+
+    #recordsSpace > .records-table {
+        border-left: none;
+        border-top: 1px solid var(--color-border);
+    }
+}
+
 .records-table tr:has(th[name="record1"]),
 .records-table tr:has(th[name="record2"]) {
     background-color: var(--color-table-header);

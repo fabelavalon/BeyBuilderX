@@ -317,6 +317,14 @@ td, th, tr {
     border-bottom-color: var(--color-border-strong);
 }
 
+#recordsSpace > .records-table {
+    border-bottom: none;
+}
+
+#recordsSpace > .records-table .records-actions-row > * {
+    border-bottom: none;
+}
+
 .records-table tr:has(th[name="record1"]),
 .records-table tr:has(th[name="record2"]) {
     background-color: var(--color-table-header);

@@ -38,6 +38,14 @@ tr {
     border-bottom-color: var(--bs-gray-400);
 }
 
+#recordsSpace > .records-table {
+    border-bottom: none;
+}
+
+#recordsSpace > .records-table .records-actions-row > * {
+    border-bottom: none;
+}
+
 .modal-header,
 .modal-footer {
     border-color: var(--bs-border-color);

@@ -206,10 +206,16 @@
 
                     <div class="col-md-6" id="recordsSpace">
                         <table class="records-table">
+                            <colgroup>
+                                <col class="records-col-label">
+                                <col class="records-col-bey">
+                                <col class="records-col-vs">
+                                <col class="records-col-bey">
+                            </colgroup>
                             <tr>
                                 <td class="text-end"></td>
                                 <th class="text-end" name="record1">bey1</th>
-                                <td class="text-center">vs</td>
+                                <td class="text-center records-vs">vs</td>
                                 <th name="record2">bey2</th>
                             </tr>
                             <tr>
@@ -259,8 +265,13 @@
                                 <td class="text-center" name="draws">0</td>
                                 <td></td>
                             </tr>
+                            <tr class="records-actions-row">
+                                <td></td>
+                                <td colspan="3">
+                                    <div id="recordsActions" class="records-actions"></div>
+                                </td>
+                            </tr>
                         </table>
-                        <div id="recordsActions" class="records-actions"></div>
                     </div>
 
                 </div>
